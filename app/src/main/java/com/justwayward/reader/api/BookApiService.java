@@ -20,6 +20,7 @@ import rx.Observable;
 
 public interface BookApiService {
 
+    // 测试提交
     @GET("/book/recommend")
     Observable<Recommend> getRecomend(@Query("gender") String gender);
 
