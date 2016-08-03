@@ -1,6 +1,5 @@
 package com.justwayward.music.module;
 
-import com.justwayward.music.ui.ActivityScope;
 import com.justwayward.music.ui.activity.MainActivity;
 
 import dagger.Module;
@@ -16,15 +15,7 @@ public class MainActivityModule {
     }
 
     @Provides
-    @ActivityScope
     MainActivity provideMainActivity() {
         return mainActivity;
     }
-
-
-//    @Provides
-//    @ActivityScope
-//    MainActivityPresenter provideMainActivityPresenter(MainActivity mainActivity) {
-//        return new MainActivityPresenter(mainActivity);
-//    }
 }
