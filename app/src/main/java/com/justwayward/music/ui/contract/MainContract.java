@@ -1,0 +1,17 @@
+package com.justwayward.music.ui.contract;
+
+/**
+ * @author yuyh.
+ * @date 2016/8/3.
+ */
+public interface MainContract {
+
+    interface View{
+
+    }
+
+    interface Presenter{
+
+    }
+
+}
