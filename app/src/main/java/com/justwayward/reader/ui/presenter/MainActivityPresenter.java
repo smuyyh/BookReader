@@ -4,7 +4,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.justwayward.reader.api.BookApi;
-import com.justwayward.reader.bean.PlayerList;
+import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.ui.contract.MainContract;
 
 import javax.inject.Inject;
@@ -23,17 +23,17 @@ public class MainActivityPresenter implements MainContract.Presenter {
     private BookApi bookApi;
 
     @Inject
-    public MainActivityPresenter(Context context, BookApi bookApi){
+    public MainActivityPresenter(Context context, BookApi bookApi) {
         this.context = context;
         this.bookApi = bookApi;
     }
 
-    public void getPlayerList(){
-        bookApi.getPlayerList("387699584").subscribeOn(Schedulers.io())
+    public void getPlayerList() {
+        bookApi.getRecommend("male").subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<PlayerList>() {
+                .subscribe(new Observer<Recommend>() {
                     @Override
-                    public void onNext(PlayerList playerList) {
+                    public void onNext(Recommend recommend) {
 
                     }
 
@@ -43,7 +43,7 @@ public class MainActivityPresenter implements MainContract.Presenter {
                     }
 
                     @Override
-                    public void onError(Throwable e){
+                    public void onError(Throwable e) {
 
                     }
                 });

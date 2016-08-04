@@ -1,6 +1,6 @@
 package com.justwayward.reader.api;
 
-import com.justwayward.reader.bean.PlayerList;
+import com.justwayward.reader.bean.Recommend;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -20,7 +20,7 @@ public class BookApi {
 
     public BookApi(OkHttpClient okHttpClient) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://music.163.com")
+                .baseUrl("http://api.zhuishushenqi.com")
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create()) // 添加Rx适配器
                 .addConverterFactory(GsonConverterFactory.create()) // 添加Gson转换器
                 .client(okHttpClient)
@@ -34,8 +34,8 @@ public class BookApi {
         return instance;
     }
 
-    public Observable<PlayerList> getPlayerList(String id) {
-        return service.getPlayerList(id);
+    public Observable<Recommend> getRecommend(String gender) {
+        return service.getRecomend(gender);
     }
 
 }
