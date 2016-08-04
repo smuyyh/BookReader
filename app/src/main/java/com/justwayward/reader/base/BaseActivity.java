@@ -1,10 +1,10 @@
-package com.justwayward.music.base;
+package com.justwayward.reader.base;
 
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.justwayward.music.AppComponent;
-import com.justwayward.music.MusicApplication;
+import com.justwayward.reader.AppComponent;
+import com.justwayward.reader.MusicApplication;
 
 public abstract class BaseActivity extends Activity {
 

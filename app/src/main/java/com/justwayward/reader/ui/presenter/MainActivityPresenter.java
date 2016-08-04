@@ -1,11 +1,11 @@
-package com.justwayward.music.ui.presenter;
+package com.justwayward.reader.ui.presenter;
 
 import android.content.Context;
 import android.widget.Toast;
 
-import com.justwayward.music.api.MusicApi;
-import com.justwayward.music.bean.PlayerList;
-import com.justwayward.music.ui.contract.MainContract;
+import com.justwayward.reader.api.MusicApi;
+import com.justwayward.reader.bean.PlayerList;
+import com.justwayward.reader.ui.contract.MainContract;
 
 import javax.inject.Inject;
 

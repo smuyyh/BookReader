@@ -1,8 +1,8 @@
-package com.justwayward.music.ui.component;
+package com.justwayward.reader.ui.component;
 
-import com.justwayward.music.AppComponent;
-import com.justwayward.music.module.MainActivityModule;
-import com.justwayward.music.ui.activity.MainActivity;
+import com.justwayward.reader.AppComponent;
+import com.justwayward.reader.module.MainActivityModule;
+import com.justwayward.reader.ui.activity.MainActivity;
 
 import dagger.Component;
 

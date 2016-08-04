@@ -1,6 +1,6 @@
-package com.justwayward.music.module;
+package com.justwayward.reader.module;
 
-import com.justwayward.music.ui.activity.MainActivity;
+import com.justwayward.reader.ui.activity.MainActivity;
 
 import dagger.Module;
 import dagger.Provides;

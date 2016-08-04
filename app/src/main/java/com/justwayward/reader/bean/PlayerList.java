@@ -1,4 +1,4 @@
-package com.justwayward.music.bean;
+package com.justwayward.reader.bean;
 
 import java.util.List;
 

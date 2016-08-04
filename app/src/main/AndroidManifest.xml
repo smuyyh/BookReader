@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.justwayward.music">
+    package="com.justwayward.reader">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -10,8 +10,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name=".MusicApplication">
-        <activity android:name=".ui.activity.MainActivity">
+        android:name="com.justwayward.reader.MusicApplication">
+        <activity android:name="com.justwayward.reader.ui.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

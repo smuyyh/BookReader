@@ -1,14 +1,14 @@
-package com.justwayward.music.ui.activity;
+package com.justwayward.reader.ui.activity;
 
 import android.os.Bundle;
 
-import com.justwayward.music.AppComponent;
-import com.justwayward.music.R;
-import com.justwayward.music.base.BaseActivity;
-import com.justwayward.music.module.MainActivityModule;
-import com.justwayward.music.ui.component.DaggerMainActivityComponent;
-import com.justwayward.music.ui.contract.MainContract;
-import com.justwayward.music.ui.presenter.MainActivityPresenter;
+import com.justwayward.reader.AppComponent;
+import com.justwayward.reader.R;
+import com.justwayward.reader.base.BaseActivity;
+import com.justwayward.reader.module.MainActivityModule;
+import com.justwayward.reader.ui.component.DaggerMainActivityComponent;
+import com.justwayward.reader.ui.contract.MainContract;
+import com.justwayward.reader.ui.presenter.MainActivityPresenter;
 
 import javax.inject.Inject;
 

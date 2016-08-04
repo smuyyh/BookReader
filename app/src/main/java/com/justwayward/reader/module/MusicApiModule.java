@@ -1,6 +1,6 @@
-package com.justwayward.music.module;
+package com.justwayward.reader.module;
 
-import com.justwayward.music.api.MusicApi;
+import com.justwayward.reader.api.MusicApi;
 
 import java.util.concurrent.TimeUnit;
 

@@ -1,10 +1,10 @@
-package com.justwayward.music;
+package com.justwayward.reader;
 
 import android.content.Context;
 
-import com.justwayward.music.api.MusicApi;
-import com.justwayward.music.module.AppModule;
-import com.justwayward.music.module.MusicApiModule;
+import com.justwayward.reader.api.MusicApi;
+import com.justwayward.reader.module.AppModule;
+import com.justwayward.reader.module.MusicApiModule;
 
 import dagger.Component;
 

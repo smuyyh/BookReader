@@ -1,4 +1,4 @@
-package com.justwayward.music.module;
+package com.justwayward.reader.module;
 
 import android.content.Context;
 

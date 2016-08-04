@@ -1,4 +1,4 @@
-package com.justwayward.music.ui.contract;
+package com.justwayward.reader.ui.contract;
 
 /**
  * @author yuyh.

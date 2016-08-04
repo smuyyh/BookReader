@@ -1,9 +1,9 @@
-package com.justwayward.music;
+package com.justwayward.reader;
 
 import android.app.Application;
 
-import com.justwayward.music.module.MusicApiModule;
-import com.justwayward.music.module.AppModule;
+import com.justwayward.reader.module.MusicApiModule;
+import com.justwayward.reader.module.AppModule;
 
 /**
  * @author yuyh.

@@ -1,6 +1,6 @@
-package com.justwayward.music.api;
+package com.justwayward.reader.api;
 
-import com.justwayward.music.bean.PlayerList;
+import com.justwayward.reader.bean.PlayerList;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
