@@ -12,25 +12,25 @@ import rx.Observable;
  * @author yuyh.
  * @date 2016/8/3.
  */
-public class MusicApi {
+public class BookApi {
 
-    public static MusicApi instance;
+    public static BookApi instance;
 
-    private MusicApiService service;
+    private BookApiService service;
 
-    public MusicApi(OkHttpClient okHttpClient) {
+    public BookApi(OkHttpClient okHttpClient) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://music.163.com")
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create()) // 添加Rx适配器
                 .addConverterFactory(GsonConverterFactory.create()) // 添加Gson转换器
                 .client(okHttpClient)
                 .build();
-        service = retrofit.create(MusicApiService.class);
+        service = retrofit.create(BookApiService.class);
     }
 
-    public static MusicApi getInstance(OkHttpClient okHttpClient) {
+    public static BookApi getInstance(OkHttpClient okHttpClient) {
         if (instance == null)
-            instance = new MusicApi(okHttpClient);
+            instance = new BookApi(okHttpClient);
         return instance;
     }
 

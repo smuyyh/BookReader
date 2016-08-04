@@ -2,9 +2,9 @@ package com.justwayward.reader;
 
 import android.content.Context;
 
-import com.justwayward.reader.api.MusicApi;
+import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.module.AppModule;
-import com.justwayward.reader.module.MusicApiModule;
+import com.justwayward.reader.module.BookApiModule;
 
 import dagger.Component;
 
@@ -12,11 +12,11 @@ import dagger.Component;
  * @author yuyh.
  * @date 2016/8/3.
  */
-@Component(modules = {AppModule.class, MusicApiModule.class})
+@Component(modules = {AppModule.class, BookApiModule.class})
 public interface AppComponent {
 
     Context getContext();
 
-    MusicApi getMusicApi();
+    BookApi getMusicApi();
 
 }

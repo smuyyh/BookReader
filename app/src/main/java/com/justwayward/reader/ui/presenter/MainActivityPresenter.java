@@ -3,7 +3,7 @@ package com.justwayward.reader.ui.presenter;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.justwayward.reader.api.MusicApi;
+import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.bean.PlayerList;
 import com.justwayward.reader.ui.contract.MainContract;
 
@@ -20,16 +20,16 @@ import rx.schedulers.Schedulers;
 public class MainActivityPresenter implements MainContract.Presenter {
 
     private Context context;
-    private MusicApi musicApi;
+    private BookApi bookApi;
 
     @Inject
-    public MainActivityPresenter(Context context, MusicApi musicApi){
+    public MainActivityPresenter(Context context, BookApi bookApi){
         this.context = context;
-        this.musicApi = musicApi;
+        this.bookApi = bookApi;
     }
 
     public void getPlayerList(){
-        musicApi.getPlayerList("387699584").subscribeOn(Schedulers.io())
+        bookApi.getPlayerList("387699584").subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<PlayerList>() {
                     @Override

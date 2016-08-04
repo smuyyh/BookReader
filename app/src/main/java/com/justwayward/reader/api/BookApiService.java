@@ -7,7 +7,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 import rx.Observable;
 
-public interface MusicApiService {
+public interface BookApiService {
 
     @GET("/api/playlist/detail")
     Observable<PlayerList> getPlayerList(@Query("id") String id);

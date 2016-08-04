@@ -2,7 +2,7 @@ package com.justwayward.reader;
 
 import android.app.Application;
 
-import com.justwayward.reader.module.MusicApiModule;
+import com.justwayward.reader.module.BookApiModule;
 import com.justwayward.reader.module.AppModule;
 
 /**
@@ -27,7 +27,7 @@ public class MusicApplication extends Application {
 
     private void initCompoent() {
         appComponent = DaggerAppComponent.builder()
-                .musicApiModule(new MusicApiModule())
+                .bookApiModule(new BookApiModule())
                 .appModule(new AppModule(this))
                 .build();
     }

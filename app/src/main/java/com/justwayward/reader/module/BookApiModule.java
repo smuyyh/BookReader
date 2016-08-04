@@ -1,6 +1,6 @@
 package com.justwayward.reader.module;
 
-import com.justwayward.reader.api.MusicApi;
+import com.justwayward.reader.api.BookApi;
 
 import java.util.concurrent.TimeUnit;
 
@@ -9,7 +9,7 @@ import dagger.Provides;
 import okhttp3.OkHttpClient;
 
 @Module
-public class MusicApiModule {
+public class BookApiModule {
 
     @Provides
     public OkHttpClient provideOkHttpClient() {
@@ -20,7 +20,7 @@ public class MusicApiModule {
     }
 
     @Provides
-    protected MusicApi provideMusicService(OkHttpClient okHttpClient) {
-        return MusicApi.getInstance(okHttpClient);
+    protected BookApi provideBookService(OkHttpClient okHttpClient) {
+        return BookApi.getInstance(okHttpClient);
     }
 }
