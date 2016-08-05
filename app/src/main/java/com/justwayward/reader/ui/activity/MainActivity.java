@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import com.justwayward.reader.AppComponent;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
-import com.justwayward.reader.module.MainActivityModule;
 import com.justwayward.reader.ui.component.DaggerMainActivityComponent;
 import com.justwayward.reader.ui.contract.MainContract;
 import com.justwayward.reader.ui.fragment.RecommendFragment;
@@ -60,7 +59,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerMainActivityComponent.builder()
                 .appComponent(appComponent)
-                .mainActivityModule(new MainActivityModule(this))
+                //.mainActivityModule(new MainActivityModule(this))
                 .build()
                 .inject(this);
     }

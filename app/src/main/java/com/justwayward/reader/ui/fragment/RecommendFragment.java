@@ -8,7 +8,6 @@ import com.justwayward.reader.AppComponent;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseFragment;
 import com.justwayward.reader.bean.Recommend;
-import com.justwayward.reader.module.RecommendFragmentModule;
 import com.justwayward.reader.ui.adapter.RecommendAdapter;
 import com.justwayward.reader.ui.component.DaggerRecommendFragmentComponent;
 import com.justwayward.reader.ui.contract.RecommendContract;
@@ -69,7 +68,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerRecommendFragmentComponent.builder()
                 .appComponent(appComponent)
-                .recommendFragmentModule(new RecommendFragmentModule(this))
+                //.recommendFragmentModule(new RecommendFragmentModule(this))
                 .build()
                 .inject(this);
     }
