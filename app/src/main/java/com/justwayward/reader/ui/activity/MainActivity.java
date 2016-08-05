@@ -15,7 +15,7 @@ import com.justwayward.reader.ui.component.DaggerMainActivityComponent;
 import com.justwayward.reader.ui.contract.MainContract;
 import com.justwayward.reader.ui.fragment.RecommendFragment;
 import com.justwayward.reader.ui.presenter.MainActivityPresenter;
-import com.justwayward.reader.ui.view.RVPIndicator;
+import com.justwayward.reader.view.RVPIndicator;
 
 import java.util.ArrayList;
 import java.util.Arrays;

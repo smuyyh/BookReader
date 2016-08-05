@@ -19,7 +19,7 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="" />
 
-    <com.justwayward.reader.ui.view.RVPIndicator
+    <com.justwayward.reader.view.RVPIndicator
         android:id="@+id/indicator"
         android:layout_width="match_parent"
         android:layout_height="55dp"

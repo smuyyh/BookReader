@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">追书</string>
+
+    <string name="add_tag">Add Tag</string>
 </resources>

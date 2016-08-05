@@ -1,4 +1,4 @@
-package com.justwayward.reader.ui.view;
+package com.justwayward.reader.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;

@@ -8,4 +8,65 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TagGroup">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="atg_isAppendMode">false</item>
+        <item name="atg_inputHint">@string/add_tag</item>
+        <item name="atg_borderColor">#49C120</item>
+        <item name="atg_textColor">#49C120</item>
+        <item name="atg_backgroundColor">#FFFFFF</item>
+        <item name="atg_dashBorderColor">#AAAAAA</item>
+        <item name="atg_inputHintColor">#80000000</item>
+        <item name="atg_inputTextColor">#DE000000</item>
+        <item name="atg_checkedBorderColor">#49C120</item>
+        <item name="atg_checkedTextColor">#FFFFFF</item>
+        <item name="atg_checkedMarkerColor">#FFFFFF</item>
+        <item name="atg_checkedBackgroundColor">#49C120</item>
+        <item name="atg_pressedBackgroundColor">#EDEDED</item>
+        <item name="atg_borderStrokeWidth">0.5dp</item>
+        <item name="atg_textSize">13sp</item>
+        <item name="atg_horizontalSpacing">8dp</item>
+        <item name="atg_verticalSpacing">4dp</item>
+        <item name="atg_horizontalPadding">12dp</item>
+        <item name="atg_verticalPadding">3dp</item>
+    </style>
+
+    <style name="TagGroup.Small" parent="TagGroup">
+        <item name="atg_textSize">10sp</item>
+        <item name="atg_horizontalSpacing">6dp</item>
+        <item name="atg_verticalSpacing">3dp</item>
+        <item name="atg_horizontalPadding">8dp</item>
+        <item name="atg_verticalPadding">2dp</item>
+    </style>
+
+    <style name="TagGroup.Large" parent="TagGroup">
+        <item name="atg_borderStrokeWidth">0.7dp</item>
+        <item name="atg_textSize">15sp</item>
+        <item name="atg_horizontalSpacing">9dp</item>
+        <item name="atg_verticalSpacing">5dp</item>
+        <item name="atg_horizontalPadding">14dp</item>
+        <item name="atg_verticalPadding">4dp</item>
+    </style>
+
+    <style name="TagGroup.Beauty_Red" parent="TagGroup">
+        <item name="atg_borderColor">#FF3D7F</item>
+        <item name="atg_textColor">#FF3D7F</item>
+        <item name="atg_checkedBorderColor">#FF3D7F</item>
+        <item name="atg_checkedBackgroundColor">#FF3D7F</item>
+    </style>
+
+    <style name="TagGroup.Beauty_Red.Inverse" parent="TagGroup">
+        <item name="atg_borderColor">#FF3D7F</item>
+        <item name="atg_textColor">#FFFFFF</item>
+        <item name="atg_backgroundColor">#FF3D7F</item>
+        <item name="atg_inputHintColor">#80FFFFFF</item>
+        <item name="atg_inputTextColor">#DEFFFFFF</item>
+        <item name="atg_checkedBorderColor">#FF3D7F</item>
+        <item name="atg_checkedTextColor">#FF3D7F</item>
+        <item name="atg_checkedMarkerColor">#FF3D7F</item>
+        <item name="atg_checkedBackgroundColor">#FFFFFF</item>
+        <item name="atg_pressedBackgroundColor">#FF99B1</item>
+    </style>
+
 </resources>
