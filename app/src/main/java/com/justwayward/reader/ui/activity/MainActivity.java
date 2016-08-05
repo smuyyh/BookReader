@@ -1,5 +1,6 @@
 package com.justwayward.reader.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -115,6 +116,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         int id = item.getItemId();
 
         if (id == R.id.ab_search) {
+            startActivity(new Intent(MainActivity.this, SearchActivity.class));
             return true;
         }
 

@@ -1,6 +1,9 @@
 package com.justwayward.reader.api;
 
+import com.justwayward.reader.bean.AutoComplete;
+import com.justwayward.reader.bean.HotWord;
 import com.justwayward.reader.bean.Recommend;
+import com.justwayward.reader.bean.SearchDetail;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -36,6 +39,18 @@ public class BookApi {
 
     public Observable<Recommend> getRecommend(String gender) {
         return service.getRecomend(gender);
+    }
+
+    public Observable<HotWord> getHotWord() {
+        return service.getHotWord();
+    }
+
+    public Observable<AutoComplete> getAutoComplete(String query){
+        return service.autoComplete(query);
+    }
+
+    public Observable<SearchDetail> getSearchResult(String query){
+        return service.searchBooks(query);
     }
 
 }

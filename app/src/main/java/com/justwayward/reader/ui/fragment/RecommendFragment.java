@@ -52,8 +52,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
 
             @Override
             public void onRefresh() {
-
-
+                mPresenter.getRecommendList();
             }
         });
 
@@ -77,7 +76,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     public void showRecommendList(List<Recommend.RecommendBooks> list) {
         mList.clear();
         mList.addAll(list);
-
+        mSwipeRefreshLayout.setRefreshing(false);
         mAdapter.notifyDataSetChanged();
     }
 }

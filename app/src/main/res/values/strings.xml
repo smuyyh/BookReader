@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">追书</string>
+    <string name="search_hot_search">大家都在搜</string>
+    <string name="search_change_a_lot">换一批</string>c
 
     <string name="add_tag">Add Tag</string>
 </resources>

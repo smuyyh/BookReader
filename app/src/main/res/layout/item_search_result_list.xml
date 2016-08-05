@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/ivBookCover"
+        android:layout_width="45dp"
+        android:layout_height="65dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/ivBookCover">
+
+        <TextView
+            android:id="@+id/tvBookTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="武侠世界自由行"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvLatelyFollower"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvBookTitle"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="549人在追 | "
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvRetentionRatio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvBookTitle"
+            android:layout_toRightOf="@id/tvLatelyFollower"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="60.1%读者留存 | "
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvAuthor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvBookTitle"
+            android:layout_toRightOf="@id/tvRetentionRatio"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="大江入海著"
+            android:textSize="13sp" />
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
