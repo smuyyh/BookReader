@@ -20,7 +20,7 @@ import rx.schedulers.Schedulers;
  * @author yuyh.
  * @date 2016/8/3.
  */
-public class RecommendPresenter implements RecommendContract.Presenter {
+public class RecommendPresenter implements RecommendContract.Presenter<RecommendContract.View> {
 
     private Context context;
     private BookApi bookApi;
@@ -33,10 +33,12 @@ public class RecommendPresenter implements RecommendContract.Presenter {
         this.bookApi = bookApi;
     }
 
+    @Override
     public void attachView(RecommendContract.View view) {
         this.view = view;
     }
 
+    @Override
     public void getRecommendList() {
         Log.i("TAG", "---------------");
         bookApi.getRecommend("male").subscribeOn(Schedulers.io())
