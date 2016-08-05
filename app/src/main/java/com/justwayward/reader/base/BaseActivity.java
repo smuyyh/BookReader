@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.justwayward.reader.AppComponent;
-import com.justwayward.reader.MusicApplication;
+import com.justwayward.reader.ReaderApplication;
 
 import butterknife.ButterKnife;
 
@@ -15,7 +15,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
         ButterKnife.bind(this);
-        setupActivityComponent(MusicApplication.getsInstance().getAppComponent());
+        setupActivityComponent(ReaderApplication.getsInstance().getAppComponent());
         initToolBar();
         initDatas();
         configViews();

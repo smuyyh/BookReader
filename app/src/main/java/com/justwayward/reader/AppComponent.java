@@ -17,6 +17,6 @@ public interface AppComponent {
 
     Context getContext();
 
-    BookApi getMusicApi();
+    BookApi getReaderApi();
 
 }

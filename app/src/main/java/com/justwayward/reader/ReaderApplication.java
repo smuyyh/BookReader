@@ -9,9 +9,9 @@ import com.justwayward.reader.module.AppModule;
  * @author yuyh.
  * @date 2016/8/3.
  */
-public class MusicApplication extends Application {
+public class ReaderApplication extends Application {
 
-    private static MusicApplication sInstance;
+    private static ReaderApplication sInstance;
     private AppComponent appComponent;
 
     @Override
@@ -21,7 +21,7 @@ public class MusicApplication extends Application {
         initCompoent();
     }
 
-    public static MusicApplication getsInstance() {
+    public static ReaderApplication getsInstance() {
         return sInstance;
     }
 
