@@ -1,18 +1,42 @@
 package com.justwayward.reader.base;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.justwayward.reader.AppComponent;
 import com.justwayward.reader.MusicApplication;
 
-public abstract class BaseActivity extends Activity {
+import butterknife.ButterKnife;
+
+public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(getLayoutId());
+        ButterKnife.bind(this);
         setupActivityComponent(MusicApplication.getsInstance().getAppComponent());
+        initToolBar();
+        initDatas();
+        configViews();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
+    }
+
+    public abstract int getLayoutId();
+
     protected abstract void setupActivityComponent(AppComponent appComponent);
+
+    public abstract void initToolBar();
+
+    public abstract void initDatas();
+
+    /**
+     *  对各种控件进行设置、适配、填充数据
+     */
+    public abstract void configViews();
 }

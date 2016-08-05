@@ -1,6 +1,12 @@
 package com.justwayward.reader.ui.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.justwayward.reader.AppComponent;
 import com.justwayward.reader.R;
@@ -8,12 +14,30 @@ import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.module.MainActivityModule;
 import com.justwayward.reader.ui.component.DaggerMainActivityComponent;
 import com.justwayward.reader.ui.contract.MainContract;
+import com.justwayward.reader.ui.fragment.MyBookListFragment;
 import com.justwayward.reader.ui.presenter.MainActivityPresenter;
+import com.justwayward.reader.ui.view.RVPIndicator;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 
-public class MainActivity extends BaseActivity implements MainContract.View{
+import butterknife.Bind;
 
+public class MainActivity extends BaseActivity implements MainContract.View {
+
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
+    @Bind(R.id.indicator)
+    RVPIndicator mIndicator;
+    @Bind(R.id.viewpager)
+    ViewPager mViewPager;
+
+    private List<Fragment> mTabContents;
+    private FragmentPagerAdapter mAdapter;
+    private List<String> mDatas;
 
     @Inject
     MainActivityPresenter mPresenter;
@@ -21,8 +45,15 @@ public class MainActivity extends BaseActivity implements MainContract.View{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         mPresenter.getPlayerList();
+
+        initDatas();
+        configViews();
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_main;
     }
 
     @Override
@@ -33,4 +64,62 @@ public class MainActivity extends BaseActivity implements MainContract.View{
                 .build()
                 .inject(this);
     }
+
+    @Override
+    public void initToolBar() {
+        setTitle("");
+    }
+
+    @Override
+    public void initDatas() {
+        mDatas = Arrays.asList("追书", "社区", "发现");
+        mTabContents = new ArrayList<>();
+
+        for (String data : mDatas) {
+//            MyBookListFragment fragment = MyBookListFragment.newInstance(data);
+            MyBookListFragment fragment = new MyBookListFragment();
+            mTabContents.add(fragment);
+        }
+
+        mAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public int getCount() {
+                return mTabContents.size();
+            }
+
+            @Override
+            public Fragment getItem(int position) {
+                return mTabContents.get(position);
+            }
+        };
+    }
+
+    @Override
+    public void configViews() {
+        // 设置显示Toolbar
+        setSupportActionBar(mToolbar);
+        // 设置Tab上的标题
+        mIndicator.setTabItemTitles(mDatas);
+        mViewPager.setAdapter(mAdapter);
+        // 设置关联的ViewPager
+        mIndicator.setViewPager(mViewPager, 0);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.ab_search) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }
