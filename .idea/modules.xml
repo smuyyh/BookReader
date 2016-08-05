@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/NetEaseCloudMusic.iml" filepath="$PROJECT_DIR$/NetEaseCloudMusic.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BookReader.iml" filepath="$PROJECT_DIR$/BookReader.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
