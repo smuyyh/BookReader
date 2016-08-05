@@ -14,7 +14,7 @@ import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.module.MainActivityModule;
 import com.justwayward.reader.ui.component.DaggerMainActivityComponent;
 import com.justwayward.reader.ui.contract.MainContract;
-import com.justwayward.reader.ui.fragment.MyBookListFragment;
+import com.justwayward.reader.ui.fragment.RecommendFragment;
 import com.justwayward.reader.ui.presenter.MainActivityPresenter;
 import com.justwayward.reader.ui.view.RVPIndicator;
 
@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter.getPlayerList();
+        //mPresenter.getPlayerList();
 
         initDatas();
         configViews();
@@ -76,8 +76,8 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         mTabContents = new ArrayList<>();
 
         for (String data : mDatas) {
-//            MyBookListFragment fragment = MyBookListFragment.newInstance(data);
-            MyBookListFragment fragment = new MyBookListFragment();
+//            RecommendFragment fragment = RecommendFragment.newInstance(data);
+            RecommendFragment fragment = new RecommendFragment();
             mTabContents.add(fragment);
         }
 

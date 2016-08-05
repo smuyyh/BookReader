@@ -10,13 +10,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.justwayward.reader.AppComponent;
+import com.justwayward.reader.ReaderApplication;
+
 import butterknife.ButterKnife;
 
 public abstract class BaseFragment extends Fragment {
 
-    private View parentView;
-    private FragmentActivity activity;
-    private LayoutInflater inflater;
+    protected View parentView;
+    protected FragmentActivity activity;
+    protected LayoutInflater inflater;
+
+    protected Context mContext;
 
     public abstract
     @LayoutRes
@@ -26,6 +31,7 @@ public abstract class BaseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle state) {
         parentView = inflater.inflate(getLayoutResId(), container, false);
         activity = getSupportActivity();
+        mContext = activity;
         this.inflater = inflater;
         return parentView;
     }
@@ -35,6 +41,7 @@ public abstract class BaseFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        setupActivityComponent(ReaderApplication.getsInstance().getAppComponent());
         initDatas();
         configViews();
     }
@@ -42,7 +49,7 @@ public abstract class BaseFragment extends Fragment {
     public abstract void initDatas();
 
     /**
-     *  对各种控件进行设置、适配、填充数据
+     * 对各种控件进行设置、适配、填充数据
      */
     public abstract void configViews();
 
@@ -80,5 +87,7 @@ public abstract class BaseFragment extends Fragment {
     protected View getParentView() {
         return parentView;
     }
+
+    protected abstract void setupActivityComponent(AppComponent appComponent);
 
 }
