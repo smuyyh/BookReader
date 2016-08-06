@@ -1,6 +1,8 @@
 package com.justwayward.reader.api;
 
 import com.justwayward.reader.bean.AutoComplete;
+import com.justwayward.reader.bean.BookDetail;
+import com.justwayward.reader.bean.HotReview;
 import com.justwayward.reader.bean.HotWord;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.SearchDetail;
@@ -51,6 +53,13 @@ public class BookApi {
 
     public Observable<SearchDetail> getSearchResult(String query){
         return service.searchBooks(query);
+    }
+
+    public Observable<BookDetail> getBookDetail(String bookId){
+        return service.getBookDetail(bookId);
+    }
+    public Observable<HotReview> getHotReview(String book){
+        return service.getHotReview(book);
     }
 
 }

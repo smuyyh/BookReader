@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.justwayward.reader.ui.activity.SearchActivity"></activity>
+        <activity android:name="com.justwayward.reader.ui.activity.BookDetailActivity"></activity>
     </application>
 
 </manifest>

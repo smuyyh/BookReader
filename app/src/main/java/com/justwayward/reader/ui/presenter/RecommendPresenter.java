@@ -1,7 +1,6 @@
 package com.justwayward.reader.ui.presenter;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.bean.Recommend;

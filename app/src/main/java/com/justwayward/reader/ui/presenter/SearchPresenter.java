@@ -28,7 +28,7 @@ public class SearchPresenter implements SearchContract.Presenter<SearchContract.
 
     private SearchContract.View view;
 
-    private static final String TAG = "SearchPresenter";
+    private static final String TAG = "SearchActivityPresenter";
 
     @Inject
     public SearchPresenter(Context context, BookApi bookApi) {

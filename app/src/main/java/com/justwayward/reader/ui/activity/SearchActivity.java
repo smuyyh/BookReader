@@ -1,5 +1,6 @@
 package com.justwayward.reader.ui.activity;
 
+import android.content.Intent;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.ListPopupWindow;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
+import com.justwayward.reader.bean.BookDetail;
 import com.justwayward.reader.bean.SearchDetail;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerSearchActivityComponent;
@@ -40,7 +42,7 @@ import butterknife.Bind;
 /**
  * Created by Administrator on 2016/8/6.
  */
-public class SearchActivity extends BaseActivity implements SearchContract.View {
+public class SearchActivity extends BaseActivity implements SearchContract.View,SearchResultAdapter.ItemClickListener {
 
     @Bind(R.id.common_toolbar)
     Toolbar mToolbar;
@@ -48,15 +50,15 @@ public class SearchActivity extends BaseActivity implements SearchContract.View 
     TextView mTvChangeWords;
     @Bind(R.id.tag_group)
     TagGroup mTagGroup;
-
-    @Inject
-    SearchPresenter mPresenter;
     @Bind(R.id.rootLayout)
     LinearLayout mRootLayout;
     @Bind(R.id.recyclerview)
     RecyclerView mRecyclerView;
     @Bind(R.id.layoutHotWord)
     RelativeLayout mLayoutHotWord;
+
+    @Inject
+    SearchPresenter mPresenter;
 
     private SearchResultAdapter mAdapter;
     private List<SearchDetail.SearchBooks> mList = new ArrayList<>();
@@ -98,7 +100,7 @@ public class SearchActivity extends BaseActivity implements SearchContract.View 
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new SearchResultAdapter(mContext, mList);
+        mAdapter = new SearchResultAdapter(mContext, mList,this);
         mRecyclerView.setAdapter(mAdapter);
 
         mAutoAdapter = new AutoCompleteAdapter(this, mAutoList);
@@ -233,4 +235,8 @@ public class SearchActivity extends BaseActivity implements SearchContract.View 
             mListPopupWindow.dismiss();
     }
 
+    @Override
+    public void onItemClick(SearchDetail.SearchBooks item) {
+        startActivity(new Intent(SearchActivity.this, BookDetail.class).putExtra("bookId",item._id));
+    }
 }

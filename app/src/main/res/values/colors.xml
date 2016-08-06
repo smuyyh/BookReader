@@ -8,4 +8,6 @@
     <color name="transparent">#00000000</color>
     <color name="light_pink">#fb9090</color>
     <color name="gray">#b8b8b8</color>
+    <color name="orange">#DE6014</color>
+    <color name="light_white">#EEEEEE</color>
 </resources>
