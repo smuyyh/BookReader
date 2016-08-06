@@ -60,6 +60,9 @@ public class SearchActivity extends BaseActivity implements SearchContract.View,
     @Inject
     SearchPresenter mPresenter;
 
+    private List<String> tagList = new ArrayList<>();
+    private int times = 0;
+
     private SearchResultAdapter mAdapter;
     private List<SearchDetail.SearchBooks> mList = new ArrayList<>();
     private AutoCompleteAdapter mAutoAdapter;
@@ -127,14 +130,46 @@ public class SearchActivity extends BaseActivity implements SearchContract.View,
             }
         });
 
+        mTvChangeWords.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showHotWord();
+            }
+        });
+
         mPresenter.attachView(this);
         mPresenter.getHotWordList();
     }
 
     @Override
     public synchronized void showHotWordList(List<String> list) {
-        List<TagColor> colors = TagColor.getRandomColors(list.size());
-        mTagGroup.setTags(colors, (String[]) list.toArray(new String[list.size()]));
+        tagList.clear();
+        tagList.addAll(list);
+        times = 0;
+        showHotWord();
+    }
+
+    /**
+     * 每次显示8个
+     */
+    private void showHotWord() {
+        int start, end;
+        if (times < tagList.size() && times + 8 <= tagList.size()) {
+            start = times;
+            end = times + 8;
+        } else if (times < tagList.size() - 1 && times + 8 > tagList.size()) {
+            start = times;
+            end = tagList.size() - 1;
+        } else {
+            start = 0;
+            end = tagList.size() > 8 ? 8 : tagList.size();
+        }
+        times = end;
+        if (end - start > 0) {
+            List<String> batch = tagList.subList(start, end);
+            List<TagColor> colors = TagColor.getRandomColors(batch.size());
+            mTagGroup.setTags(colors, (String[]) batch.toArray(new String[batch.size()]));
+        }
     }
 
     @Override
