@@ -1,6 +1,7 @@
 package com.justwayward.reader.ui.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -29,7 +30,7 @@ public class SearchResultAdapter extends EasyRVAdapter<SearchDetail.SearchBooks>
 
         holder.setText(R.id.tvBookTitle, item.title)
                 .setText(R.id.tvLatelyFollower, item.latelyFollower+"人在追 | ")
-                .setText(R.id.tvRetentionRatio, item.retentionRatio+"%读者留存 | ")
+                .setText(R.id.tvRetentionRatio, (TextUtils.isEmpty(item.retentionRatio)?"0":item.retentionRatio) +"%读者留存 | ")
                 .setText(R.id.tvAuthor, item.author+"著");
     }
 }

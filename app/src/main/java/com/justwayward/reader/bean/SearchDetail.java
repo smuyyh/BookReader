@@ -38,7 +38,7 @@ public class SearchDetail extends Base {
         public String cover;
         public String shortIntro;
         public String lastChapter;
-        public Object retentionRatio;
+        public String retentionRatio;
         public int latelyFollower;
         public int wordCount;
     }
