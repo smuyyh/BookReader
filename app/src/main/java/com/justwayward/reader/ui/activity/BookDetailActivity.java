@@ -3,6 +3,7 @@ package com.justwayward.reader.ui.activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,6 +13,7 @@ import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.BookDetail;
 import com.justwayward.reader.bean.HotReview;
+import com.justwayward.reader.comment.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerBookDetailActivityComponent;
 import com.justwayward.reader.ui.adapter.HotReviewAdapter;
@@ -29,8 +31,7 @@ import butterknife.Bind;
 /**
  * Created by Administrator on 2016/8/6.
  */
-public class BookDetailActivity extends BaseActivity implements BookDetailContract.View,
-        HotReviewAdapter.ItemClickListener {
+public class BookDetailActivity extends BaseActivity implements BookDetailContract.View,OnRvItemClickListener<HotReview.Reviews> {
 
     @Bind(R.id.common_toolbar)
     Toolbar mCommonToolbar;
@@ -46,9 +47,9 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     TextView mTvWordCount;
     @Bind(R.id.tvLatelyUpdate)
     TextView mTvLatelyUpdate;
-    @Bind(R.id.tvLatelyUpdate)
-    TextView mTvLatelyFollower;
     @Bind(R.id.tvLatelyFollower)
+    TextView mTvLatelyFollower;
+    @Bind(R.id.tvRetentionRatio)
     TextView mTvRetentionRatio;
     @Bind(R.id.tvSerializeWordCount)
     TextView mTvSerializeWordCount;
@@ -130,7 +131,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     }
 
     @Override
-    public void onItemClick(HotReview.Reviews item) {
+    public void onItemClick(View view, int position, HotReview.Reviews data) {
 
     }
 }
