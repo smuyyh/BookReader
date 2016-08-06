@@ -13,7 +13,7 @@ import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.BookDetail;
 import com.justwayward.reader.bean.HotReview;
-import com.justwayward.reader.comment.OnRvItemClickListener;
+import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerBookDetailActivityComponent;
 import com.justwayward.reader.ui.adapter.HotReviewAdapter;

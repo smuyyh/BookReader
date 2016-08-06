@@ -1,4 +1,4 @@
-package com.justwayward.reader.api.okhttp;
+package com.justwayward.reader.api.support;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

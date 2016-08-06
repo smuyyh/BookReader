@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.HotReview;
-import com.justwayward.reader.comment.OnRvItemClickListener;
+import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.utils.GlideCircleTransform;
 import com.yuyh.easyadapter.recyclerview.EasyRVAdapter;
 import com.yuyh.easyadapter.recyclerview.EasyRVHolder;

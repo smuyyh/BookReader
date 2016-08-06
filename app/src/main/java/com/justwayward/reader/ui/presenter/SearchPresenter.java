@@ -8,6 +8,7 @@ import com.justwayward.reader.bean.AutoComplete;
 import com.justwayward.reader.bean.HotWord;
 import com.justwayward.reader.bean.SearchDetail;
 import com.justwayward.reader.ui.contract.SearchContract;
+import com.justwayward.reader.utils.LogUtils;
 
 import java.util.List;
 
@@ -84,6 +85,7 @@ public class SearchPresenter implements SearchContract.Presenter<SearchContract.
 
                     @Override
                     public void onError(Throwable e) {
+                        LogUtils.e(e.toString());
                     }
                 });
     }
@@ -107,7 +109,7 @@ public class SearchPresenter implements SearchContract.Presenter<SearchContract.
 
                     @Override
                     public void onError(Throwable e) {
-
+                        LogUtils.e(e.toString());
                     }
                 });
     }

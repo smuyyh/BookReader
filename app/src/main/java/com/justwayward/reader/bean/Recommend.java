@@ -9,7 +9,7 @@ import java.util.List;
  * @author yuyh.
  * @date 2016/8/4.
  */
-public class Recommend extends Base{
+public class Recommend extends Base {
 
     public List<RecommendBooks> books;
 

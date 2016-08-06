@@ -5,6 +5,7 @@ import android.content.Context;
 import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.ui.contract.RecommendContract;
+import com.justwayward.reader.utils.LogUtils;
 
 import java.util.List;
 
@@ -43,19 +44,24 @@ public class RecommendPresenter implements RecommendContract.Presenter<Recommend
                 .subscribe(new Observer<Recommend>() {
                     @Override
                     public void onNext(Recommend recommend) {
-                        List<Recommend.RecommendBooks> list = recommend.books;
-                        if (list != null && !list.isEmpty() && view != null) {
-                            view.showRecommendList(list);
+                        //jsonStr.replaceAll(" ", "");
+                        //Recommend recommend = new Gson().fromJson(jsonStr, Recommend.class);
+                        if (recommend != null) {
+                            List<Recommend.RecommendBooks> list = recommend.books;
+                            if (list != null && !list.isEmpty() && view != null) {
+                                view.showRecommendList(list);
+                            }
                         }
                     }
 
                     @Override
                     public void onCompleted() {
+                        LogUtils.i("complete");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        LogUtils.e(e.toString());
                     }
                 });
     }

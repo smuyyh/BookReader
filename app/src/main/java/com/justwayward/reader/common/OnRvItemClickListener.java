@@ -1,4 +1,4 @@
-package com.justwayward.reader.comment;
+package com.justwayward.reader.common;
 
 import android.view.View;
 
