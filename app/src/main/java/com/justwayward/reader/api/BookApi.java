@@ -1,10 +1,13 @@
 package com.justwayward.reader.api;
 
+import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.AutoComplete;
 import com.justwayward.reader.bean.BookDetail;
+import com.justwayward.reader.bean.BooksByTag;
 import com.justwayward.reader.bean.HotReview;
 import com.justwayward.reader.bean.HotWord;
 import com.justwayward.reader.bean.Recommend;
+import com.justwayward.reader.bean.RecommendBookList;
 import com.justwayward.reader.bean.SearchDetail;
 
 import okhttp3.OkHttpClient;
@@ -25,7 +28,7 @@ public class BookApi {
 
     public BookApi(OkHttpClient okHttpClient) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://api.zhuishushenqi.com")
+                .baseUrl(Constant.API_BASE_URL)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create()) // 添加Rx适配器
                 .addConverterFactory(GsonConverterFactory.create()) // 添加Gson转换器
                 .client(okHttpClient)
@@ -47,19 +50,28 @@ public class BookApi {
         return service.getHotWord();
     }
 
-    public Observable<AutoComplete> getAutoComplete(String query){
+    public Observable<AutoComplete> getAutoComplete(String query) {
         return service.autoComplete(query);
     }
 
-    public Observable<SearchDetail> getSearchResult(String query){
+    public Observable<SearchDetail> getSearchResult(String query) {
         return service.searchBooks(query);
     }
 
-    public Observable<BookDetail> getBookDetail(String bookId){
+    public Observable<BookDetail> getBookDetail(String bookId) {
         return service.getBookDetail(bookId);
     }
-    public Observable<HotReview> getHotReview(String book){
+
+    public Observable<HotReview> getHotReview(String book) {
         return service.getHotReview(book);
+    }
+
+    public Observable<RecommendBookList> getRecommendBookList(String bookId, String limit) {
+        return service.getRecommendBookList(bookId, limit);
+    }
+
+    public Observable<BooksByTag> getBooksByTag(String tags, String start, String limit) {
+        return service.getBooksByTag(tags, start, limit);
     }
 
 }

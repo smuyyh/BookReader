@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        app:logo="@drawable/home_ab_logo"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 </merge>

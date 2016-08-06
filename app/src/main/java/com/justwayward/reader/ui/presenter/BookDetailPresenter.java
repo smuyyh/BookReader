@@ -6,6 +6,7 @@ import android.util.Log;
 import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.bean.BookDetail;
 import com.justwayward.reader.bean.HotReview;
+import com.justwayward.reader.bean.RecommendBookList;
 import com.justwayward.reader.ui.contract.BookDetailContract;
 
 import java.util.List;
@@ -69,10 +70,34 @@ public class BookDetailPresenter implements BookDetailContract.Presenter<BookDet
                 .subscribe(new Observer<HotReview>() {
                     @Override
                     public void onNext(HotReview data) {
-                        Log.e("TAG", "getHotReview" + data.reviews);
+                        Log.e(TAG, "getHotReview" + data.reviews);
                         List<HotReview.Reviews> list = data.reviews;
                         if (list != null && !list.isEmpty() && view != null) {
                             view.showHotReview(list);
+                        }
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+                });
+    }
+
+    @Override
+    public void getRecommendBookList(String bookId, String limit) {
+        bookApi.getRecommendBookList(bookId,limit).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<RecommendBookList>() {
+                    @Override
+                    public void onNext(RecommendBookList data) {
+                        Log.e(TAG, "getRecommendBookList" + data.booklists);
+                        List<RecommendBookList.RecommendBook> list = data.booklists;
+                        if (list != null && !list.isEmpty() && view != null) {
+                            view.showRecommendBookList(list);
                         }
                     }
 

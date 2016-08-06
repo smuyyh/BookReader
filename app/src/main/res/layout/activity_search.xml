@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rootLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:id="@+id/rootLayout"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
 
     <include layout="@layout/common_toolbar"/>
 
@@ -16,7 +17,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/search_hot_search" />
+            android:text="@string/search_hot_search"/>
 
         <TextView
             android:id="@+id/tvChangeWords"
@@ -25,13 +26,13 @@
             android:layout_alignParentRight="true"
             android:drawableLeft="@drawable/refresh"
             android:drawablePadding="5dp"
-            android:text="@string/search_change_a_lot" />
+            android:text="@string/search_change_a_lot"/>
     </RelativeLayout>
 
     <com.justwayward.reader.view.TagGroup
         android:id="@+id/tag_group"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         style="@style/TagGroup" />
 
     <android.support.v7.widget.RecyclerView
@@ -39,6 +40,6 @@
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:foregroundGravity="center" />
+        android:foregroundGravity="center"/>
 
 </LinearLayout>

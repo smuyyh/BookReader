@@ -25,7 +25,8 @@ public class RecommendAdapter extends EasyRVAdapter<Recommend.RecommendBooks> {
     @Override
     protected void onBindData(EasyRVHolder holder, int position, Recommend.RecommendBooks item) {
         ImageView ivRecommendCover = holder.getView(R.id.ivRecommendCover);
-        Glide.with(mContext).load(Constant.IMG_BASE_URL + item.cover).into(ivRecommendCover);
+        Glide.with(mContext).load(Constant.IMG_BASE_URL + item.cover).placeholder(R.drawable
+                .cover_default).into(ivRecommendCover);
 
         holder.setText(R.id.tvRecommendTitle, item.title)
                 .setText(R.id.tvRecommendShort, item.lastChapter);

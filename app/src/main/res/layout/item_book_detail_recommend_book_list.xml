@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/ivBookListCover"
+        android:layout_width="45dp"
+        android:layout_height="65dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/ivBookListCover">
+
+        <TextView
+            android:id="@+id/tvBookListTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="此单在手，书荒不再有！"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvBookListAuthor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvBookListTitle"
+            android:layout_marginBottom="10dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="选择"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvBookListDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvBookListAuthor"
+            android:layout_marginBottom="10dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="应有尽有！注：随时有可能添加新书"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvBookCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvBookListDesc"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@string/book_detail_recommend_book_list_book_count"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvCollectorCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvBookListDesc"
+            android:layout_toRightOf="@id/tvBookCount"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@string/book_detail_recommend_book_list_collector_count"
+            android:textSize="13sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

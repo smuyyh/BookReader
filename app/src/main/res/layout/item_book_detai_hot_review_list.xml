@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:orientation="vertical">
 
@@ -21,6 +21,7 @@
         android:ellipsize="end"
         android:singleLine="true"
         android:textSize="13sp"
+        android:textColor="@color/light_coffee"
         android:text="我就是静静"/>
 
     <TextView
@@ -31,7 +32,8 @@
         android:textSize="13sp"
         android:ellipsize="end"
         android:singleLine="true"
-        android:text=" lv.8"/>
+        android:textColor="@color/light_coffee"
+        android:text="@string/book_detail_user_lv"/>
 
     <TextView
         android:id="@+id/tvTitle"
@@ -67,6 +69,7 @@
         android:drawableLeft="@drawable/review_useful_yes_nor"
         android:layout_marginTop="5dp"
         android:drawablePadding="5dp"
+        android:textColor="@color/light_gray"
         android:text="308"/>
 
 </RelativeLayout>

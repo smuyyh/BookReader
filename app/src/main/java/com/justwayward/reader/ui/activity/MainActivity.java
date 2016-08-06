@@ -67,12 +67,13 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     @Override
     public void initToolBar() {
+        mToolbar.setLogo(R.drawable.home_ab_logo);
         setTitle("");
     }
 
     @Override
     public void initDatas() {
-        mDatas = Arrays.asList("追书", "社区", "发现");
+        mDatas = Arrays.asList(getResources().getStringArray(R.array.home_tabs));
         mTabContents = new ArrayList<>();
 
         for (String data : mDatas) {

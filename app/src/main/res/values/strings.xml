@@ -4,4 +4,18 @@
     <string name="search_change_a_lot">换一批</string>c
 
     <string name="add_tag">Add Tag</string>
+
+    <string name="search_result_lately_follower">"%1$d人在追 |&#160;"</string>
+    <string name="search_result_retention_ratio">"%1$s%%读者留存 |&#160;"</string>
+    <string name="search_result_author">%1$s著</string>
+
+    <string name="book_detail">书籍详情</string>
+    <string name="book_detail_author">%1$s |&#160;</string>
+    <string name="book_detail_category">%1$s |&#160;</string>
+    <string name="book_detail_user_lv">&#160;lv.%1$d</string>
+    <string name="book_detail_community">%1$s的社区</string>
+    <string name="book_detail_post_count">共有%1$d个帖子</string>
+    <string name="book_detail_recommend_book_list_book_count">共%1$d本书 |&#160;</string>
+    <string name="book_detail_recommend_book_list_collector_count">%1$d人收藏</string>
+
 </resources>

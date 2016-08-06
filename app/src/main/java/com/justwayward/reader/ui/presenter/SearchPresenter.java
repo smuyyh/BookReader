@@ -29,7 +29,7 @@ public class SearchPresenter implements SearchContract.Presenter<SearchContract.
 
     private SearchContract.View view;
 
-    private static final String TAG = "SearchActivityPresenter";
+    private static final String TAG = "SearchPresenter";
 
     @Inject
     public SearchPresenter(Context context, BookApi bookApi) {
@@ -72,7 +72,7 @@ public class SearchPresenter implements SearchContract.Presenter<SearchContract.
                 .subscribe(new Observer<AutoComplete>() {
                     @Override
                     public void onNext(AutoComplete autoComplete) {
-                        Log.e("TAG", "autoComplete"+autoComplete.keywords);
+                        Log.e(TAG, "getAutoCompleteList"+autoComplete.keywords);
                         List<String> list = autoComplete.keywords;
                         if (list != null && !list.isEmpty() && view != null) {
                             view.showAutoCompleteList(list);

@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.bean.SearchDetail;
+import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerSearchActivityComponent;
 import com.justwayward.reader.ui.adapter.AutoCompleteAdapter;
@@ -42,7 +43,8 @@ import butterknife.Bind;
 /**
  * Created by Administrator on 2016/8/6.
  */
-public class SearchActivity extends BaseActivity implements SearchContract.View, SearchResultAdapter.ItemClickListener {
+public class SearchActivity extends BaseActivity implements SearchContract.View,
+        OnRvItemClickListener<SearchDetail.SearchBooks> {
 
     @Bind(R.id.common_toolbar)
     Toolbar mToolbar;
@@ -272,7 +274,8 @@ public class SearchActivity extends BaseActivity implements SearchContract.View,
     }
 
     @Override
-    public void onItemClick(SearchDetail.SearchBooks item) {
-        startActivity(new Intent(SearchActivity.this, BookDetailActivity.class).putExtra("bookId", item._id));
+    public void onItemClick(View view, int position, SearchDetail.SearchBooks data) {
+        startActivity(new Intent(SearchActivity.this, BookDetailActivity.class).putExtra
+                ("bookId", data._id));
     }
 }
