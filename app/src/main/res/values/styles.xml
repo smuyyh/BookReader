@@ -25,11 +25,11 @@
         <item name="atg_checkedBackgroundColor">#49C120</item>
         <item name="atg_pressedBackgroundColor">#EDEDED</item>
         <item name="atg_borderStrokeWidth">0.5dp</item>
-        <item name="atg_textSize">13sp</item>
-        <item name="atg_horizontalSpacing">8dp</item>
-        <item name="atg_verticalSpacing">4dp</item>
+        <item name="atg_textSize">14sp</item>
+        <item name="atg_horizontalSpacing">12dp</item>
+        <item name="atg_verticalSpacing">10dp</item>
         <item name="atg_horizontalPadding">12dp</item>
-        <item name="atg_verticalPadding">3dp</item>
+        <item name="atg_verticalPadding">6dp</item>
     </style>
 
     <style name="TagGroup.Small" parent="TagGroup">

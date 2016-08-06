@@ -382,9 +382,15 @@ public class TagGroup extends ViewGroup {
      * @param tags the tag list to set.
      */
     public void setTags(String... tags) {
+        setTags(null, tags);
+    }
+
+    public void setTags(List<TagColor> colors, String... tags) {
         removeAllViews();
+        int i = 0;
         for (final String tag : tags) {
-            appendTag(tag);
+            TagColor color = colors.get(i++);
+            appendTag(color, tag);
         }
 
         if (isAppendMode) {
@@ -454,12 +460,16 @@ public class TagGroup extends ViewGroup {
      * @param tag the tag text.
      */
     protected void appendInputTag(String tag) {
+        appendInputTag(null, tag);
+    }
+
+    protected void appendInputTag(TagColor color, String tag) {
         final TagView previousInputTag = getInputTag();
         if (previousInputTag != null) {
             throw new IllegalStateException("Already has a INPUT tag in group.");
         }
 
-        final TagView newInputTag = new TagView(getContext(), TagView.STATE_INPUT, tag);
+        final TagView newInputTag = new TagView(getContext(), TagView.STATE_INPUT, color, tag);
         newInputTag.setOnClickListener(mInternalTagClickListener);
         addView(newInputTag);
     }
@@ -469,8 +479,8 @@ public class TagGroup extends ViewGroup {
      *
      * @param tag the tag to append.
      */
-    protected void appendTag(CharSequence tag) {
-        final TagView newTag = new TagView(getContext(), TagView.STATE_NORMAL, tag);
+    protected void appendTag(TagColor color, CharSequence tag) {
+        final TagView newTag = new TagView(getContext(), TagView.STATE_NORMAL, color, tag);
         newTag.setOnClickListener(mInternalTagClickListener);
         addView(newTag);
     }
@@ -690,9 +700,12 @@ public class TagGroup extends ViewGroup {
             mCheckedMarkerPaint.setColor(checkedMarkerColor);
         }
 
+        private TagColor color;
 
-        public TagView(Context context, final int state, CharSequence text) {
+
+        public TagView(Context context, final int state, TagColor color, CharSequence text) {
             super(context);
+            this.color = color;
             setPadding(horizontalPadding, verticalPadding, horizontalPadding, verticalPadding);
             setLayoutParams(new TagGroup.LayoutParams(
                     TagGroup.LayoutParams.WRAP_CONTENT,
@@ -864,9 +877,15 @@ public class TagGroup extends ViewGroup {
                     }
                 }
             } else {
-                mBorderPaint.setColor(borderColor);
-                mBackgroundPaint.setColor(backgroundColor);
-                setTextColor(textColor);
+                if(color != null){
+                    mBorderPaint.setColor(color.borderColor);
+                    mBackgroundPaint.setColor(color.backgroundColor);
+                    setTextColor(color.textColor);
+                } else {
+                    mBorderPaint.setColor(borderColor);
+                    mBackgroundPaint.setColor(backgroundColor);
+                    setTextColor(textColor);
+                }
             }
 
             if (isPressed) {
@@ -876,10 +895,10 @@ public class TagGroup extends ViewGroup {
 
         @Override
         protected void onDraw(Canvas canvas) {
-            canvas.drawArc(mLeftCornerRectF, -180, 90, true, mBackgroundPaint);
-            canvas.drawArc(mLeftCornerRectF, -270, 90, true, mBackgroundPaint);
-            canvas.drawArc(mRightCornerRectF, -90, 90, true, mBackgroundPaint);
-            canvas.drawArc(mRightCornerRectF, 0, 90, true, mBackgroundPaint);
+            //canvas.drawArc(mLeftCornerRectF, -180, 90, true, mBackgroundPaint);
+            //canvas.drawArc(mLeftCornerRectF, -270, 90, true, mBackgroundPaint);
+            //canvas.drawArc(mRightCornerRectF, -90, 90, true, mBackgroundPaint);
+            //canvas.drawArc(mRightCornerRectF, 0, 90, true, mBackgroundPaint);
             canvas.drawRect(mHorizontalBlankFillRectF, mBackgroundPaint);
             canvas.drawRect(mVerticalBlankFillRectF, mBackgroundPaint);
 
@@ -904,16 +923,16 @@ public class TagGroup extends ViewGroup {
             int right = (int) (left + w - borderStrokeWidth * 2);
             int bottom = (int) (top + h - borderStrokeWidth * 2);
 
-            int d = bottom - top;
+            int d = 0;//bottom - top;
 
             mLeftCornerRectF.set(left, top, left + d, top + d);
             mRightCornerRectF.set(right - d, top, right, top + d);
 
             mBorderPath.reset();
-            mBorderPath.addArc(mLeftCornerRectF, -180, 90);
-            mBorderPath.addArc(mLeftCornerRectF, -270, 90);
-            mBorderPath.addArc(mRightCornerRectF, -90, 90);
-            mBorderPath.addArc(mRightCornerRectF, 0, 90);
+            //mBorderPath.addArc(mLeftCornerRectF, -180, 90);
+            //mBorderPath.addArc(mLeftCornerRectF, -270, 90);
+            //mBorderPath.addArc(mRightCornerRectF, -90, 90);
+            //mBorderPath.addArc(mRightCornerRectF, 0, 90);
 
             int l = (int) (d / 2.0f);
             mBorderPath.moveTo(left + l, top);

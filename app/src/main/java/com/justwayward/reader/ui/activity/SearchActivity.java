@@ -22,7 +22,6 @@ import android.widget.TextView;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
-import com.justwayward.reader.bean.BookDetail;
 import com.justwayward.reader.bean.SearchDetail;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerSearchActivityComponent;
@@ -30,6 +29,7 @@ import com.justwayward.reader.ui.adapter.AutoCompleteAdapter;
 import com.justwayward.reader.ui.adapter.SearchResultAdapter;
 import com.justwayward.reader.ui.contract.SearchContract;
 import com.justwayward.reader.ui.presenter.SearchPresenter;
+import com.justwayward.reader.view.TagColor;
 import com.justwayward.reader.view.TagGroup;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ import butterknife.Bind;
 /**
  * Created by Administrator on 2016/8/6.
  */
-public class SearchActivity extends BaseActivity implements SearchContract.View,SearchResultAdapter.ItemClickListener {
+public class SearchActivity extends BaseActivity implements SearchContract.View, SearchResultAdapter.ItemClickListener {
 
     @Bind(R.id.common_toolbar)
     Toolbar mToolbar;
@@ -100,7 +100,7 @@ public class SearchActivity extends BaseActivity implements SearchContract.View,
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new SearchResultAdapter(mContext, mList,this);
+        mAdapter = new SearchResultAdapter(mContext, mList, this);
         mRecyclerView.setAdapter(mAdapter);
 
         mAutoAdapter = new AutoCompleteAdapter(this, mAutoList);
@@ -132,8 +132,9 @@ public class SearchActivity extends BaseActivity implements SearchContract.View,
     }
 
     @Override
-    public void showHotWordList(List<String> list) {
-        mTagGroup.setTags((String[]) list.toArray(new String[list.size()]));
+    public synchronized void showHotWordList(List<String> list) {
+        List<TagColor> colors = TagColor.getRandomColors(list.size());
+        mTagGroup.setTags(colors, (String[]) list.toArray(new String[list.size()]));
     }
 
     @Override
@@ -237,6 +238,6 @@ public class SearchActivity extends BaseActivity implements SearchContract.View,
 
     @Override
     public void onItemClick(SearchDetail.SearchBooks item) {
-        startActivity(new Intent(SearchActivity.this, BookDetail.class).putExtra("bookId",item._id));
+        startActivity(new Intent(SearchActivity.this, BookDetailActivity.class).putExtra("bookId", item._id));
     }
 }

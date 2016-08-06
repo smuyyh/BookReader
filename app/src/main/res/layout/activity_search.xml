@@ -30,6 +30,8 @@
 
     <com.justwayward.reader.view.TagGroup
         android:id="@+id/tag_group"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         style="@style/TagGroup" />
 
     <android.support.v7.widget.RecyclerView
