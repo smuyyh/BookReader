@@ -107,8 +107,6 @@ public class SearchActivity extends BaseActivity implements SearchContract.View 
         mListPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         mListPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         mListPopupWindow.setAnchorView(mToolbar);
-        mListPopupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
-        mListPopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         mListPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -141,8 +139,11 @@ public class SearchActivity extends BaseActivity implements SearchContract.View 
         mAutoList.clear();
         mAutoList.addAll(list);
 
-        if (!mListPopupWindow.isShowing())
+        if (!mListPopupWindow.isShowing()) {
+            mListPopupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
+            mListPopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             mListPopupWindow.show();
+        }
         mAutoAdapter.notifyDataSetChanged();
 
     }
