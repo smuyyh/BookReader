@@ -28,7 +28,6 @@ import com.justwayward.reader.ui.adapter.AutoCompleteAdapter;
 import com.justwayward.reader.ui.adapter.SearchResultAdapter;
 import com.justwayward.reader.ui.contract.SearchContract;
 import com.justwayward.reader.ui.presenter.SearchPresenter;
-import com.justwayward.reader.utils.ScreenUtils;
 import com.justwayward.reader.view.TagGroup;
 
 import java.util.ArrayList;
@@ -106,7 +105,7 @@ public class SearchActivity extends BaseActivity implements SearchContract.View 
         mListPopupWindow = new ListPopupWindow(this);
         mListPopupWindow.setAdapter(mAutoAdapter);
         mListPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-        mListPopupWindow.setHeight(ScreenUtils.getScreenWidth() / 5 * 4);
+        mListPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         mListPopupWindow.setAnchorView(mToolbar);
         mListPopupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
         mListPopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
