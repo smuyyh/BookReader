@@ -2,8 +2,11 @@ package com.justwayward.reader;
 
 import android.app.Application;
 
-import com.justwayward.reader.module.BookApiModule;
+import com.justwayward.reader.component.AppComponent;
+import com.justwayward.reader.component.DaggerAppComponent;
 import com.justwayward.reader.module.AppModule;
+import com.justwayward.reader.module.BookApiModule;
+import com.justwayward.reader.utils.AppUtils;
 
 /**
  * @author yuyh.
@@ -19,6 +22,7 @@ public class ReaderApplication extends Application {
         super.onCreate();
         this.sInstance = this;
         initCompoent();
+        AppUtils.init(this);
     }
 
     public static ReaderApplication getsInstance() {

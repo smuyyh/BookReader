@@ -1,24 +1,34 @@
 package com.justwayward.reader.ui.activity;
 
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.justwayward.reader.AppComponent;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.bean.SearchDetail;
+import com.justwayward.reader.component.AppComponent;
+import com.justwayward.reader.component.DaggerSearchActivityComponent;
+import com.justwayward.reader.ui.adapter.AutoCompleteAdapter;
 import com.justwayward.reader.ui.adapter.SearchResultAdapter;
-import com.justwayward.reader.ui.component.DaggerSearchActivityComponent;
 import com.justwayward.reader.ui.contract.SearchContract;
 import com.justwayward.reader.ui.presenter.SearchPresenter;
+import com.justwayward.reader.utils.ScreenUtils;
 import com.justwayward.reader.view.TagGroup;
 
 import java.util.ArrayList;
@@ -33,7 +43,7 @@ import butterknife.Bind;
  */
 public class SearchActivity extends BaseActivity implements SearchContract.View {
 
-    @Bind(R.id.toolbar)
+    @Bind(R.id.common_toolbar)
     Toolbar mToolbar;
     @Bind(R.id.tvChangeWords)
     TextView mTvChangeWords;
@@ -51,6 +61,13 @@ public class SearchActivity extends BaseActivity implements SearchContract.View 
 
     private SearchResultAdapter mAdapter;
     private List<SearchDetail.SearchBooks> mList = new ArrayList<>();
+    private AutoCompleteAdapter mAutoAdapter;
+    private List<String> mAutoList = new ArrayList<>();
+
+    private String key;
+    private SearchView searchView;
+
+    private ListPopupWindow mListPopupWindow;
 
     @Override
     public int getLayoutId() {
@@ -61,7 +78,6 @@ public class SearchActivity extends BaseActivity implements SearchContract.View 
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerSearchActivityComponent.builder()
                 .appComponent(appComponent)
-                //.mainActivityModule(new MainActivityModule(this))
                 .build()
                 .inject(this);
     }
@@ -74,17 +90,44 @@ public class SearchActivity extends BaseActivity implements SearchContract.View 
 
     @Override
     public void initDatas() {
-//        mTagGroup.setOnClickListener(new TagGroup.OnTagClickListener() {
-//            @Override
-//            public void onTagClick(String tag) {
-//
-//            }
-//        });
+
     }
 
     @Override
     public void configViews() {
         setSupportActionBar(mToolbar);
+
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mAdapter = new SearchResultAdapter(mContext, mList);
+        mRecyclerView.setAdapter(mAdapter);
+
+        mAutoAdapter = new AutoCompleteAdapter(this, mAutoList);
+        mListPopupWindow = new ListPopupWindow(this);
+        mListPopupWindow.setAdapter(mAutoAdapter);
+        mListPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        mListPopupWindow.setHeight(ScreenUtils.getScreenWidth() / 5 * 4);
+        mListPopupWindow.setAnchorView(mToolbar);
+        mListPopupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
+        mListPopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        mListPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mListPopupWindow.dismiss();
+                TextView tv = (TextView) view.findViewById(R.id.tvAutoCompleteItem);
+                String str = tv.getText().toString();
+                searchView.setQuery(str, true);
+            }
+        });
+
+        mTagGroup.setOnTagClickListener(new TagGroup.OnTagClickListener() {
+            @Override
+            public void onTagClick(String tag) {
+                searchView.onActionViewExpanded();
+                searchView.setQuery(tag, true);
+            }
+        });
+
         mPresenter.attachView(this);
         mPresenter.getHotWordList();
     }
@@ -96,6 +139,12 @@ public class SearchActivity extends BaseActivity implements SearchContract.View 
 
     @Override
     public void showAutoCompleteList(List<String> list) {
+        mAutoList.clear();
+        mAutoList.addAll(list);
+
+        if (!mListPopupWindow.isShowing())
+            mListPopupWindow.show();
+        mAutoAdapter.notifyDataSetChanged();
 
     }
 
@@ -104,6 +153,7 @@ public class SearchActivity extends BaseActivity implements SearchContract.View 
         mList.clear();
         mList.addAll(list);
         mAdapter.notifyDataSetChanged();
+        initSearchResult();
     }
 
     @Override
@@ -111,6 +161,42 @@ public class SearchActivity extends BaseActivity implements SearchContract.View 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_search, menu);
 
+        MenuItem menuItem = menu.findItem(R.id.action_search);//在菜单中找到对应控件的item
+        searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                key = query;
+                mPresenter.getSearchResultList(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (TextUtils.isEmpty(newText)) {
+                    if (mListPopupWindow.isShowing())
+                        mListPopupWindow.dismiss();
+                    initTagGroup();
+                } else {
+                    mPresenter.getAutoCompleteList(newText);
+                }
+                return false;
+            }
+        });
+        MenuItemCompat.setOnActionExpandListener(menuItem,
+                new MenuItemCompat.OnActionExpandListener() {//设置打开关闭动作监听
+                    @Override
+                    public boolean onMenuItemActionExpand(MenuItem item) {
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onMenuItemActionCollapse(MenuItem item) {
+                        initTagGroup();
+                        return true;
+                    }
+                });
         return true;
     }
 
@@ -118,8 +204,8 @@ public class SearchActivity extends BaseActivity implements SearchContract.View 
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.search) {
-            initSearchResult();
+        if (id == R.id.action_search) {
+            //initSearchResult();
             return true;
         }
 
@@ -135,14 +221,16 @@ public class SearchActivity extends BaseActivity implements SearchContract.View 
         mTagGroup.setVisibility(View.GONE);
         mLayoutHotWord.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
+        if (mListPopupWindow.isShowing())
+            mListPopupWindow.dismiss();
+    }
 
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new SearchResultAdapter(mContext, mList);
-        mRecyclerView.setAdapter(mAdapter);
-
-        mPresenter.attachView(this);
-        mPresenter.getSearchResultList();
+    private void initTagGroup() {
+        mTagGroup.setVisibility(View.VISIBLE);
+        mLayoutHotWord.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.GONE);
+        if (mListPopupWindow.isShowing())
+            mListPopupWindow.dismiss();
     }
 
 }

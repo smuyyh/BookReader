@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.justwayward.reader.AppComponent;
 import com.justwayward.reader.ReaderApplication;
+import com.justwayward.reader.component.AppComponent;
 
 import butterknife.ButterKnife;
 

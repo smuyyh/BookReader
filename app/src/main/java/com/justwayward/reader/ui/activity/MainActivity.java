@@ -9,10 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.justwayward.reader.AppComponent;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
-import com.justwayward.reader.ui.component.DaggerMainActivityComponent;
+import com.justwayward.reader.component.AppComponent;
+import com.justwayward.reader.component.DaggerMainActivityComponent;
 import com.justwayward.reader.ui.contract.MainContract;
 import com.justwayward.reader.ui.fragment.RecommendFragment;
 import com.justwayward.reader.ui.presenter.MainActivityPresenter;
@@ -28,7 +28,7 @@ import butterknife.Bind;
 
 public class MainActivity extends BaseActivity implements MainContract.View {
 
-    @Bind(R.id.toolbar)
+    @Bind(R.id.common_toolbar)
     Toolbar mToolbar;
     @Bind(R.id.indicator)
     RVPIndicator mIndicator;

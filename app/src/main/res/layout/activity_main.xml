@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:rvp="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,16 +7,7 @@
     android:orientation="vertical"
     tools:context=".ui.activity.MainActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:layout_scrollFlags="scroll|enterAlways"
-        app:logo="@drawable/home_ab_logo"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="" />
+    <include layout="@layout/common_toolbar"/>
 
     <com.justwayward.reader.view.RVPIndicator
         android:id="@+id/indicator"

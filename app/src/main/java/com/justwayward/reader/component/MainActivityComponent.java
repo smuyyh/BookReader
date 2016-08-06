@@ -1,6 +1,5 @@
-package com.justwayward.reader.ui.component;
+package com.justwayward.reader.component;
 
-import com.justwayward.reader.AppComponent;
 import com.justwayward.reader.ui.activity.MainActivity;
 
 import dagger.Component;

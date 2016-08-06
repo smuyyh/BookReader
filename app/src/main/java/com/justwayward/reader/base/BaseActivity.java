@@ -4,8 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.justwayward.reader.AppComponent;
 import com.justwayward.reader.ReaderApplication;
+import com.justwayward.reader.component.AppComponent;
 
 import butterknife.ButterKnife;
 

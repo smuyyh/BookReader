@@ -1,4 +1,4 @@
-package com.justwayward.reader;
+package com.justwayward.reader.component;
 
 import android.content.Context;
 

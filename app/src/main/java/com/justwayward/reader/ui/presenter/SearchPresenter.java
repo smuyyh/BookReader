@@ -2,7 +2,6 @@ package com.justwayward.reader.ui.presenter;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.bean.AutoComplete;
@@ -43,7 +42,6 @@ public class SearchPresenter implements SearchContract.Presenter<SearchContract.
     }
 
     public void getHotWordList() {
-        Log.i(TAG, "-------getHotWordList--------");
         bookApi.getHotWord().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<HotWord>() {
@@ -57,24 +55,23 @@ public class SearchPresenter implements SearchContract.Presenter<SearchContract.
 
                     @Override
                     public void onCompleted() {
-                        Toast.makeText(context, "请求完成", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         Log.e(TAG, "onError: "+e);
-                        Toast.makeText(context, "请求失败", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
     @Override
-    public void getAutoCompleteList() {
-        bookApi.getAutoComplete("武").subscribeOn(Schedulers.io())
+    public void getAutoCompleteList(String query) {
+        bookApi.getAutoComplete(query).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<AutoComplete>() {
                     @Override
                     public void onNext(AutoComplete autoComplete) {
+                        Log.e("TAG", "autoComplete"+autoComplete.keywords);
                         List<String> list = autoComplete.keywords;
                         if (list != null && !list.isEmpty() && view != null) {
                             view.showAutoCompleteList(list);
@@ -83,19 +80,17 @@ public class SearchPresenter implements SearchContract.Presenter<SearchContract.
 
                     @Override
                     public void onCompleted() {
-                        Toast.makeText(context, "请求完成", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
                     }
                 });
     }
 
     @Override
-    public void getSearchResultList() {
-        bookApi.getSearchResult("武").subscribeOn(Schedulers.io())
+    public void getSearchResultList(String query) {
+        bookApi.getSearchResult(query).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<SearchDetail>() {
                     @Override
@@ -108,7 +103,6 @@ public class SearchPresenter implements SearchContract.Presenter<SearchContract.
 
                     @Override
                     public void onCompleted() {
-                        Toast.makeText(context, "请求完成", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

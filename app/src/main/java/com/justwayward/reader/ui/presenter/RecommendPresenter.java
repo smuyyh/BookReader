@@ -2,7 +2,6 @@ package com.justwayward.reader.ui.presenter;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.bean.Recommend;
@@ -40,7 +39,6 @@ public class RecommendPresenter implements RecommendContract.Presenter<Recommend
 
     @Override
     public void getRecommendList() {
-        Log.i("TAG", "---------------");
         bookApi.getRecommend("male").subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Recommend>() {
@@ -54,7 +52,6 @@ public class RecommendPresenter implements RecommendContract.Presenter<Recommend
 
                     @Override
                     public void onCompleted() {
-                        Toast.makeText(context, "请求完成", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

@@ -18,8 +18,8 @@ public interface SearchContract {
 
     interface Presenter<T> extends BaseContract.BasePresenter<T>{
         void getHotWordList();
-        void getAutoCompleteList();
-        void getSearchResultList();
+        void getAutoCompleteList(String query);
+        void getSearchResultList(String query);
     }
 
 }
