@@ -3,7 +3,9 @@ package com.justwayward.reader.api;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.AutoComplete;
 import com.justwayward.reader.bean.BookDetail;
+import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.BooksByTag;
+import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.bean.HotReview;
 import com.justwayward.reader.bean.HotWord;
 import com.justwayward.reader.bean.Recommend;
@@ -72,6 +74,14 @@ public class BookApi {
 
     public Observable<BooksByTag> getBooksByTag(String tags, String start, String limit) {
         return service.getBooksByTag(tags, start, limit);
+    }
+
+    public Observable<BookToc> getBookToc(String bookId, String view) {
+        return service.getBookToc(bookId, view);
+    }
+
+    public Observable<ChapterRead> getChapterRead(String url) {
+        return service.getChapterRead(url);
     }
 
 }

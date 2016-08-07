@@ -77,7 +77,8 @@ public class ChapterRead extends Base {
     public Chapter chapter;
 
     public static class Chapter {
-        private String title;
-        private String body;
+        public String title;
+        public String body;
+        public String cpContent;
     }
 }

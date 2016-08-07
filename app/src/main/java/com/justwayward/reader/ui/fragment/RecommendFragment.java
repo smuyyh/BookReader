@@ -1,14 +1,18 @@
 package com.justwayward.reader.ui.fragment;
 
+import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseFragment;
 import com.justwayward.reader.bean.Recommend;
+import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerRecommendFragmentComponent;
+import com.justwayward.reader.ui.activity.BookReadActivity;
 import com.justwayward.reader.ui.adapter.RecommendAdapter;
 import com.justwayward.reader.ui.contract.RecommendContract;
 import com.justwayward.reader.ui.presenter.RecommendPresenter;
@@ -20,7 +24,8 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 
-public class RecommendFragment extends BaseFragment implements RecommendContract.View {
+public class RecommendFragment extends BaseFragment implements RecommendContract.View,
+        OnRvItemClickListener<Recommend.RecommendBooks> {
 
     @Bind(R.id.recyclerview)
     RecyclerView mRecyclerView;
@@ -56,7 +61,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
             }
         });
 
-        mAdapter = new RecommendAdapter(mContext, mList);
+        mAdapter = new RecommendAdapter(mContext, mList,this);
         mRecyclerView.setAdapter(mAdapter);
 
         mPresenter.attachView(this);
@@ -78,5 +83,11 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         mList.addAll(list);
         mSwipeRefreshLayout.setRefreshing(false);
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemClick(View view, int position, Recommend.RecommendBooks data) {
+        startActivity(new Intent(activity, BookReadActivity.class)
+                .putExtra("bookId", data._id));
     }
 }

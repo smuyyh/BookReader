@@ -22,6 +22,7 @@
         <activity android:name="com.justwayward.reader.ui.activity.SearchActivity"></activity>
         <activity android:name="com.justwayward.reader.ui.activity.BookDetailActivity"></activity>
         <activity android:name="com.justwayward.reader.ui.activity.BooksByTagActivity"></activity>
+        <activity android:name="com.justwayward.reader.ui.activity.BookReadActivity"></activity>
     </application>
 
 </manifest>

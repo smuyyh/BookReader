@@ -20,7 +20,7 @@ public class HeaderInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request original = chain.request();
-        if (original.url().toString().contains("book/") || original.url().toString().contains("book-list/")) {
+        if (original.url().toString().contains("book/") || original.url().toString().contains("book-list/")|| original.url().toString().contains("btoc/")) {
             Request request = original.newBuilder()
                     .addHeader("User-Agent", "ZhuiShuShenQi/3.68.2[preload=false;locale=zh_CN;clientidbase=android-nvidia]") // 不能转UTF-8
                     .addHeader("X-User-Agent", "ZhuiShuShenQi/3.68.2[preload=false;locale=zh_CN;clientidbase=android-nvidia]")

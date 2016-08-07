@@ -71,6 +71,9 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     TextView mTvCommunity;
     @Bind(R.id.tvPostCount)
     TextView mTvPostCount;
+    @Bind(R.id.tvRecommendBookList)
+    TextView mTvRecommendBookList;
+
     @Bind(R.id.rvRecommendBoookList)
     RecyclerView mRvRecommendBoookList;
 
@@ -94,7 +97,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerBookDetailActivityComponent.builder()
                 .appComponent(appComponent)
-                        //.mainActivityModule(new MainActivityModule(this))
+                //.mainActivityModule(new MainActivityModule(this))
                 .build()
                 .inject(this);
     }
@@ -141,7 +144,8 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
 
     @Override
     public void showBookDetail(BookDetail data) {
-        Glide.with(mContext).load(Constant.IMG_BASE_URL + data.cover).into(mIvBookCover);
+        Glide.with(mContext).load(Constant.IMG_BASE_URL + data.cover).placeholder(R.drawable
+                .cover_default).into(mIvBookCover);
 
         mTvBookTitle.setText(data.title);
         mTvAuthor.setText(String.format(getString(R.string.book_detail_author), data.author));
@@ -150,8 +154,6 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
         mTvLatelyFollower.setText(String.valueOf(data.latelyFollower));
         mTvRetentionRatio.setText(String.valueOf(data.retentionRatio));
         mTvSerializeWordCount.setText(String.valueOf(data.serializeWordCount));
-
-//        mTagGroup.setTags((String[]) data.tags.toArray(new String[data.tags.size()]));
 
         tagList.clear();
         tagList.addAll(data.tags);
@@ -196,9 +198,12 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
 
     @Override
     public void showRecommendBookList(List<RecommendBookList.RecommendBook> list) {
-        mRecommendBookList.clear();
-        mRecommendBookList.addAll(list);
-        mRecommendBookListAdapter.notifyDataSetChanged();
+        if(!list.isEmpty()){
+            mTvRecommendBookList.setVisibility(View.VISIBLE);
+            mRecommendBookList.clear();
+            mRecommendBookList.addAll(list);
+            mRecommendBookListAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -212,13 +217,10 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
         if (item.getItemId() == android.R.id.home) {
             finish();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

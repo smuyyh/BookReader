@@ -4,6 +4,7 @@ package com.justwayward.reader.api;
 import com.justwayward.reader.bean.AutoComplete;
 import com.justwayward.reader.bean.BookDetail;
 import com.justwayward.reader.bean.BookRead;
+import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.BooksByTag;
 import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.bean.HotReview;
@@ -26,6 +27,9 @@ public interface BookApiService {
 
     @GET("/mix-toc/{bookId}")
     Observable<BookRead> getBookRead(@Path("bookId") String bookId);
+
+    @GET("/btoc/{bookId}")
+    Observable<BookToc> getBookToc(@Path("bookId") String bookId, @Query("view") String view);
 
     @GET("http://chapter2.zhuishushenqi.com/chapter/{url}")
     Observable<ChapterRead> getChapterRead(@Path("url") String url);

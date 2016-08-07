@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/rlBookReadRoot"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:context=".ui.activity.BookReadActivity">
+
+    <LinearLayout
+        android:id="@+id/llBookReadTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="15dp"
+        android:visibility="gone"
+        >
+
+        <ImageView
+            android:id="@+id/iv_Back"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ab_back"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            />
+
+        <TextView
+            android:id="@+id/tvBookReadReading"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/book_read_reading"
+            android:textColor="@color/white"
+            />
+
+        <TextView
+            android:id="@+id/tvBookReadCommunity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/book_read_community"
+            android:textColor="@color/white"
+            />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/abc_ic_menu_moreoverflow_mtrl_alpha"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llBookReadBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:id="@+id/tvBookReadMode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_menu_mode_night_normal"
+            android:gravity="center"
+            android:text="@string/book_read_mode"
+            android:textColor="@color/white"
+            />
+
+        <TextView
+            android:id="@+id/tvBookReadFeedBack"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/vote_edit_tips_icon"
+            android:gravity="center"
+            android:text="@string/book_read_feedback"
+            android:textColor="@color/white"
+            />
+
+        <TextView
+            android:id="@+id/tvBookReadSettings"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_menu_settings_normal"
+            android:gravity="center"
+            android:text="@string/book_read_settings"
+            android:textColor="@color/white"
+            />
+
+        <TextView
+            android:id="@+id/tvBookReadDownload"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_reader_ab_download"
+            android:gravity="center"
+            android:text="@string/book_read_download"
+            android:textColor="@color/white"
+            />
+
+        <TextView
+            android:id="@+id/tvBookReadToc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_menu_toc_normal"
+            android:gravity="center"
+            android:text="@string/book_read_toc"
+            android:textColor="@color/white"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

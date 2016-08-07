@@ -264,7 +264,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="15dp"
-                    android:text="热门书评"
+                    android:text="@string/book_detail_hot_reviews"
                     android:textColor="@color/black"
                     android:textSize="15sp" />
 
@@ -325,10 +325,12 @@
                 android:background="@color/light_white" />
 
             <TextView
+                android:visibility="gone"
+                android:id="@+id/tvRecommendBookList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
-                android:text="推荐书单"
+                android:text="@string/book_detail_recommend_book_list"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
