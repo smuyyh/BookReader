@@ -8,6 +8,7 @@ import com.justwayward.reader.bean.BookDetail;
 import com.justwayward.reader.bean.HotReview;
 import com.justwayward.reader.bean.RecommendBookList;
 import com.justwayward.reader.ui.contract.BookDetailContract;
+import com.justwayward.reader.utils.LogUtils;
 
 import java.util.List;
 
@@ -94,7 +95,7 @@ public class BookDetailPresenter implements BookDetailContract.Presenter<BookDet
                 .subscribe(new Observer<RecommendBookList>() {
                     @Override
                     public void onNext(RecommendBookList data) {
-                        Log.e(TAG, "getRecommendBookList" + data.booklists);
+                        LogUtils.i(data.booklists);
                         List<RecommendBookList.RecommendBook> list = data.booklists;
                         if (list != null && !list.isEmpty() && view != null) {
                             view.showRecommendBookList(list);
@@ -103,10 +104,12 @@ public class BookDetailPresenter implements BookDetailContract.Presenter<BookDet
 
                     @Override
                     public void onCompleted() {
+                        LogUtils.e("+++comp");
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        LogUtils.e("+++"+e.toString());
                     }
                 });
     }

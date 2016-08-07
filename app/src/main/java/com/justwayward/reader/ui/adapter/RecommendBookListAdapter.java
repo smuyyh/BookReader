@@ -31,13 +31,13 @@ public class RecommendBookListAdapter extends EasyRVAdapter<RecommendBookList.Re
     @Override
     protected void onBindData(final EasyRVHolder holder, final int position, final RecommendBookList
             .RecommendBook item) {
-        ImageView ivCover = holder.getView(R.id.ivAvatar);
+        ImageView ivCover = holder.getView(R.id.ivBookListCover);
         Glide.with(mContext).load(Constant.IMG_BASE_URL + item.cover).placeholder(R
                 .drawable.cover_default).into(ivCover);
 
         holder.setText(R.id.tvBookListTitle, item.title)
                 .setText(R.id.tvBookListAuthor, item.author)
-                .setText(R.id.tvTitle, item.title)
+                .setText(R.id.tvBookListTitle, item.title)
                 .setText(R.id.tvBookListDesc, item.desc)
                 .setText(R.id.tvBookCount, String.format(mContext.getString(R.string
                         .book_detail_recommend_book_list_book_count), item.bookCount))
