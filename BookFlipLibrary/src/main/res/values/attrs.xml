@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<declare-styleable name="FlipViewController">
+		<attr name="orientation" format="enum">
+			<enum name="vertical" value="0"/>
+			<enum name="horizontal" value="1"/>
+		</attr>
+
+		<attr name="animationBitmapFormat" format="enum">
+			<enum name="ARGB_8888" value="0"/>
+			<enum name="ARGB_4444" value="1"/>
+			<enum name="RGB_565" value="2"/>
+		</attr>
+	</declare-styleable>
+
+</resources>
