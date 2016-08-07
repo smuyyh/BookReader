@@ -1,27 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
-    <include layout="@layout/common_toolbar"/>
+    <include layout="@layout/common_toolbar" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        >
+        android:background="@color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
-            <RelativeLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp">
@@ -33,7 +28,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginRight="10dp"
                     android:contentDescription="@null"
-                    android:scaleType="centerCrop"/>
+                    android:scaleType="centerCrop" />
 
                 <TextView
                     android:id="@+id/tvBookTitle"
@@ -46,7 +41,7 @@
                     android:singleLine="true"
                     android:text="武侠世界自由行"
                     android:textColor="@color/black"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tvAuthor"
@@ -58,7 +53,7 @@
                     android:singleLine="true"
                     android:text="w风雪 | "
                     android:textColor="@color/orange"
-                    android:textSize="13sp"/>
+                    android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/tvCatgory"
@@ -69,7 +64,7 @@
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="仙侠 | "
-                    android:textSize="13sp"/>
+                    android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/tvWordCount"
@@ -80,7 +75,7 @@
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="594万字"
-                    android:textSize="13sp"/>
+                    android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/tvLatelyUpdate"
@@ -92,7 +87,7 @@
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="4月前"
-                    android:textSize="13sp"/>
+                    android:textSize="13sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -100,26 +95,30 @@
                     android:layout_below="@id/ivBookCover"
                     android:layout_marginTop="10dp">
 
-                    <Button
+                    <com.justwayward.reader.view.DrawableCenterButton
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
                         android:layout_weight="1"
-                        android:background="@color/colorPrimary"
+                        android:background="@drawable/shape_common_btn_selector"
                         android:drawableLeft="@drawable/book_detail_info_add_img"
                         android:padding="10dp"
                         android:text="追更新"
-                        android:textColor="@color/white"/>
+                        android:clickable="true"
+                        android:drawablePadding="5dp"
+                        android:textColor="@color/white" />
 
-                    <Button
+                    <com.justwayward.reader.view.DrawableCenterButton
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@color/colorPrimary"
+                        android:background="@drawable/shape_common_btn_selector"
                         android:drawableLeft="@drawable/book_detail_info_search_img"
                         android:padding="10dp"
                         android:text="开始阅读"
-                        android:textColor="@color/white"/>
+                        android:clickable="true"
+                        android:drawablePadding="5dp"
+                        android:textColor="@color/white" />
                 </LinearLayout>
 
 
@@ -131,23 +130,20 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:background="@color/gray"
-                />
+                android:background="@color/gray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    >
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -155,7 +151,7 @@
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="追书人数"
-                        android:textSize="13sp"/>
+                        android:textSize="13sp" />
 
                     <TextView
                         android:id="@+id/tvLatelyFollower"
@@ -166,7 +162,7 @@
                         android:singleLine="true"
                         android:text="82"
                         android:textColor="@color/black"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 
@@ -175,8 +171,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    >
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -184,7 +179,7 @@
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="读者留存率"
-                        android:textSize="13sp"/>
+                        android:textSize="13sp" />
 
                     <TextView
                         android:id="@+id/tvRetentionRatio"
@@ -195,7 +190,7 @@
                         android:singleLine="true"
                         android:text="20.29%"
                         android:textColor="@color/black"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 
@@ -204,8 +199,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    >
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -213,7 +207,7 @@
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="日更新字数"
-                        android:textSize="13sp"/>
+                        android:textSize="13sp" />
 
                     <TextView
                         android:id="@+id/tvSerializeWordCount"
@@ -224,7 +218,7 @@
                         android:singleLine="true"
                         android:text="4614"
                         android:textColor="@color/black"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -233,21 +227,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:layout_margin="10dp"
-                android:background="@color/gray"
-                />
+                android:background="@color/gray" />
 
             <com.justwayward.reader.view.TagGroup
                 android:id="@+id/tag_group"
+                style="@style/TagGroup"
                 android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                style="@style/TagGroup" />
+                android:layout_marginRight="15dp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:layout_margin="10dp"
-                android:background="@color/gray"
-                />
+                android:background="@color/gray" />
 
             <TextView
                 android:id="@+id/tvlongIntro"
@@ -257,18 +249,16 @@
                 android:padding="15dp"
                 android:text="4614"
                 android:textColor="@color/black"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:background="@color/light_white"
-                />
+                android:background="@color/light_white" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -276,7 +266,7 @@
                     android:padding="15dp"
                     android:text="热门书评"
                     android:textColor="@color/black"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/tvMoreReview"
@@ -285,26 +275,24 @@
                     android:gravity="right"
                     android:padding="15dp"
                     android:text="更多"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvHotReview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:foregroundGravity="center"/>
+                android:foregroundGravity="center" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:background="@color/light_white"
-                />
+                android:background="@color/light_white" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
-                >
+                android:padding="15dp">
 
                 <TextView
                     android:id="@+id/tvCommunity"
@@ -312,7 +300,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/book_detail_community"
                     android:textColor="@color/black"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/tvPostCount"
@@ -321,22 +309,20 @@
                     android:layout_below="@id/tvCommunity"
                     android:layout_marginTop="5dp"
                     android:text="@string/book_detail_post_count"
-                    android:textSize="13sp"/>
+                    android:textSize="13sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/game_right_arrow"
-                    />
+                    android:src="@drawable/game_right_arrow" />
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:background="@color/light_white"
-                />
+                android:background="@color/light_white" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -344,13 +330,13 @@
                 android:padding="15dp"
                 android:text="推荐书单"
                 android:textColor="@color/black"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvRecommendBoookList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:foregroundGravity="center"/>
+                android:foregroundGravity="center" />
 
         </LinearLayout>
     </ScrollView>

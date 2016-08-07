@@ -26,6 +26,8 @@ public class BooksByTagPresenter implements BooksByTagContract.Presenter<BooksBy
 
     private BooksByTagContract.View view;
 
+    private boolean isLoading = false;
+
     @Inject
     public BooksByTagPresenter(Context context, BookApi bookApi) {
         this.context = context;
@@ -38,29 +40,37 @@ public class BooksByTagPresenter implements BooksByTagContract.Presenter<BooksBy
     }
 
     @Override
-    public void getBooksByTag(String tags, String start, String limit) {
-        bookApi.getBooksByTag(tags, start, limit).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BooksByTag>() {
-                    @Override
-                    public void onNext(BooksByTag data) {
-                        if (data != null) {
-                            List<BooksByTag.TagBook> list = data.books;
-                            if (list != null && !list.isEmpty() && view != null) {
-                                view.showBooksByTag(list);
+    public void getBooksByTag(String tags, final String start, String limit) {
+        if (!isLoading) {
+            isLoading = true;
+            bookApi.getBooksByTag(tags, start, limit).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<BooksByTag>() {
+                        @Override
+                        public void onNext(BooksByTag data) {
+                            if (data != null) {
+                                List<BooksByTag.TagBook> list = data.books;
+                                if (list != null && !list.isEmpty() && view != null) {
+                                    boolean isRefresh = start.equals("0") ? true : false;
+                                    view.showBooksByTag(list, isRefresh);
+                                }
                             }
                         }
-                    }
 
-                    @Override
-                    public void onCompleted() {
-                        LogUtils.i("complete");
-                    }
+                        @Override
+                        public void onCompleted() {
+                            LogUtils.i("complete");
+                            isLoading = false;
+                            view.onLoadComplete(true, "");
+                        }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        LogUtils.e(e.toString());
-                    }
-                });
+                        @Override
+                        public void onError(Throwable e) {
+                            LogUtils.e(e.toString());
+                            isLoading = false;
+                            view.onLoadComplete(false, e.toString());
+                        }
+                    });
+        }
     }
 }

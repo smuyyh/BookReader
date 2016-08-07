@@ -389,7 +389,10 @@ public class TagGroup extends ViewGroup {
         removeAllViews();
         int i = 0;
         for (final String tag : tags) {
-            TagColor color = colors.get(i++);
+            TagColor color = null;
+            if(colors != null) {
+                color = colors.get(i++);
+            }
             appendTag(color, tag);
         }
 

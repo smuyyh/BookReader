@@ -28,7 +28,6 @@ import com.justwayward.reader.view.TagGroup;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -38,7 +37,7 @@ import butterknife.Bind;
  * Created by Administrator on 2016/8/6.
  */
 public class BookDetailActivity extends BaseActivity implements BookDetailContract.View,
-        OnRvItemClickListener<Objects> {
+        OnRvItemClickListener<Object> {
 
     @Bind(R.id.common_toolbar)
     Toolbar mCommonToolbar;
@@ -95,7 +94,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerBookDetailActivityComponent.builder()
                 .appComponent(appComponent)
-                //.mainActivityModule(new MainActivityModule(this))
+                        //.mainActivityModule(new MainActivityModule(this))
                 .build()
                 .inject(this);
     }
@@ -203,8 +202,12 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     }
 
     @Override
-    public void onItemClick(View view, int position, Objects data) {
+    public void onItemClick(View view, int position, Object data) {
+        if (data instanceof HotReview.Reviews) {
 
+        } else if (data instanceof RecommendBookList.RecommendBook) {
+
+        }
     }
 
     @Override

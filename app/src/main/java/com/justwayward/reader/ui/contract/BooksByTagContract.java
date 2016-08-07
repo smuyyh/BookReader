@@ -11,7 +11,9 @@ import java.util.List;
 public interface BooksByTagContract {
 
     interface View {
-        void showBooksByTag(List<BooksByTag.TagBook> list);
+        void showBooksByTag(List<BooksByTag.TagBook> list, boolean isRefresh);
+
+        void onLoadComplete(boolean isSuccess, String msg);
     }
 
     interface Presenter<T> extends BaseContract.BasePresenter<T>{

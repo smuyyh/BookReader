@@ -1,6 +1,7 @@
 package com.justwayward.reader.ui.activity;
 
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -32,14 +33,21 @@ public class BooksByTagActivity extends BaseActivity implements BooksByTagContra
 
     @Bind(R.id.common_toolbar)
     Toolbar mToolbar;
+
+    @Bind(R.id.refreshLayout)
+    SwipeRefreshLayout refreshLayout;
     @Bind(R.id.recyclerview)
     RecyclerView mRecyclerView;
+    private LinearLayoutManager linearLayoutManager;
 
     @Inject
     BooksByTagPresenter mPresenter;
 
     private BooksByTagAdapter mAdapter;
     private List<BooksByTag.TagBook> mList = new ArrayList<>();
+
+    private String tag;
+    private int current = 0;
 
     @Override
     public int getLayoutId() {
@@ -62,28 +70,39 @@ public class BooksByTagActivity extends BaseActivity implements BooksByTagContra
 
     @Override
     public void initDatas() {
-
+        tag = getIntent().getStringExtra("tag");
     }
 
     @Override
     public void configViews() {
         setSupportActionBar(mToolbar);
 
+        refreshLayout.setOnRefreshListener(new RefreshListener());
+
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        linearLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
         mAdapter = new BooksByTagAdapter(mContext, mList, this);
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addOnScrollListener(new RefreshListener());
 
         mPresenter.attachView(this);
-        mPresenter.getBooksByTag(getIntent().getStringExtra("tag"), "0", "10");
+        mPresenter.getBooksByTag(tag, current + "", (current + 10) + "");
     }
 
 
     @Override
-    public void showBooksByTag(List<BooksByTag.TagBook> list) {
-        mList.clear();
+    public void showBooksByTag(List<BooksByTag.TagBook> list, boolean isRefresh) {
+        if (isRefresh)
+            mList.clear();
         mList.addAll(list);
+        current = mList.size();
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onLoadComplete(boolean isSuccess, String msg) {
+        refreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -101,6 +120,36 @@ public class BooksByTagActivity extends BaseActivity implements BooksByTagContra
     public void onItemClick(View view, int position, BooksByTag.TagBook data) {
         startActivity(new Intent(BooksByTagActivity.this, BookDetailActivity.class)
                 .putExtra("bookId", data._id));
+    }
+
+    private class RefreshListener extends RecyclerView.OnScrollListener implements SwipeRefreshLayout.OnRefreshListener {
+
+        @Override
+        public void onRefresh() {
+            current = 0;
+            mPresenter.getBooksByTag(tag, current + "", "10");
+        }
+
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+
+            int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
+            if (lastVisibleItemPosition + 1 == mAdapter.getItemCount()) { // 滑到倒数第二项就加载更多
+
+                boolean isRefreshing = refreshLayout.isRefreshing();
+                if (isRefreshing) {
+                    mAdapter.notifyItemRemoved(mAdapter.getItemCount());
+                    return;
+                }
+                mPresenter.getBooksByTag(tag, current + "", "10");
+            }
+        }
     }
 
 }
