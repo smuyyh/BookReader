@@ -1,5 +1,6 @@
 package com.justwayward.reader.ui.activity;
 
+import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -93,9 +94,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         View view = getLayoutInflater().inflate(R.layout.item_book_read_page, null);
         final TextView tv = (TextView) view.findViewById(R.id.tvBookReadContent);
         lineHeight = tv.getLineHeight();
-        BookPageFactory factory = new BookPageFactory("xxxxxx", lineHeight);
-        List<String> list = factory.readPage(factory.readTxt(1));
-        flipView.setAdapter(new BookReadPageAdapter(this, list));
+        new BookPageTask().execute();
     }
 
     @Override
@@ -134,5 +133,21 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     protected void onPause() {
         super.onPause();
         flipView.onPause();
+    }
+
+    class BookPageTask extends AsyncTask<Integer, Integer, List<String>>{
+
+        @Override
+        protected List<String> doInBackground(Integer... params) {
+            BookPageFactory factory = new BookPageFactory("xxxxxx", lineHeight);
+            List<String> list = factory.readPage(factory.readTxt(1));
+            return list;
+        }
+
+        @Override
+        protected void onPostExecute(List<String> list) {
+            super.onPostExecute(list);
+            flipView.setAdapter(new BookReadPageAdapter(mContext, list));
+        }
     }
 }
