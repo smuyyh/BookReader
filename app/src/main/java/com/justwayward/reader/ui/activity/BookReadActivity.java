@@ -12,9 +12,12 @@ import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerBookReadActivityComponent;
+import com.justwayward.reader.ui.adapter.BookReadPageAdapter;
 import com.justwayward.reader.ui.contract.BookReadContract;
 import com.justwayward.reader.ui.presenter.BookReadPresenter;
+import com.justwayward.reader.utils.BookPageFactory;
 import com.justwayward.reader.utils.LogUtils;
+import com.yuyh.library.bookflip.FlipViewController;
 
 import java.util.List;
 
@@ -51,6 +54,10 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     @Bind(R.id.rlBookReadRoot)
     RelativeLayout mRlBookReadRoot;
 
+    @Bind(R.id.flipView)
+    FlipViewController flipView;
+    int lineHeight = 0;
+
     @Inject
     BookReadPresenter mPresenter;
 
@@ -82,6 +89,13 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     public void configViews() {
         mPresenter.attachView(this);
         mPresenter.getBookToc(getIntent().getStringExtra("bookId"), "chapters");
+
+        View view = getLayoutInflater().inflate(R.layout.item_book_read_page, null);
+        TextView tv = (TextView) view.findViewById(R.id.tvBookReadContent);
+        lineHeight = tv.getLineHeight();
+        BookPageFactory factory = new BookPageFactory("xxxxxx", lineHeight);
+        List<String> list = factory.readPage(factory.readTxt(1));
+        flipView.setAdapter(new BookReadPageAdapter(this, list));
     }
 
     @Override
@@ -108,5 +122,17 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     @OnClick(R.id.iv_Back)
     public void onClickBack() {
         finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        flipView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        flipView.onPause();
     }
 }
