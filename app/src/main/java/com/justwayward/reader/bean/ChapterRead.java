@@ -80,5 +80,16 @@ public class ChapterRead extends Base {
         public String title;
         public String body;
         public String cpContent;
+
+        public Chapter(String title, String body) {
+            this.title = title;
+            this.body = body;
+        }
+
+        public Chapter(String title, String body, String cpContent) {
+            this.title = title;
+            this.body = body;
+            this.cpContent = cpContent;
+        }
     }
 }

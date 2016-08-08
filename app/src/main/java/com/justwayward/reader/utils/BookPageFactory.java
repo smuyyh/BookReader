@@ -63,9 +63,10 @@ public class BookPageFactory {
 
             for (ChapterRead.Chapter chapter : chapters) {
                 File file = new File(basePath + bookId + "/" + currentChapter + ".txt");
-                FileUtils.writeFile(file.getAbsolutePath(), chapter.body, true);
+                FileUtils.createFile(file);
+                FileUtils.writeFile(file.getAbsolutePath(), chapter.title + "\n" + chapter.body, true);
+                currentPage ++;
             }
-
         }
     }
 
