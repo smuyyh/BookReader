@@ -2,13 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@android:color/white">
 
-    <TextView
+    <com.justwayward.reader.view.CustomTextView
         android:id="@+id/tvBookReadContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
+        android:padding="10dp"
         android:textSize="16dp" />
 
 </LinearLayout>

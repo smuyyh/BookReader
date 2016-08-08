@@ -130,8 +130,6 @@ public class BookPageFactory {
         ArrayList<String> split = null;
         try {
             split = split(temp, mLineWordCount * 2, "GBK");
-            //for (String str : split)
-            //    LogUtils.e("---" + str);
             return split;
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -178,6 +176,8 @@ public class BookPageFactory {
                     lines++;
                     if(lines >=mLineCount) {
                         texts.add(temp);
+                        temp = "";
+                        lines = 0;
                     }
                     pos = 0;
                     startInd = i;

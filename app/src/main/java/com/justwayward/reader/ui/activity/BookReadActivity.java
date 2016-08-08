@@ -91,7 +91,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         mPresenter.getBookToc(getIntent().getStringExtra("bookId"), "chapters");
 
         View view = getLayoutInflater().inflate(R.layout.item_book_read_page, null);
-        TextView tv = (TextView) view.findViewById(R.id.tvBookReadContent);
+        final TextView tv = (TextView) view.findViewById(R.id.tvBookReadContent);
         lineHeight = tv.getLineHeight();
         BookPageFactory factory = new BookPageFactory("xxxxxx", lineHeight);
         List<String> list = factory.readPage(factory.readTxt(1));
