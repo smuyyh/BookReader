@@ -21,15 +21,17 @@ import rx.Observable;
 
 public interface BookApiService {
 
-    // 测试提交
     @GET("/book/recommend")
     Observable<Recommend> getRecomend(@Query("gender") String gender);
 
     @GET("/mix-toc/{bookId}")
     Observable<BookRead> getBookRead(@Path("bookId") String bookId);
 
-    @GET("/btoc/{bookId}")
+    @GET("/toc/{bookId}")
     Observable<BookToc> getBookToc(@Path("bookId") String bookId, @Query("view") String view);
+
+    @GET("/btoc/{bookId}")
+    Observable<BookToc> getBookBToc(@Path("bookId") String bookId, @Query("view") String view);
 
     @GET("http://chapter2.zhuishushenqi.com/chapter/{url}")
     Observable<ChapterRead> getChapterRead(@Path("url") String url);

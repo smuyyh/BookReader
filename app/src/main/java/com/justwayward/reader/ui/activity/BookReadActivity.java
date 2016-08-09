@@ -20,6 +20,8 @@ import com.justwayward.reader.utils.BookPageFactory;
 import com.justwayward.reader.utils.LogUtils;
 import com.yuyh.library.bookflip.FlipViewController;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -99,7 +101,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
     @Override
     public void showBookToc(List<BookToc.Chapters> list) {
-        mPresenter.getChapterRead(list.get(0).getLink());
+        mPresenter.getChapterRead(list.get(0).link);
     }
 
     @Override
@@ -135,7 +137,13 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         flipView.onPause();
     }
 
-    class BookPageTask extends AsyncTask<Integer, Integer, List<String>>{
+    class BookPageTask extends AsyncTask<Integer, Integer, List<String>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            LogUtils.i("分页前" + new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss:SSS").format(new Date(System.currentTimeMillis())));
+        }
 
         @Override
         protected List<String> doInBackground(Integer... params) {
@@ -147,6 +155,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         @Override
         protected void onPostExecute(List<String> list) {
             super.onPostExecute(list);
+            LogUtils.i("分页后" + new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss:SSS").format(new Date(System.currentTimeMillis())));
             flipView.setAdapter(new BookReadPageAdapter(mContext, list));
         }
     }
