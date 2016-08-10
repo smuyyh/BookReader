@@ -12,7 +12,7 @@ import java.util.List;
 public interface BookReadContract {
 
     interface View {
-        void showBookToc(List<BookToc.Chapters> list);
+        void showBookToc(List<BookToc.mixToc.Chapters> list);
         void showChapterRead(ChapterRead.Chapter data);
     }
 

@@ -100,13 +100,13 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     }
 
     @Override
-    public void showBookToc(List<BookToc.Chapters> list) {
+    public void showBookToc(List<BookToc.mixToc.Chapters> list) {
         mPresenter.getChapterRead(list.get(0).link);
     }
 
     @Override
     public void showChapterRead(ChapterRead.Chapter data) {
-        LogUtils.d("content==" + data.cpContent);
+        LogUtils.d("content==" + data.body);
     }
 
     @OnClick(R.id.rlBookReadRoot)

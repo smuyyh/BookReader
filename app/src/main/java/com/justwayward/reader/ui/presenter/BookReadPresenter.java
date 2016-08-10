@@ -46,7 +46,7 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
                 .subscribe(new Observer<BookToc>() {
                     @Override
                     public void onNext(BookToc data) {
-                        List<BookToc.Chapters> list = data.chapters;
+                        List<BookToc.mixToc.Chapters> list = data.mixToc.chapters;
                         if (list != null && !list.isEmpty() && view != null) {
                             view.showBookToc(list);
                         }

@@ -23,6 +23,7 @@ import com.justwayward.reader.ui.adapter.HotReviewAdapter;
 import com.justwayward.reader.ui.adapter.RecommendBookListAdapter;
 import com.justwayward.reader.ui.contract.BookDetailContract;
 import com.justwayward.reader.ui.presenter.BookDetailPresenter;
+import com.justwayward.reader.view.DrawableCenterButton;
 import com.justwayward.reader.view.TagColor;
 import com.justwayward.reader.view.TagGroup;
 
@@ -32,6 +33,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2016/8/6.
@@ -53,6 +55,8 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     TextView mTvWordCount;
     @Bind(R.id.tvLatelyUpdate)
     TextView mTvLatelyUpdate;
+    @Bind(R.id.btnRead)
+    DrawableCenterButton mBtnRead;
     @Bind(R.id.tvLatelyFollower)
     TextView mTvLatelyFollower;
     @Bind(R.id.tvRetentionRatio)
@@ -87,6 +91,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     private List<HotReview.Reviews> mHotReviewList = new ArrayList<>();
     private RecommendBookListAdapter mRecommendBookListAdapter;
     private List<RecommendBookList.RecommendBook> mRecommendBookList = new ArrayList<>();
+    private String bookId;
 
     @Override
     public int getLayoutId() {
@@ -110,7 +115,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
 
     @Override
     public void initDatas() {
-
+        bookId=getIntent().getStringExtra("bookId");
     }
 
     @Override
@@ -137,9 +142,9 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
         });
 
         mPresenter.attachView(this);
-        mPresenter.getBookDetail(getIntent().getStringExtra("bookId"));
-        mPresenter.getHotReview(getIntent().getStringExtra("bookId"));
-        mPresenter.getRecommendBookList(getIntent().getStringExtra("bookId"), "3");
+        mPresenter.getBookDetail(bookId);
+        mPresenter.getHotReview(bookId);
+        mPresenter.getRecommendBookList(bookId, "3");
     }
 
     @Override
@@ -198,7 +203,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
 
     @Override
     public void showRecommendBookList(List<RecommendBookList.RecommendBook> list) {
-        if(!list.isEmpty()){
+        if (!list.isEmpty()) {
             mTvRecommendBookList.setVisibility(View.VISIBLE);
             mRecommendBookList.clear();
             mRecommendBookList.addAll(list);
@@ -215,6 +220,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
         }
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -224,4 +230,9 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
         return super.onOptionsItemSelected(item);
     }
 
+    @OnClick(R.id.btnRead)
+    public void onClickRead() {
+        startActivity(new Intent(this, BookReadActivity.class)
+                .putExtra("bookId", bookId));
+    }
 }

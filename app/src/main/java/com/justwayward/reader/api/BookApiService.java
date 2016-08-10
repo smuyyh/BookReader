@@ -27,7 +27,7 @@ public interface BookApiService {
     @GET("/mix-toc/{bookId}")
     Observable<BookRead> getBookRead(@Path("bookId") String bookId);
 
-    @GET("/toc/{bookId}")
+    @GET("/mix-atoc/{bookId}")
     Observable<BookToc> getBookToc(@Path("bookId") String bookId, @Query("view") String view);
 
     @GET("/btoc/{bookId}")
