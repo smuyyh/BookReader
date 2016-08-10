@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <include layout="@layout/common_toolbar" />
@@ -101,11 +102,11 @@
                         android:layout_marginRight="10dp"
                         android:layout_weight="1"
                         android:background="@drawable/shape_common_btn_selector"
+                        android:clickable="true"
                         android:drawableLeft="@drawable/book_detail_info_add_img"
+                        android:drawablePadding="5dp"
                         android:padding="10dp"
                         android:text="追更新"
-                        android:clickable="true"
-                        android:drawablePadding="5dp"
                         android:textColor="@color/white" />
 
                     <com.justwayward.reader.view.DrawableCenterButton
@@ -113,11 +114,11 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/shape_common_btn_selector"
+                        android:clickable="true"
                         android:drawableLeft="@drawable/book_detail_info_search_img"
+                        android:drawablePadding="5dp"
                         android:padding="10dp"
                         android:text="开始阅读"
-                        android:clickable="true"
-                        android:drawablePadding="5dp"
                         android:textColor="@color/white" />
                 </LinearLayout>
 
@@ -325,14 +326,14 @@
                 android:background="@color/light_white" />
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/tvRecommendBookList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
                 android:text="@string/book_detail_recommend_book_list"
                 android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:visibility="gone" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvRecommendBoookList"
