@@ -1,5 +1,6 @@
 package com.justwayward.reader.ui.activity;
 
+import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,10 +13,15 @@ import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerBookReadActivityComponent;
+import com.justwayward.reader.ui.adapter.BookReadPageAdapter;
 import com.justwayward.reader.ui.contract.BookReadContract;
 import com.justwayward.reader.ui.presenter.BookReadPresenter;
+import com.justwayward.reader.utils.BookPageFactory;
 import com.justwayward.reader.utils.LogUtils;
+import com.yuyh.library.bookflip.FlipViewController;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -51,6 +57,10 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     @Bind(R.id.rlBookReadRoot)
     RelativeLayout mRlBookReadRoot;
 
+    @Bind(R.id.flipView)
+    FlipViewController flipView;
+    int lineHeight = 0;
+
     @Inject
     BookReadPresenter mPresenter;
 
@@ -82,11 +92,16 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     public void configViews() {
         mPresenter.attachView(this);
         mPresenter.getBookToc(getIntent().getStringExtra("bookId"), "chapters");
+
+        View view = getLayoutInflater().inflate(R.layout.item_book_read_page, null);
+        final TextView tv = (TextView) view.findViewById(R.id.tvBookReadContent);
+        lineHeight = tv.getLineHeight();
+        new BookPageTask().execute();
     }
 
     @Override
     public void showBookToc(List<BookToc.Chapters> list) {
-        mPresenter.getChapterRead(list.get(0).getLink());
+        mPresenter.getChapterRead(list.get(0).link);
     }
 
     @Override
@@ -108,5 +123,40 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     @OnClick(R.id.iv_Back)
     public void onClickBack() {
         finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        flipView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        flipView.onPause();
+    }
+
+    class BookPageTask extends AsyncTask<Integer, Integer, List<String>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            LogUtils.i("分页前" + new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss:SSS").format(new Date(System.currentTimeMillis())));
+        }
+
+        @Override
+        protected List<String> doInBackground(Integer... params) {
+            BookPageFactory factory = new BookPageFactory("xxxxxx", lineHeight);
+            List<String> list = factory.readPage(factory.readTxt(1));
+            return list;
+        }
+
+        @Override
+        protected void onPostExecute(List<String> list) {
+            super.onPostExecute(list);
+            LogUtils.i("分页后" + new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss:SSS").format(new Date(System.currentTimeMillis())));
+            flipView.setAdapter(new BookReadPageAdapter(mContext, list));
+        }
     }
 }

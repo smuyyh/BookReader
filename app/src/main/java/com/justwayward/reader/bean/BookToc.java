@@ -2,6 +2,7 @@ package com.justwayward.reader.bean;
 
 import com.justwayward.reader.bean.base.Base;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -30,61 +31,13 @@ public class BookToc extends Base {
 
     public List<Chapters> chapters;
 
-    public static class Chapters {
+    public static class Chapters implements Serializable {
         public String title;
         public String link;
         public String id;
         public int currency;
         public boolean unreadble;
         public boolean isVip;
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getLink() {
-            return link;
-        }
-
-        public void setLink(String link) {
-            this.link = link;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public int getCurrency() {
-            return currency;
-        }
-
-        public void setCurrency(int currency) {
-            this.currency = currency;
-        }
-
-        public boolean isUnreadble() {
-            return unreadble;
-        }
-
-        public void setUnreadble(boolean unreadble) {
-            this.unreadble = unreadble;
-        }
-
-        public void setVip(boolean vip) {
-            isVip = vip;
-        }
-
-        public boolean isVip() {
-            return isVip;
-        }
     }
 
 }

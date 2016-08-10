@@ -3,8 +3,15 @@
     android:id="@+id/rlBookReadRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@android:color/white">
+
+    <com.yuyh.library.bookflip.FlipViewController xmlns:flip="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/flipView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        flip:animationBitmapFormat="RGB_565"
+        flip:orientation="horizontal" />
 
     <LinearLayout
         android:id="@+id/llBookReadTop"

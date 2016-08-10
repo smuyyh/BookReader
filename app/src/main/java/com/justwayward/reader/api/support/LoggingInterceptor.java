@@ -23,7 +23,7 @@ import okio.BufferedSource;
  * @author yuyh.
  * @date 16/8/6.
  */
-public final class HttpLoggingInterceptor implements Interceptor {
+public final class LoggingInterceptor implements Interceptor {
     private static final Charset UTF8 = Charset.forName("UTF-8");
 
     public enum Level {
@@ -98,11 +98,11 @@ public final class HttpLoggingInterceptor implements Interceptor {
         };
     }
 
-    public HttpLoggingInterceptor() {
+    public LoggingInterceptor() {
         this(Logger.DEFAULT);
     }
 
-    public HttpLoggingInterceptor(Logger logger) {
+    public LoggingInterceptor(Logger logger) {
         this.logger = logger;
     }
 
@@ -113,7 +113,7 @@ public final class HttpLoggingInterceptor implements Interceptor {
     /**
      * Change the level at which this interceptor logs.
      */
-    public HttpLoggingInterceptor setLevel(Level level) {
+    public LoggingInterceptor setLevel(Level level) {
         if (level == null) throw new NullPointerException("level == null. Use Level.NONE instead.");
         this.level = level;
         return this;

@@ -12,6 +12,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.nio.channels.FileChannel;
 import java.text.DecimalFormat;
 
@@ -128,6 +130,17 @@ public class FileUtils {
             fout.write(bytes);
             fout.close();
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void writeFile(String filePathAndName, String fileContent) {
+        try {
+            OutputStream outstream = new FileOutputStream(filePathAndName);
+            OutputStreamWriter out = new OutputStreamWriter(outstream);
+            out.write(fileContent);
+            out.close();
+        } catch (java.io.IOException e) {
             e.printStackTrace();
         }
     }

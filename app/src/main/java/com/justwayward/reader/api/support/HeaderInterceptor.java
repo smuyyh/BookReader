@@ -20,14 +20,17 @@ public class HeaderInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request original = chain.request();
-        if (original.url().toString().contains("book/") || original.url().toString().contains("book-list/")|| original.url().toString().contains("btoc/")) {
+        if (original.url().toString().contains("book/") ||
+                original.url().toString().contains("book-list/")||
+                original.url().toString().contains("toc/")) {
             Request request = original.newBuilder()
-                    .addHeader("User-Agent", "ZhuiShuShenQi/3.68.2[preload=false;locale=zh_CN;clientidbase=android-nvidia]") // 不能转UTF-8
-                    .addHeader("X-User-Agent", "ZhuiShuShenQi/3.68.2[preload=false;locale=zh_CN;clientidbase=android-nvidia]")
+                    .addHeader("User-Agent", "ZhuiShuShenQi/3.40[preload=false;locale=zh_CN;clientidbase=android-nvidia]") // 不能转UTF-8
+                    .addHeader("X-User-Agent", "ZhuiShuShenQi/3.40[preload=false;locale=zh_CN;clientidbase=android-nvidia]")
                     .addHeader("X-Device-Id", DeviceUtils.getIMEI(AppUtils.getAppContext()))
                     .addHeader("Host", "api.zhuishushenqi.com")
                     .addHeader("Connection", "Keep-Alive")
-                    .addHeader("If-None-Match", "W/\"410-ev0q2FFpxIhbggvZro8aRA\"")
+                    .addHeader("If-None-Match", "W/\"2a04-4nguJ+XAaA1yAeFHyxVImg\"")
+                    .addHeader("If-Modified-Since", "Tue, 02 Aug 2016 03:20:06 UTC")
                     .build();
             return chain.proceed(request);
         }

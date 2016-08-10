@@ -2,7 +2,7 @@ package com.justwayward.reader.module;
 
 import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.api.support.HeaderInterceptor;
-import com.justwayward.reader.api.support.HttpLoggingInterceptor;
+import com.justwayward.reader.api.support.LoggingInterceptor;
 import com.justwayward.reader.utils.LogUtils;
 
 import java.util.concurrent.TimeUnit;
@@ -17,8 +17,8 @@ public class BookApiModule {
     @Provides
     public OkHttpClient provideOkHttpClient() {
 
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor(new MyLog());
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        LoggingInterceptor logging = new LoggingInterceptor(new MyLog());
+        logging.setLevel(LoggingInterceptor.Level.BODY);
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS)
                 .connectTimeout(20 * 1000, TimeUnit.MILLISECONDS)
@@ -37,7 +37,7 @@ public class BookApiModule {
     /**
      * 自定义日志输出
      */
-    static class MyLog implements HttpLoggingInterceptor.Logger {
+    static class MyLog implements LoggingInterceptor.Logger {
         @Override
         public void log(String message) {
             LogUtils.i("oklog: " + message);
