@@ -136,6 +136,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         mPresenter.getBookToc(bookId, "chapters");
         mBookReadFrameLayout.setOnScreenClickListener(this);
 
+
     }
 
     @Override
