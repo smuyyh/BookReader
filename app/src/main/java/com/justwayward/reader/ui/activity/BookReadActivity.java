@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
@@ -24,6 +25,7 @@ import com.justwayward.reader.ui.contract.BookReadContract;
 import com.justwayward.reader.ui.presenter.BookReadPresenter;
 import com.justwayward.reader.utils.BookPageFactory;
 import com.justwayward.reader.utils.LogUtils;
+import com.justwayward.reader.view.BookReadFrameLayout;
 import com.yuyh.library.bookflip.FlipViewController;
 
 import java.text.SimpleDateFormat;
@@ -39,7 +41,7 @@ import butterknife.OnClick;
 /**
  * Created by lfh on 2016/8/7.
  */
-public class BookReadActivity extends BaseActivity implements BookReadContract.View {
+public class BookReadActivity extends BaseActivity implements BookReadContract.View, BookReadFrameLayout.OnScreenClickListener {
 
     @Bind(R.id.iv_Back)
     ImageView mIvBack;
@@ -63,6 +65,8 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     LinearLayout mLlBookReadBottom;
     @Bind(R.id.rlBookReadRoot)
     RelativeLayout mRlBookReadRoot;
+    @Bind(R.id.brflRoot)
+    BookReadFrameLayout mBookReadFrameLayout;
 
     @Bind(R.id.flipView)
     FlipViewController flipView;
@@ -130,6 +134,8 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
         mPresenter.attachView(this);
         mPresenter.getBookToc(bookId, "chapters");
+        mBookReadFrameLayout.setOnScreenClickListener(this);
+
     }
 
     @Override
@@ -160,16 +166,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         }
     }
 
-    @OnClick(R.id.rlBookReadRoot)
-    public void onClickBookReadRoot() {
-        if (mLlBookReadBottom.getVisibility() == View.VISIBLE) {
-            mLlBookReadBottom.setVisibility(View.GONE);
-            mLlBookReadTop.setVisibility(View.GONE);
-        } else {
-            mLlBookReadBottom.setVisibility(View.VISIBLE);
-            mLlBookReadTop.setVisibility(View.VISIBLE);
-        }
-    }
+
 
     @OnClick(R.id.iv_Back)
     public void onClickBack() {
@@ -196,6 +193,32 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     protected void onPause() {
         super.onPause();
         flipView.onPause();
+    }
+
+
+    @Override
+    public void onSideClick(boolean isLeft) {
+        if (isLeft) {
+            Toast.makeText(this,"上一页",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this,"下一页",Toast.LENGTH_SHORT).show();
+        }
+
+        if (mLlBookReadBottom.getVisibility() == View.VISIBLE) {
+            mLlBookReadBottom.setVisibility(View.GONE);
+            mLlBookReadTop.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onCenterClick() {
+        if (mLlBookReadBottom.getVisibility() == View.VISIBLE) {
+            mLlBookReadBottom.setVisibility(View.GONE);
+            mLlBookReadTop.setVisibility(View.GONE);
+        } else {
+            mLlBookReadBottom.setVisibility(View.VISIBLE);
+            mLlBookReadTop.setVisibility(View.VISIBLE);
+        }
     }
 
     class BookPageTask extends AsyncTask<Integer, Integer, List<String>> {

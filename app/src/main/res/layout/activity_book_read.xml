@@ -3,16 +3,22 @@
     android:id="@+id/rlBookReadRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:fitsSystemWindows="true"
-    android:orientation="vertical"
-    android:background="@android:color/white">
+    android:orientation="vertical">
 
-    <com.yuyh.library.bookflip.FlipViewController xmlns:flip="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/flipView"
+    <com.justwayward.reader.view.BookReadFrameLayout
+        android:id="@+id/brflRoot"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        flip:animationBitmapFormat="RGB_565"
-        flip:orientation="horizontal" />
+        android:layout_height="match_parent">
+
+        <com.yuyh.library.bookflip.FlipViewController xmlns:flip="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/flipView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            flip:animationBitmapFormat="RGB_565"
+            flip:orientation="horizontal" />
+    </com.justwayward.reader.view.BookReadFrameLayout>
 
     <LinearLayout
         android:id="@+id/llBookReadTop"
