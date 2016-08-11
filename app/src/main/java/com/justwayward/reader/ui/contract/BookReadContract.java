@@ -13,12 +13,12 @@ public interface BookReadContract {
 
     interface View {
         void showBookToc(List<BookToc.mixToc.Chapters> list);
-        void showChapterRead(ChapterRead.Chapter data);
+        void showChapterRead(ChapterRead.Chapter data, int chapter);
     }
 
     interface Presenter<T> extends BaseContract.BasePresenter<T>{
         void getBookToc(String bookId, String view);
-        void getChapterRead(String url);
+        void getChapterRead(String url, int chapter);
     }
 
 }

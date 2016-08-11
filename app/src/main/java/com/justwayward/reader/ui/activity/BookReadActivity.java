@@ -21,6 +21,7 @@ import com.justwayward.reader.utils.LogUtils;
 import com.yuyh.library.bookflip.FlipViewController;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -64,6 +65,16 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     @Inject
     BookReadPresenter mPresenter;
 
+    String bookId;
+    int currentChapter = 1;
+    BookPageFactory factory;
+
+    List<BookToc.mixToc.Chapters> mChapterList = new ArrayList<>();
+    List<String> mContentList = new ArrayList<>();
+    BookReadPageAdapter readPageAdapter;
+
+    boolean startRead = false;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_book_read;
@@ -90,23 +101,41 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
     @Override
     public void configViews() {
-        mPresenter.attachView(this);
-        mPresenter.getBookToc(getIntent().getStringExtra("bookId"), "chapters");
-
         View view = getLayoutInflater().inflate(R.layout.item_book_read_page, null);
         final TextView tv = (TextView) view.findViewById(R.id.tvBookReadContent);
         lineHeight = tv.getLineHeight();
-        new BookPageTask().execute();
+
+        bookId = getIntent().getStringExtra("bookId");
+        factory = new BookPageFactory(bookId, lineHeight);
+        mPresenter.attachView(this);
+        mPresenter.getBookToc(bookId, "chapters");
     }
 
     @Override
     public void showBookToc(List<BookToc.mixToc.Chapters> list) {
-        mPresenter.getChapterRead(list.get(0).link);
+        mChapterList.clear();
+        mChapterList.addAll(list);
+        if(factory.getBookFile(1).length()>50)
+            showChapterRead(null, 1);
+        else
+            mPresenter.getChapterRead(list.get(0).link, 1);
     }
 
     @Override
-    public void showChapterRead(ChapterRead.Chapter data) {
-        LogUtils.d("content==" + data.body);
+    public void showChapterRead(ChapterRead.Chapter data, int chapter) {
+        if (chapter == currentChapter) {
+            for (int j = currentChapter + 1; j <= currentChapter + 3; j++) {
+                if (factory.getBookFile(j).length() < 20) { // 不存在
+                    mPresenter.getChapterRead(mChapterList.get(j - 1).link, j);
+                }
+            }
+        }
+        if(data != null)
+            factory.append(data, chapter);
+        if(factory.getBookFile(currentChapter).length()>20 && !startRead){
+            startRead = true;
+            new BookPageTask().execute();
+        }
     }
 
     @OnClick(R.id.rlBookReadRoot)
@@ -147,8 +176,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
         @Override
         protected List<String> doInBackground(Integer... params) {
-            BookPageFactory factory = new BookPageFactory("xxxxxx", lineHeight);
-            List<String> list = factory.readPage(factory.readTxt(1));
+            List<String> list = factory.readPage(factory.readTxt(currentChapter));
             return list;
         }
 
@@ -156,7 +184,10 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         protected void onPostExecute(List<String> list) {
             super.onPostExecute(list);
             LogUtils.i("分页后" + new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss:SSS").format(new Date(System.currentTimeMillis())));
-            flipView.setAdapter(new BookReadPageAdapter(mContext, list));
+            mContentList.clear();
+            mContentList.addAll(list);
+            readPageAdapter = new BookReadPageAdapter(mContext, mContentList);
+            flipView.setAdapter(readPageAdapter);
         }
     }
 }

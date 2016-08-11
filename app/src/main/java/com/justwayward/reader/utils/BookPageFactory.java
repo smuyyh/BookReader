@@ -59,7 +59,7 @@ public class BookPageFactory {
         mPaint.setColor(mTextColor);
 
         mFontSizePx = ScreenUtils.dpToPx(mFontSize);
-        mLineWordCount = (int) (mVisibleWidth / mFontSizePx) - 1;
+        mLineWordCount = (int) (mVisibleWidth / mFontSizePx - 0.5);
         mLineCount = (int) (mVisibleHeight / lineHeight); // 可显示的行数
 
         LogUtils.e("mLineCount = " + mLineCount);
@@ -77,21 +77,9 @@ public class BookPageFactory {
         return file;
     }
 
-    public void append(List<ChapterRead.Chapter> chapters) {
-        if (chapters != null && !chapters.isEmpty()) {
-
-            for (ChapterRead.Chapter chapter : chapters) {
-                File file = getBookFile(currentChapter);
-                FileUtils.writeFile(file.getAbsolutePath(), chapter.title + "\n" + chapter.body, true);
-                currentPage++;
-            }
-        }
-    }
-
-    public void append(final ChapterRead.Chapter chapter) {
-        append(new ArrayList<ChapterRead.Chapter>() {{
-            add(chapter);
-        }});
+    public void append(final ChapterRead.Chapter chapter, int chapterNo) {
+        File file = getBookFile(chapterNo);
+        FileUtils.writeFile(file.getAbsolutePath(), chapter.title + "\n" + chapter.body, true);
     }
 
     /**
@@ -127,7 +115,7 @@ public class BookPageFactory {
     }
 
     public ArrayList<String> readPage(String temp) {
-        ArrayList<String> split = null;
+        ArrayList<String> split;
         try {
             split = split(temp, mLineWordCount * 2, "GBK");
             return split;
@@ -146,11 +134,6 @@ public class BookPageFactory {
         int startInd = 0;
         for (int i = 0; text != null && i < text.length(); ) {
             byte[] b = String.valueOf(text.charAt(i)).getBytes(encoding);
-            if (b.length > length) {
-                i++;
-                startInd = i;
-                continue;
-            }
             pos += b.length;
             if (pos >= length) {
                 int endInd;

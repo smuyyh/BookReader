@@ -80,7 +80,7 @@ public class BookApi {
         return service.getBookToc(bookId, view);
     }
 
-    public Observable<ChapterRead> getChapterRead(String url) {
+    public synchronized Observable<ChapterRead> getChapterRead(String url) {
         return service.getChapterRead(url);
     }
 

@@ -64,14 +64,14 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
     }
 
     @Override
-    public void getChapterRead(String url) {
+    public void getChapterRead(String url, final int chapter) {
         bookApi.getChapterRead(url).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ChapterRead>() {
                     @Override
                     public void onNext(ChapterRead data) {
                         if (data.chapter != null && view != null) {
-                            view.showChapterRead(data.chapter);
+                            view.showChapterRead(data.chapter, chapter);
                         }
                     }
 
