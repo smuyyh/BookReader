@@ -1,9 +1,14 @@
 package com.justwayward.reader.ui.activity;
 
 import android.os.AsyncTask;
+import android.support.v7.widget.ListPopupWindow;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -14,6 +19,7 @@ import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerBookReadActivityComponent;
 import com.justwayward.reader.ui.adapter.BookReadPageAdapter;
+import com.justwayward.reader.ui.adapter.TocListAdapter;
 import com.justwayward.reader.ui.contract.BookReadContract;
 import com.justwayward.reader.ui.presenter.BookReadPresenter;
 import com.justwayward.reader.utils.BookPageFactory;
@@ -73,6 +79,9 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     List<String> mContentList = new ArrayList<>();
     BookReadPageAdapter readPageAdapter;
 
+    private ListPopupWindow mTocListPopupWindow;
+    private TocListAdapter mTocListAdapter;
+
     boolean startRead = false;
 
     @Override
@@ -96,7 +105,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
     @Override
     public void initDatas() {
-
+        bookId = getIntent().getStringExtra("bookId");
     }
 
     @Override
@@ -104,9 +113,21 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         View view = getLayoutInflater().inflate(R.layout.item_book_read_page, null);
         final TextView tv = (TextView) view.findViewById(R.id.tvBookReadContent);
         lineHeight = tv.getLineHeight();
-
-        bookId = getIntent().getStringExtra("bookId");
         factory = new BookPageFactory(bookId, lineHeight);
+
+        mTocListAdapter = new TocListAdapter(this, mChapterList);
+        mTocListPopupWindow = new ListPopupWindow(this);
+        mTocListPopupWindow.setAdapter(mTocListAdapter);
+        mTocListPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        mTocListPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        mTocListPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mTocListPopupWindow.dismiss();
+
+            }
+        });
+
         mPresenter.attachView(this);
         mPresenter.getBookToc(bookId, "chapters");
     }
@@ -115,6 +136,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     public void showBookToc(List<BookToc.mixToc.Chapters> list) {
         mChapterList.clear();
         mChapterList.addAll(list);
+
         if(factory.getBookFile(1).length()>50)
             showChapterRead(null, 1);
         else
@@ -152,6 +174,16 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     @OnClick(R.id.iv_Back)
     public void onClickBack() {
         finish();
+    }
+
+    @OnClick(R.id.tvBookReadToc)
+    public void onClickToc() {
+        if (!mTocListPopupWindow.isShowing()) {
+            mTocListPopupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
+            mTocListPopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            mTocListPopupWindow.show();
+        }
+        mTocListAdapter.notifyDataSetChanged();
     }
 
     @Override

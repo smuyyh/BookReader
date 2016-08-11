@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_margin="20dp"
+              android:orientation="vertical"
+    >
+
+    <TextView
+        android:id="@+id/tvTocItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:drawableLeft="@drawable/toc_item_icon_selector"
+        android:drawablePadding="10dp"
+        android:padding="10dp"
+        android:textColor="@drawable/toc_item_text_selector"
+        android:text="1.第一章 八十大寿"
+        android:textSize="16sp"/>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#ECECEC"/>
+
+</LinearLayout>
