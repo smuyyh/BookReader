@@ -5,6 +5,8 @@ import android.graphics.Paint;
 
 import com.justwayward.reader.bean.ChapterRead;
 
+import org.apache.commons.collections4.map.LRUMap;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,7 +15,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author yuyh.
@@ -33,17 +34,13 @@ public class BookPageFactory {
     private float mFontSizePx;
     private int mTextColor = Color.LTGRAY;
 
-    private List<String> mList = new ArrayList<>();
-
     private int mLineCount = 0; // 每页可以显示的行数
     private int mLineWordCount = 0; // 每行可以显示的字数
-    private int currentPage = 1;
-    private int currentChapter = 1;
 
     private String bookId;
-    private File bookFile;
-
     private String basePath = FileUtils.createRootPath(AppUtils.getAppContext()) + "/book/";
+
+    private static LRUMap<String, ArrayList<String>> cache = new LRUMap<>(10);
 
     public BookPageFactory(String bookId, int lineHeight) {
         this.bookId = bookId;
@@ -82,6 +79,11 @@ public class BookPageFactory {
         FileUtils.writeFile(file.getAbsolutePath(), chapter.title + "\n" + chapter.body, true);
     }
 
+    public boolean hasCache(int chapter) {
+        ArrayList<String> chapterCache = cache.get(bookId + "-" + chapter);
+        return chapterCache != null && chapterCache.size() > 0;
+    }
+
     /**
      * 读取文章的段落集合
      */
@@ -114,10 +116,16 @@ public class BookPageFactory {
         return temp;
     }
 
-    public ArrayList<String> readPage(String temp) {
-        ArrayList<String> split;
+    public synchronized ArrayList<String> readPage(String temp, int chapter) {
+        ArrayList<String> split = cache.get(bookId + "-" + chapter);
+        if (split != null && split.size() > 0) {
+            LogUtils.d(bookId + "-" + chapter + ": from cache");
+            return split;
+        }
         try {
             split = split(temp, mLineWordCount * 2, "GBK");
+            cache.put(bookId + "-" + chapter, split);
+            LogUtils.d(bookId + "-" + chapter + ": add cache");
             return split;
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -154,10 +162,10 @@ public class BookPageFactory {
             } else {
                 i++;
                 c = new String(b, encoding);
-                if(c.equals("\n")){
+                if (c.equals("\n")) {
                     temp += text.substring(startInd, i);
                     lines++;
-                    if(lines >=mLineCount) {
+                    if (lines >= mLineCount) {
                         texts.add(temp);
                         temp = "";
                         lines = 0;

@@ -86,13 +86,21 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     private int currentChapter = 1;
     private BookPageFactory factory;
 
-    /** 是否开始阅读章节 **/
+    /**
+     * 是否开始阅读章节
+     **/
     boolean startRead = false;
-    /** 当前是否处于最后一页 **/
+    /**
+     * 当前是否处于最后一页
+     **/
     boolean endPage = false;
-    /** 当前是否处于第一页 **/
+    /**
+     * 当前是否处于第一页
+     **/
     boolean startPage = false;
-    /** 是否是跳转到上一章 **/
+    /**
+     * 是否是跳转到上一章
+     **/
     private boolean isPre = false;
 
     @Override
@@ -152,7 +160,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     /**
      * 读取currentChapter章节。章节文件存在则直接阅读，不存在就请求加载
      */
-    public void readCurrentChapter(int position){
+    public void readCurrentChapter(int position) {
         if (factory.getBookFile(currentChapter).length() > 50)
             showChapterRead(null, currentChapter);
         else
@@ -169,23 +177,27 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
     @Override
     public synchronized void showChapterRead(ChapterRead.Chapter data, int chapter) { // 加载章节内容
+        // 阅读currentChapter章节
+        if (factory.getBookFile(currentChapter).length() > 50 && !startRead && currentChapter < mChapterList.size()) {
+            startRead = true;
+            new BookPageTask().execute();
+        }
+
         if (chapter == currentChapter) {
             // 每次都往后继续缓存三个章节
             for (int j = currentChapter + 1; j <= currentChapter + 3 && j <= mChapterList.size(); j++) {
                 if (factory.getBookFile(j).length() < 50) { // 认为章节文件不存在
                     // 获取对应章节
                     mPresenter.getChapterRead(mChapterList.get(j - 1).link, j);
+                } else {
+                    new ChapterCacheTask().execute(j); // 文章存在，则读取，放到LRUMap中
                 }
             }
+        } else if (!factory.hasCache(chapter)) { // 新获取的章节，还未缓存在LruMap
+            new ChapterCacheTask().execute(chapter);
         }
         if (data != null)
             factory.append(data, chapter); // 缓存章节保存到文件
-
-        // 阅读currentChapter章节
-        if (factory.getBookFile(currentChapter).length() > 50 && !startRead && currentChapter < mChapterList.size()) {
-            startRead = true;
-            new BookPageTask().execute();
-        }
     }
 
 
@@ -219,15 +231,23 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
     @Override
     public void onSideClick(boolean isLeft) {
+        hideReadBar();
         if (isLeft) {
+            if (flipView.getSelectedItemPosition() == 0) {
+                startPage = true;
+            }
             endPage = false;
             flipView.setSelection(flipView.getSelectedItemPosition() - 1);
         } else {
             flipView.setSelection(flipView.getSelectedItemPosition() + 1);
-            if (flipView.getSelectedItemPosition() == mContentList.size() - 1)
+            if (flipView.getSelectedItemPosition() == mContentList.size() - 1) {
                 endPage = true;
+            }
+            startPage = false;
         }
+    }
 
+    private void hideReadBar() {
         if (mLlBookReadBottom.getVisibility() == View.VISIBLE) {
             mLlBookReadBottom.setVisibility(View.GONE);
             mLlBookReadTop.setVisibility(View.GONE);
@@ -247,6 +267,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
     @Override
     public void onViewFlipped(View view, int position) { // 页面滑动切换
+        hideReadBar();
         LogUtils.i("onViewFlipped--" + position);
         if (position == mContentList.size() - 1) { // 切换到最后一页
             if (!endPage) {
@@ -262,6 +283,9 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
             }
             startPage = false;
             onPre();
+        } else {
+            startPage = false;
+            endPage = false;
         }
     }
 
@@ -280,6 +304,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         if (currentChapter < mChapterList.size()) {
             currentChapter += 1;
             startRead = false;
+            startPage = true;
             showChapterRead(null, currentChapter);
         }
     }
@@ -297,7 +322,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
         @Override
         protected List<String> doInBackground(Integer... params) {
-            List<String> list = factory.readPage(factory.readTxt(currentChapter));
+            List<String> list = factory.readPage(factory.readTxt(currentChapter), currentChapter);
             return list;
         }
 
@@ -315,6 +340,17 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
                 endPage = true;
                 isPre = false;
             }
+        }
+    }
+
+    class ChapterCacheTask extends AsyncTask<Integer, Integer, List<String>> {
+
+        @Override
+        protected List<String> doInBackground(Integer... params) {
+            int chapter = params[0];
+            factory.readPage(factory.readTxt(chapter), chapter);
+            LogUtils.i("读取"+chapter);
+            return null;
         }
     }
 }
