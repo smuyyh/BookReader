@@ -25,8 +25,8 @@ public class BookPageFactory {
 
     private int mWidth;
     private int mHeight;
-    private int mMarginWidth = 10; // 左右与边缘的距离
-    private int mMarginHeight = 15; // 上下与边缘的距离
+    private int mMarginWidth = 12; // 左右与边缘的距离
+    private int mMarginHeight = 20; // 上下与边缘的距离
     private float mVisibleHeight; // 绘制内容的宽
     private float mVisibleWidth; // 绘制内容的宽
 

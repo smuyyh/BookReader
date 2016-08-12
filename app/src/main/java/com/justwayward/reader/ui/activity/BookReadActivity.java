@@ -146,8 +146,9 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
                 mTocListPopupWindow.dismiss();
                 currentChapter = position + 1;
                 startRead = false;
-                readCurrentChapter(position);
-                onCenterClick();
+                isPre = false;
+                readCurrentChapter();
+                hideReadBar();
             }
         });
 
@@ -161,11 +162,11 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     /**
      * 读取currentChapter章节。章节文件存在则直接阅读，不存在就请求加载
      */
-    public void readCurrentChapter(int position) {
+    public void readCurrentChapter() {
         if (factory.getBookFile(currentChapter).length() > 50)
             showChapterRead(null, currentChapter);
         else
-            mPresenter.getChapterRead(mChapterList.get(position).link, currentChapter);
+            mPresenter.getChapterRead(mChapterList.get(currentChapter - 1).link, currentChapter);
     }
 
     @Override
@@ -173,19 +174,19 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         mChapterList.clear();
         mChapterList.addAll(list);
 
-        readCurrentChapter(0);
+        readCurrentChapter();
     }
 
     @Override
     public synchronized void showChapterRead(ChapterRead.Chapter data, int chapter) { // 加载章节内容
+        if (data != null)
+            factory.append(data, chapter); // 缓存章节保存到文件
+
         // 阅读currentChapter章节
         if (factory.getBookFile(currentChapter).length() > 50 && !startRead && currentChapter < mChapterList.size()) {
             startRead = true;
             new BookPageTask().execute();
         }
-
-        if (data != null)
-            factory.append(data, chapter); // 缓存章节保存到文件
 
         if (chapter == currentChapter) {
             // 每次都往后继续缓存三个章节
@@ -296,7 +297,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
             currentChapter -= 1;
             startRead = false;
             isPre = true; // 标记。加载完成之后显示最后一页
-            showChapterRead(null, currentChapter);
+            readCurrentChapter();
         }
     }
 
@@ -306,7 +307,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
             currentChapter += 1;
             startRead = false;
             startPage = true;
-            showChapterRead(null, currentChapter);
+            readCurrentChapter();
         }
     }
 
@@ -318,7 +319,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            LogUtils.i("分页前" + new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss:SSS").format(new Date(System.currentTimeMillis())));
+            LogUtils.i("分页前" + new SimpleDateFormat("HH:mm:ss:SSS").format(new Date(System.currentTimeMillis())));
         }
 
         @Override
@@ -330,16 +331,23 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         @Override
         protected void onPostExecute(List<String> list) {
             super.onPostExecute(list);
-            LogUtils.i("分页后" + new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss:SSS").format(new Date(System.currentTimeMillis())));
+            LogUtils.i("分页后" + new SimpleDateFormat("HH:mm:ss:SSS").format(new Date(System.currentTimeMillis())));
             mContentList.clear();
             mContentList.addAll(list);
-            if (readPageAdapter == null)
+
+            if (readPageAdapter == null) {
                 readPageAdapter = new BookReadPageAdapter(mContext, mContentList, mChapterList.get(currentChapter - 1).title);
+            } else {
+                readPageAdapter.title = mChapterList.get(currentChapter - 1).title;
+            }
             flipView.setAdapter(readPageAdapter);
+
             if (isPre) { // 如果是加载上一章，则跳转到最后一页
                 flipView.setSelection(mContentList.size() - 1);
                 endPage = true;
                 isPre = false;
+            } else {
+                startPage = true;
             }
         }
     }

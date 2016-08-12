@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class BookReadPageAdapter extends EasyLVAdapter<String> {
 
-    private String title;
+    public String title;
 
     public BookReadPageAdapter(Context context, List<String> list, String title) {
         super(context, list, R.layout.item_book_read_page);
