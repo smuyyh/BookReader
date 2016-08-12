@@ -88,6 +88,6 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     @Override
     public void onItemClick(View view, int position, Recommend.RecommendBooks data) {
         startActivity(new Intent(activity, BookReadActivity.class)
-                .putExtra("bookId", data._id));
+                .putExtra("bookId", data._id).putExtra("bookName",data.title));
     }
 }

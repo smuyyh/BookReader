@@ -15,5 +15,7 @@
     <color name="red">#FF0000</color>
     <color name="light_black">#515151</color>
 
-    <color name="content">#323232</color>
+    <color name="content">#3B3220</color>
+    <color name="page_number">#7D735A</color>
+    <color name="chapter_title">#81765D</color>
 </resources>

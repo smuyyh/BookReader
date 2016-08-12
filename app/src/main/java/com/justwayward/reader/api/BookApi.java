@@ -3,6 +3,7 @@ package com.justwayward.reader.api;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.AutoComplete;
 import com.justwayward.reader.bean.BookDetail;
+import com.justwayward.reader.bean.BookSource;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.BooksByTag;
 import com.justwayward.reader.bean.ChapterRead;
@@ -11,6 +12,8 @@ import com.justwayward.reader.bean.HotWord;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.RecommendBookList;
 import com.justwayward.reader.bean.SearchDetail;
+
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -82,6 +85,10 @@ public class BookApi {
 
     public synchronized Observable<ChapterRead> getChapterRead(String url) {
         return service.getChapterRead(url);
+    }
+
+    public synchronized Observable<List<BookSource>> getBookSource(String view,String book) {
+        return service.getBookSource(view,book);
     }
 
 }

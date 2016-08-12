@@ -2,6 +2,7 @@ package com.justwayward.reader.ui.activity;
 
 import android.os.AsyncTask;
 import android.support.v7.widget.ListPopupWindow;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
+import com.justwayward.reader.bean.BookSource;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.component.AppComponent;
@@ -43,14 +45,20 @@ import butterknife.OnClick;
 public class BookReadActivity extends BaseActivity implements BookReadContract.View,
         BookReadFrameLayout.OnScreenClickListener, FlipViewController.ViewFlipListener {
 
-    @Bind(R.id.iv_Back)
+    @Bind(R.id.ivBack)
     ImageView mIvBack;
     @Bind(R.id.tvBookReadReading)
     TextView mTvBookReadReading;
     @Bind(R.id.tvBookReadCommunity)
     TextView mTvBookReadCommunity;
+    @Bind(R.id.tvBookReadChangeSource)
+    TextView mTvBookReadChangeSource;
+    @Bind(R.id.ivBookReadMore)
+    ImageView mIvBookReadMore;
     @Bind(R.id.llBookReadTop)
     LinearLayout mLlBookReadTop;
+    @Bind(R.id.tvBookReadTocTitle)
+    TextView mTvBookReadTocTitle;
     @Bind(R.id.tvBookReadMode)
     TextView mTvBookReadMode;
     @Bind(R.id.tvBookReadFeedBack)
@@ -124,6 +132,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     @Override
     public void initDatas() {
         bookId = getIntent().getStringExtra("bookId");
+        mTvBookReadTocTitle.setText(getIntent().getStringExtra("bookName"));
     }
 
     @Override
@@ -139,7 +148,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         mTocListPopupWindow.setAdapter(mTocListAdapter);
         mTocListPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         mTocListPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        mTocListPopupWindow.setAnchorView(mLlBookReadBottom);
+        mTocListPopupWindow.setAnchorView(mLlBookReadTop);
         mTocListPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -203,15 +212,34 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         }
     }
 
+    @Override
+    public void showBookSource(List<BookSource> list) {
 
-    @OnClick(R.id.iv_Back)
+    }
+
+
+    @OnClick(R.id.ivBack)
     public void onClickBack() {
-        finish();
+        if (mTocListPopupWindow.isShowing()) {
+            mTocListPopupWindow.dismiss();
+        }else{
+            finish();
+        }
+    }
+
+    @OnClick(R.id.tvBookReadChangeSource)
+    public void onClickChangeSource() {
+
     }
 
     @OnClick(R.id.tvBookReadToc)
     public void onClickToc() {
         if (!mTocListPopupWindow.isShowing()) {
+            mTvBookReadTocTitle.setVisibility(View.VISIBLE);
+            mTvBookReadReading.setVisibility(View.GONE);
+            mTvBookReadCommunity.setVisibility(View.GONE);
+            mTvBookReadChangeSource.setVisibility(View.GONE);
+            mIvBookReadMore.setVisibility(View.GONE);
             mTocListPopupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
             mTocListPopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             mTocListPopupWindow.show();
@@ -361,5 +389,22 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
             LogUtils.i("read:" + chapter);
             return null;
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event){
+        if (keyCode == KeyEvent.KEYCODE_BACK ){
+            if (mTocListPopupWindow.isShowing()) {
+                mTocListPopupWindow.dismiss();
+                mTvBookReadTocTitle.setVisibility(View.GONE);
+                mTvBookReadReading.setVisibility(View.VISIBLE);
+                mTvBookReadCommunity.setVisibility(View.VISIBLE);
+                mTvBookReadChangeSource.setVisibility(View.VISIBLE);
+                mIvBookReadMore.setVisibility(View.VISIBLE);
+            }else{
+                finish();
+            }
+        }
+        return false;
     }
 }

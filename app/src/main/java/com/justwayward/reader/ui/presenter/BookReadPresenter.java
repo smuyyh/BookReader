@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.justwayward.reader.api.BookApi;
+import com.justwayward.reader.bean.BookSource;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.ui.contract.BookReadContract;
@@ -72,6 +73,29 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
                     public void onNext(ChapterRead data) {
                         if (data.chapter != null && view != null) {
                             view.showChapterRead(data.chapter, chapter);
+                        }
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "onError: " + e);
+                    }
+                });
+    }
+
+    @Override
+    public void getBookSource(String viewSummary, String book) {
+        bookApi.getBookSource(viewSummary,book).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<BookSource>>() {
+                    @Override
+                    public void onNext(List<BookSource> data) {
+                        if (data!= null && view != null) {
+                            view.showBookSource(data);
                         }
                     }
 

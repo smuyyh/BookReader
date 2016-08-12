@@ -4,6 +4,7 @@ package com.justwayward.reader.api;
 import com.justwayward.reader.bean.AutoComplete;
 import com.justwayward.reader.bean.BookDetail;
 import com.justwayward.reader.bean.BookRead;
+import com.justwayward.reader.bean.BookSource;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.BooksByTag;
 import com.justwayward.reader.bean.ChapterRead;
@@ -14,6 +15,8 @@ import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.RecommendBookList;
 import com.justwayward.reader.bean.SearchDetail;
 
+import java.util.List;
+
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -23,6 +26,9 @@ public interface BookApiService {
 
     @GET("/book/recommend")
     Observable<Recommend> getRecomend(@Query("gender") String gender);
+
+    @GET("/atoc")
+    Observable<List<BookSource>> getBookSource(@Query("view") String view,@Query("book") String book);
 
     @GET("/mix-toc/{bookId}")
     Observable<BookRead> getBookRead(@Path("bookId") String bookId);

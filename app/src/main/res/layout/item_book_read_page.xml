@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@drawable/reader_background_brown_big_img">
 
     <com.justwayward.reader.view.CustomTextView
         android:id="@+id/tvBookReadContent"
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
-            android:textColor="@android:color/darker_gray" />
+            android:textColor="@color/page_number" />
 
     </RelativeLayout>
 
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:textColor="@android:color/darker_gray" />
+            android:textColor="@color/chapter_title" />
 
     </RelativeLayout>
 
