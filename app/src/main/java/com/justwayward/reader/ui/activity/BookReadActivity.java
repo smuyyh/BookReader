@@ -41,7 +41,8 @@ import butterknife.OnClick;
 /**
  * Created by lfh on 2016/8/7.
  */
-public class BookReadActivity extends BaseActivity implements BookReadContract.View, BookReadFrameLayout.OnScreenClickListener {
+public class BookReadActivity extends BaseActivity implements BookReadContract.View,
+        BookReadFrameLayout.OnScreenClickListener, FlipViewController.ViewFlipListener {
 
     @Bind(R.id.iv_Back)
     ImageView mIvBack;
@@ -75,14 +76,14 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     @Inject
     BookReadPresenter mPresenter;
 
-    String bookId;
-    int currentChapter = 1;
-    BookPageFactory factory;
+    private String bookId;
+    private int currentChapter = 1;
+    private BookPageFactory factory;
 
-    List<BookToc.mixToc.Chapters> mChapterList = new ArrayList<>();
-    List<String> mContentList = new ArrayList<>();
-    BookReadPageAdapter readPageAdapter;
+    private List<String> mContentList = new ArrayList<>();
+    private BookReadPageAdapter readPageAdapter;
 
+    private List<BookToc.mixToc.Chapters> mChapterList = new ArrayList<>();
     private ListPopupWindow mTocListPopupWindow;
     private TocListAdapter mTocListAdapter;
 
@@ -136,7 +137,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         mPresenter.getBookToc(bookId, "chapters");
         mBookReadFrameLayout.setOnScreenClickListener(this);
 
-
+        flipView.setOnViewFlipListener(this);
     }
 
     @Override
@@ -144,7 +145,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         mChapterList.clear();
         mChapterList.addAll(list);
 
-        if(factory.getBookFile(1).length()>50)
+        if (factory.getBookFile(1).length() > 50)
             showChapterRead(null, 1);
         else
             mPresenter.getChapterRead(list.get(0).link, 1);
@@ -159,14 +160,13 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
                 }
             }
         }
-        if(data != null)
+        if (data != null)
             factory.append(data, chapter);
-        if(factory.getBookFile(currentChapter).length()>20 && !startRead){
+        if (factory.getBookFile(currentChapter).length() > 20 && !startRead) {
             startRead = true;
             new BookPageTask().execute();
         }
     }
-
 
 
     @OnClick(R.id.iv_Back)
@@ -200,9 +200,11 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     @Override
     public void onSideClick(boolean isLeft) {
         if (isLeft) {
-            Toast.makeText(this,"上一页",Toast.LENGTH_SHORT).show();
+            flipView.setSelection(flipView.getSelectedItemPosition() - 1);
+            Toast.makeText(this, "上一页", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this,"下一页",Toast.LENGTH_SHORT).show();
+            flipView.setSelection(flipView.getSelectedItemPosition() + 1);
+            Toast.makeText(this, "下一页", Toast.LENGTH_SHORT).show();
         }
 
         if (mLlBookReadBottom.getVisibility() == View.VISIBLE) {
@@ -220,6 +222,21 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
             mLlBookReadBottom.setVisibility(View.VISIBLE);
             mLlBookReadTop.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onViewFlipped(View view, int position) {
+
+    }
+
+    @Override
+    public void onPre() {
+        Toast.makeText(this, "上一章", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onNext() {
+        Toast.makeText(this, "下一章", Toast.LENGTH_SHORT).show();
     }
 
     class BookPageTask extends AsyncTask<Integer, Integer, List<String>> {
