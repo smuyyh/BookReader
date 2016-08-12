@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
@@ -76,10 +75,6 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     @Inject
     BookReadPresenter mPresenter;
 
-    private String bookId;
-    private int currentChapter = 1;
-    private BookPageFactory factory;
-
     private List<String> mContentList = new ArrayList<>();
     private BookReadPageAdapter readPageAdapter;
 
@@ -87,8 +82,18 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     private ListPopupWindow mTocListPopupWindow;
     private TocListAdapter mTocListAdapter;
 
+    private String bookId;
+    private int currentChapter = 1;
+    private BookPageFactory factory;
+
+    /** 是否开始阅读章节 **/
     boolean startRead = false;
+    /** 当前是否处于最后一页 **/
     boolean endPage = false;
+    /** 当前是否处于第一页 **/
+    boolean startPage = false;
+    /** 是否是跳转到上一章 **/
+    private boolean isPre = false;
 
     @Override
     public int getLayoutId() {
@@ -99,7 +104,6 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerBookReadActivityComponent.builder()
                 .appComponent(appComponent)
-                //.mainActivityModule(new MainActivityModule(this))
                 .build()
                 .inject(this);
     }
@@ -142,7 +146,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     }
 
     @Override
-    public void showBookToc(List<BookToc.mixToc.Chapters> list) {
+    public void showBookToc(List<BookToc.mixToc.Chapters> list) { // 加载章节列表
         mChapterList.clear();
         mChapterList.addAll(list);
 
@@ -153,17 +157,21 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     }
 
     @Override
-    public void showChapterRead(ChapterRead.Chapter data, int chapter) {
+    public void showChapterRead(ChapterRead.Chapter data, int chapter) { // 加载章节内容
         if (chapter == currentChapter) {
-            for (int j = currentChapter + 1; j <= currentChapter + 3; j++) {
-                if (factory.getBookFile(j).length() < 20) { // 不存在
+            // 每次都往后继续缓存三个章节
+            for (int j = currentChapter + 1; j <= currentChapter + 3 && j <= mChapterList.size(); j++) {
+                if (factory.getBookFile(j).length() < 50) { // 认为章节文件不存在
+                    // 获取对应章节
                     mPresenter.getChapterRead(mChapterList.get(j - 1).link, j);
                 }
             }
         }
         if (data != null)
-            factory.append(data, chapter);
-        if (factory.getBookFile(currentChapter).length() > 20 && !startRead && currentChapter<mChapterList.size()) {
+            factory.append(data, chapter); // 缓存章节保存到文件
+
+        // 阅读currentChapter章节
+        if (factory.getBookFile(currentChapter).length() > 50 && !startRead && currentChapter < mChapterList.size()) {
             startRead = true;
             new BookPageTask().execute();
         }
@@ -205,7 +213,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
             flipView.setSelection(flipView.getSelectedItemPosition() - 1);
         } else {
             flipView.setSelection(flipView.getSelectedItemPosition() + 1);
-            if(flipView.getSelectedItemPosition() == mContentList.size() - 1)
+            if (flipView.getSelectedItemPosition() == mContentList.size() - 1)
                 endPage = true;
         }
 
@@ -227,32 +235,47 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     }
 
     @Override
-    public void onViewFlipped(View view, int position) {
-        LogUtils.i("onViewFlipped--"+position);
-        if (position == mContentList.size() - 1) {
+    public void onViewFlipped(View view, int position) { // 页面滑动切换
+        LogUtils.i("onViewFlipped--" + position);
+        if (position == mContentList.size() - 1) { // 切换到最后一页
             if (!endPage) {
-                endPage = true;
+                endPage = true;// 标记。继续切换时就切换到下一章节
                 return;
             }
             endPage = false;
-            Toast.makeText(this, "下一章", Toast.LENGTH_SHORT).show();
+            onNext();
+        } else if (position == 0) { // 切换到第一页
+            if (!startPage) {
+                startPage = true; // 标记。继续切换时就切换到上一章节
+                return;
+            }
+            startPage = false;
+            onPre();
+        }
+    }
+
+    @Override
+    public void onPre() { // 加载上一章
+        if (currentChapter > 1) {
+            currentChapter -= 1;
+            startRead = false;
+            isPre = true; // 标记。加载完成之后显示最后一页
+            showChapterRead(null, currentChapter);
+        }
+    }
+
+    @Override
+    public void onNext() { // 加载下一章
+        if (currentChapter < mChapterList.size()) {
             currentChapter += 1;
             startRead = false;
             showChapterRead(null, currentChapter);
         }
     }
 
-    @Override
-    public void onPre() {
-    }
-
-    @Override
-    public void onNext() {
-        currentChapter += 1;
-        startRead = false;
-        showChapterRead(null, currentChapter);
-    }
-
+    /**
+     * 读取章节内容，并进行分页处理
+     */
     class BookPageTask extends AsyncTask<Integer, Integer, List<String>> {
 
         @Override
@@ -276,6 +299,11 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
             if (readPageAdapter == null)
                 readPageAdapter = new BookReadPageAdapter(mContext, mContentList);
             flipView.setAdapter(readPageAdapter);
+            if (isPre) { // 如果是加载上一章，则跳转到最后一页
+                flipView.setSelection(mContentList.size() - 1);
+                endPage = true;
+                isPre = false;
+            }
         }
     }
 }
