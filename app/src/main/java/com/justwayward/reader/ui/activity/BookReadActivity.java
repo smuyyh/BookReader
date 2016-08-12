@@ -130,11 +130,15 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         mTocListPopupWindow.setAdapter(mTocListAdapter);
         mTocListPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         mTocListPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        mTocListPopupWindow.setAnchorView(mLlBookReadBottom);
         mTocListPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mTocListPopupWindow.dismiss();
-
+                currentChapter = position + 1;
+                startRead = false;
+                readCurrentChapter(position);
+                onCenterClick();
             }
         });
 
@@ -145,19 +149,26 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         flipView.setOnViewFlipListener(this);
     }
 
+    /**
+     * 读取currentChapter章节。章节文件存在则直接阅读，不存在就请求加载
+     */
+    public void readCurrentChapter(int position){
+        if (factory.getBookFile(currentChapter).length() > 50)
+            showChapterRead(null, currentChapter);
+        else
+            mPresenter.getChapterRead(mChapterList.get(position).link, currentChapter);
+    }
+
     @Override
     public void showBookToc(List<BookToc.mixToc.Chapters> list) { // 加载章节列表
         mChapterList.clear();
         mChapterList.addAll(list);
 
-        if (factory.getBookFile(1).length() > 50)
-            showChapterRead(null, 1);
-        else
-            mPresenter.getChapterRead(list.get(0).link, 1);
+        readCurrentChapter(0);
     }
 
     @Override
-    public void showChapterRead(ChapterRead.Chapter data, int chapter) { // 加载章节内容
+    public synchronized void showChapterRead(ChapterRead.Chapter data, int chapter) { // 加载章节内容
         if (chapter == currentChapter) {
             // 每次都往后继续缓存三个章节
             for (int j = currentChapter + 1; j <= currentChapter + 3 && j <= mChapterList.size(); j++) {
