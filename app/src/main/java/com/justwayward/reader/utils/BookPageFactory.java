@@ -74,11 +74,23 @@ public class BookPageFactory {
         return file;
     }
 
+    /**
+     * 章节数据 写到文件
+     *
+     * @param chapter
+     * @param chapterNo
+     */
     public void append(final ChapterRead.Chapter chapter, int chapterNo) {
         File file = getBookFile(chapterNo);
         FileUtils.writeFile(file.getAbsolutePath(), chapter.title + "\n" + chapter.body, true);
     }
 
+    /**
+     * 判断是否缓存文章分页结果
+     *
+     * @param chapter 文章no
+     * @return
+     */
     public boolean hasCache(int chapter) {
         ArrayList<String> chapterCache = cache.get(bookId + "-" + chapter);
         return chapterCache != null && chapterCache.size() > 0;
@@ -130,6 +142,7 @@ public class BookPageFactory {
 
         String line = "";
         try {
+            bufferedReader.readLine(); // 把标题读掉
             while ((line = bufferedReader.readLine()) != null) {
                 temp += line + "\n";
             }
