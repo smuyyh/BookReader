@@ -20,20 +20,6 @@
             flip:orientation="horizontal" />
     </com.justwayward.reader.view.BookReadFrameLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
-
-        <TextView
-            android:id="@+id/tvPageNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:textColor="@android:color/darker_gray"/>
-
-    </RelativeLayout>
-
     <LinearLayout
         android:id="@+id/llBookReadTop"
         android:layout_width="match_parent"

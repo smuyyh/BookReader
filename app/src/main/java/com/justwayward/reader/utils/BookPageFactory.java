@@ -2,6 +2,7 @@ package com.justwayward.reader.utils;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.text.TextUtils;
 
 import com.justwayward.reader.bean.ChapterRead;
 
@@ -25,7 +26,7 @@ public class BookPageFactory {
     private int mWidth;
     private int mHeight;
     private int mMarginWidth = 10; // 左右与边缘的距离
-    private int mMarginHeight = 10; // 上下与边缘的距离
+    private int mMarginHeight = 15; // 上下与边缘的距离
     private float mVisibleHeight; // 绘制内容的宽
     private float mVisibleWidth; // 绘制内容的宽
 
@@ -47,8 +48,8 @@ public class BookPageFactory {
         mWidth = ScreenUtils.getScreenWidth();
         mHeight = ScreenUtils.getScreenHeight();
 
-        mVisibleWidth = mWidth - ScreenUtils.dpToPxInt(mMarginWidth);
-        mVisibleHeight = mHeight - ScreenUtils.dpToPxInt(mMarginHeight) - ScreenUtils.getActionBarSize(AppUtils.getAppContext());
+        mVisibleWidth = mWidth - ScreenUtils.dpToPx(mMarginWidth) * 2;
+        mVisibleHeight = mHeight - ScreenUtils.dpToPx(mMarginHeight) * 2 - ScreenUtils.getStatusBarHeight(AppUtils.getAppContext());
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setTextAlign(Paint.Align.LEFT);
@@ -56,7 +57,7 @@ public class BookPageFactory {
         mPaint.setColor(mTextColor);
 
         mFontSizePx = ScreenUtils.dpToPx(mFontSize);
-        mLineWordCount = (int) (mVisibleWidth / mFontSizePx - 0.5);
+        mLineWordCount = (int) (mVisibleWidth / mFontSizePx);
         mLineCount = (int) (mVisibleHeight / lineHeight); // 可显示的行数
 
         LogUtils.e("mLineCount = " + mLineCount);
@@ -64,7 +65,6 @@ public class BookPageFactory {
         LogUtils.e("mLineWordCount = " + mLineWordCount);
         LogUtils.e("mVisibleWidth = " + mVisibleWidth);
         LogUtils.e("mVisibleHeight = " + mVisibleHeight);
-
     }
 
     public File getBookFile(int chapter) {
@@ -151,10 +151,10 @@ public class BookPageFactory {
      */
     public ArrayList<String> split(String text, int length, String encoding) throws UnsupportedEncodingException {
         ArrayList<String> texts = new ArrayList();
-        String temp = "";
+        String temp = "    ";
         String c;
         int lines = 0;
-        int pos = 0;
+        int pos = 2;
         int startInd = 0;
         for (int i = 0; text != null && i < text.length(); ) {
             byte[] b = String.valueOf(text.charAt(i)).getBytes(encoding);
@@ -166,36 +166,38 @@ public class BookPageFactory {
                 } else {
                     endInd = i;
                 }
-                temp += text.substring(startInd, endInd);
+                temp += text.substring(startInd, endInd); // 加入一行
                 lines++;
-                if (lines >= mLineCount) {
-                    texts.add(temp);
+                if (lines >= mLineCount) { // 超出一页
+                    texts.add(temp); // 加入
                     temp = "";
                     lines = 0;
                 }
                 pos = 0;
                 startInd = i;
             } else {
-                i++;
                 c = new String(b, encoding);
                 if (c.equals("\n")) {
-                    temp += text.substring(startInd, i);
+                    temp += text.substring(startInd, i + 1);
                     lines++;
                     if (lines >= mLineCount) {
                         texts.add(temp);
                         temp = "";
                         lines = 0;
                     }
-                    pos = 0;
-                    startInd = i;
+                    temp += "    ";
+                    pos = 2;
+                    startInd = i + 1;
                 }
+                i++;
             }
         }
         if (startInd < text.length()) {
             temp += text.substring(startInd);
             lines++;
-            texts.add(temp);
         }
+        if (!TextUtils.isEmpty(temp))
+            texts.add(temp);
         return texts;
     }
 }

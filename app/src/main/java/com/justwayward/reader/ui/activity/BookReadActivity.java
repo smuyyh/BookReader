@@ -67,8 +67,6 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     RelativeLayout mRlBookReadRoot;
     @Bind(R.id.brflRoot)
     BookReadFrameLayout mBookReadFrameLayout;
-    @Bind(R.id.tvPageNumber)
-    TextView mTvPageNumber;
 
     @Bind(R.id.flipView)
     FlipViewController flipView;
@@ -133,6 +131,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         View view = getLayoutInflater().inflate(R.layout.item_book_read_page, null);
         final TextView tv = (TextView) view.findViewById(R.id.tvBookReadContent);
         lineHeight = tv.getLineHeight();
+        LogUtils.i("line height:" + lineHeight + "  getLineHeight:");
         factory = new BookPageFactory(bookId, lineHeight);
 
         mTocListAdapter = new TocListAdapter(this, mChapterList);
@@ -231,11 +230,6 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         flipView.onPause();
     }
 
-    private void updatePageNumber(){
-        mTvPageNumber.setText((flipView.getSelectedItemPosition() + 1) + "/" + mContentList.size());
-    }
-
-
     @Override
     public void onSideClick(boolean isLeft) {
         hideReadBar();
@@ -252,7 +246,6 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
             }
             startPage = false;
         }
-        updatePageNumber();
     }
 
     private void hideReadBar() {
@@ -276,7 +269,6 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     @Override
     public void onViewFlipped(View view, int position) { // 页面滑动切换
         hideReadBar();
-        updatePageNumber();
         LogUtils.i("onViewFlipped--" + position);
         if (position == mContentList.size() - 1) { // 切换到最后一页
             if (!endPage) {
@@ -306,7 +298,6 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
             isPre = true; // 标记。加载完成之后显示最后一页
             showChapterRead(null, currentChapter);
         }
-        updatePageNumber();
     }
 
     @Override
@@ -317,7 +308,6 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
             startPage = true;
             showChapterRead(null, currentChapter);
         }
-        updatePageNumber();
     }
 
     /**
@@ -344,14 +334,13 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
             mContentList.clear();
             mContentList.addAll(list);
             if (readPageAdapter == null)
-                readPageAdapter = new BookReadPageAdapter(mContext, mContentList);
+                readPageAdapter = new BookReadPageAdapter(mContext, mContentList, mChapterList.get(currentChapter - 1).title);
             flipView.setAdapter(readPageAdapter);
             if (isPre) { // 如果是加载上一章，则跳转到最后一页
                 flipView.setSelection(mContentList.size() - 1);
                 endPage = true;
                 isPre = false;
             }
-            updatePageNumber();
         }
     }
 
@@ -361,7 +350,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         protected List<String> doInBackground(Integer... params) {
             int chapter = params[0];
             factory.readPage(chapter);
-            LogUtils.i("读取" + chapter);
+            LogUtils.i("read:" + chapter);
             return null;
         }
     }

@@ -37,7 +37,6 @@ public class CustomTextView extends TextView {
   public CustomTextView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     setTextColor(Color.BLACK);
-    setBackgroundColor(Color.WHITE);
     setGravity(Gravity.LEFT);
   }
 
