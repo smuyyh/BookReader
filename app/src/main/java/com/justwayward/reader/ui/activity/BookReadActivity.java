@@ -88,6 +88,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     private TocListAdapter mTocListAdapter;
 
     boolean startRead = false;
+    boolean endPage = false;
 
     @Override
     public int getLayoutId() {
@@ -162,7 +163,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         }
         if (data != null)
             factory.append(data, chapter);
-        if (factory.getBookFile(currentChapter).length() > 20 && !startRead) {
+        if (factory.getBookFile(currentChapter).length() > 20 && !startRead && currentChapter<mChapterList.size()) {
             startRead = true;
             new BookPageTask().execute();
         }
@@ -200,11 +201,12 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     @Override
     public void onSideClick(boolean isLeft) {
         if (isLeft) {
+            endPage = false;
             flipView.setSelection(flipView.getSelectedItemPosition() - 1);
-            Toast.makeText(this, "上一页", Toast.LENGTH_SHORT).show();
         } else {
             flipView.setSelection(flipView.getSelectedItemPosition() + 1);
-            Toast.makeText(this, "下一页", Toast.LENGTH_SHORT).show();
+            if(flipView.getSelectedItemPosition() == mContentList.size() - 1)
+                endPage = true;
         }
 
         if (mLlBookReadBottom.getVisibility() == View.VISIBLE) {
@@ -226,17 +228,29 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
     @Override
     public void onViewFlipped(View view, int position) {
-
+        LogUtils.i("onViewFlipped--"+position);
+        if (position == mContentList.size() - 1) {
+            if (!endPage) {
+                endPage = true;
+                return;
+            }
+            endPage = false;
+            Toast.makeText(this, "下一章", Toast.LENGTH_SHORT).show();
+            currentChapter += 1;
+            startRead = false;
+            showChapterRead(null, currentChapter);
+        }
     }
 
     @Override
     public void onPre() {
-        Toast.makeText(this, "上一章", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onNext() {
-        Toast.makeText(this, "下一章", Toast.LENGTH_SHORT).show();
+        currentChapter += 1;
+        startRead = false;
+        showChapterRead(null, currentChapter);
     }
 
     class BookPageTask extends AsyncTask<Integer, Integer, List<String>> {
@@ -259,7 +273,8 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
             LogUtils.i("分页后" + new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss:SSS").format(new Date(System.currentTimeMillis())));
             mContentList.clear();
             mContentList.addAll(list);
-            readPageAdapter = new BookReadPageAdapter(mContext, mContentList);
+            if (readPageAdapter == null)
+                readPageAdapter = new BookReadPageAdapter(mContext, mContentList);
             flipView.setAdapter(readPageAdapter);
         }
     }

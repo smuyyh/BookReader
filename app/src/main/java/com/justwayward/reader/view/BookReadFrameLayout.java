@@ -47,7 +47,7 @@ public class BookReadFrameLayout extends FrameLayout {
                 isChange = false;
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (isChange && (preX != ev.getRawX() || preY != ev.getRawY())) {
+                if (!isChange && (preX != ev.getRawX() || preY != ev.getRawY())) {
                     isChange = true;
                 }
                 break;
@@ -76,8 +76,6 @@ public class BookReadFrameLayout extends FrameLayout {
                 break;
 
         }
-
-
         return super.dispatchTouchEvent(ev);
     }
 
