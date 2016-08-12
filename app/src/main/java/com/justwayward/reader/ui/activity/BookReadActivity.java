@@ -67,6 +67,8 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     RelativeLayout mRlBookReadRoot;
     @Bind(R.id.brflRoot)
     BookReadFrameLayout mBookReadFrameLayout;
+    @Bind(R.id.tvPageNumber)
+    TextView mTvPageNumber;
 
     @Bind(R.id.flipView)
     FlipViewController flipView;
@@ -183,6 +185,9 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
             new BookPageTask().execute();
         }
 
+        if (data != null)
+            factory.append(data, chapter); // 缓存章节保存到文件
+
         if (chapter == currentChapter) {
             // 每次都往后继续缓存三个章节
             for (int j = currentChapter + 1; j <= currentChapter + 3 && j <= mChapterList.size(); j++) {
@@ -193,11 +198,9 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
                     new ChapterCacheTask().execute(j); // 文章存在，则读取，放到LRUMap中
                 }
             }
-        } else if (!factory.hasCache(chapter)) { // 新获取的章节，还未缓存在LruMap
+        } else if (factory.getBookFile(chapter).length() > 50 && !factory.hasCache(chapter)) { // 新获取的章节，还未缓存在LruMap
             new ChapterCacheTask().execute(chapter);
         }
-        if (data != null)
-            factory.append(data, chapter); // 缓存章节保存到文件
     }
 
 
@@ -228,6 +231,10 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         flipView.onPause();
     }
 
+    private void updatePageNumber(){
+        mTvPageNumber.setText((flipView.getSelectedItemPosition() + 1) + "/" + mContentList.size());
+    }
+
 
     @Override
     public void onSideClick(boolean isLeft) {
@@ -245,6 +252,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
             }
             startPage = false;
         }
+        updatePageNumber();
     }
 
     private void hideReadBar() {
@@ -268,6 +276,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     @Override
     public void onViewFlipped(View view, int position) { // 页面滑动切换
         hideReadBar();
+        updatePageNumber();
         LogUtils.i("onViewFlipped--" + position);
         if (position == mContentList.size() - 1) { // 切换到最后一页
             if (!endPage) {
@@ -297,6 +306,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
             isPre = true; // 标记。加载完成之后显示最后一页
             showChapterRead(null, currentChapter);
         }
+        updatePageNumber();
     }
 
     @Override
@@ -307,6 +317,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
             startPage = true;
             showChapterRead(null, currentChapter);
         }
+        updatePageNumber();
     }
 
     /**
@@ -322,7 +333,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
         @Override
         protected List<String> doInBackground(Integer... params) {
-            List<String> list = factory.readPage(factory.readTxt(currentChapter), currentChapter);
+            List<String> list = factory.readPage(currentChapter);
             return list;
         }
 
@@ -340,6 +351,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
                 endPage = true;
                 isPre = false;
             }
+            updatePageNumber();
         }
     }
 
@@ -348,8 +360,8 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         @Override
         protected List<String> doInBackground(Integer... params) {
             int chapter = params[0];
-            factory.readPage(factory.readTxt(chapter), chapter);
-            LogUtils.i("读取"+chapter);
+            factory.readPage(chapter);
+            LogUtils.i("读取" + chapter);
             return null;
         }
     }

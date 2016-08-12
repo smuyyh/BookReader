@@ -85,6 +85,30 @@ public class BookPageFactory {
     }
 
     /**
+     * 读取文章并进行分页处理。增加线程锁，避免同时对一篇文章进行分页
+     *
+     * @param chapter
+     * @return
+     */
+    public synchronized ArrayList<String> readPage(int chapter) {
+        ArrayList<String> split = cache.get(bookId + "-" + chapter);
+        if (split != null && split.size() > 0) {
+            LogUtils.d(bookId + "-" + chapter + ": from cache");
+            return split;
+        }
+        String temp = readTxt(chapter);
+        try {
+            split = split(temp, mLineWordCount * 2, "GBK");
+            cache.put(bookId + "-" + chapter, split);
+            LogUtils.d(bookId + "-" + chapter + ": add cache");
+            return split;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * 读取文章的段落集合
      */
     public String readTxt(int chapter) {
@@ -116,23 +140,15 @@ public class BookPageFactory {
         return temp;
     }
 
-    public synchronized ArrayList<String> readPage(String temp, int chapter) {
-        ArrayList<String> split = cache.get(bookId + "-" + chapter);
-        if (split != null && split.size() > 0) {
-            LogUtils.d(bookId + "-" + chapter + ": from cache");
-            return split;
-        }
-        try {
-            split = split(temp, mLineWordCount * 2, "GBK");
-            cache.put(bookId + "-" + chapter, split);
-            LogUtils.d(bookId + "-" + chapter + ": add cache");
-            return split;
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
+    /**
+     * 分页处理
+     *
+     * @param text
+     * @param length
+     * @param encoding
+     * @return
+     * @throws UnsupportedEncodingException
+     */
     public ArrayList<String> split(String text, int length, String encoding) throws UnsupportedEncodingException {
         ArrayList<String> texts = new ArrayList();
         String temp = "";
