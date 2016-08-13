@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/rlBookReadRoot"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/reader_background_brown_big_img"
-                android:fitsSystemWindows="true"
-                android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rlBookReadRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/reader_background_brown_big_img"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
     <com.justwayward.reader.view.BookReadFrameLayout
         android:id="@+id/brflRoot"
@@ -14,11 +14,11 @@
         android:layout_height="match_parent">
 
         <com.yuyh.library.bookflip.FlipViewController xmlns:flip="http://schemas.android.com/apk/res-auto"
-                                                      android:id="@+id/flipView"
-                                                      android:layout_width="match_parent"
-                                                      android:layout_height="match_parent"
-                                                      flip:animationBitmapFormat="RGB_565"
-                                                      flip:orientation="horizontal"/>
+            android:id="@+id/flipView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            flip:animationBitmapFormat="RGB_565"
+            flip:orientation="horizontal" />
     </com.justwayward.reader.view.BookReadFrameLayout>
 
     <LinearLayout
@@ -37,22 +37,22 @@
             android:id="@+id/ivBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ab_back"/>
+            android:src="@drawable/ab_back" />
 
         <TextView
             android:id="@+id/tvBookReadTocTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
+            android:textColor="@color/white"
             android:textSize="20sp"
-            tools:text="武侠世界自由行"
             android:visibility="gone"
-            android:textColor="@color/white"/>
+            tools:text="武侠世界自由行" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="3"/>
+            android:layout_weight="3" />
 
         <TextView
             android:id="@+id/tvBookReadReading"
@@ -61,7 +61,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/book_read_reading"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/tvBookReadCommunity"
@@ -70,7 +70,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/book_read_community"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/tvBookReadChangeSource"
@@ -79,14 +79,14 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/book_read_change_source"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
 
         <ImageView
             android:id="@+id/ivBookReadMore"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/abc_ic_menu_moreoverflow_mtrl_alpha"/>
+            android:src="@drawable/abc_ic_menu_moreoverflow_mtrl_alpha" />
 
     </LinearLayout>
 
@@ -109,7 +109,7 @@
             android:drawableTop="@drawable/ic_menu_mode_night_normal"
             android:gravity="center"
             android:text="@string/book_read_mode"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/tvBookReadFeedBack"
@@ -119,7 +119,7 @@
             android:drawableTop="@drawable/vote_edit_tips_icon"
             android:gravity="center"
             android:text="@string/book_read_feedback"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/tvBookReadSettings"
@@ -129,7 +129,7 @@
             android:drawableTop="@drawable/ic_menu_settings_normal"
             android:gravity="center"
             android:text="@string/book_read_settings"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/tvBookReadDownload"
@@ -139,7 +139,7 @@
             android:drawableTop="@drawable/ic_reader_ab_download"
             android:gravity="center"
             android:text="@string/book_read_download"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/tvBookReadToc"
@@ -149,7 +149,7 @@
             android:drawableTop="@drawable/ic_menu_toc_normal"
             android:gravity="center"
             android:text="@string/book_read_toc"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
 
     </LinearLayout>
 

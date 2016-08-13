@@ -1,5 +1,6 @@
 package com.justwayward.reader.ui.activity;
 
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.widget.ListPopupWindow;
 import android.view.KeyEvent;
@@ -26,6 +27,7 @@ import com.justwayward.reader.ui.contract.BookReadContract;
 import com.justwayward.reader.ui.presenter.BookReadPresenter;
 import com.justwayward.reader.utils.BookPageFactory;
 import com.justwayward.reader.utils.LogUtils;
+import com.justwayward.reader.utils.StatusBarCompat;
 import com.justwayward.reader.view.BookReadFrameLayout;
 import com.yuyh.library.bookflip.FlipViewController;
 
@@ -126,7 +128,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
     @Override
     public void initToolBar() {
-
+        StatusBarCompat.compat(this, Color.TRANSPARENT);
     }
 
     @Override

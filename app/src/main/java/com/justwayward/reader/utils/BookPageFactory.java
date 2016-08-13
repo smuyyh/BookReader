@@ -82,7 +82,7 @@ public class BookPageFactory {
      */
     public void append(final ChapterRead.Chapter chapter, int chapterNo) {
         File file = getBookFile(chapterNo);
-        FileUtils.writeFile(file.getAbsolutePath(), chapter.title + "\n" + chapter.body, true);
+        FileUtils.writeFile(file.getAbsolutePath(), chapter.body, false);
     }
 
     /**
@@ -140,9 +140,8 @@ public class BookPageFactory {
             return null;
         }
 
-        String line = "";
+        String line;
         try {
-            bufferedReader.readLine(); // 把标题读掉
             while ((line = bufferedReader.readLine()) != null) {
                 temp += line + "\n";
             }

@@ -14,12 +14,16 @@ import butterknife.ButterKnife;
 
 public abstract class BaseActivity extends AppCompatActivity {
     protected Context mContext;
+    protected int statusBarColor = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
-        StatusBarCompat.compat(this);
+        if (statusBarColor != 0) {
+            StatusBarCompat.compat(this, statusBarColor);
+        } else
+            StatusBarCompat.compat(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
                 && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             //透明状态栏
