@@ -4,7 +4,7 @@
     android:id="@+id/rlBookReadRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/reader_background_brown_big_img"
+    android:background="@color/book_read_bg"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
@@ -126,7 +126,7 @@
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_menu_mode_night_normal"
             android:gravity="center"
-            android:text="@string/book_read_mode"
+            android:text="@string/book_read_mode_day"
             android:textColor="@color/white" />
 
         <TextView

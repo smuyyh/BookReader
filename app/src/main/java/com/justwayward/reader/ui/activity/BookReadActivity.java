@@ -1,8 +1,10 @@
 package com.justwayward.reader.ui.activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.ListPopupWindow;
 import android.view.KeyEvent;
 import android.view.View;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
+import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.BookSource;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.ChapterRead;
@@ -28,6 +31,7 @@ import com.justwayward.reader.ui.contract.BookReadContract;
 import com.justwayward.reader.ui.presenter.BookReadPresenter;
 import com.justwayward.reader.utils.BookPageFactory;
 import com.justwayward.reader.utils.LogUtils;
+import com.justwayward.reader.utils.SharedPreferencesUtil;
 import com.justwayward.reader.utils.ToastUtils;
 import com.justwayward.reader.view.BookReadFrameLayout;
 import com.yuyh.library.bookflip.FlipViewController;
@@ -253,6 +257,18 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     @OnClick(R.id.tvBookReadChangeSource)
     public void onClickChangeSource() {
 
+    }
+
+    @OnClick(R.id.tvBookReadMode)
+    public void onClickChangeMode() {
+        if(SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)){
+            SharedPreferencesUtil.getInstance().putBoolean(Constant.ISNIGHT, false);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }else{
+            SharedPreferencesUtil.getInstance().putBoolean(Constant.ISNIGHT, true);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+        recreate();
     }
 
     @OnClick(R.id.tvBookReadToc)

@@ -27,6 +27,7 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/ivIconSeach"
             android:text="XXXX"
+            android:textColor="@color/common_title"
             android:textSize="16sp" />
 
     </RelativeLayout>
@@ -34,6 +35,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#ECECEC" />
+        android:background="@color/divider_narrow" />
 
 </LinearLayout>

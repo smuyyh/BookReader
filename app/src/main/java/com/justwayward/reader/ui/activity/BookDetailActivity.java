@@ -235,4 +235,5 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
         startActivity(new Intent(this, BookReadActivity.class)
                 .putExtra("bookId", bookId));
     }
+
 }

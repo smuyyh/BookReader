@@ -27,7 +27,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:text="此单在手，书荒不再有！"
-            android:textColor="@color/black"
+            android:textColor="@color/common_title"
             android:textSize="16sp" />
 
         <TextView
@@ -39,6 +39,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:text="选择"
+            android:textColor="@color/common_desc"
             android:textSize="13sp" />
 
         <TextView
@@ -49,6 +50,7 @@
             android:layout_marginBottom="10dp"
             android:ellipsize="end"
             android:singleLine="true"
+            android:textColor="@color/common_desc"
             android:text="应有尽有！注：随时有可能添加新书"
             android:textSize="13sp" />
 
@@ -60,6 +62,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:text="@string/book_detail_recommend_book_list_book_count"
+            android:textColor="@color/common_ps"
             android:textSize="13sp" />
 
         <TextView
@@ -71,6 +74,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:text="@string/book_detail_recommend_book_list_collector_count"
+            android:textColor="@color/common_ps"
             android:textSize="13sp" />
 
     </RelativeLayout>

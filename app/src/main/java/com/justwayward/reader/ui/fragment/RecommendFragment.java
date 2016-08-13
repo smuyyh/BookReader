@@ -90,4 +90,5 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
         startActivity(new Intent(activity, BookReadActivity.class)
                 .putExtra("bookId", data._id).putExtra("bookName",data.title));
     }
+
 }

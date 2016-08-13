@@ -17,7 +17,6 @@ limitations under the License.
 package com.justwayward.reader.view;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.TextView;
@@ -36,7 +35,6 @@ public class CustomTextView extends TextView {
 
   public CustomTextView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
-    setTextColor(Color.BLACK);
     setGravity(Gravity.LEFT);
   }
 

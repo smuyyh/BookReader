@@ -4,11 +4,13 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
 import android.view.WindowManager;
 
 import com.justwayward.reader.ReaderApplication;
 import com.justwayward.reader.component.AppComponent;
+import com.justwayward.reader.utils.SharedPreferencesUtil;
 import com.justwayward.reader.utils.StatusBarCompat;
 
 import butterknife.ButterKnife;
@@ -16,6 +18,7 @@ import butterknife.ButterKnife;
 public abstract class BaseActivity extends AppCompatActivity {
     protected Context mContext;
     protected int statusBarColor = 0;
+    private boolean mNowMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         initToolBar();
         initDatas();
         configViews();
+        mNowMode=SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT);
     }
 
     @Override
@@ -90,5 +94,18 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected boolean isVisible(View view) {
         return view.getVisibility() == View.VISIBLE;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT,false)!=mNowMode){
+            if(SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            }else{
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+            recreate();
+        }
     }
 }
