@@ -104,6 +104,7 @@
         android:paddingLeft="25dp"
         android:paddingTop="10dp"
         android:visibility="gone"
+        android:textColor="@color/white"
         android:text="@string/book_read_download_progress" />
 
     <LinearLayout

@@ -150,6 +150,31 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
                 LogUtils.i("缓存完成，失败" + failureCount + "章");
             }
         }.execute();
+
+        /*new Thread(new Runnable() {
+
+            BookPageFactory factory = new BookPageFactory(bookId, 0);
+            int failureCount = 0;
+            @Override
+            public void run() {
+                for (int i = start; i < end && i <= list.size(); i++) {
+                    if (factory.getBookFile(i).length() < 50) { // 认为章节文件不存在,则下载
+                        BookToc.mixToc.Chapters chapters = list.get(i-1);
+                        String url = chapters.link;
+                        int ret = download(url, i);
+                        if (ret != 1) {
+                            failureCount++;
+                        }
+                    } else {
+                        view.showDownloadProgress(null, i);
+                    }
+                }
+
+
+                ToastUtils.showSingleToast("缓存完成！");
+                LogUtils.i("缓存完成，失败" + failureCount + "章");
+            }
+        }).start();*/
     }
 
     private int download(String url, final int chapter) {
@@ -182,7 +207,11 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
                 });
 
         while (result[0] == -1) {
-
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         return result[0];
     }
