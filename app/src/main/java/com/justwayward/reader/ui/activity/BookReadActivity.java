@@ -28,6 +28,7 @@ import com.justwayward.reader.ui.contract.BookReadContract;
 import com.justwayward.reader.ui.presenter.BookReadPresenter;
 import com.justwayward.reader.utils.BookPageFactory;
 import com.justwayward.reader.utils.LogUtils;
+import com.justwayward.reader.utils.ToastUtils;
 import com.justwayward.reader.view.BookReadFrameLayout;
 import com.yuyh.library.bookflip.FlipViewController;
 
@@ -231,7 +232,12 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
                 mTvDownloadProgress.setText(String.format(getString(R.string.book_read_download_progress), mChapterList.get(chapter - 1).title, chapter, mChapterList.size()));
             }
         });
-        visible(mTvDownloadProgress);
+    }
+
+    @Override
+    public void downloadComplete() {
+        ToastUtils.showSingleToast("缓存完成！");
+        gone(mTvDownloadProgress);
     }
 
 
@@ -268,6 +274,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
                 .setItems(new String[]{"后面五十章", "后面全部", "全部"}, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        visible(mTvDownloadProgress);
                         switch (which) {
                             case 0:
                                 mPresenter.downloadBook(bookId, mChapterList, currentChapter + 1, currentChapter + 50);
@@ -286,11 +293,13 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     }
 
     private void hideReadBar() { // 隐藏工具栏
-        gone(mLlBookReadBottom, mLlBookReadTop);
+        gone(mLlBookReadBottom, mLlBookReadTop, mTvDownloadProgress);
     }
 
     private void showReadBar() { // 显示工具栏
         visible(mLlBookReadBottom, mLlBookReadTop);
+        if(!mPresenter.interrupted)
+            visible(mTvDownloadProgress);
     }
 
     private void toggleReadBar() { // 切换工具栏 隐藏/显示 状态

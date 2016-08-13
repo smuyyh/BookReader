@@ -20,6 +20,8 @@ public interface BookReadContract {
         void showBookSource(List<BookSource> list);
 
         void showDownloadProgress(ChapterRead.Chapter data, int chapter);
+
+        void downloadComplete();
     }
 
     interface Presenter<T> extends BaseContract.BasePresenter<T> {

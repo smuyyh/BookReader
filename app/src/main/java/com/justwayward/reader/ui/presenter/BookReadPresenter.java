@@ -11,7 +11,6 @@ import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.ui.contract.BookReadContract;
 import com.justwayward.reader.utils.BookPageFactory;
 import com.justwayward.reader.utils.LogUtils;
-import com.justwayward.reader.utils.ToastUtils;
 
 import java.util.List;
 
@@ -34,7 +33,7 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
 
     private static final String TAG = "BookReadPresenter";
 
-    public boolean interrupted = false;
+    public boolean interrupted = true;
 
     @Inject
     public BookReadPresenter(Context context, BookApi bookApi) {
@@ -147,7 +146,9 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
             @Override
             protected void onPostExecute(Integer integer) {
                 super.onPostExecute(integer);
-                ToastUtils.showSingleToast("缓存完成！");
+                interrupted = true;
+                if(view!=null)
+                    view.downloadComplete();
                 LogUtils.i("缓存完成，失败" + failureCount + "章");
             }
         };
