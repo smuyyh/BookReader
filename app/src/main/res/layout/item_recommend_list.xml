@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:textColor="@color/black"
+            android:textColor="@color/common_title"
             android:textSize="16sp"
             android:singleLine="true"
             android:text="宦官哈哈" />
@@ -36,6 +36,7 @@
             android:layout_marginTop="3dp"
             android:ellipsize="end"
             android:maxLines="2"
+            android:textColor="@color/common_desc"
             android:text="xxxxxxxxxxxxxxxx" />
 
 

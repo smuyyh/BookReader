@@ -15,7 +15,18 @@
     <color name="red">#FF0000</color>
     <color name="light_black">#515151</color>
 
-    <color name="content">#3B3220</color>
-    <color name="page_number">#7D735A</color>
+    <color name="common_bg">@color/white</color>
+    <color name="common_title">#212121</color>
+    <color name="common_desc">#727272</color>
+    <color name="common_ps">#B2B2B2</color>
+
+    <color name="book_read_bg">@color/white</color>
+
     <color name="chapter_title">#81765D</color>
+    <color name="chapter_content">#3B3220</color>
+    <color name="chapter_page_number">#7D735A</color>
+
+    <color name="divider_narrow">#E3E3E3</color>
+    <color name="divider_wide">@color/light_white</color>
+
 </resources>

@@ -22,7 +22,7 @@
     <string name="book_read_reading">朗读</string>
     <string name="book_read_community">社区</string>
     <string name="book_read_change_source">换源</string>
-    <string name="book_read_mode">夜间</string>
+    <string name="book_read_mode_day">夜间</string>
     <string name="book_read_feedback">反馈</string>
     <string name="book_read_settings">设置</string>
     <string name="book_read_download">缓存</string>

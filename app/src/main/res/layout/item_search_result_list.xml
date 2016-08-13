@@ -27,7 +27,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:text="武侠世界自由行"
-            android:textColor="@color/black"
+            android:textColor="@color/common_title"
             android:textSize="16sp" />
 
         <TextView
@@ -38,6 +38,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:text="549人在追 | "
+            android:textColor="@color/common_desc"
             android:textSize="13sp" />
 
         <TextView
@@ -49,6 +50,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:text="60.1%读者留存 | "
+            android:textColor="@color/common_desc"
             android:textSize="13sp" />
 
         <TextView
@@ -60,6 +62,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:text="大江入海著"
+            android:textColor="@color/common_desc"
             android:textSize="13sp" />
 
 

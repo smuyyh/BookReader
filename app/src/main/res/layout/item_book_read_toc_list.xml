@@ -4,6 +4,7 @@
               android:layout_height="match_parent"
               android:layout_margin="20dp"
               android:orientation="vertical"
+              android:background="@color/common_bg"
     >
 
     <TextView
@@ -22,6 +23,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#ECECEC"/>
+        android:background="@color/divider_narrow"/>
 
 </LinearLayout>

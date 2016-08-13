@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="@color/common_bg"
     android:orientation="vertical">
 
     <include layout="@layout/common_toolbar" />
