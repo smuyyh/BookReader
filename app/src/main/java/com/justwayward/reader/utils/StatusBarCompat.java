@@ -3,10 +3,11 @@ package com.justwayward.reader.utils;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.justwayward.reader.R;
 
 /**
  * @author yuyh.
@@ -14,7 +15,6 @@ import android.view.ViewGroup;
  */
 public class StatusBarCompat {
     private static final int INVALID_VAL = -1;
-    private static final int COLOR_DEFAULT = Color.parseColor("#3F51B5");
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void compat(Activity activity, int statusColor) {
@@ -27,7 +27,7 @@ public class StatusBarCompat {
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            int color = COLOR_DEFAULT;
+            int color = activity.getResources().getColor(R.color.colorPrimaryDark);
             ViewGroup contentView = (ViewGroup) activity.findViewById(android.R.id.content);
             if (statusColor != INVALID_VAL) {
                 color = statusColor;

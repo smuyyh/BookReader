@@ -41,7 +41,7 @@
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="武侠世界自由行"
-                    android:textColor="@color/common_title"
+                    android:textColor="@color/common_h1"
                     android:textSize="16sp" />
 
                 <TextView
@@ -64,7 +64,7 @@
                     android:layout_toRightOf="@id/tvAuthor"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:textColor="@color/common_desc"
+                    android:textColor="@color/common_h2"
                     android:text="仙侠 | "
                     android:textSize="13sp" />
 
@@ -76,7 +76,7 @@
                     android:layout_toRightOf="@id/tvCatgory"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:textColor="@color/common_desc"
+                    android:textColor="@color/common_h2"
                     android:text="594万字"
                     android:textSize="13sp" />
 
@@ -89,7 +89,7 @@
                     android:layout_toRightOf="@id/ivBookCover"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:textColor="@color/common_desc"
+                    android:textColor="@color/common_h2"
                     android:text="4月前"
                     android:textSize="13sp" />
 
@@ -135,7 +135,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:background="@color/divider_narrow" />
+                android:background="@color/common_divider_narrow" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -156,7 +156,7 @@
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="追书人数"
-                        android:textColor="@color/common_desc"
+                        android:textColor="@color/common_h2"
                         android:textSize="13sp" />
 
                     <TextView
@@ -166,7 +166,7 @@
                         android:layout_marginTop="5dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:textColor="@color/common_title"
+                        android:textColor="@color/common_h1"
                         android:text="82"
                         android:textSize="15sp" />
 
@@ -185,7 +185,7 @@
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="读者留存率"
-                        android:textColor="@color/common_desc"
+                        android:textColor="@color/common_h2"
                         android:textSize="13sp" />
 
                     <TextView
@@ -196,7 +196,7 @@
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="20.29%"
-                        android:textColor="@color/common_title"
+                        android:textColor="@color/common_h1"
                         android:textSize="15sp" />
 
                 </LinearLayout>
@@ -214,7 +214,7 @@
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="日更新字数"
-                        android:textColor="@color/common_desc"
+                        android:textColor="@color/common_h2"
                         android:textSize="13sp" />
 
                     <TextView
@@ -225,7 +225,7 @@
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="4614"
-                        android:textColor="@color/common_title"
+                        android:textColor="@color/common_h1"
                         android:textSize="15sp" />
 
                 </LinearLayout>
@@ -235,7 +235,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:layout_margin="10dp"
-                android:background="@color/divider_narrow" />
+                android:background="@color/common_divider_narrow" />
 
             <com.justwayward.reader.view.TagGroup
                 android:id="@+id/tag_group"
@@ -247,7 +247,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:layout_margin="10dp"
-                android:background="@color/divider_narrow" />
+                android:background="@color/common_divider_narrow" />
 
             <TextView
                 android:id="@+id/tvlongIntro"
@@ -256,13 +256,13 @@
                 android:layout_marginTop="-10dp"
                 android:padding="15dp"
                 android:text="zzzzzzzzz"
-                android:textColor="@color/common_title"
+                android:textColor="@color/common_h1"
                 android:textSize="15sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:background="@color/divider_wide" />
+                android:background="@color/common_divider_wide" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -273,7 +273,7 @@
                     android:layout_height="wrap_content"
                     android:padding="15dp"
                     android:text="@string/book_detail_hot_reviews"
-                    android:textColor="@color/common_title"
+                    android:textColor="@color/common_h1"
                     android:textSize="15sp" />
 
                 <TextView
@@ -282,7 +282,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:padding="15dp"
-                    android:textColor="@color/common_desc"
+                    android:textColor="@color/common_h2"
                     android:text="更多"
                     android:textSize="15sp" />
             </LinearLayout>
@@ -296,7 +296,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:background="@color/divider_wide" />
+                android:background="@color/common_divider_wide" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -308,7 +308,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/book_detail_community"
-                    android:textColor="@color/common_title"
+                    android:textColor="@color/common_h1"
                     android:textSize="15sp" />
 
                 <TextView
@@ -317,7 +317,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tvCommunity"
                     android:layout_marginTop="5dp"
-                    android:textColor="@color/common_desc"
+                    android:textColor="@color/common_h2"
                     android:text="@string/book_detail_post_count"
                     android:textSize="13sp" />
 
@@ -332,7 +332,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:background="@color/divider_wide" />
+                android:background="@color/common_divider_wide" />
 
             <TextView
                 android:id="@+id/tvRecommendBookList"
@@ -340,7 +340,7 @@
                 android:layout_height="wrap_content"
                 android:padding="15dp"
                 android:text="@string/book_detail_recommend_book_list"
-                android:textColor="@color/common_title"
+                android:textColor="@color/common_h1"
                 android:textSize="15sp"
                 android:visibility="gone" />
 

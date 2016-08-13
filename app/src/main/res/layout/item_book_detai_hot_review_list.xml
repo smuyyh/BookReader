@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tvNickName"
         android:ellipsize="end"
-        android:textColor="@color/common_title"
+        android:textColor="@color/common_h1"
         android:singleLine="true"
         android:layout_marginTop="5dp"
         android:text="越到后面越索然无味"/>
@@ -53,7 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvTitle"
-        android:textColor="@color/common_desc"
+        android:textColor="@color/common_h2"
         android:ellipsize="end"
         android:maxLines="2"
         android:textSize="13sp"
@@ -70,7 +70,7 @@
         android:drawableLeft="@drawable/review_useful_yes_nor"
         android:layout_marginTop="5dp"
         android:drawablePadding="5dp"
-        android:textColor="@color/common_ps"
+        android:textColor="@color/common_h3"
         android:text="308"/>
 
 </RelativeLayout>

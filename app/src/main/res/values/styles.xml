@@ -2,9 +2,11 @@
 
      BaseContract application theme.
     <style name="AppTheme" parent="Theme.AppCompat.DayNight">
-        <!-- Customize your theme here. -->
+        <!--标题栏的颜色-->
         <item name="colorPrimary">@color/colorPrimary</item>
+        <!--状态栏的颜色-->
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!--控件的选中颜色，即checked或selected状态的颜色。-->
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
