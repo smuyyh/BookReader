@@ -220,6 +220,20 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
     }
 
+    @Override
+    public synchronized void showDownloadProgress(ChapterRead.Chapter data, final int chapter) {
+        if (data != null)
+            factory.append(data, chapter); // 缓存章节保存到文件
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mTvDownloadProgress.setText(String.format(getString(R.string.book_read_download_progress), mChapterList.get(chapter - 1).title, chapter, mChapterList.size()));
+            }
+        });
+        visible(mTvDownloadProgress);
+    }
+
 
     @OnClick(R.id.ivBack)
     public void onClickBack() {
@@ -256,10 +270,13 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
+                                mPresenter.downloadBook(bookId, mChapterList, currentChapter + 1, currentChapter + 50);
                                 break;
                             case 1:
+                                mPresenter.downloadBook(bookId, mChapterList, currentChapter + 1, mChapterList.size());
                                 break;
                             case 2:
+                                mPresenter.downloadBook(bookId, mChapterList, 1, mChapterList.size());
                                 break;
                         }
                     }
@@ -269,7 +286,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     }
 
     private void hideReadBar() { // 隐藏工具栏
-        gone(mLlBookReadBottom, mLlBookReadTop, mTvDownloadProgress);
+        gone(mLlBookReadBottom, mLlBookReadTop);
     }
 
     private void showReadBar() { // 显示工具栏
