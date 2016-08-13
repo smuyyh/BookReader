@@ -89,12 +89,12 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
 
     @Override
     public void getBookSource(String viewSummary, String book) {
-        bookApi.getBookSource(viewSummary,book).subscribeOn(Schedulers.io())
+        bookApi.getBookSource(viewSummary, book).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<BookSource>>() {
                     @Override
                     public void onNext(List<BookSource> data) {
-                        if (data!= null && view != null) {
+                        if (data != null && view != null) {
                             view.showBookSource(data);
                         }
                     }
@@ -108,6 +108,10 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
                         Log.e(TAG, "onError: " + e);
                     }
                 });
+    }
+
+    public synchronized void downloadBook() {
+
     }
 
 

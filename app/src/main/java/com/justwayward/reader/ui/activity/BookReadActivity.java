@@ -1,7 +1,8 @@
 package com.justwayward.reader.ui.activity;
 
-import android.graphics.Color;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.ListPopupWindow;
 import android.view.KeyEvent;
 import android.view.View;
@@ -27,7 +28,6 @@ import com.justwayward.reader.ui.contract.BookReadContract;
 import com.justwayward.reader.ui.presenter.BookReadPresenter;
 import com.justwayward.reader.utils.BookPageFactory;
 import com.justwayward.reader.utils.LogUtils;
-import com.justwayward.reader.utils.StatusBarCompat;
 import com.justwayward.reader.view.BookReadFrameLayout;
 import com.yuyh.library.bookflip.FlipViewController;
 
@@ -77,6 +77,8 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     RelativeLayout mRlBookReadRoot;
     @Bind(R.id.brflRoot)
     BookReadFrameLayout mBookReadFrameLayout;
+    @Bind(R.id.tvDownloadProgress)
+    TextView mTvDownloadProgress;
 
     @Bind(R.id.flipView)
     FlipViewController flipView;
@@ -128,7 +130,6 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
     @Override
     public void initToolBar() {
-        StatusBarCompat.compat(this, Color.TRANSPARENT);
     }
 
     @Override
@@ -224,7 +225,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     public void onClickBack() {
         if (mTocListPopupWindow.isShowing()) {
             mTocListPopupWindow.dismiss();
-        }else{
+        } else {
             finish();
         }
     }
@@ -237,11 +238,8 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     @OnClick(R.id.tvBookReadToc)
     public void onClickToc() {
         if (!mTocListPopupWindow.isShowing()) {
-            mTvBookReadTocTitle.setVisibility(View.VISIBLE);
-            mTvBookReadReading.setVisibility(View.GONE);
-            mTvBookReadCommunity.setVisibility(View.GONE);
-            mTvBookReadChangeSource.setVisibility(View.GONE);
-            mIvBookReadMore.setVisibility(View.GONE);
+            visible(mTvBookReadTocTitle);
+            gone(mTvBookReadReading, mTvBookReadCommunity, mTvBookReadChangeSource, mIvBookReadMore);
             mTocListPopupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
             mTocListPopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             mTocListPopupWindow.show();
@@ -249,16 +247,41 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         mTocListAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        flipView.onResume();
+    @OnClick(R.id.tvBookReadDownload)
+    public void downloadBook() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("缓存多少章？")
+                .setItems(new String[]{"后面五十章", "后面全部", "全部"}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                break;
+                            case 1:
+                                break;
+                            case 2:
+                                break;
+                        }
+                    }
+                });
+        builder.show();
+
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        flipView.onPause();
+    private void hideReadBar() { // 隐藏工具栏
+        gone(mLlBookReadBottom, mLlBookReadTop, mTvDownloadProgress);
+    }
+
+    private void showReadBar() { // 显示工具栏
+        visible(mLlBookReadBottom, mLlBookReadTop);
+    }
+
+    private void toggleReadBar() { // 切换工具栏 隐藏/显示 状态
+        if (isVisible(mLlBookReadBottom)) {
+            hideReadBar();
+        } else {
+            showReadBar();
+        }
     }
 
     @Override
@@ -279,22 +302,9 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         }
     }
 
-    private void hideReadBar() {
-        if (mLlBookReadBottom.getVisibility() == View.VISIBLE) {
-            mLlBookReadBottom.setVisibility(View.GONE);
-            mLlBookReadTop.setVisibility(View.GONE);
-        }
-    }
-
     @Override
     public void onCenterClick() {
-        if (mLlBookReadBottom.getVisibility() == View.VISIBLE) {
-            mLlBookReadBottom.setVisibility(View.GONE);
-            mLlBookReadTop.setVisibility(View.GONE);
-        } else {
-            mLlBookReadBottom.setVisibility(View.VISIBLE);
-            mLlBookReadTop.setVisibility(View.VISIBLE);
-        }
+        toggleReadBar();
     }
 
     @Override
@@ -307,14 +317,14 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
                 return;
             }
             endPage = false;
-            onNext();
+            onNextChapter();
         } else if (position == 0) { // 切换到第一页
             if (!startPage) {
                 startPage = true; // 标记。继续切换时就切换到上一章节
                 return;
             }
             startPage = false;
-            onPre();
+            onPreChapter();
         } else {
             startPage = false;
             endPage = false;
@@ -322,7 +332,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     }
 
     @Override
-    public void onPre() { // 加载上一章
+    public void onPreChapter() { // 加载上一章
         if (currentChapter > 1) {
             currentChapter -= 1;
             startRead = false;
@@ -332,7 +342,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     }
 
     @Override
-    public void onNext() { // 加载下一章
+    public void onNextChapter() { // 加载下一章
         if (currentChapter < mChapterList.size()) {
             currentChapter += 1;
             startRead = false;
@@ -382,20 +392,23 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         }
     }
 
+    /**
+     * 缓存章节分页结果（预处理）
+     */
     class ChapterCacheTask extends AsyncTask<Integer, Integer, List<String>> {
 
         @Override
         protected List<String> doInBackground(Integer... params) {
             int chapter = params[0];
             factory.readPage(chapter);
-            LogUtils.i("read:" + chapter);
+            LogUtils.i("缓存章节分页结果:" + chapter);
             return null;
         }
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event){
-        if (keyCode == KeyEvent.KEYCODE_BACK ){
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (mTocListPopupWindow.isShowing()) {
                 mTocListPopupWindow.dismiss();
                 mTvBookReadTocTitle.setVisibility(View.GONE);
@@ -403,10 +416,22 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
                 mTvBookReadCommunity.setVisibility(View.VISIBLE);
                 mTvBookReadChangeSource.setVisibility(View.VISIBLE);
                 mIvBookReadMore.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 finish();
             }
         }
         return false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        flipView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        flipView.onPause();
     }
 }

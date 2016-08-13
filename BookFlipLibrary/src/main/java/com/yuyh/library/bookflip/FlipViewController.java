@@ -32,9 +32,9 @@ public class FlipViewController extends AdapterView<Adapter> {
     public interface ViewFlipListener {
         void onViewFlipped(View view, int position);
 
-        void onPre();
+        void onPreChapter();
 
-        void onNext();
+        void onNextChapter();
     }
 
     private static final int MAX_RELEASED_VIEW_SIZE = 1;
@@ -293,12 +293,12 @@ public class FlipViewController extends AdapterView<Adapter> {
         }
 
         if(position < 0){
-            onViewFlipListener.onPre();
+            onViewFlipListener.onPreChapter();
             return ;
         }
 
         if(position >= adapterDataCount){
-            onViewFlipListener.onNext();
+            onViewFlipListener.onNextChapter();
             return;
         }
         Assert.assertTrue("Invalid selection position", position >= 0 && position < adapterDataCount);
