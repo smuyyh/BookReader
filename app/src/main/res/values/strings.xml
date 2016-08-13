@@ -28,7 +28,7 @@
     <string name="book_read_download">缓存</string>
     <string name="book_read_toc">目录</string>
 
-    <string name="book_read_download_progress">正在缓存：%1$s（%2$d/%3$d）...</string>
+    <string name="book_read_download_progress">正在缓存:%1$s(%2$d/%3$d)...</string>
 
 
 </resources>
