@@ -451,4 +451,10 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         super.onPause();
         flipView.onPause();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.cancelDownload();
+    }
 }

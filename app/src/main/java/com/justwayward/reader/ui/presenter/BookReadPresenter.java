@@ -30,8 +30,11 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
     private BookApi bookApi;
 
     private BookReadContract.View view;
+    private AsyncTask<Integer, Integer, Integer> downloadTask;
 
     private static final String TAG = "BookReadPresenter";
+
+    public boolean interrupted = false;
 
     @Inject
     public BookReadPresenter(Context context, BookApi bookApi) {
@@ -115,7 +118,8 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
     }
 
     public synchronized void downloadBook(final String bookId, final List<BookToc.mixToc.Chapters> list, final int start, final int end) {
-        new AsyncTask<Integer, Integer, Integer>() {
+        interrupted = false;
+        downloadTask = new AsyncTask<Integer, Integer, Integer>() {
 
             int failureCount = 0;
             BookPageFactory factory = new BookPageFactory(bookId, 0);
@@ -123,20 +127,17 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
             @Override
             protected Integer doInBackground(Integer... params) {
                 for (int i = start; i < end && i <= list.size(); i++) {
-                    if (factory.getBookFile(i).length() < 50) { // 认为章节文件不存在,则下载
-                        BookToc.mixToc.Chapters chapters = list.get(i-1);
-                        String url = chapters.link;
-                        int ret = download(url, i);
-                        if (ret != 1) {
-                            failureCount++;
+                    if(!interrupted) {
+                        if (factory.getBookFile(i).length() < 50) { // 认为章节文件不存在,则下载
+                            BookToc.mixToc.Chapters chapters = list.get(i - 1);
+                            String url = chapters.link;
+                            int ret = download(url, i);
+                            if (ret != 1) {
+                                failureCount++;
+                            }
+                        } else {
+                            view.showDownloadProgress(null, i);
                         }
-                    } else {
-                        view.showDownloadProgress(null, i);
-                    }
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
                     }
                 }
                 return null;
@@ -149,32 +150,8 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
                 ToastUtils.showSingleToast("缓存完成！");
                 LogUtils.i("缓存完成，失败" + failureCount + "章");
             }
-        }.execute();
-
-        /*new Thread(new Runnable() {
-
-            BookPageFactory factory = new BookPageFactory(bookId, 0);
-            int failureCount = 0;
-            @Override
-            public void run() {
-                for (int i = start; i < end && i <= list.size(); i++) {
-                    if (factory.getBookFile(i).length() < 50) { // 认为章节文件不存在,则下载
-                        BookToc.mixToc.Chapters chapters = list.get(i-1);
-                        String url = chapters.link;
-                        int ret = download(url, i);
-                        if (ret != 1) {
-                            failureCount++;
-                        }
-                    } else {
-                        view.showDownloadProgress(null, i);
-                    }
-                }
-
-
-                ToastUtils.showSingleToast("缓存完成！");
-                LogUtils.i("缓存完成，失败" + failureCount + "章");
-            }
-        }).start();*/
+        };
+        downloadTask.execute();
     }
 
     private int download(String url, final int chapter) {
@@ -208,12 +185,16 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
 
         while (result[0] == -1) {
             try {
-                Thread.sleep(500);
+                Thread.sleep(300);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
         return result[0];
+    }
+
+    public void cancelDownload(){
+        interrupted = true;
     }
 
 }
