@@ -37,7 +37,7 @@ public class BookApiModule {
     /**
      * 自定义日志输出
      */
-    static class MyLog implements LoggingInterceptor.Logger {
+    public static class MyLog implements LoggingInterceptor.Logger {
         @Override
         public void log(String message) {
             LogUtils.i("oklog: " + message);

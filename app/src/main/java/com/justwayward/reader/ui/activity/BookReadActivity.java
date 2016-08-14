@@ -22,6 +22,8 @@ import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.BookSource;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.ChapterRead;
+import com.justwayward.reader.bean.support.DownloadProgress;
+import com.justwayward.reader.bean.support.DownloadQueue;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerBookReadActivityComponent;
 import com.justwayward.reader.ui.adapter.BookReadPageAdapter;
@@ -34,6 +36,10 @@ import com.justwayward.reader.utils.SharedPreferencesUtil;
 import com.justwayward.reader.utils.ToastUtils;
 import com.justwayward.reader.view.BookReadFrameLayout;
 import com.yuyh.library.bookflip.FlipViewController;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -138,6 +144,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
     @Override
     public void initDatas() {
+        EventBus.getDefault().register(this);
         bookId = getIntent().getStringExtra("bookId");
         mTvBookReadTocTitle.setText(getIntent().getStringExtra("bookName"));
     }
@@ -237,6 +244,12 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         });
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void showDownProgress(DownloadProgress progress) {
+        LogUtils.e(progress.bookId + " " + progress.progress + "/" + mChapterList.size());
+        mTvDownloadProgress.setText(String.format(getString(R.string.book_read_download_progress), mChapterList.get(progress.progress - 1).title, progress.progress, mChapterList.size()));
+    }
+
     @Override
     public void downloadComplete() {
         ToastUtils.showSingleToast("缓存完成！");
@@ -260,10 +273,10 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
     @OnClick(R.id.tvBookReadMode)
     public void onClickChangeMode() {
-        if(SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)){
+        if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)) {
             SharedPreferencesUtil.getInstance().putBoolean(Constant.ISNIGHT, false);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }else{
+        } else {
             SharedPreferencesUtil.getInstance().putBoolean(Constant.ISNIGHT, true);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
@@ -292,15 +305,16 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
                         visible(mTvDownloadProgress);
                         switch (which) {
                             case 0:
-                                mPresenter.downloadBook(bookId, mChapterList, currentChapter + 1, currentChapter + 50);
+                                //mPresenter.downloadBook(bookId, mChapterList, currentChapter + 1, currentChapter + 50);
                                 break;
                             case 1:
-                                mPresenter.downloadBook(bookId, mChapterList, currentChapter + 1, mChapterList.size());
+                                //mPresenter.downloadBook(bookId, mChapterList, currentChapter + 1, mChapterList.size());
                                 break;
                             case 2:
-                                mPresenter.downloadBook(bookId, mChapterList, 1, mChapterList.size());
+                                //mPresenter.downloadBook(bookId, mChapterList, 1, mChapterList.size());
                                 break;
                         }
+                        EventBus.getDefault().post(new DownloadQueue(bookId, mChapterList, currentChapter + 1, currentChapter + 20));
                     }
                 });
         builder.show();
@@ -313,7 +327,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
     private void showReadBar() { // 显示工具栏
         visible(mLlBookReadBottom, mLlBookReadTop);
-        if(!mPresenter.interrupted)
+        if (!mPresenter.interrupted)
             visible(mTvDownloadProgress);
     }
 
@@ -483,6 +497,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().register(this);
         mPresenter.cancelDownload();
     }
 }

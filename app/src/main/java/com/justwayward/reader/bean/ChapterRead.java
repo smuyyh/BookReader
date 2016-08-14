@@ -2,6 +2,8 @@ package com.justwayward.reader.bean;
 
 import com.justwayward.reader.bean.base.Base;
 
+import java.io.Serializable;
+
 /**
  * @author yuyh.
  * @date 2016/8/4.
@@ -76,7 +78,7 @@ public class ChapterRead extends Base {
 
     public Chapter chapter;
 
-    public static class Chapter {
+    public static class Chapter implements Serializable{
         public String title;
         public String body;
         public String cpContent;

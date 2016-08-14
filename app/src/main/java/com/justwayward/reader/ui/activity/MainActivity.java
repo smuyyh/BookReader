@@ -13,6 +13,7 @@ import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerMainActivityComponent;
+import com.justwayward.reader.service.DownloadBookService;
 import com.justwayward.reader.ui.contract.MainContract;
 import com.justwayward.reader.ui.fragment.RecommendFragment;
 import com.justwayward.reader.ui.presenter.MainActivityPresenter;
@@ -45,7 +46,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //mPresenter.getPlayerList();
+        startService(new Intent(this, DownloadBookService.class));
 
         initDatas();
         configViews();
@@ -60,7 +61,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerMainActivityComponent.builder()
                 .appComponent(appComponent)
-                //.mainActivityModule(new MainActivityModule(this))
+                        //.mainActivityModule(new MainActivityModule(this))
                 .build()
                 .inject(this);
     }
@@ -124,4 +125,9 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(new Intent(this, DownloadBookService.class));
+    }
 }
