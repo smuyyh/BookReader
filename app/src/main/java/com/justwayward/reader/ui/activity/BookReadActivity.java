@@ -22,6 +22,7 @@ import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.BookSource;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.ChapterRead;
+import com.justwayward.reader.bean.support.DownloadComplete;
 import com.justwayward.reader.bean.support.DownloadProgress;
 import com.justwayward.reader.bean.support.DownloadQueue;
 import com.justwayward.reader.component.AppComponent;
@@ -246,10 +247,17 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void showDownProgress(DownloadProgress progress) {
-        LogUtils.e(progress.bookId + " " + progress.progress + "/" + mChapterList.size());
-        mTvDownloadProgress.setText(String.format(getString(R.string.book_read_download_progress), mChapterList.get(progress.progress - 1).title, progress.progress, mChapterList.size()));
+        if (bookId.equals(progress.bookId)) {
+            LogUtils.e(progress.bookId + " " + progress.progress + "/" + mChapterList.size());
+            mTvDownloadProgress.setText(String.format(getString(R.string.book_read_download_progress), mChapterList.get(progress.progress - 1).title, progress.progress, mChapterList.size()));
+        }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void downloadComplete(DownloadComplete complete){
+        ToastUtils.showSingleToast("缓存完成！");
+        gone(mTvDownloadProgress);
+    }
     @Override
     public void downloadComplete() {
         ToastUtils.showSingleToast("缓存完成！");
@@ -497,7 +505,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().register(this);
+        EventBus.getDefault().unregister(this);
         mPresenter.cancelDownload();
     }
 }

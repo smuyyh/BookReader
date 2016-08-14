@@ -4,7 +4,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.IBinder;
-import android.os.Looper;
 import android.support.annotation.Nullable;
 
 import com.justwayward.reader.api.BookApi;
@@ -12,6 +11,7 @@ import com.justwayward.reader.api.support.HeaderInterceptor;
 import com.justwayward.reader.api.support.LoggingInterceptor;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.ChapterRead;
+import com.justwayward.reader.bean.support.DownloadComplete;
 import com.justwayward.reader.bean.support.DownloadProgress;
 import com.justwayward.reader.bean.support.DownloadQueue;
 import com.justwayward.reader.module.BookApiModule;
@@ -76,29 +76,27 @@ public class DownloadBookService extends Service {
         EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void addToDownloadQueue(DownloadQueue downloadQueue) {
+        LogUtils.e("addToDownloadQueue:"+downloadQueue.bookId);
         boolean exists = false;
         // 判断当前书籍缓存任务是否存在
         for (int i = 0; i < downloadQueues.size(); i++) {
             if (downloadQueues.get(i).bookId.equals(downloadQueue.bookId)) {
+                LogUtils.e("addToDownloadQueue:exists");
                 exists = true;
                 break;
             }
         }
         if (exists) {
-            Looper.prepare();
             ToastUtils.showSingleToast("当前缓存任务已存在");
-            Looper.loop();
             return;
         }
 
         // 添加到下载队列
         downloadQueues.add(downloadQueue);
         downloadBook(downloadQueue);
-        Looper.prepare();
         ToastUtils.showSingleToast("成功加入缓存队列");
-        Looper.loop();
     }
 
     public synchronized void downloadBook(final DownloadQueue downloadQueue) {
@@ -137,6 +135,7 @@ public class DownloadBookService extends Service {
                 downloadQueue.isFinish = true;
                 downloadQueues.remove(downloadQueue);
                 LogUtils.i(bookId + "缓存完成，失败" + failureCount + "章");
+                EventBus.getDefault().post(new DownloadComplete());
             }
         };
         downloadTask.execute();
