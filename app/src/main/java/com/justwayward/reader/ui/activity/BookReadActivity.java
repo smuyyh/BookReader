@@ -1,7 +1,6 @@
 package com.justwayward.reader.ui.activity;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
@@ -328,7 +327,11 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
     @Override
     public void onSideClick(boolean isLeft) {
-        hideReadBar();
+        if (isVisible(mLlBookReadBottom)) { //如果导航栏显示则隐藏
+            hideReadBar();
+            return;
+        }
+
         if (isLeft) {
             if (flipView.getSelectedItemPosition() == 0) {
                 startPage = true;
