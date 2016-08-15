@@ -166,7 +166,7 @@ public class DownloadBookService extends Service {
                 LogUtils.i(bookId + "缓存完成，失败" + failureCount + "章");
             }
         };
-        downloadTask.execute();
+        downloadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private int download(final BookPageFactory factory, String url, final String bookId, final int chapter) {
@@ -179,8 +179,8 @@ public class DownloadBookService extends Service {
                     @Override
                     public void onNext(ChapterRead data) {
                         if (data.chapter != null) {
-                            factory.append(data.chapter, chapter);
-                            EventBus.getDefault().post(new DownloadProgress(bookId, chapter));
+                            //factory.append(data.chapter, chapter);
+                            post(new DownloadProgress(bookId, chapter));
                             result[0] = 1;
                         } else {
                             result[0] = 0;
