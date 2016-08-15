@@ -1,16 +1,23 @@
 package com.justwayward.reader.api;
 
-
 import com.justwayward.reader.bean.AutoComplete;
 import com.justwayward.reader.bean.BookDetail;
+import com.justwayward.reader.bean.BookListDetail;
+import com.justwayward.reader.bean.BookListTags;
+import com.justwayward.reader.bean.BookLists;
 import com.justwayward.reader.bean.BookRead;
 import com.justwayward.reader.bean.BookSource;
 import com.justwayward.reader.bean.BookToc;
+import com.justwayward.reader.bean.BooksByCats;
 import com.justwayward.reader.bean.BooksByTag;
+import com.justwayward.reader.bean.CategoryList;
+import com.justwayward.reader.bean.CategoryListLv2;
 import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.bean.HotReview;
 import com.justwayward.reader.bean.HotWord;
 import com.justwayward.reader.bean.PostCount;
+import com.justwayward.reader.bean.Ranking;
+import com.justwayward.reader.bean.RankingList;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.RecommendBookList;
 import com.justwayward.reader.bean.SearchDetail;
@@ -68,4 +75,75 @@ public interface BookApiService {
 
     @GET("/book/by-tags")
     Observable<BooksByTag> getBooksByTag(@Query("tags") String tags, @Query("start") String start, @Query("limit") String limit);
+
+    /**
+     * 获取所有排行榜
+     * @return
+     */
+    @GET("/ranking/gender")
+    Observable<RankingList> getRanking();
+
+    /**
+     * 获取单一排行榜
+     * 周榜：rankingId->_id
+     * 月榜：rankingId->monthRank
+     * 总榜：rankingId->totalRank
+     * @return
+     */
+    @GET("/ranking/{rankingId}")
+    Observable<Ranking> getRanking(@Path("rankingId") String rankingId);
+
+    /**
+     * 获取主题书单列表
+     * 本周最热：duration=last-seven-days&sort=collectorCount
+     * 最新发布：duration=all&sort=created
+     * 最多收藏：duration=all&sort=collectorCount
+     * @param tag   都市、古代、架空、重生、玄幻、网游
+     * @param gender   male、female
+     * @param limit 20
+     * @return
+     */
+    @GET("/book-list")
+    Observable<BookLists> getBookLists(@Query("duration") String duration, @Query("sort") String sort, @Query("start") String start, @Query("limit") String limit,@Query("tag") String tag,@Query("gender") String gender);
+
+    /**
+     * 获取主题书单标签列表
+     * @return
+     */
+    @GET("/book-list/tagType")
+    Observable<BookListTags> getBookListTags();
+
+    /**
+     * 获取书单详情
+     * @return
+     */
+    @GET("/book-list/{bookListId}")
+    Observable<BookListDetail> getBookListDetail(@Path("bookListId") String bookListId);
+
+    /**
+     * 获取分类
+     * @return
+     */
+    @GET("/cats/lv2/statistics")
+    Observable<CategoryList> getCategoryList();
+
+    /**
+     * 获取二级分类
+     * @return
+     */
+    @GET("/cats/lv2")
+    Observable<CategoryListLv2> getCategoryListLv2();
+
+    /**
+     * 按分类获取书籍列表
+     * @param gender male、female
+     * @param type hot(热门)、new(新书)、reputation(好评)、over(完结)
+     * @param major 玄幻
+     * @param minor 东方玄幻、异界大陆、异界争霸、远古神话
+     * @param limit 50
+     * @return
+     */
+    @GET("/book/by-categories")
+    Observable<BooksByCats> getBooksByCats(@Query("gender") String gender, @Query("type") String type, @Query("major") String major, @Query("minor") String minor, @Query("start") String start, @Query("limit") String limit);
+
 }
