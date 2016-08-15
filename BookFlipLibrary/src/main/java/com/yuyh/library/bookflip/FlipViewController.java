@@ -554,13 +554,22 @@ public class FlipViewController extends AdapterView<Adapter> {
     }
 
     void postHideFlipAnimation() {
-        if (inFlipAnimation) {
+        /*if (inFlipAnimation) {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
                     hideFlipAnimation();
                 }
             });
+        }*/
+        //修改  解决翻页闪烁问题
+        if (inFlipAnimation) {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    hideFlipAnimation();
+                }
+            }, 200);
         }
     }
 
