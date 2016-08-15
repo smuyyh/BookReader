@@ -43,6 +43,19 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false) != mNowMode) {
+            if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+            recreate();
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
@@ -86,16 +99,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         return view.getVisibility() == View.VISIBLE;
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false) != mNowMode) {
-            if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            }
-            recreate();
-        }
+    protected void showStatusBar() {
+        WindowManager.LayoutParams attr = getWindow().getAttributes();
+        attr.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setAttributes(attr);
+        //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+    }
+
+    protected void hideStatusBar() {
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        getWindow().setAttributes(lp);
+        //getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
 }
