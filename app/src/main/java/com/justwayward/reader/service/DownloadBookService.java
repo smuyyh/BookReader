@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.api.support.HeaderInterceptor;
@@ -42,6 +43,7 @@ public class DownloadBookService extends Service {
 
     public BookApi bookApi;
 
+    public boolean isBusy = false; // 当前是否有下载任务在进行
     @Override
     public void onCreate() {
         super.onCreate();
@@ -80,36 +82,48 @@ public class DownloadBookService extends Service {
         EventBus.getDefault().post(downloadQueue);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void addToDownloadQueue(DownloadQueue downloadQueue) {
-        LogUtils.e("addToDownloadQueue:" + downloadQueue.bookId);
-        boolean exists = false;
-        // 判断当前书籍缓存任务是否存在
-        for (int i = 0; i < downloadQueues.size(); i++) {
-            if (downloadQueues.get(i).bookId.equals(downloadQueue.bookId)) {
-                LogUtils.e("addToDownloadQueue:exists");
-                exists = true;
-                break;
-            }
-        }
-        if (exists) {
-            ToastUtils.showSingleToast("当前缓存任务已存在");
-            return;
-        }
+    public static void post(DownloadProgress progress){
+        EventBus.getDefault().post(progress);
+    }
 
-        // 添加到下载队列
-        downloadQueues.add(downloadQueue);
-        // 从队列顺序取出，下载（正常情况下来说只有一条）
-        for (DownloadQueue queue : downloadQueues) {
-            downloadBook(queue);
+    private void post(DownloadComplete complete) {
+        EventBus.getDefault().post(complete);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public synchronized void addToDownloadQueue(DownloadQueue downloadQueue) {
+        if(!TextUtils.isEmpty(downloadQueue.bookId)) {
+            LogUtils.e("addToDownloadQueue:" + downloadQueue.bookId);
+            boolean exists = false;
+            // 判断当前书籍缓存任务是否存在
+            for (int i = 0; i < downloadQueues.size(); i++) {
+                if (downloadQueues.get(i).bookId.equals(downloadQueue.bookId)) {
+                    LogUtils.e("addToDownloadQueue:exists");
+                    exists = true;
+                    break;
+                }
+            }
+            if (exists) {
+                ToastUtils.showSingleToast("当前缓存任务已存在");
+                return;
+            }
+
+            // 添加到下载队列
+            downloadQueues.add(downloadQueue);
+            // 当前队列里有其他任务，才提示
+            if(downloadQueues.size() >1)
+                ToastUtils.showSingleToast("成功加入缓存队列");
         }
-        ToastUtils.showSingleToast("成功加入缓存队列");
+        // 从队列顺序取出第一条下载
+        if(downloadQueues.size() >0 && !isBusy){
+            isBusy = true;
+            downloadBook(downloadQueues.get(0));
+        }
     }
 
     public synchronized void downloadBook(final DownloadQueue downloadQueue) {
         AsyncTask<Integer, Integer, Integer> downloadTask = new AsyncTask<Integer, Integer, Integer>() {
 
-            int failureCount = 0;
             List<BookToc.mixToc.Chapters> list = downloadQueue.list;
             String bookId = downloadQueue.bookId;
             int start = downloadQueue.start; // 起始章节
@@ -118,7 +132,8 @@ public class DownloadBookService extends Service {
 
             @Override
             protected Integer doInBackground(Integer... params) {
-                for (int i = start; i < end && i <= list.size(); i++) {
+                int failureCount = 0;
+                for (int i = start; i <=end && i <= list.size(); i++) {
                     if (!downloadQueue.isFinish && !downloadQueue.isCancel) {
                         if (factory.getBookFile(i).length() < 50) { // 认为章节文件不存在,则下载
                             BookToc.mixToc.Chapters chapters = list.get(i - 1);
@@ -128,23 +143,27 @@ public class DownloadBookService extends Service {
                                 failureCount++;
                             }
                         } else {
-                            EventBus.getDefault().post(new DownloadProgress(bookId, i));
+                            post(new DownloadProgress(bookId, i));
                         }
                     }
                 }
-                return null;
+                return failureCount;
             }
 
 
             @Override
-            protected void onPostExecute(Integer integer) {
-                super.onPostExecute(integer);
+            protected void onPostExecute(Integer failureCount) {
+                super.onPostExecute(failureCount);
                 downloadQueue.isFinish = true;
                 // 下载完成，从队列里移除
                 downloadQueues.remove(downloadQueue);
-                LogUtils.i(bookId + "缓存完成，失败" + failureCount + "章");
                 // 通知
-                EventBus.getDefault().post(new DownloadComplete());
+                post(new DownloadComplete(bookId));
+                // 释放 空闲状态
+                isBusy = false;
+                // post一个空事件，通知继续执行下一个任务
+                post(new DownloadQueue());
+                LogUtils.i(bookId + "缓存完成，失败" + failureCount + "章");
             }
         };
         downloadTask.execute();

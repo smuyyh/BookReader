@@ -42,4 +42,10 @@ public class DownloadQueue implements Serializable {
         this.start = start;
         this.end = end;
     }
+
+    /**
+     * 空事件。表示通知继续执行下一条任务
+     */
+    public DownloadQueue() {
+    }
 }

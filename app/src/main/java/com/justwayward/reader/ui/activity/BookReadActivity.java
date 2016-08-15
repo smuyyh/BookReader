@@ -35,7 +35,6 @@ import com.justwayward.reader.ui.presenter.BookReadPresenter;
 import com.justwayward.reader.utils.BookPageFactory;
 import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
-import com.justwayward.reader.utils.ToastUtils;
 import com.justwayward.reader.view.BookReadFrameLayout;
 import com.yuyh.library.bookflip.FlipViewController;
 
@@ -288,7 +287,8 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
                             case 2:
                                 DownloadBookService.post(new DownloadQueue(bookId, mChapterList, 1, mChapterList.size()));
                                 break;
-                            default:break;
+                            default:
+                                break;
                         }
                     }
                 });
@@ -299,7 +299,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     public void showDownProgress(DownloadProgress progress) {
         if (bookId.equals(progress.bookId)) {
             LogUtils.e(progress.bookId + " " + progress.progress + "/" + mChapterList.size());
-            if(isVisible(mLlBookReadBottom)){ // 如果工具栏显示，则进度条也显示
+            if (isVisible(mLlBookReadBottom)) { // 如果工具栏显示，则进度条也显示
                 visible(mTvDownloadProgress);
                 mTvDownloadProgress.setText(String.format(getString(R.string.book_read_download_progress), mChapterList.get(progress.progress - 1).title, progress.progress, mChapterList.size()));
             }
@@ -308,8 +308,20 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void downloadComplete(DownloadComplete complete) {
-        ToastUtils.showSingleToast("缓存完成！");
-        gone(mTvDownloadProgress);
+        if (bookId.equals(complete.bookId)) {
+            mTvDownloadProgress.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mTvDownloadProgress.setText("缓存完成");
+                }
+            }, 500);
+            mTvDownloadProgress.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    gone(mTvDownloadProgress);
+                }
+            }, 2500);
+        }
     }
 
     private void hideReadBar() { // 隐藏工具栏

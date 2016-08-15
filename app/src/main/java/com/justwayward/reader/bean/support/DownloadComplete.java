@@ -6,6 +6,9 @@ package com.justwayward.reader.bean.support;
  */
 public class DownloadComplete {
 
-    public DownloadComplete() {
+    public String bookId;
+
+    public DownloadComplete(String bookId) {
+        this.bookId = bookId;
     }
 }
