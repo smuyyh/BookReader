@@ -27,6 +27,7 @@ import com.justwayward.reader.bean.support.DownloadProgress;
 import com.justwayward.reader.bean.support.DownloadQueue;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerBookReadActivityComponent;
+import com.justwayward.reader.service.DownloadBookService;
 import com.justwayward.reader.ui.adapter.BookReadPageAdapter;
 import com.justwayward.reader.ui.adapter.TocListAdapter;
 import com.justwayward.reader.ui.contract.BookReadContract;
@@ -232,39 +233,6 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
     }
 
-    @Override
-    public synchronized void showDownloadProgress(ChapterRead.Chapter data, final int chapter) {
-        if (data != null)
-            factory.append(data, chapter); // 缓存章节保存到文件
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mTvDownloadProgress.setText(String.format(getString(R.string.book_read_download_progress), mChapterList.get(chapter - 1).title, chapter, mChapterList.size()));
-            }
-        });
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void showDownProgress(DownloadProgress progress) {
-        if (bookId.equals(progress.bookId)) {
-            LogUtils.e(progress.bookId + " " + progress.progress + "/" + mChapterList.size());
-            mTvDownloadProgress.setText(String.format(getString(R.string.book_read_download_progress), mChapterList.get(progress.progress - 1).title, progress.progress, mChapterList.size()));
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void downloadComplete(DownloadComplete complete){
-        ToastUtils.showSingleToast("缓存完成！");
-        gone(mTvDownloadProgress);
-    }
-    @Override
-    public void downloadComplete() {
-        ToastUtils.showSingleToast("缓存完成！");
-        gone(mTvDownloadProgress);
-    }
-
-
     @OnClick(R.id.ivBack)
     public void onClickBack() {
         if (mTocListPopupWindow.isShowing()) {
@@ -310,23 +278,38 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
                 .setItems(new String[]{"后面五十章", "后面全部", "全部"}, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        visible(mTvDownloadProgress);
                         switch (which) {
                             case 0:
-                                //mPresenter.downloadBook(bookId, mChapterList, currentChapter + 1, currentChapter + 50);
+                                DownloadBookService.post(new DownloadQueue(bookId, mChapterList, currentChapter + 1, currentChapter + 50));
                                 break;
                             case 1:
-                                //mPresenter.downloadBook(bookId, mChapterList, currentChapter + 1, mChapterList.size());
+                                DownloadBookService.post(new DownloadQueue(bookId, mChapterList, currentChapter + 1, mChapterList.size()));
                                 break;
                             case 2:
-                                //mPresenter.downloadBook(bookId, mChapterList, 1, mChapterList.size());
+                                DownloadBookService.post(new DownloadQueue(bookId, mChapterList, 1, mChapterList.size()));
                                 break;
+                            default:break;
                         }
-                        EventBus.getDefault().post(new DownloadQueue(bookId, mChapterList, currentChapter + 1, currentChapter + 20));
                     }
                 });
         builder.show();
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void showDownProgress(DownloadProgress progress) {
+        if (bookId.equals(progress.bookId)) {
+            LogUtils.e(progress.bookId + " " + progress.progress + "/" + mChapterList.size());
+            if(isVisible(mLlBookReadBottom)){ // 如果工具栏显示，则进度条也显示
+                visible(mTvDownloadProgress);
+                mTvDownloadProgress.setText(String.format(getString(R.string.book_read_download_progress), mChapterList.get(progress.progress - 1).title, progress.progress, mChapterList.size()));
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void downloadComplete(DownloadComplete complete) {
+        ToastUtils.showSingleToast("缓存完成！");
+        gone(mTvDownloadProgress);
     }
 
     private void hideReadBar() { // 隐藏工具栏
@@ -335,8 +318,6 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
     private void showReadBar() { // 显示工具栏
         visible(mLlBookReadBottom, mLlBookReadTop);
-        if (!mPresenter.interrupted)
-            visible(mTvDownloadProgress);
     }
 
     private void toggleReadBar() { // 切换工具栏 隐藏/显示 状态

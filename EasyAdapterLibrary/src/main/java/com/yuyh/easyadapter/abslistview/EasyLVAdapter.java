@@ -11,6 +11,8 @@ import com.yuyh.easyadapter.helper.DataHelper;
 import java.util.List;
 
 /**
+ * https://github.com/smuyyh/EasyAdapter
+ *
  * @author yuyh.
  * @date 2016/7/21.
  */

@@ -135,7 +135,7 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
                                 failureCount++;
                             }
                         } else {
-                            view.showDownloadProgress(null, i);
+                            //view.showDownloadProgress(null, i);
                         }
                     }
                 }
@@ -147,8 +147,8 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
             protected void onPostExecute(Integer integer) {
                 super.onPostExecute(integer);
                 interrupted = true;
-                if(view!=null)
-                    view.downloadComplete();
+                //if(view!=null)
+                    //view.downloadComplete();
                 LogUtils.i("缓存完成，失败" + failureCount + "章");
             }
         };
@@ -165,7 +165,7 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
                     @Override
                     public void onNext(ChapterRead data) {
                         if (data.chapter != null && view != null) {
-                            view.showDownloadProgress(data.chapter, chapter);
+                            //view.showDownloadProgress(data.chapter, chapter);
                             result[0] = 1;
                         } else {
                             result[0] = 0;

@@ -21,10 +21,19 @@ public class DownloadQueue implements Serializable {
 
     public int end;
 
+    /**
+     * 是否已经开始下载
+     */
     public boolean isStartDownload = false;
 
+    /**
+     * 是否中断下载
+     */
     public boolean isCancel = false;
 
+    /**
+     * 是否下载完成
+     */
     public boolean isFinish = false;
 
     public DownloadQueue(String bookId, List<BookToc.mixToc.Chapters> list, int start, int end) {

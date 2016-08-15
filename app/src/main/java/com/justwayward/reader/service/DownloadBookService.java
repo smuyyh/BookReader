@@ -76,9 +76,13 @@ public class DownloadBookService extends Service {
         EventBus.getDefault().unregister(this);
     }
 
+    public static void post(DownloadQueue downloadQueue) {
+        EventBus.getDefault().post(downloadQueue);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void addToDownloadQueue(DownloadQueue downloadQueue) {
-        LogUtils.e("addToDownloadQueue:"+downloadQueue.bookId);
+        LogUtils.e("addToDownloadQueue:" + downloadQueue.bookId);
         boolean exists = false;
         // 判断当前书籍缓存任务是否存在
         for (int i = 0; i < downloadQueues.size(); i++) {
@@ -95,7 +99,10 @@ public class DownloadBookService extends Service {
 
         // 添加到下载队列
         downloadQueues.add(downloadQueue);
-        downloadBook(downloadQueue);
+        // 从队列顺序取出，下载（正常情况下来说只有一条）
+        for (DownloadQueue queue : downloadQueues) {
+            downloadBook(queue);
+        }
         ToastUtils.showSingleToast("成功加入缓存队列");
     }
 
@@ -105,8 +112,8 @@ public class DownloadBookService extends Service {
             int failureCount = 0;
             List<BookToc.mixToc.Chapters> list = downloadQueue.list;
             String bookId = downloadQueue.bookId;
-            int start = downloadQueue.start;
-            int end = downloadQueue.end;
+            int start = downloadQueue.start; // 起始章节
+            int end = downloadQueue.end; // 结束章节
             BookPageFactory factory = new BookPageFactory(bookId, 0);
 
             @Override
@@ -116,7 +123,7 @@ public class DownloadBookService extends Service {
                         if (factory.getBookFile(i).length() < 50) { // 认为章节文件不存在,则下载
                             BookToc.mixToc.Chapters chapters = list.get(i - 1);
                             String url = chapters.link;
-                            int ret = download(url, bookId, i);
+                            int ret = download(factory, url, bookId, i);
                             if (ret != 1) {
                                 failureCount++;
                             }
@@ -133,15 +140,17 @@ public class DownloadBookService extends Service {
             protected void onPostExecute(Integer integer) {
                 super.onPostExecute(integer);
                 downloadQueue.isFinish = true;
+                // 下载完成，从队列里移除
                 downloadQueues.remove(downloadQueue);
                 LogUtils.i(bookId + "缓存完成，失败" + failureCount + "章");
+                // 通知
                 EventBus.getDefault().post(new DownloadComplete());
             }
         };
         downloadTask.execute();
     }
 
-    private int download(String url, final String bookId, final int chapter) {
+    private int download(final BookPageFactory factory, String url, final String bookId, final int chapter) {
 
         final int[] result = {-1};
 
@@ -151,6 +160,7 @@ public class DownloadBookService extends Service {
                     @Override
                     public void onNext(ChapterRead data) {
                         if (data.chapter != null) {
+                            factory.append(data.chapter, chapter);
                             EventBus.getDefault().post(new DownloadProgress(bookId, chapter));
                             result[0] = 1;
                         } else {
@@ -171,7 +181,7 @@ public class DownloadBookService extends Service {
 
         while (result[0] == -1) {
             try {
-                Thread.sleep(300);
+                Thread.sleep(350);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

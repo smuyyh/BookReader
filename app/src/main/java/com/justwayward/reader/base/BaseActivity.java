@@ -39,7 +39,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         initToolBar();
         initDatas();
         configViews();
-        mNowMode=SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT);
+        mNowMode = SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT);
     }
 
     @Override
@@ -62,33 +62,23 @@ public abstract class BaseActivity extends AppCompatActivity {
     public abstract void configViews();
 
     protected void gone(final View... views) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (views != null && views.length > 0) {
-                    for (View view : views) {
-                        if (view != null) {
-                            view.setVisibility(View.GONE);
-                        }
-                    }
+        if (views != null && views.length > 0) {
+            for (View view : views) {
+                if (view != null) {
+                    view.setVisibility(View.GONE);
                 }
             }
-        });
+        }
     }
 
     protected void visible(final View... views) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (views != null && views.length > 0) {
-                    for (View view : views) {
-                        if (view != null) {
-                            view.setVisibility(View.VISIBLE);
-                        }
-                    }
+        if (views != null && views.length > 0) {
+            for (View view : views) {
+                if (view != null) {
+                    view.setVisibility(View.VISIBLE);
                 }
             }
-        });
+        }
 
     }
 
@@ -99,10 +89,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT,false)!=mNowMode){
-            if(SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)){
+        if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false) != mNowMode) {
+            if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            }else{
+            } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             }
             recreate();

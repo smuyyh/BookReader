@@ -1,3 +1,29 @@
+/**
+ * Copyright (c) 2016, smuyyh@gmail.com All Rights Reserved.
+ * #                                                   #
+ * #                       _oo0oo_                     #
+ * #                      o8888888o                    #
+ * #                      88" . "88                    #
+ * #                      (| -_- |)                    #
+ * #                      0\  =  /0                    #
+ * #                    ___/`---'\___                  #
+ * #                  .' \\|     |# '.                 #
+ * #                 / \\|||  :  |||# \                #
+ * #                / _||||| -:- |||||- \              #
+ * #               |   | \\\  -  #/ |   |              #
+ * #               | \_|  ''\---/''  |_/ |             #
+ * #               \  .-\__  '-'  ___/-. /             #
+ * #             ___'. .'  /--.--\  `. .'___           #
+ * #          ."" '<  `.___\_<|>_/___.' >' "".         #
+ * #         | | :  `- \`.;`\ _ /`;.`/ - ` : | |       #
+ * #         \  \ `_.   \_ __\ /__ _/   .-` /  /       #
+ * #     =====`-.____`.___ \_____/___.-`___.-'=====    #
+ * #                       `=---='                     #
+ * #     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   #
+ * #                                                   #
+ * #               佛祖保佑         永无BUG             #
+ * #                                                   #
+ */
 package com.justwayward.reader.ui.activity;
 
 import android.content.Intent;
@@ -27,6 +53,9 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 
+/**
+ * https://github.com/JustWayward/BookReader
+ */
 public class MainActivity extends BaseActivity implements MainContract.View {
 
     @Bind(R.id.common_toolbar)
@@ -61,7 +90,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerMainActivityComponent.builder()
                 .appComponent(appComponent)
-                        //.mainActivityModule(new MainActivityModule(this))
                 .build()
                 .inject(this);
     }
