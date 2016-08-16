@@ -36,7 +36,13 @@ import com.justwayward.reader.utils.BookPageFactory;
 import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.ScreenUtils;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
+import com.justwayward.reader.utils.ToastUtils;
 import com.justwayward.reader.view.BookReadFrameLayout;
+import com.sinovoice.hcicloudsdk.android.tts.player.TTSPlayer;
+import com.sinovoice.hcicloudsdk.common.tts.TtsConfig;
+import com.sinovoice.hcicloudsdk.common.tts.TtsInitParam;
+import com.sinovoice.hcicloudsdk.player.TTSCommonPlayer;
+import com.sinovoice.hcicloudsdk.player.TTSPlayerListener;
 import com.yuyh.library.bookflip.FlipViewController;
 
 import org.greenrobot.eventbus.EventBus;
@@ -127,6 +133,12 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
      **/
     private boolean isPre = false;
 
+    /**
+     * 朗读 播放器
+     */
+    private TTSPlayer mTtsPlayer;
+    private TtsConfig ttsConfig;
+
     @Override
     public int getLayoutId() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
@@ -156,6 +168,16 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         EventBus.getDefault().register(this);
         bookId = getIntent().getStringExtra("bookId");
         mTvBookReadTocTitle.setText(getIntent().getStringExtra("bookName"));
+
+        // 创建播放器对象
+        mTtsPlayer = new TTSPlayer();
+        TtsInitParam ttsInitParam = new TtsInitParam();
+        ttsInitParam.addParam(TtsInitParam.PARAM_KEY_FILE_FLAG, "none");
+        mTtsPlayer.init(ttsInitParam.getStringConfig(), new TTSEventProcess());
+        // 播放器配置
+        ttsConfig = new TtsConfig();
+        ttsConfig.addParam(TtsConfig.SessionConfig.PARAM_KEY_CAP_KEY, "tts.cloud.wangjing"); // 发音人
+        ttsConfig.addParam(TtsConfig.BasicConfig.PARAM_KEY_AUDIO_FORMAT, "pcm16k16bit"); // 音频格式
     }
 
     @Override
@@ -246,6 +268,19 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
             mTocListPopupWindow.dismiss();
         } else {
             finish();
+        }
+    }
+
+    @OnClick(R.id.tvBookReadReading)
+    public void readBook() {
+        if (mTtsPlayer.getPlayerState() == TTSCommonPlayer.PLAYER_STATE_PLAYING) {
+            mTtsPlayer.pause();
+        } else if (mTtsPlayer.getPlayerState() == TTSCommonPlayer.PLAYER_STATE_PAUSE) {
+            mTtsPlayer.resume();
+        } else if (mTtsPlayer.getPlayerState() == TTSCommonPlayer.PLAYER_STATE_IDLE) {
+            mTtsPlayer.play(mContentList.get(flipView.getSelectedItemPosition()), ttsConfig.getStringConfig());
+        } else {
+            ToastUtils.showSingleToast("播放器内部错误");
         }
     }
 
@@ -508,7 +543,23 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mTtsPlayer.getPlayerState() == TTSCommonPlayer.PLAYER_STATE_PLAYING)
+            mTtsPlayer.stop();
         EventBus.getDefault().unregister(this);
         mPresenter.cancelDownload();
+    }
+
+    private class TTSEventProcess implements TTSPlayerListener {
+        @Override
+        public void onPlayerEventStateChange(TTSCommonPlayer.PlayerEvent playerEvent) {
+        }
+
+        @Override
+        public void onPlayerEventProgressChange(TTSCommonPlayer.PlayerEvent playerEvent, int start, int end) {
+        }
+
+        @Override
+        public void onPlayerEventPlayerError(TTSCommonPlayer.PlayerEvent playerEvent, int errorCode) {
+        }
     }
 }
