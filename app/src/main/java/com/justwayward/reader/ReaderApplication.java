@@ -72,30 +72,19 @@ public class ReaderApplication extends Application {
     }
 
     protected void initHciCloud() {
-        // 创建初始化参数辅助类
         InitParam initparam = new InitParam();
-        // 授权文件所在路径，此项必填
         String authDirPath = getFilesDir().getAbsolutePath();
         initparam.addParam(InitParam.AuthParam.PARAM_KEY_AUTH_PATH, authDirPath);
-        // 是否自动访问云授权
         initparam.addParam(InitParam.AuthParam.PARAM_KEY_AUTO_CLOUD_AUTH, "no");
-        // 灵云云服务的接口地址，此项必填
         initparam.addParam(InitParam.AuthParam.PARAM_KEY_CLOUD_URL, "test.api.hcicloud.com:8888");
-        // 开发者密钥，此项必填，由捷通华声提供
         initparam.addParam(InitParam.AuthParam.PARAM_KEY_DEVELOPER_KEY, "0a5e69f8fb1c019b2d87a17acf200889");
-        // 应用程序序号，此项必填，由捷通华声提供
         initparam.addParam(InitParam.AuthParam.PARAM_KEY_APP_KEY, "0d5d5466");
-        // 日志的路径，可选，如果不传或者为空则不生成日志
         String logDirPath = FileUtils.createRootPath(this)+"/hcicloud";
         FileUtils.createDir(logDirPath);
         initparam.addParam(InitParam.LogParam.PARAM_KEY_LOG_FILE_PATH, logDirPath);
-        // 日志数目，默认保留多少个日志文件，超过则覆盖最旧的日志
         initparam.addParam(InitParam.LogParam.PARAM_KEY_LOG_FILE_COUNT, "5");
-        // 日志大小，默认一个日志文件写多大，单位为K
         initparam.addParam(InitParam.LogParam.PARAM_KEY_LOG_FILE_SIZE, "1024");
-        // 日志等级，0=无，1=错误，2=警告，3=信息，4=细节，5=调试，SDK将输出小于等于logLevel的// 日志信息
         initparam.addParam(InitParam.LogParam.PARAM_KEY_LOG_LEVEL, "5");
-        // 灵云系统初始化 第二个参数在Android平台下，必须为当前的Context，在Windows/Linux平台下，可以为null
         int errCode = HciCloudSys.hciInit(initparam.getStringConfig(), this);
         if (errCode != HciErrorCode.HCI_ERR_NONE) {
             LogUtils.e("HciCloud初始化失败"+errCode);
