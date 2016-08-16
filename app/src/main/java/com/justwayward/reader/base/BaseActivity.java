@@ -12,6 +12,7 @@ import com.justwayward.reader.ReaderApplication;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
 import com.justwayward.reader.utils.StatusBarCompat;
+import com.progresslibrary.CustomDialog;
 
 import butterknife.ButterKnife;
 
@@ -19,7 +20,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected Context mContext;
     protected int statusBarColor = 0;
     private boolean mNowMode;
-
+    private CustomDialog dialog;//进度条
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +60,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+        dismissDialog();
     }
 
     public abstract int getLayoutId();
@@ -112,4 +114,29 @@ public abstract class BaseActivity extends AppCompatActivity {
         getWindow().setAttributes(lp);
         //getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
+
+
+    // dialog
+    public CustomDialog getDialog () {
+        if (dialog == null) {
+            dialog = CustomDialog.instance(this);
+            dialog.setCancelable(false);
+        }
+        return dialog;
+    }
+    public void hideDialog () {
+        if (dialog != null)
+            dialog.hide();
+    }
+    public void showDialog () {
+        getDialog().show();
+    }
+
+    public void dismissDialog () {
+        if (dialog != null) {
+            dialog.dismiss();
+            dialog = null;
+        }
+    }
+
 }

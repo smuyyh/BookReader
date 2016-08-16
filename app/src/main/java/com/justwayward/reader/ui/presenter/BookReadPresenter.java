@@ -66,6 +66,7 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
                     @Override
                     public void onError(Throwable e) {
                         Log.e(TAG, "onError: " + e);
+                        view.netError();
                     }
                 });
     }

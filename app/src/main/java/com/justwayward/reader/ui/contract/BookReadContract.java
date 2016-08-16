@@ -18,6 +18,8 @@ public interface BookReadContract {
         void showChapterRead(ChapterRead.Chapter data, int chapter);
 
         void showBookSource(List<BookSource> list);
+
+        void netError();//添加网络处理异常接口
     }
 
     interface Presenter<T> extends BaseContract.BasePresenter<T> {

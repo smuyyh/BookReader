@@ -160,6 +160,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         params.topMargin = ScreenUtils.getStatusBarHeight(this);
         mLlBookReadTop.setLayoutParams(params);
         hideStatusBar();
+        showDialog();
     }
 
     @Override
@@ -205,6 +206,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         mBookReadFrameLayout.setOnScreenClickListener(this);
 
         flipView.setOnViewFlipListener(this);
+
     }
 
     /**
@@ -254,6 +256,12 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     @Override
     public void showBookSource(List<BookSource> list) {
 
+    }
+
+    @Override
+    public void netError() {
+        hideDialog();//反正因为网络问题而出现dialog不消失
+        ToastUtils.showToast(R.string.net_error);
     }
 
     @OnClick(R.id.ivBack)
@@ -400,7 +408,6 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
             startPage = false;
         }
     }
-
     @Override
     public void onCenterClick() {
         toggleReadBar();
@@ -458,6 +465,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            showDialog();
             LogUtils.i("分页前" + new SimpleDateFormat("HH:mm:ss:SSS").format(new Date(System.currentTimeMillis())));
         }
 
@@ -488,6 +496,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
             } else {
                 startPage = true;
             }
+            hideDialog();
         }
     }
 

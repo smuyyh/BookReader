@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ProgressCircularIndeterminate">
+        <attr name="ringWidth" format="dimension"/>
+        <attr name="ringColor" format="color"/>
+        <attr name="circleColor" format="color"/>
+    </declare-styleable>
+</resources>
