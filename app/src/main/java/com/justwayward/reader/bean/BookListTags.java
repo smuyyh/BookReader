@@ -1,11 +1,13 @@
 package com.justwayward.reader.bean;
 
+import com.justwayward.reader.bean.base.Base;
+
 import java.util.List;
 
 /**
  * Created by lfh on 2016/8/15.
  */
-public class BookListTags {
+public class BookListTags extends Base{
 
 
     /**
@@ -17,48 +19,10 @@ public class BookListTags {
      * ok : true
      */
 
-    private boolean ok;
-    /**
-     * name : 时空
-     * tags : ["都市","古代","科幻","架空","重生","未来","穿越","历史","快穿","末世","异界位面"]
-     */
-
-    private List<DataBean> data;
-
-    public boolean isOk() {
-        return ok;
-    }
-
-    public void setOk(boolean ok) {
-        this.ok = ok;
-    }
-
-    public List<DataBean> getData() {
-        return data;
-    }
-
-    public void setData(List<DataBean> data) {
-        this.data = data;
-    }
+    public List<DataBean> data;
 
     public static class DataBean {
-        private String name;
-        private List<String> tags;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public List<String> getTags() {
-            return tags;
-        }
-
-        public void setTags(List<String> tags) {
-            this.tags = tags;
-        }
+        public String name;
+        public List<String> tags;
     }
 }
