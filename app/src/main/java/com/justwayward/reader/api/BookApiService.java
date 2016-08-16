@@ -16,7 +16,7 @@ import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.bean.HotReview;
 import com.justwayward.reader.bean.HotWord;
 import com.justwayward.reader.bean.PostCount;
-import com.justwayward.reader.bean.Ranking;
+import com.justwayward.reader.bean.Rankings;
 import com.justwayward.reader.bean.RankingList;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.RecommendBookList;
@@ -91,7 +91,7 @@ public interface BookApiService {
      * @return
      */
     @GET("/ranking/{rankingId}")
-    Observable<Ranking> getRanking(@Path("rankingId") String rankingId);
+    Observable<Rankings> getRanking(@Path("rankingId") String rankingId);
 
     /**
      * 获取主题书单列表
