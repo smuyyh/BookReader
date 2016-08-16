@@ -36,13 +36,12 @@ import com.justwayward.reader.utils.BookPageFactory;
 import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.ScreenUtils;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
+import com.justwayward.reader.utils.TTSPlayerUtils;
 import com.justwayward.reader.utils.ToastUtils;
 import com.justwayward.reader.view.BookReadFrameLayout;
 import com.sinovoice.hcicloudsdk.android.tts.player.TTSPlayer;
 import com.sinovoice.hcicloudsdk.common.tts.TtsConfig;
-import com.sinovoice.hcicloudsdk.common.tts.TtsInitParam;
 import com.sinovoice.hcicloudsdk.player.TTSCommonPlayer;
-import com.sinovoice.hcicloudsdk.player.TTSPlayerListener;
 import com.yuyh.library.bookflip.FlipViewController;
 
 import org.greenrobot.eventbus.EventBus;
@@ -170,14 +169,9 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         mTvBookReadTocTitle.setText(getIntent().getStringExtra("bookName"));
 
         // 创建播放器对象
-        mTtsPlayer = new TTSPlayer();
-        TtsInitParam ttsInitParam = new TtsInitParam();
-        ttsInitParam.addParam(TtsInitParam.PARAM_KEY_FILE_FLAG, "none");
-        mTtsPlayer.init(ttsInitParam.getStringConfig(), new TTSEventProcess());
+        mTtsPlayer = TTSPlayerUtils.getTTSPlayer();
         // 播放器配置
-        ttsConfig = new TtsConfig();
-        ttsConfig.addParam(TtsConfig.SessionConfig.PARAM_KEY_CAP_KEY, "tts.cloud.wangjing"); // 发音人
-        ttsConfig.addParam(TtsConfig.BasicConfig.PARAM_KEY_AUDIO_FORMAT, "pcm16k16bit"); // 音频格式
+        ttsConfig = TTSPlayerUtils.getTtsConfig();
     }
 
     @Override
@@ -547,19 +541,5 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
             mTtsPlayer.stop();
         EventBus.getDefault().unregister(this);
         mPresenter.cancelDownload();
-    }
-
-    private class TTSEventProcess implements TTSPlayerListener {
-        @Override
-        public void onPlayerEventStateChange(TTSCommonPlayer.PlayerEvent playerEvent) {
-        }
-
-        @Override
-        public void onPlayerEventProgressChange(TTSCommonPlayer.PlayerEvent playerEvent, int start, int end) {
-        }
-
-        @Override
-        public void onPlayerEventPlayerError(TTSCommonPlayer.PlayerEvent playerEvent, int errorCode) {
-        }
     }
 }
