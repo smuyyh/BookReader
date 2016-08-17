@@ -260,7 +260,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
     @Override
     public void netError() {
-        hideDialog();//反正因为网络问题而出现dialog不消失
+        hideDialog();//防止因为网络问题而出现dialog不消失
         ToastUtils.showToast(R.string.net_error);
     }
 
@@ -465,7 +465,8 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            showDialog();
+            if (!getDialog().isShowing())
+                showDialog();
             LogUtils.i("分页前" + new SimpleDateFormat("HH:mm:ss:SSS").format(new Date(System.currentTimeMillis())));
         }
 

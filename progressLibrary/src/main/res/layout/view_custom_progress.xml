@@ -7,13 +7,12 @@
 
     <com.progresslibrary.ProgressCircularIndeterminate
         android:id="@+id/progress"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        app:circleColor="#3F51B5"
+        android:layout_width="68dp"
+        android:layout_height="34dp"
         android:layout_gravity="center"
-        app:ringColor="#95a5a6"
-        app:ringWidth="5dp">
+        app:leftColor="@color/progress_left_color"
+        app:rightColor="@color/progress_right_color">
 
     </com.progresslibrary.ProgressCircularIndeterminate>
-
+    <!--95a5a6-->
 </FrameLayout>

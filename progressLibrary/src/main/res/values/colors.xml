@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="progress_ring_color">#00BCD4</color>
-    <color name="progress_circle_color">#B2EBF2</color>
+    <color name="progress_left_color">#3F51B5</color>
+    <color name="progress_right_color">#95a5a6</color>
 </resources>
