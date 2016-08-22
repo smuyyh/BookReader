@@ -16,6 +16,7 @@ public class BookReadPageAdapter extends EasyLVAdapter<String> {
 
     public String title;
     public String battery = "?";
+    public String time = "";
 
     public BookReadPageAdapter(Context context, List<String> list, String title) {
         super(context, list, R.layout.item_book_read_page);
@@ -27,10 +28,15 @@ public class BookReadPageAdapter extends EasyLVAdapter<String> {
         holder.setText(R.id.tvBookReadContent, s)
                 .setText(R.id.tvPageNumber, (position + 1) + "/" + mList.size())
                 .setText(R.id.tvChapterTitle, title)
-                .setText(R.id.tvBattery, battery);
+                .setText(R.id.tvBattery, battery)
+                .setText(R.id.tvCurTime, time);
     }
 
     public void setBattery(String battery) {
         this.battery = battery;
+    }
+
+    public void setTime(String time){
+        this.time = time;
     }
 }

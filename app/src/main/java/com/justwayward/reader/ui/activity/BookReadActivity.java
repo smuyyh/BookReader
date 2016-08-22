@@ -142,8 +142,9 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     private TTSPlayer mTtsPlayer;
     private TtsConfig ttsConfig;
 
-    IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-    BatteryReceiver batteryReceiver = new BatteryReceiver();
+    private IntentFilter intentFilter = new IntentFilter();
+    private BatteryReceiver batteryReceiver = new BatteryReceiver();
+    private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 
     @Override
     public int getLayoutId() {
@@ -176,10 +177,11 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         bookId = getIntent().getStringExtra("bookId");
         mTvBookReadTocTitle.setText(getIntent().getStringExtra("bookName"));
 
-        // 创建播放器对象
         mTtsPlayer = TTSPlayerUtils.getTTSPlayer();
-        // 播放器配置
         ttsConfig = TTSPlayerUtils.getTtsConfig();
+
+        intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+        intentFilter.addAction(Intent.ACTION_TIME_TICK);
     }
 
     @Override
@@ -497,6 +499,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
             } else {
                 readPageAdapter.title = mChapterList.get(currentChapter - 1).title;
             }
+            readPageAdapter.setTime(sdf.format(new Date()));
             flipView.setAdapter(readPageAdapter);
 
             if (isPre) { // 如果是加载上一章，则跳转到最后一页
@@ -532,8 +535,10 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
                 int level = intent.getIntExtra("level", 0);
                 int scale = intent.getIntExtra("scale", 100);
                 readPageAdapter.setBattery(((level * 100) / scale) + "%");
-                readPageAdapter.notifyDataSetChanged();
+            } else if(Intent.ACTION_TIME_TICK.equals(intent.getAction())){
+                readPageAdapter.setTime(sdf.format(new Date()));
             }
+            readPageAdapter.notifyDataSetChanged();
         }
     }
 
