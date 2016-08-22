@@ -2,18 +2,18 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-             android:background="@color/book_read_bg">
+    android:background="@color/book_read_bg">
 
     <com.justwayward.reader.view.CustomTextView
         android:id="@+id/tvBookReadContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
         android:paddingBottom="20dp"
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
+        android:paddingTop="20dp"
         android:textColor="@color/chapter_content"
-        android:textSize="16sp"/>
+        android:textSize="16sp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,10 +21,24 @@
         android:layout_gravity="bottom">
 
         <TextView
+            android:id="@+id/tvBattery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/ic_battery_bg_brown"
+            android:paddingBottom="2dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="5dp"
+            android:paddingTop="2dp"
+            android:textSize="10dp" />
+
+        <TextView
             android:id="@+id/tvPageNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
             android:textColor="@color/chapter_page_number" />
 

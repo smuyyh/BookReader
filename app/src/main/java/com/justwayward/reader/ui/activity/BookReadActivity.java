@@ -1,6 +1,10 @@
 package com.justwayward.reader.ui.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
@@ -137,6 +141,9 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
      */
     private TTSPlayer mTtsPlayer;
     private TtsConfig ttsConfig;
+
+    IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+    BatteryReceiver batteryReceiver = new BatteryReceiver();
 
     @Override
     public int getLayoutId() {
@@ -408,6 +415,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
             startPage = false;
         }
     }
+
     @Override
     public void onCenterClick() {
         toggleReadBar();
@@ -485,6 +493,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
             if (readPageAdapter == null) {
                 readPageAdapter = new BookReadPageAdapter(mContext, mContentList, mChapterList.get(currentChapter - 1).title);
+                registerReceiver(batteryReceiver, intentFilter);
             } else {
                 readPageAdapter.title = mChapterList.get(currentChapter - 1).title;
             }
@@ -512,6 +521,19 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
             factory.readPage(chapter);
             LogUtils.i("缓存章节分页结果:" + chapter);
             return null;
+        }
+    }
+
+    class BatteryReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (Intent.ACTION_BATTERY_CHANGED.equals(intent.getAction())) {
+                int level = intent.getIntExtra("level", 0);
+                int scale = intent.getIntExtra("scale", 100);
+                readPageAdapter.setBattery(((level * 100) / scale) + "%");
+                readPageAdapter.notifyDataSetChanged();
+            }
         }
     }
 
@@ -551,5 +573,6 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
             mTtsPlayer.stop();
         EventBus.getDefault().unregister(this);
         mPresenter.cancelDownload();
+        unregisterReceiver(batteryReceiver);
     }
 }
