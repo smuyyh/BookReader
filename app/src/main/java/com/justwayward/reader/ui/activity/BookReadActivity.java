@@ -38,7 +38,6 @@ import com.justwayward.reader.ui.contract.BookReadContract;
 import com.justwayward.reader.ui.presenter.BookReadPresenter;
 import com.justwayward.reader.utils.BookPageFactory;
 import com.justwayward.reader.utils.LogUtils;
-import com.justwayward.reader.utils.ScreenUtils;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
 import com.justwayward.reader.utils.TTSPlayerUtils;
 import com.justwayward.reader.utils.ToastUtils;
@@ -148,9 +147,8 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
     @Override
     public int getLayoutId() {
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        getWindow().setFlags(WindowManager.LayoutParams. FLAG_FULLSCREEN ,
+                WindowManager.LayoutParams. FLAG_FULLSCREEN);
         return R.layout.activity_book_read;
     }
 
@@ -164,10 +162,9 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
     @Override
     public void initToolBar() {
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mLlBookReadTop.getLayoutParams();
-        params.topMargin = ScreenUtils.getStatusBarHeight(this);
-        mLlBookReadTop.setLayoutParams(params);
-        hideStatusBar();
+//        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mLlBookReadTop.getLayoutParams();
+//        params.topMargin = ScreenUtils.getStatusBarHeight(this);
+//        mLlBookReadTop.setLayoutParams(params);
         showDialog();
     }
 
@@ -380,12 +377,10 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
     private void hideReadBar() { // 隐藏工具栏
         gone(mLlBookReadBottom, mLlBookReadTop, mTvDownloadProgress);
-        hideStatusBar();
     }
 
     private void showReadBar() { // 显示工具栏
         visible(mLlBookReadBottom, mLlBookReadTop);
-        showStatusBar();
     }
 
     private void toggleReadBar() { // 切换工具栏 隐藏/显示 状态
