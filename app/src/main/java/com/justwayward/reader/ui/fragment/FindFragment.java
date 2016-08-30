@@ -1,5 +1,6 @@
 package com.justwayward.reader.ui.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -9,6 +10,7 @@ import com.justwayward.reader.base.BaseFragment;
 import com.justwayward.reader.bean.FindBean;
 import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
+import com.justwayward.reader.ui.activity.CategoryListActivity;
 import com.justwayward.reader.ui.adapter.FindAdapter;
 
 import java.util.ArrayList;
@@ -58,11 +60,13 @@ public class FindFragment extends BaseFragment implements
     public void onItemClick(View view, int position, FindBean data) {
         switch (position){
             case 0:
-               // startActivity(new Intent(activity, BookReadActivity.class));
+               // startActivity(new Intent(activity, CategoryListActivity.class));
                 break;
             case 1:
+              //  startActivity(new Intent(activity, CategoryListActivity.class));
                 break;
             case 2:
+                startActivity(new Intent(activity, CategoryListActivity.class));
                 break;
             case 3:
                 break;

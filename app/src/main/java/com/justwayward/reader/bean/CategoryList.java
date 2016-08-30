@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by lfh on 2016/8/15.
  */
-public class CategoryList extends Base{
+public class CategoryList extends Base {
 
 
     /**
@@ -15,16 +15,16 @@ public class CategoryList extends Base{
      * ok : true
      */
 
-    private List<MaleBean> male;
+    public List<MaleBean> male;
     /**
      * name : 古代言情
      * bookCount : 125103
      */
 
-    private List<MaleBean> female;
+    public List<MaleBean> female;
 
     public static class MaleBean {
-        private String name;
-        private int bookCount;
+        public String name;
+        public int bookCount;
     }
 }

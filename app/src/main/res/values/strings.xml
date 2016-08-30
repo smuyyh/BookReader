@@ -31,4 +31,10 @@
     <string name="book_read_download_progress">正在缓存:%1$s(%2$d/%3$d)...</string>
     <string name="net_error">网络异常</string>
 
+    <!--分类相关-->
+    <string name="category">分类</string>
+    <string name="male">男生</string>
+    <string name="female">女生</string>
+    <string name="category_book_count">%1$d本</string>
+
 </resources>

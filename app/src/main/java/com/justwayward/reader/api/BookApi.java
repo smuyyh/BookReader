@@ -6,6 +6,7 @@ import com.justwayward.reader.bean.BookDetail;
 import com.justwayward.reader.bean.BookSource;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.BooksByTag;
+import com.justwayward.reader.bean.CategoryList;
 import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.bean.HotReview;
 import com.justwayward.reader.bean.HotWord;
@@ -89,6 +90,10 @@ public class BookApi {
 
     public synchronized Observable<List<BookSource>> getBookSource(String view,String book) {
         return service.getBookSource(view,book);
+    }
+
+    public synchronized Observable<CategoryList> getCategoryList() {
+        return service.getCategoryList();
     }
 
 }

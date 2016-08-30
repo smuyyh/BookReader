@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * @author lfh.
- * @date 2016/8/6.
+ * @date 2016/8/30.
  */
 public interface SearchContract {
 
