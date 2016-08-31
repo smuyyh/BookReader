@@ -3,7 +3,6 @@ package com.justwayward.reader.ui.activity;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -41,8 +40,6 @@ import butterknife.OnClick;
 public class BookDetailActivity extends BaseActivity implements BookDetailContract.View,
         OnRvItemClickListener<Object> {
 
-    @Bind(R.id.common_toolbar)
-    Toolbar mCommonToolbar;
     @Bind(R.id.ivBookCover)
     ImageView mIvBookCover;
     @Bind(R.id.tvBookTitle)
@@ -120,8 +117,6 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
 
     @Override
     public void configViews() {
-        setSupportActionBar(mCommonToolbar);
-
         mRvHotReview.setHasFixedSize(true);
         mRvHotReview.setLayoutManager(new LinearLayoutManager(this));
         mHotReviewAdapter = new HotReviewAdapter(mContext, mHotReviewList, this);

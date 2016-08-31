@@ -25,13 +25,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.justwayward.reader.ui.activity.SearchActivity"></activity>
-        <activity android:name="com.justwayward.reader.ui.activity.BookDetailActivity"></activity>
-        <activity android:name="com.justwayward.reader.ui.activity.BooksByTagActivity"></activity>
-        <activity android:name="com.justwayward.reader.ui.activity.BookReadActivity"></activity>
-        <activity android:name="com.justwayward.reader.ui.activity.CategoryListActivity"></activity>
+        <activity android:name="com.justwayward.reader.ui.activity.SearchActivity" />
+        <activity android:name="com.justwayward.reader.ui.activity.BookDetailActivity" />
+        <activity android:name="com.justwayward.reader.ui.activity.BooksByTagActivity" />
+        <activity android:name="com.justwayward.reader.ui.activity.BookReadActivity" />
+        <activity android:name=".ui.activity.TopCategoryListActivity" />
+        <activity android:name=".ui.activity.SubCategoryListActivity" />
 
-        <service android:name=".service.DownloadBookService"/>
+        <service android:name=".service.DownloadBookService" />
     </application>
 
 </manifest>

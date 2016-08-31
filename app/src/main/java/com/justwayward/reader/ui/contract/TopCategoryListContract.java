@@ -6,7 +6,7 @@ import com.justwayward.reader.bean.CategoryList;
  * @author lfh.
  * @date 2016/8/30.
  */
-public interface CategoryListContract {
+public interface TopCategoryListContract {
 
     interface View {
         void showCategoryList(CategoryList data);

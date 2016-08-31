@@ -2,19 +2,19 @@ package com.justwayward.reader.ui.activity;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
+import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.CategoryList;
 import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
-import com.justwayward.reader.component.DaggerCategoryListActivityComponent;
-import com.justwayward.reader.ui.adapter.CategoryListAdapter;
-import com.justwayward.reader.ui.contract.CategoryListContract;
-import com.justwayward.reader.ui.presenter.CategoryListPresenter;
+import com.justwayward.reader.component.DaggerTopCategoryListActivityComponent;
+import com.justwayward.reader.ui.adapter.TopCategoryListAdapter;
+import com.justwayward.reader.ui.contract.TopCategoryListContract;
+import com.justwayward.reader.ui.presenter.TopCategoryListPresenter;
 import com.justwayward.reader.view.SupportGridItemDecoration;
 
 import java.util.ArrayList;
@@ -27,11 +27,7 @@ import butterknife.Bind;
 /**
  * Created by lfh on 2016/8/30.
  */
-public class CategoryListActivity extends BaseActivity implements CategoryListContract.View,
-        OnRvItemClickListener<CategoryList.MaleBean> {
-
-    @Bind(R.id.common_toolbar)
-    Toolbar mToolbar;
+public class TopCategoryListActivity extends BaseActivity implements TopCategoryListContract.View {
 
     @Bind(R.id.rvMaleCategory)
     RecyclerView mRvMaleCategory;
@@ -39,21 +35,21 @@ public class CategoryListActivity extends BaseActivity implements CategoryListCo
     RecyclerView mRvFeMaleCategory;
 
     @Inject
-    CategoryListPresenter mPresenter;
+    TopCategoryListPresenter mPresenter;
 
-    private CategoryListAdapter mMaleCategoryListAdapter;
-    private CategoryListAdapter mFemaleCategoryListAdapter;
+    private TopCategoryListAdapter mMaleCategoryListAdapter;
+    private TopCategoryListAdapter mFemaleCategoryListAdapter;
     private List<CategoryList.MaleBean> mMaleCategoryList = new ArrayList<>();
     private List<CategoryList.MaleBean> mFemaleCategoryList = new ArrayList<>();
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_category_list;
+        return R.layout.activity_top_category_list;
     }
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
-        DaggerCategoryListActivityComponent.builder()
+        DaggerTopCategoryListActivityComponent.builder()
                 .appComponent(appComponent)
                 .build()
                 .inject(this);
@@ -61,8 +57,8 @@ public class CategoryListActivity extends BaseActivity implements CategoryListCo
 
     @Override
     public void initToolBar() {
-        mToolbar.setTitle(getString(R.string.category));
-        mToolbar.setNavigationIcon(R.drawable.ab_back);
+        mCommonToolbar.setTitle(getString(R.string.category));
+        mCommonToolbar.setNavigationIcon(R.drawable.ab_back);
     }
 
     @Override
@@ -72,16 +68,14 @@ public class CategoryListActivity extends BaseActivity implements CategoryListCo
 
     @Override
     public void configViews() {
-        setSupportActionBar(mToolbar);
-
         mRvMaleCategory.setHasFixedSize(true);
         mRvMaleCategory.setLayoutManager(new GridLayoutManager(this, 3));
         mRvMaleCategory.addItemDecoration(new SupportGridItemDecoration(this));
         mRvFeMaleCategory.setHasFixedSize(true);
         mRvFeMaleCategory.setLayoutManager(new GridLayoutManager(this, 3));
         mRvFeMaleCategory.addItemDecoration(new SupportGridItemDecoration(this));
-        mMaleCategoryListAdapter = new CategoryListAdapter(mContext, mMaleCategoryList, this);
-        mFemaleCategoryListAdapter = new CategoryListAdapter(mContext, mFemaleCategoryList, this);
+        mMaleCategoryListAdapter = new TopCategoryListAdapter(mContext, mMaleCategoryList, new ClickListener(Constant.Gender.MALE));
+        mFemaleCategoryListAdapter = new TopCategoryListAdapter(mContext, mFemaleCategoryList, new ClickListener(Constant.Gender.FEMALE));
         mRvMaleCategory.setAdapter(mMaleCategoryListAdapter);
         mRvFeMaleCategory.setAdapter(mFemaleCategoryListAdapter);
 
@@ -98,12 +92,20 @@ public class CategoryListActivity extends BaseActivity implements CategoryListCo
         mFemaleCategoryListAdapter.notifyDataSetChanged();
     }
 
+    class ClickListener implements OnRvItemClickListener<CategoryList.MaleBean> {
 
-    @Override
-    public void onItemClick(View view, int position, CategoryList.MaleBean data) {
-//        startActivity(new Intent(CategoryListActivity.this, BookDetailActivity.class)
-//                .putExtra("bookId", data._id));
+        private String gender;
+
+        public ClickListener(@Constant.Gender String gender) {
+            this.gender = gender;
+        }
+
+        @Override
+        public void onItemClick(View view, int position, CategoryList.MaleBean data) {
+            SubCategoryListActivity.startActivity(mContext, data.name, gender);
+        }
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

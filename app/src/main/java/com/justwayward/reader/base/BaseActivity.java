@@ -5,22 +5,30 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.justwayward.reader.R;
 import com.justwayward.reader.ReaderApplication;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
 import com.justwayward.reader.utils.StatusBarCompat;
 import com.progresslibrary.CustomDialog;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public abstract class BaseActivity extends AppCompatActivity {
+
+    @Bind(R.id.common_toolbar)
+    public Toolbar mCommonToolbar;
+
     protected Context mContext;
     protected int statusBarColor = 0;
     private boolean mNowMode;
     private CustomDialog dialog;//进度条
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +45,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         mContext = this;
         ButterKnife.bind(this);
         setupActivityComponent(ReaderApplication.getsInstance().getAppComponent());
-        initToolBar();
+        if (mCommonToolbar != null) {
+            initToolBar();
+            setSupportActionBar(mCommonToolbar);
+        }
         initDatas();
         configViews();
         mNowMode = SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT);
@@ -117,22 +128,24 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
     // dialog
-    public CustomDialog getDialog () {
+    public CustomDialog getDialog() {
         if (dialog == null) {
             dialog = CustomDialog.instance(this);
             dialog.setCancelable(false);
         }
         return dialog;
     }
-    public void hideDialog () {
+
+    public void hideDialog() {
         if (dialog != null)
             dialog.hide();
     }
-    public void showDialog () {
+
+    public void showDialog() {
         getDialog().show();
     }
 
-    public void dismissDialog () {
+    public void dismissDialog() {
         if (dialog != null) {
             dialog.dismiss();
             dialog = null;

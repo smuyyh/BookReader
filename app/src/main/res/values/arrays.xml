@@ -6,4 +6,11 @@
         <item>发现</item>
     </string-array>
 
+    <string-array name="sub_tabs">
+        <item>新书</item>
+        <item>热门</item>
+        <item>口碑</item>
+        <item>完结</item>
+    </string-array>
+
 </resources>

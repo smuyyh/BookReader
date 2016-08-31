@@ -37,7 +37,7 @@ public class BooksByCats extends Base {
         public String majorCate;
         public int latelyFollower;
         public int latelyFollowerBase;
-        public int minRetentionRatio;
+        public String minRetentionRatio;
         public double retentionRatio;
         public String lastChapter;
         public List<String> tags;

@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,8 +46,6 @@ import butterknife.Bind;
 public class SearchActivity extends BaseActivity implements SearchContract.View,
         OnRvItemClickListener<SearchDetail.SearchBooks> {
 
-    @Bind(R.id.common_toolbar)
-    Toolbar mToolbar;
     @Bind(R.id.tvChangeWords)
     TextView mTvChangeWords;
     @Bind(R.id.tag_group)
@@ -91,8 +88,8 @@ public class SearchActivity extends BaseActivity implements SearchContract.View,
 
     @Override
     public void initToolBar() {
-        mToolbar.setTitle("");
-        mToolbar.setNavigationIcon(R.drawable.ab_back);
+        mCommonToolbar.setTitle("");
+        mCommonToolbar.setNavigationIcon(R.drawable.ab_back);
     }
 
     @Override
@@ -102,8 +99,6 @@ public class SearchActivity extends BaseActivity implements SearchContract.View,
 
     @Override
     public void configViews() {
-        setSupportActionBar(mToolbar);
-
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new SupportDividerItemDecoration(mContext, LinearLayoutManager.VERTICAL));
@@ -115,7 +110,7 @@ public class SearchActivity extends BaseActivity implements SearchContract.View,
         mListPopupWindow.setAdapter(mAutoAdapter);
         mListPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         mListPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        mListPopupWindow.setAnchorView(mToolbar);
+        mListPopupWindow.setAnchorView(mCommonToolbar);
         mListPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

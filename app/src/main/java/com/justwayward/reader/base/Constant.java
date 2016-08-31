@@ -1,6 +1,10 @@
 package com.justwayward.reader.base;
 
 import android.graphics.Color;
+import android.support.annotation.StringDef;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * @author yuyh.
@@ -23,4 +27,32 @@ public class Constant {
             Color.parseColor("#67CCB7"),
             Color.parseColor("#F6BC7E")
     };
+
+    @StringDef({
+            Gender.MALE,
+            Gender.FEMALE
+    })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface Gender {
+        String MALE = "male";
+
+        String FEMALE = "female";
+    }
+
+    @StringDef({
+            CateType.HOT,
+            CateType.NEW,
+            CateType.REPUTATION,
+            CateType.OVER
+    })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface CateType {
+        String HOT = "hot";
+
+        String NEW = "new";
+
+        String REPUTATION = "reputation";
+
+        String OVER = "over";
+    }
 }

@@ -110,7 +110,7 @@ public class BookListDetail extends Base{
                 public int latelyFollower;
                 public int latelyFollowerBase;
                 public int wordCount;
-                public int minRetentionRatio;
+                public String minRetentionRatio;
                 public double retentionRatio;
             }
         }

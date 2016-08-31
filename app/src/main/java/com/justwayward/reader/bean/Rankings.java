@@ -80,7 +80,7 @@ public class Rankings extends Base{
             public int banned;
             public int latelyFollower;
             public int latelyFollowerBase;
-            public int minRetentionRatio;
+            public String minRetentionRatio;
             public String retentionRatio;
         }
     }

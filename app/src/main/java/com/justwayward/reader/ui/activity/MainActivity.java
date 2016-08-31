@@ -31,7 +31,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -59,8 +58,6 @@ import butterknife.Bind;
  */
 public class MainActivity extends BaseActivity implements MainContract.View {
 
-    @Bind(R.id.common_toolbar)
-    Toolbar mToolbar;
     @Bind(R.id.indicator)
     RVPIndicator mIndicator;
     @Bind(R.id.viewpager)
@@ -97,7 +94,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     @Override
     public void initToolBar() {
-        mToolbar.setLogo(R.drawable.home_ab_logo);
+        mCommonToolbar.setLogo(R.drawable.home_ab_logo);
         setTitle("");
     }
 
@@ -107,7 +104,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         mTabContents = new ArrayList<>();
 
         for (String data : mDatas) {
-//            RecommendFragment fragment = RecommendFragment.newInstance(data);
             mTabContents.add(new RecommendFragment());
             mTabContents.add(new RecommendFragment());
             mTabContents.add(new FindFragment());
@@ -128,8 +124,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     @Override
     public void configViews() {
-        // 设置显示Toolbar
-        setSupportActionBar(mToolbar);
         // 设置Tab上的标题
         mIndicator.setTabItemTitles(mDatas);
         mViewPager.setAdapter(mAdapter);

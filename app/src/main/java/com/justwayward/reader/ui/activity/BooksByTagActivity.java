@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -31,9 +30,6 @@ import butterknife.Bind;
  */
 public class BooksByTagActivity extends BaseActivity implements BooksByTagContract.View,
         OnRvItemClickListener<BooksByTag.TagBook> {
-
-    @Bind(R.id.common_toolbar)
-    Toolbar mToolbar;
 
     @Bind(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
@@ -65,8 +61,8 @@ public class BooksByTagActivity extends BaseActivity implements BooksByTagContra
 
     @Override
     public void initToolBar() {
-        mToolbar.setTitle(getIntent().getStringExtra("tag"));
-        mToolbar.setNavigationIcon(R.drawable.ab_back);
+        mCommonToolbar.setTitle(getIntent().getStringExtra("tag"));
+        mCommonToolbar.setNavigationIcon(R.drawable.ab_back);
     }
 
     @Override
@@ -76,8 +72,6 @@ public class BooksByTagActivity extends BaseActivity implements BooksByTagContra
 
     @Override
     public void configViews() {
-        setSupportActionBar(mToolbar);
-
         refreshLayout.setOnRefreshListener(new RefreshListener());
 
         mRecyclerView.setHasFixedSize(true);

@@ -144,6 +144,6 @@ public interface BookApiService {
      * @return
      */
     @GET("/book/by-categories")
-    Observable<BooksByCats> getBooksByCats(@Query("gender") String gender, @Query("type") String type, @Query("major") String major, @Query("minor") String minor, @Query("start") String start, @Query("limit") String limit);
+    Observable<BooksByCats> getBooksByCats(@Query("gender") String gender, @Query("type") String type, @Query("major") String major, @Query("minor") String minor, @Query("start") int start, @Query("limit") int limit);
 
 }

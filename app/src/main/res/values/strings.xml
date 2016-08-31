@@ -37,4 +37,6 @@
     <string name="female">女生</string>
     <string name="category_book_count">%1$d本</string>
 
+    <string name="category_book_msg">%1$d人在追 |&#160; %2$s读者留存</string>
+
 </resources>

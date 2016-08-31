@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.bean.CategoryList;
-import com.justwayward.reader.ui.contract.CategoryListContract;
+import com.justwayward.reader.ui.contract.TopCategoryListContract;
 import com.justwayward.reader.utils.LogUtils;
 
 import javax.inject.Inject;
@@ -17,21 +17,21 @@ import rx.schedulers.Schedulers;
  * @author lfh.
  * @date 2016/8/30.
  */
-public class CategoryListPresenter implements CategoryListContract.Presenter<CategoryListContract.View> {
+public class TopCategoryListPresenter implements TopCategoryListContract.Presenter<TopCategoryListContract.View> {
 
     private Context context;
     private BookApi bookApi;
 
-    private CategoryListContract.View view;
+    private TopCategoryListContract.View view;
 
     @Inject
-    public CategoryListPresenter(Context context, BookApi bookApi) {
+    public TopCategoryListPresenter(Context context, BookApi bookApi) {
         this.context = context;
         this.bookApi = bookApi;
     }
 
     @Override
-    public void attachView(CategoryListContract.View view) {
+    public void attachView(TopCategoryListContract.View view) {
         this.view = view;
     }
 

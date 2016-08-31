@@ -15,12 +15,11 @@ import java.util.List;
  * @author lfh.
  * @date 16/8/30.
  */
-public class CategoryListAdapter extends EasyRVAdapter<CategoryList.MaleBean> {
+public class TopCategoryListAdapter extends EasyRVAdapter<CategoryList.MaleBean> {
     private OnRvItemClickListener itemClickListener;
 
-    public CategoryListAdapter(Context context, List<CategoryList.MaleBean> list, OnRvItemClickListener
-            listener) {
-        super(context, list, R.layout.item_category_list);
+    public TopCategoryListAdapter(Context context, List<CategoryList.MaleBean> list, OnRvItemClickListener listener) {
+        super(context, list, R.layout.item_top_category_list);
         this.itemClickListener = listener;
     }
 

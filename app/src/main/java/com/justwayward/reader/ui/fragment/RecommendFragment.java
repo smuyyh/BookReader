@@ -41,7 +41,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
 
     @Override
     public int getLayoutResId() {
-        return R.layout.fragment_main;
+        return R.layout.fragment_recommend;
     }
 
     @Override
@@ -90,7 +90,8 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     @Override
     public void onItemClick(View view, int position, Recommend.RecommendBooks data) {
         startActivity(new Intent(activity, BookReadActivity.class)
-                .putExtra("bookId", data._id).putExtra("bookName", data.title));
+                .putExtra("bookId", data._id)
+                .putExtra("bookName", data.title));
     }
 
 }

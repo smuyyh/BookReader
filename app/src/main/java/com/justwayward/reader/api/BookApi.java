@@ -5,8 +5,10 @@ import com.justwayward.reader.bean.AutoComplete;
 import com.justwayward.reader.bean.BookDetail;
 import com.justwayward.reader.bean.BookSource;
 import com.justwayward.reader.bean.BookToc;
+import com.justwayward.reader.bean.BooksByCats;
 import com.justwayward.reader.bean.BooksByTag;
 import com.justwayward.reader.bean.CategoryList;
+import com.justwayward.reader.bean.CategoryListLv2;
 import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.bean.HotReview;
 import com.justwayward.reader.bean.HotWord;
@@ -20,6 +22,7 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -94,6 +97,14 @@ public class BookApi {
 
     public synchronized Observable<CategoryList> getCategoryList() {
         return service.getCategoryList();
+    }
+
+    public Observable<CategoryListLv2> getCategoryListLv2(){
+        return service.getCategoryListLv2();
+    }
+
+    public Observable<BooksByCats> getBooksByCats(String gender, String type, String major, String minor, int start, @Query("limit") int limit){
+        return service.getBooksByCats(gender, type, major, minor, start, limit);
     }
 
 }
