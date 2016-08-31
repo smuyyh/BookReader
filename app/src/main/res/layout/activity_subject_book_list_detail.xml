@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/common_bg"
+              android:fitsSystemWindows="true"
+              android:orientation="vertical">
+
+    <include layout="@layout/common_toolbar"/>
+
+    <com.justwayward.reader.view.MyScrollview
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:padding="15dp"
+                android:id="@+id/tvBookListTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/common_h1"
+                android:textSize="18sp"
+                tools:text="追书包月精选书单之科幻第一期"/>
+
+            <TextView
+                android:id="@+id/tvBookListDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:textColor="@color/common_h2"
+                android:textSize="13sp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                tools:text="开通包月，这些精品书就能免费阅读了"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp">
+
+                <ImageView
+                    android:id="@+id/ivAuthorAvatar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    tools:src="@drawable/avatar_default"
+                    />
+
+                <TextView
+                    android:id="@+id/tCreate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_toRightOf="@id/ivAuthorAvatar"
+                    android:textColor="@color/common_h2"
+                    android:textSize="15sp"
+                    tools:text="创建自 "/>
+
+                <TextView
+                    android:id="@+id/tvBookListAuthor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/tCreate"
+                    android:textColor="@color/light_coffee"
+                    android:textSize="15sp"
+                    tools:text="追书首席打杂"/>
+
+                <Button
+                    android:id="@+id/btnShare"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="分享"/>
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvBooks"
+                android:padding="10dp"
+                android:background="@color/light_white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </com.justwayward.reader.view.MyScrollview>
+</LinearLayout>

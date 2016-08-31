@@ -40,4 +40,9 @@
     <string name="category_book_msg">%1$d人在追 |&#160; %2$s%%读者留存</string>
     <string name="subject_book_msg">共%1$d本书 |&#160; %2$d人收藏</string>
 
+    <!--主题书单相关-->
+    <string name="subject_book_list_detail">书单详情</string>
+    <string name="subject_book_list_detail_book_lately_follower">%1$d&#160;人在追</string>
+    <string name="subject_book_list_detail_book_word_count">|&#160;%1$d&#160;万字</string>
+
 </resources>

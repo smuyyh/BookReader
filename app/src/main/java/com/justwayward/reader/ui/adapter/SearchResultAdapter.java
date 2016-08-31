@@ -35,7 +35,7 @@ public class SearchResultAdapter extends EasyRVAdapter<SearchDetail.SearchBooks>
         Glide.with(mContext).load(Constant.IMG_BASE_URL + item.cover).placeholder(R.drawable
                 .cover_default).into(ivCover);
 
-        holder.setText(R.id.tvBookTitle, item.title)
+        holder.setText(R.id.tvBookListTitle, item.title)
                 .setText(R.id.tvLatelyFollower, String.format(mContext.getString(R.string
                         .search_result_lately_follower), item.latelyFollower))
                 .setText(R.id.tvRetentionRatio, (TextUtils.isEmpty(item.retentionRatio) ? String
@@ -43,7 +43,7 @@ public class SearchResultAdapter extends EasyRVAdapter<SearchDetail.SearchBooks>
                                 "0") :
                         String.format(mContext.getString(R.string.search_result_retention_ratio),
                                 item.retentionRatio)))
-                .setText(R.id.tvAuthor, String.format(mContext.getString(R.string
+                .setText(R.id.tvBookListAuthor, String.format(mContext.getString(R.string
                         .search_result_author), item.author));
         holder.setOnItemViewClickListener(new View.OnClickListener() {
             @Override

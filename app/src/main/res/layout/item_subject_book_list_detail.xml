@@ -3,12 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/touch_bg"
+    xmlns:tools="http://schemas.android.com/tools"
     android:padding="10dp">
 
     <ImageView
         android:id="@+id/ivBookCover"
         android:layout_width="45dp"
         android:layout_height="65dp"
+        tools:src="@drawable/cover_default"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:scaleType="centerCrop" />
@@ -27,45 +29,46 @@
             android:layout_marginBottom="10dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="武侠世界自由行"
+            tools:text="此单在手，书荒不再有！"
             android:textColor="@color/common_h1"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/tvLatelyFollower"
+            android:id="@+id/tvBookAuthor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvBookListTitle"
+            android:layout_marginBottom="10dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="549人在追 | "
+            tools:text="选择"
             android:textColor="@color/common_h2"
+            android:textSize="13sp" />
+
+
+        <TextView
+            android:id="@+id/tvBookLatelyFollower"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvBookAuthor"
+            android:ellipsize="end"
+            android:singleLine="true"
+            tools:text="@string/subject_book_list_detail_book_lately_follower"
+            android:layout_marginRight="5dp"
+            android:textColor="@color/common_h3"
             android:textSize="13sp" />
 
         <TextView
-            android:id="@+id/tvRetentionRatio"
+            android:id="@+id/tvBookWordCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvBookListTitle"
-            android:layout_toRightOf="@id/tvLatelyFollower"
+            android:layout_below="@id/tvBookAuthor"
+            android:layout_toRightOf="@id/tvBookLatelyFollower"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="60.1%读者留存 | "
-            android:textColor="@color/common_h2"
+            tools:text="@string/subject_book_list_detail_book_word_count"
+            android:textColor="@color/common_h3"
             android:textSize="13sp" />
-
-        <TextView
-            android:id="@+id/tvBookListAuthor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvBookListTitle"
-            android:layout_toRightOf="@id/tvRetentionRatio"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:text="大江入海著"
-            android:textColor="@color/common_h2"
-            android:textSize="13sp" />
-
 
     </RelativeLayout>
 

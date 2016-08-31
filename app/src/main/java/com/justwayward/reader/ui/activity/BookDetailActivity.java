@@ -42,9 +42,9 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
 
     @Bind(R.id.ivBookCover)
     ImageView mIvBookCover;
-    @Bind(R.id.tvBookTitle)
+    @Bind(R.id.tvBookListTitle)
     TextView mTvBookTitle;
-    @Bind(R.id.tvAuthor)
+    @Bind(R.id.tvBookListAuthor)
     TextView mTvAuthor;
     @Bind(R.id.tvCatgory)
     TextView mTvCatgory;

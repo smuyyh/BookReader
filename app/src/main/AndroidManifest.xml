@@ -32,6 +32,7 @@
         <activity android:name=".ui.activity.TopCategoryListActivity" />
         <activity android:name=".ui.activity.SubCategoryListActivity" />
         <activity android:name=".ui.activity.SubjectBookListActivity"/>
+        <activity android:name=".ui.activity.SubjectBookListDetailActivity"/>
 
         <service android:name=".service.DownloadBookService" />
     </application>

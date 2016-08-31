@@ -43,7 +43,7 @@ public class BooksByTagAdapter extends EasyRVAdapter<BooksByTag.TagBook> {
             }
         }
 
-        holder.setText(R.id.tvBookTitle, item.title)
+        holder.setText(R.id.tvBookListTitle, item.title)
                 .setText(R.id.tvShortIntro, item.shortIntro)
                 .setText(R.id.tvTags, (item.tags.size() == 0 ? "" : sbTags.substring(0, sbTags
                         .lastIndexOf(" | "))));

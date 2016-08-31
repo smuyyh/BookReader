@@ -21,7 +21,7 @@
         android:layout_toRightOf="@+id/ivBookCover">
 
         <TextView
-            android:id="@+id/tvBookTitle"
+            android:id="@+id/tvBookListTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -35,7 +35,7 @@
             android:id="@+id/tvShortIntro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvBookTitle"
+            android:layout_below="@id/tvBookListTitle"
             android:layout_marginBottom="10dp"
             android:ellipsize="end"
             android:singleLine="true"

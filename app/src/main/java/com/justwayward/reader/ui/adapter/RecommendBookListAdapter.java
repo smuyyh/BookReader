@@ -36,7 +36,7 @@ public class RecommendBookListAdapter extends EasyRVAdapter<RecommendBookList.Re
                 .drawable.cover_default).into(ivCover);
 
         holder.setText(R.id.tvBookListTitle, item.title)
-                .setText(R.id.tvBookListAuthor, item.author)
+                .setText(R.id.tvBookAuthor, item.author)
                 .setText(R.id.tvBookListTitle, item.title)
                 .setText(R.id.tvBookListDesc, item.desc)
                 .setText(R.id.tvBookCount, String.format(mContext.getString(R.string

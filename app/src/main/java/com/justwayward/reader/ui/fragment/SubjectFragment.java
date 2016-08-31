@@ -14,7 +14,7 @@ import com.justwayward.reader.bean.support.TagEvent;
 import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerSubjectFragmentComponent;
-import com.justwayward.reader.ui.activity.BookReadActivity;
+import com.justwayward.reader.ui.activity.SubjectBookListDetailActivity;
 import com.justwayward.reader.ui.adapter.SubjectBookListAdapter;
 import com.justwayward.reader.ui.contract.SubjectFragmentContract;
 import com.justwayward.reader.ui.presenter.SubjectFragmentPresenter;
@@ -122,9 +122,8 @@ public class SubjectFragment extends BaseFragment implements SubjectFragmentCont
 
     @Override
     public void onItemClick(View view, int position, BookLists.BookListsBean data) {
-        startActivity(new Intent(activity, BookReadActivity.class)
-                .putExtra("bookId", data._id)
-                .putExtra("bookName", data.title));
+        startActivity(new Intent(activity, SubjectBookListDetailActivity.class)
+                .putExtra("bookListId", data._id));
     }
 
     @Override

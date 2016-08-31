@@ -32,7 +32,7 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/tvBookListAuthor"
+            android:id="@+id/tvBookAuthor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvBookListTitle"
@@ -47,7 +47,7 @@
             android:id="@+id/tvBookListDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvBookListAuthor"
+            android:layout_below="@id/tvBookAuthor"
             android:layout_marginBottom="10dp"
             android:ellipsize="end"
             android:singleLine="true"

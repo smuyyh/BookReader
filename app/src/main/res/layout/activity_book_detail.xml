@@ -32,7 +32,7 @@
                     android:scaleType="centerCrop" />
 
                 <TextView
-                    android:id="@+id/tvBookTitle"
+                    android:id="@+id/tvBookListTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
@@ -45,10 +45,10 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/tvAuthor"
+                    android:id="@+id/tvBookListAuthor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tvBookTitle"
+                    android:layout_below="@id/tvBookListTitle"
                     android:layout_toRightOf="@+id/ivBookCover"
                     android:ellipsize="end"
                     android:singleLine="true"
@@ -60,8 +60,8 @@
                     android:id="@+id/tvCatgory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tvBookTitle"
-                    android:layout_toRightOf="@id/tvAuthor"
+                    android:layout_below="@id/tvBookListTitle"
+                    android:layout_toRightOf="@id/tvBookListAuthor"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:textColor="@color/common_h2"
@@ -72,7 +72,7 @@
                     android:id="@+id/tvWordCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tvBookTitle"
+                    android:layout_below="@id/tvBookListTitle"
                     android:layout_toRightOf="@id/tvCatgory"
                     android:ellipsize="end"
                     android:singleLine="true"
@@ -84,7 +84,7 @@
                     android:id="@+id/tvLatelyUpdate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tvAuthor"
+                    android:layout_below="@id/tvBookListAuthor"
                     android:layout_marginTop="10dp"
                     android:layout_toRightOf="@id/ivBookCover"
                     android:ellipsize="end"
