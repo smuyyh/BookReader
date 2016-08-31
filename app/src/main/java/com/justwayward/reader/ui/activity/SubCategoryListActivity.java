@@ -217,12 +217,8 @@ public class SubCategoryListActivity extends BaseActivity implements SubCategory
                         currentMinor = mMinors.get(position);
                         int current = mViewPager.getCurrentItem();
                         EventBus.getDefault().post(new SubEvent(mMinors.get(position), types[current]));
-                        mCommonToolbar.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                mListPopupWindow.dismiss();
-                            }
-                        }, 250);
+                        mListPopupWindow.dismiss();
+                        mCommonToolbar.setTitle(mMinors.get(position));
 
                     }
                 });

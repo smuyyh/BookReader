@@ -50,11 +50,13 @@ public class TopCategoryListPresenter implements TopCategoryListContract.Present
                     @Override
                     public void onCompleted() {
                         LogUtils.i("complete");
+                        view.complete();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         LogUtils.e(e.toString());
+                        view.complete();
                     }
                 });
     }

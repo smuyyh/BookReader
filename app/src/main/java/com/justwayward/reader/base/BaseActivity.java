@@ -16,12 +16,10 @@ import com.justwayward.reader.utils.SharedPreferencesUtil;
 import com.justwayward.reader.utils.StatusBarCompat;
 import com.progresslibrary.CustomDialog;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    @Bind(R.id.common_toolbar)
     public Toolbar mCommonToolbar;
 
     protected Context mContext;
@@ -45,6 +43,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         mContext = this;
         ButterKnife.bind(this);
         setupActivityComponent(ReaderApplication.getsInstance().getAppComponent());
+        mCommonToolbar = ButterKnife.findById(this, R.id.common_toolbar);
         if (mCommonToolbar != null) {
             initToolBar();
             setSupportActionBar(mCommonToolbar);

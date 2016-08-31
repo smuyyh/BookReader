@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.justwayward.reader.ReaderApplication;
 import com.justwayward.reader.component.AppComponent;
+import com.progresslibrary.CustomDialog;
 
 import butterknife.ButterKnife;
 
@@ -22,6 +23,8 @@ public abstract class BaseFragment extends Fragment {
     protected LayoutInflater inflater;
 
     protected Context mContext;
+
+    private CustomDialog dialog;
 
     public abstract
     @LayoutRes
@@ -89,5 +92,29 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected abstract void setupActivityComponent(AppComponent appComponent);
+
+    public CustomDialog getDialog() {
+        if (dialog == null) {
+            dialog = CustomDialog.instance(getActivity());
+            dialog.setCancelable(false);
+        }
+        return dialog;
+    }
+
+    public void hideDialog() {
+        if (dialog != null)
+            dialog.hide();
+    }
+
+    public void showDialog() {
+        getDialog().show();
+    }
+
+    public void dismissDialog() {
+        if (dialog != null) {
+            dialog.dismiss();
+            dialog = null;
+        }
+    }
 
 }

@@ -11,7 +11,6 @@ import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseFragment;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.BooksByCats;
-import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.support.SubEvent;
 import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
@@ -34,7 +33,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 
 public class SubCategoryFragment extends BaseFragment implements SubCategoryFragmentContract.View,
-        OnRvItemClickListener<Recommend.RecommendBooks> {
+        OnRvItemClickListener<BooksByCats.BooksBean> {
 
     public final static String BUNDLE_MAJOR = "major";
     public final static String BUNDLE_MINOR = "minor";
@@ -112,7 +111,7 @@ public class SubCategoryFragment extends BaseFragment implements SubCategoryFrag
     }
 
     @Override
-    public void onItemClick(View view, int position, Recommend.RecommendBooks data) {
+    public void onItemClick(View view, int position, BooksByCats.BooksBean data) {
         startActivity(new Intent(activity, BookReadActivity.class)
                 .putExtra("bookId", data._id)
                 .putExtra("bookName", data.title));
@@ -126,11 +125,17 @@ public class SubCategoryFragment extends BaseFragment implements SubCategoryFrag
         mAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void complete() {
+        dismissDialog();
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void initCategoryList(SubEvent event) {
         minor = event.minor;
         String type = event.type;
         if (this.type.equals(type)) {
+            showDialog();
             mPresenter.getCategoryList(gender, major, minor, this.type, 0);
         }
     }

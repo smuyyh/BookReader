@@ -10,6 +10,8 @@ public interface SubCategoryFragmentContract {
 
     interface View {
         void showCategoryList(BooksByCats data);
+
+        void complete();
     }
 
     interface Presenter<T> extends BaseContract.BasePresenter<T> {

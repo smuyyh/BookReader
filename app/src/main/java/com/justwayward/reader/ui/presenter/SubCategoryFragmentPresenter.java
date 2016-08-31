@@ -44,12 +44,13 @@ public class SubCategoryFragmentPresenter implements SubCategoryFragmentContract
                 .subscribe(new Observer<BooksByCats>() {
                     @Override
                     public void onCompleted() {
-
+                        view.complete();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         LogUtils.e("getCategoryList:"+e.toString());
+                        view.complete();
                     }
 
                     @Override

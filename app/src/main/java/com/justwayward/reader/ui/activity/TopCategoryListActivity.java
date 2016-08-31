@@ -68,6 +68,7 @@ public class TopCategoryListActivity extends BaseActivity implements TopCategory
 
     @Override
     public void configViews() {
+        showDialog();
         mRvMaleCategory.setHasFixedSize(true);
         mRvMaleCategory.setLayoutManager(new GridLayoutManager(this, 3));
         mRvMaleCategory.addItemDecoration(new SupportGridItemDecoration(this));
@@ -90,6 +91,11 @@ public class TopCategoryListActivity extends BaseActivity implements TopCategory
         mFemaleCategoryList.addAll(data.female);
         mMaleCategoryListAdapter.notifyDataSetChanged();
         mFemaleCategoryListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void complete() {
+        dismissDialog();
     }
 
     class ClickListener implements OnRvItemClickListener<CategoryList.MaleBean> {
