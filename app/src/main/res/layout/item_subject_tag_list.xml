@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:background="@drawable/shape_common_selector"
+    android:gravity="center"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvTagName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="武侠"
+        android:textColor="@color/common_h2"
+        android:textSize="16dp" />
+
+
+</LinearLayout>

@@ -3,6 +3,7 @@ package com.justwayward.reader.api;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.AutoComplete;
 import com.justwayward.reader.bean.BookDetail;
+import com.justwayward.reader.bean.BookListTags;
 import com.justwayward.reader.bean.BookSource;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.BooksByCats;
@@ -93,6 +94,10 @@ public class BookApi {
 
     public synchronized Observable<List<BookSource>> getBookSource(String view,String book) {
         return service.getBookSource(view,book);
+    }
+
+    public Observable<BookListTags> getBookListTags(){
+        return service.getBookListTags();
     }
 
     public synchronized Observable<CategoryList> getCategoryList() {

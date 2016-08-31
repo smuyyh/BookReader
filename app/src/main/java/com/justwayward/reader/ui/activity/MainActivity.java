@@ -102,12 +102,9 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     public void initDatas() {
         mDatas = Arrays.asList(getResources().getStringArray(R.array.home_tabs));
         mTabContents = new ArrayList<>();
-
-        for (String data : mDatas) {
-            mTabContents.add(new RecommendFragment());
-            mTabContents.add(new RecommendFragment());
-            mTabContents.add(new FindFragment());
-        }
+        mTabContents.add(new RecommendFragment());
+        mTabContents.add(new RecommendFragment());
+        mTabContents.add(new FindFragment());
 
         mAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override

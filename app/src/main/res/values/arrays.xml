@@ -13,4 +13,9 @@
         <item>完结</item>
     </string-array>
 
+    <string-array name="subject_tabs">
+        <item>本周最热</item>
+        <item>最新发布</item>
+        <item>最多收藏</item>
+    </string-array>
 </resources>

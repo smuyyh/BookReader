@@ -10,6 +10,7 @@ import com.justwayward.reader.base.BaseFragment;
 import com.justwayward.reader.bean.FindBean;
 import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
+import com.justwayward.reader.ui.activity.SubjectBookListActivity;
 import com.justwayward.reader.ui.activity.TopCategoryListActivity;
 import com.justwayward.reader.ui.adapter.FindAdapter;
 import com.justwayward.reader.view.SupportDividerItemDecoration;
@@ -65,7 +66,7 @@ public class FindFragment extends BaseFragment implements
                 // startActivity(new Intent(activity, TopCategoryListActivity.class));
                 break;
             case 1:
-                //  startActivity(new Intent(activity, TopCategoryListActivity.class));
+                SubjectBookListActivity.startActivity(activity);
                 break;
             case 2:
                 startActivity(new Intent(activity, TopCategoryListActivity.class));

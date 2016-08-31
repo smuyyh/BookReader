@@ -108,12 +108,10 @@ public class SubCategoryListActivity extends BaseActivity implements SubCategory
         mPresenter.getCategoryListLv2();
 
         mTabContents = new ArrayList<>();
-        for (String ignored : mDatas) {
-            mTabContents.add(SubCategoryFragment.newInstance(cate, "", gender, Constant.CateType.NEW));
-            mTabContents.add(SubCategoryFragment.newInstance(cate, "", gender, Constant.CateType.HOT));
-            mTabContents.add(SubCategoryFragment.newInstance(cate, "", gender, Constant.CateType.REPUTATION));
-            mTabContents.add(SubCategoryFragment.newInstance(cate, "", gender, Constant.CateType.OVER));
-        }
+        mTabContents.add(SubCategoryFragment.newInstance(cate, "", gender, Constant.CateType.NEW));
+        mTabContents.add(SubCategoryFragment.newInstance(cate, "", gender, Constant.CateType.HOT));
+        mTabContents.add(SubCategoryFragment.newInstance(cate, "", gender, Constant.CateType.REPUTATION));
+        mTabContents.add(SubCategoryFragment.newInstance(cate, "", gender, Constant.CateType.OVER));
 
         mAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
