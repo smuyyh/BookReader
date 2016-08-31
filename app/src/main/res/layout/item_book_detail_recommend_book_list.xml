@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/touch_bg"
     android:padding="10dp">
 
     <ImageView
@@ -50,8 +51,8 @@
             android:layout_marginBottom="10dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:textColor="@color/common_h2"
             android:text="应有尽有！注：随时有可能添加新书"
+            android:textColor="@color/common_h2"
             android:textSize="13sp" />
 
         <TextView

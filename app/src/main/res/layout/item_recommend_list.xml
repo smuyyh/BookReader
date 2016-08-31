@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:background="@drawable/touch_bg">
 
     <ImageView
         android:id="@+id/ivRecommendCover"
@@ -24,10 +25,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:textColor="@color/common_h1"
-            android:textSize="16sp"
             android:singleLine="true"
-            android:text="宦官哈哈" />
+            android:text="宦官哈哈"
+            android:textColor="@color/common_h1"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tvRecommendShort"
@@ -36,8 +37,8 @@
             android:layout_marginTop="3dp"
             android:ellipsize="end"
             android:maxLines="2"
-            android:textColor="@color/common_h2"
-            android:text="xxxxxxxxxxxxxxxx" />
+            android:text="xxxxxxxxxxxxxxxx"
+            android:textColor="@color/common_h2" />
 
 
     </LinearLayout>

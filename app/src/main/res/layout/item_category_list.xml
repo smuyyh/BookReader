@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:gravity="center"
-              android:padding="10dp"
-              android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/touch_bg"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/tvName"
-        tools:text="玄幻"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textColor="@color/common_h1"
         android:textSize="16sp"
-        />
+        tools:text="玄幻" />
 
     <TextView
         android:id="@+id/tvBookCount"
-        tools:text="@string/category_book_count"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textColor="@color/common_h2"
         android:textSize="13sp"
-        />
+        tools:text="@string/category_book_count" />
 
 </LinearLayout>

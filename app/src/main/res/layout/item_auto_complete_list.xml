@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/touch_bg"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -16,8 +17,8 @@
             android:id="@+id/ivIconSeach"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/abc_ic_search_api_mtrl_alpha"
-            android:padding="3dp"/>
+            android:padding="3dp"
+            android:src="@drawable/abc_ic_search_api_mtrl_alpha" />
 
         <TextView
             android:id="@+id/tvAutoCompleteItem"

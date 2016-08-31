@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/touch_bg"
+    android:padding="10dp">
 
     <ImageView
         android:id="@+id/ivAvatar"
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:layout_marginRight="10dp"
         android:layout_alignParentLeft="true"
-        android:scaleType="centerCrop"/>
+        android:layout_marginRight="10dp"
+        android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/tvNickName"
@@ -20,57 +21,57 @@
         android:layout_toRightOf="@id/ivAvatar"
         android:ellipsize="end"
         android:singleLine="true"
-        android:textSize="13sp"
+        android:text="我就是静静"
         android:textColor="@color/light_coffee"
-        android:text="我就是静静"/>
+        android:textSize="13sp" />
 
     <TextView
         android:id="@+id/tvLv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/tvNickName"
-        android:textSize="13sp"
         android:ellipsize="end"
         android:singleLine="true"
+        android:text="@string/book_detail_user_lv"
         android:textColor="@color/light_coffee"
-        android:text="@string/book_detail_user_lv"/>
+        android:textSize="13sp" />
 
     <TextView
         android:id="@+id/tvTitle"
-        android:layout_toRightOf="@id/ivAvatar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvNickName"
-        android:ellipsize="end"
-        android:textColor="@color/common_h1"
-        android:singleLine="true"
         android:layout_marginTop="5dp"
-        android:text="越到后面越索然无味"/>
+        android:layout_toRightOf="@id/ivAvatar"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="越到后面越索然无味"
+        android:textColor="@color/common_h1" />
 
     <TextView
         android:id="@+id/tvContent"
-        android:layout_toRightOf="@id/ivAvatar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvTitle"
-        android:textColor="@color/common_h2"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/ivAvatar"
         android:ellipsize="end"
         android:maxLines="2"
-        android:textSize="13sp"
-        android:layout_marginTop="5dp"
-        android:text="本人试毒500，前面还好后面真是"/>
+        android:text="本人试毒500，前面还好后面真是"
+        android:textColor="@color/common_h2"
+        android:textSize="13sp" />
 
     <TextView
         android:id="@+id/tvHelpfulYes"
-        android:layout_toRightOf="@id/ivAvatar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvContent"
-        android:textSize="13sp"
-        android:drawableLeft="@drawable/review_useful_yes_nor"
         android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/ivAvatar"
+        android:drawableLeft="@drawable/review_useful_yes_nor"
         android:drawablePadding="5dp"
+        android:text="308"
         android:textColor="@color/common_h3"
-        android:text="308"/>
+        android:textSize="13sp" />
 
 </RelativeLayout>

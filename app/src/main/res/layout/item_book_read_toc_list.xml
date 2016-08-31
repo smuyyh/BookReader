@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_margin="20dp"
-              android:orientation="vertical"
-              android:background="@color/common_bg"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="20dp"
+    android:background="@drawable/touch_bg"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/tvTocItem"
@@ -15,14 +14,14 @@
         android:drawableLeft="@drawable/toc_item_icon_selector"
         android:drawablePadding="10dp"
         android:padding="10dp"
-        android:textColor="@drawable/toc_item_text_selector"
         android:text="1.第一章 八十大寿"
-        android:textSize="16sp"/>
+        android:textColor="@drawable/toc_item_text_selector"
+        android:textSize="16sp" />
 
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/common_divider_narrow"/>
+        android:background="@color/common_divider_narrow" />
 
 </LinearLayout>

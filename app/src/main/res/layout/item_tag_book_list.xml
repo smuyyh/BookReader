@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/touch_bg"
+    android:padding="10dp">
 
     <ImageView
         android:id="@+id/ivBookCover"
@@ -10,7 +11,7 @@
         android:layout_height="65dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -28,7 +29,7 @@
             android:singleLine="true"
             android:text="武侠世界自由行"
             android:textColor="@color/common_h1"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tvShortIntro"
@@ -36,11 +37,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tvBookTitle"
             android:layout_marginBottom="10dp"
-            android:textColor="@color/common_h2"
             android:ellipsize="end"
             android:singleLine="true"
             android:text="他是威震国际的武学宗师，武道神化，十步杀一人；他是温文尔雅的古玩大家，赌石赏画，收.藏富可敌国；他是鼎鼎大名的玄门高手，能断风水，善察吉凶，让佛道两教共尊。他更..."
-            android:textSize="14sp"/>
+            android:textColor="@color/common_h2"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tvTags"
@@ -51,7 +52,7 @@
             android:singleLine="true"
             android:text="热血 | 架空"
             android:textColor="@color/common_h3"
-            android:textSize="12sp"/>
+            android:textSize="12sp" />
 
     </RelativeLayout>
 

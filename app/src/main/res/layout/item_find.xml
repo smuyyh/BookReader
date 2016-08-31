@@ -2,41 +2,37 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="25dp"
     android:paddingBottom="25dp"
     android:paddingLeft="15dp"
-    android:paddingRight="15dp">
+    android:paddingRight="15dp"
+    android:paddingTop="25dp"
+    android:background="@drawable/touch_bg">
 
 
     <ImageView
         android:id="@+id/ivIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/home_find_rank"
         android:layout_centerVertical="true"
-        />
+        android:src="@drawable/home_find_rank" />
 
     <TextView
         android:id="@+id/tvTitle"
-        android:layout_toRightOf="@id/ivIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="20dp"
-        android:textColor="@color/common_h1"
+        android:layout_toRightOf="@id/ivIcon"
         android:text="排行榜"
-        android:textSize="18sp"
-        />
-
-
+        android:textColor="@color/common_h1"
+        android:textSize="18sp" />
 
 
     <ImageView
-        android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ios_arrow"
+        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        />
+        android:src="@drawable/ios_arrow" />
 
 </RelativeLayout>
