@@ -6,6 +6,7 @@ import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.bean.BookLists;
 import com.justwayward.reader.ui.contract.SubjectFragmentContract;
 import com.justwayward.reader.utils.LogUtils;
+import com.justwayward.reader.utils.ToastUtils;
 
 import javax.inject.Inject;
 
@@ -37,7 +38,7 @@ public class SubjectFragmentPresenter implements SubjectFragmentContract.Present
 
     @Override
     public void getBookLists(String duration, String sort, int start, int limit, String tag, String gender) {
-        bookApi.getBookLists(duration, sort, start+"", limit+"", tag, gender).subscribeOn(Schedulers.io())
+        bookApi.getBookLists(duration, sort, start + "", limit + "", tag, gender).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BookLists>() {
                     @Override
@@ -54,6 +55,9 @@ public class SubjectFragmentPresenter implements SubjectFragmentContract.Present
                     @Override
                     public void onNext(BookLists tags) {
                         view.showBookList(tags.bookLists);
+                        if (tags.bookLists == null || tags.bookLists.size() <= 0) {
+                            ToastUtils.showSingleToast("暂无相关书单");
+                        }
                     }
                 });
     }

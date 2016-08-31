@@ -142,8 +142,10 @@ public class SubjectFragment extends BaseFragment implements SubjectFragmentCont
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void initCategoryList(TagEvent event) {
         currendTag = event.tag;
-        showDialog();
-        mPresenter.getBookLists(duration, sort, 0, 20, currendTag, "male");
+        if(getUserVisibleHint()) {
+            showDialog();
+            mPresenter.getBookLists(duration, sort, 0, 20, currendTag, "male");
+        }
     }
 
     @Override
