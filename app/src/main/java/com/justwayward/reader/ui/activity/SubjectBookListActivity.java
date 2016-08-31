@@ -15,17 +15,19 @@ import android.view.animation.TranslateAnimation;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
-import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.BookListTags;
+import com.justwayward.reader.bean.support.TagEvent;
 import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerSubjectBookListTagComponent;
 import com.justwayward.reader.ui.adapter.SubjectTagsAdapter;
 import com.justwayward.reader.ui.contract.SubjectBookListContract;
-import com.justwayward.reader.ui.fragment.SubCategoryFragment;
+import com.justwayward.reader.ui.fragment.SubjectFragment;
 import com.justwayward.reader.ui.presenter.SubjectBookListPresenter;
 import com.justwayward.reader.view.RVPIndicator;
 import com.justwayward.reader.view.SupportDividerItemDecoration;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -85,9 +87,9 @@ public class SubjectBookListActivity extends BaseActivity implements SubjectBook
         mDatas = Arrays.asList(getResources().getStringArray(R.array.subject_tabs));
 
         mTabContents = new ArrayList<>();
-        for (String ignored : mDatas) {
-            mTabContents.add(SubCategoryFragment.newInstance("", "", "", Constant.CateType.NEW));
-        }
+        mTabContents.add(SubjectFragment.newInstance("", 0));
+        mTabContents.add(SubjectFragment.newInstance("", 1));
+        mTabContents.add(SubjectFragment.newInstance("", 2));
 
         mAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
@@ -159,6 +161,7 @@ public class SubjectBookListActivity extends BaseActivity implements SubjectBook
     public void onItemClick(View view, int position, String data) {
         hideTagGroup();
         currentTag = data;
+        EventBus.getDefault().post(new TagEvent(currentTag));
     }
 
     private void showTagGroup() {

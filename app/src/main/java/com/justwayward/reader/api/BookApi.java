@@ -4,6 +4,7 @@ import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.AutoComplete;
 import com.justwayward.reader.bean.BookDetail;
 import com.justwayward.reader.bean.BookListTags;
+import com.justwayward.reader.bean.BookLists;
 import com.justwayward.reader.bean.BookSource;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.BooksByCats;
@@ -92,11 +93,15 @@ public class BookApi {
         return service.getChapterRead(url);
     }
 
-    public synchronized Observable<List<BookSource>> getBookSource(String view,String book) {
-        return service.getBookSource(view,book);
+    public synchronized Observable<List<BookSource>> getBookSource(String view, String book) {
+        return service.getBookSource(view, book);
     }
 
-    public Observable<BookListTags> getBookListTags(){
+    public Observable<BookLists> getBookLists(String duration, String sort, String start, String limit, String tag, String gender) {
+        return service.getBookLists(duration, sort, start, limit, tag, gender);
+    }
+
+    public Observable<BookListTags> getBookListTags() {
         return service.getBookListTags();
     }
 
@@ -104,11 +109,11 @@ public class BookApi {
         return service.getCategoryList();
     }
 
-    public Observable<CategoryListLv2> getCategoryListLv2(){
+    public Observable<CategoryListLv2> getCategoryListLv2() {
         return service.getCategoryListLv2();
     }
 
-    public Observable<BooksByCats> getBooksByCats(String gender, String type, String major, String minor, int start, @Query("limit") int limit){
+    public Observable<BooksByCats> getBooksByCats(String gender, String type, String major, String minor, int start, @Query("limit") int limit) {
         return service.getBooksByCats(gender, type, major, minor, start, limit);
     }
 

@@ -38,5 +38,6 @@
     <string name="category_book_count">%1$d本</string>
 
     <string name="category_book_msg">%1$d人在追 |&#160; %2$s%%读者留存</string>
+    <string name="subject_book_msg">共%1$d本书 |&#160; %2$d人收藏</string>
 
 </resources>
