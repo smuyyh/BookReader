@@ -12,6 +12,7 @@ import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.ui.activity.CategoryListActivity;
 import com.justwayward.reader.ui.adapter.FindAdapter;
+import com.justwayward.reader.view.SupportDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,18 +36,19 @@ public class FindFragment extends BaseFragment implements
     @Override
     public void initDatas() {
         mList.clear();
-        mList.add(new FindBean("排行榜",R.drawable.home_find_rank));
-        mList.add(new FindBean("主题书单",R.drawable.home_find_topic));
-        mList.add(new FindBean("分类",R.drawable.home_find_category));
-        mList.add(new FindBean("有声小说",R.drawable.home_find_listen));
+        mList.add(new FindBean("排行榜", R.drawable.home_find_rank));
+        mList.add(new FindBean("主题书单", R.drawable.home_find_topic));
+        mList.add(new FindBean("分类", R.drawable.home_find_category));
+        mList.add(new FindBean("有声小说", R.drawable.home_find_listen));
     }
 
     @Override
     public void configViews() {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.addItemDecoration(new SupportDividerItemDecoration(mContext, LinearLayoutManager.VERTICAL, true));
 
-        mAdapter = new FindAdapter(mContext, mList,this);
+        mAdapter = new FindAdapter(mContext, mList, this);
         mRecyclerView.setAdapter(mAdapter);
 
     }
@@ -58,12 +60,12 @@ public class FindFragment extends BaseFragment implements
 
     @Override
     public void onItemClick(View view, int position, FindBean data) {
-        switch (position){
+        switch (position) {
             case 0:
-               // startActivity(new Intent(activity, CategoryListActivity.class));
+                // startActivity(new Intent(activity, CategoryListActivity.class));
                 break;
             case 1:
-              //  startActivity(new Intent(activity, CategoryListActivity.class));
+                //  startActivity(new Intent(activity, CategoryListActivity.class));
                 break;
             case 2:
                 startActivity(new Intent(activity, CategoryListActivity.class));

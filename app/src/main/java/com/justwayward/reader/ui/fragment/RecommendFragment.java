@@ -16,6 +16,7 @@ import com.justwayward.reader.ui.activity.BookReadActivity;
 import com.justwayward.reader.ui.adapter.RecommendAdapter;
 import com.justwayward.reader.ui.contract.RecommendContract;
 import com.justwayward.reader.ui.presenter.RecommendPresenter;
+import com.justwayward.reader.view.SupportDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +53,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     public void configViews() {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.addItemDecoration(new SupportDividerItemDecoration(mContext, LinearLayoutManager.VERTICAL, true));
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 
@@ -61,7 +63,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
             }
         });
 
-        mAdapter = new RecommendAdapter(mContext, mList,this);
+        mAdapter = new RecommendAdapter(mContext, mList, this);
         mRecyclerView.setAdapter(mAdapter);
 
         mPresenter.attachView(this);
@@ -88,7 +90,7 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
     @Override
     public void onItemClick(View view, int position, Recommend.RecommendBooks data) {
         startActivity(new Intent(activity, BookReadActivity.class)
-                .putExtra("bookId", data._id).putExtra("bookName",data.title));
+                .putExtra("bookId", data._id).putExtra("bookName", data.title));
     }
 
 }

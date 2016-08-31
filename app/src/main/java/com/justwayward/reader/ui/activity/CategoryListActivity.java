@@ -15,6 +15,7 @@ import com.justwayward.reader.component.DaggerCategoryListActivityComponent;
 import com.justwayward.reader.ui.adapter.CategoryListAdapter;
 import com.justwayward.reader.ui.contract.CategoryListContract;
 import com.justwayward.reader.ui.presenter.CategoryListPresenter;
+import com.justwayward.reader.view.SupportGridItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,9 +75,11 @@ public class CategoryListActivity extends BaseActivity implements CategoryListCo
         setSupportActionBar(mToolbar);
 
         mRvMaleCategory.setHasFixedSize(true);
-        mRvMaleCategory.setLayoutManager(new GridLayoutManager(this,3));
+        mRvMaleCategory.setLayoutManager(new GridLayoutManager(this, 3));
+        mRvMaleCategory.addItemDecoration(new SupportGridItemDecoration(this));
         mRvFeMaleCategory.setHasFixedSize(true);
-        mRvFeMaleCategory.setLayoutManager(new GridLayoutManager(this,3));
+        mRvFeMaleCategory.setLayoutManager(new GridLayoutManager(this, 3));
+        mRvFeMaleCategory.addItemDecoration(new SupportGridItemDecoration(this));
         mMaleCategoryListAdapter = new CategoryListAdapter(mContext, mMaleCategoryList, this);
         mFemaleCategoryListAdapter = new CategoryListAdapter(mContext, mFemaleCategoryList, this);
         mRvMaleCategory.setAdapter(mMaleCategoryListAdapter);

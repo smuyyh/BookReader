@@ -17,6 +17,7 @@ import com.justwayward.reader.component.DaggerBooksByTagActivityComponent;
 import com.justwayward.reader.ui.adapter.BooksByTagAdapter;
 import com.justwayward.reader.ui.contract.BooksByTagContract;
 import com.justwayward.reader.ui.presenter.BooksByTagPresenter;
+import com.justwayward.reader.view.SupportDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +83,7 @@ public class BooksByTagActivity extends BaseActivity implements BooksByTagContra
         mRecyclerView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.addItemDecoration(new SupportDividerItemDecoration(mContext, LinearLayoutManager.VERTICAL));
         mAdapter = new BooksByTagAdapter(mContext, mList, this);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnScrollListener(new RefreshListener());

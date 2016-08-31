@@ -30,6 +30,7 @@ import com.justwayward.reader.ui.adapter.AutoCompleteAdapter;
 import com.justwayward.reader.ui.adapter.SearchResultAdapter;
 import com.justwayward.reader.ui.contract.SearchContract;
 import com.justwayward.reader.ui.presenter.SearchPresenter;
+import com.justwayward.reader.view.SupportDividerItemDecoration;
 import com.justwayward.reader.view.TagColor;
 import com.justwayward.reader.view.TagGroup;
 
@@ -105,6 +106,7 @@ public class SearchActivity extends BaseActivity implements SearchContract.View,
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.addItemDecoration(new SupportDividerItemDecoration(mContext, LinearLayoutManager.VERTICAL));
         mAdapter = new SearchResultAdapter(mContext, mList, this);
         mRecyclerView.setAdapter(mAdapter);
 
