@@ -3,6 +3,7 @@ package com.justwayward.reader.api;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.AutoComplete;
 import com.justwayward.reader.bean.BookDetail;
+import com.justwayward.reader.bean.BookListDetail;
 import com.justwayward.reader.bean.BookListTags;
 import com.justwayward.reader.bean.BookLists;
 import com.justwayward.reader.bean.BookSource;
@@ -14,6 +15,8 @@ import com.justwayward.reader.bean.CategoryListLv2;
 import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.bean.HotReview;
 import com.justwayward.reader.bean.HotWord;
+import com.justwayward.reader.bean.RankingList;
+import com.justwayward.reader.bean.Rankings;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.RecommendBookList;
 import com.justwayward.reader.bean.SearchDetail;
@@ -97,12 +100,24 @@ public class BookApi {
         return service.getBookSource(view, book);
     }
 
+    public Observable<RankingList> getRanking(){
+        return service.getRanking();
+    }
+
+    public Observable<Rankings> getRanking(String rankingId){
+        return service.getRanking(rankingId);
+    }
+
     public Observable<BookLists> getBookLists(String duration, String sort, String start, String limit, String tag, String gender) {
         return service.getBookLists(duration, sort, start, limit, tag, gender);
     }
 
     public Observable<BookListTags> getBookListTags() {
         return service.getBookListTags();
+    }
+
+    public Observable<BookListDetail> getBookListDetail(String bookListId){
+        return service.getBookListDetail(bookListId);
     }
 
     public synchronized Observable<CategoryList> getCategoryList() {
