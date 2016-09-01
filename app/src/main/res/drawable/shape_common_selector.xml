@@ -2,6 +2,6 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/shape_common_gray_bg" android:state_pressed="true"/>
     <item android:drawable="@drawable/shape_common_gray_bg" android:state_focused="true"/>
-    <item android:drawable="@drawable/shape_white_bg" android:state_pressed="false"/>
+    <item android:drawable="@drawable/shape_common_white_bg" android:state_pressed="false"/>
 
 </selector>

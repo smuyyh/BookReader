@@ -4,13 +4,14 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="vertical"
+    android:background="@drawable/shape_common_selector"
     android:padding="15dp">
 
     <TextView
         android:id="@+id/tvRankChildName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="60dp"
         android:text="xxxx" />
 
 </LinearLayout>
