@@ -147,6 +147,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
     @Override
     public int getLayoutId() {
+        statusBarColor = -1;
         getWindow().setFlags(WindowManager.LayoutParams. FLAG_FULLSCREEN ,
                 WindowManager.LayoutParams. FLAG_FULLSCREEN);
         return R.layout.activity_book_read;

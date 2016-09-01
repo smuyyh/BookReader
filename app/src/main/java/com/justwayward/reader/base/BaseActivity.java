@@ -31,10 +31,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
-        if (statusBarColor != 0) {
+        if (statusBarColor > 0) {
             StatusBarCompat.compat(this, statusBarColor);
-        } else
+        } else if(statusBarColor == 0){
             StatusBarCompat.compat(this);
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
                 && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             //透明状态栏

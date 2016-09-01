@@ -1,5 +1,6 @@
 package com.justwayward.reader.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,8 +38,14 @@ import butterknife.OnClick;
 /**
  * Created by Administrator on 2016/8/6.
  */
-public class BookDetailActivity extends BaseActivity implements BookDetailContract.View,
-        OnRvItemClickListener<Object> {
+public class BookDetailActivity extends BaseActivity implements BookDetailContract.View, OnRvItemClickListener<Object> {
+
+    public static String INTENT_BOOK_ID = "bookId";
+
+    public static void startActivity(Context context, String bookId){
+        context.startActivity(new Intent(context, BookDetailActivity.class)
+                .putExtra(INTENT_BOOK_ID, bookId));
+    }
 
     @Bind(R.id.ivBookCover)
     ImageView mIvBookCover;
@@ -112,7 +119,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
 
     @Override
     public void initDatas() {
-        bookId=getIntent().getStringExtra("bookId");
+        bookId=getIntent().getStringExtra(INTENT_BOOK_ID);
     }
 
     @Override

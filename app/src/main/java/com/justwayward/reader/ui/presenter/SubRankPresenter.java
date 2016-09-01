@@ -57,7 +57,7 @@ public class SubRankPresenter implements SubRankContract.Presenter<SubRankContra
                         BooksByCats cats = new BooksByCats();
                         cats.books = new ArrayList<>();
                         for (Rankings.RankingBean.BooksBean bean : books) {
-                            cats.books.add(new BooksByCats.BooksBean(bean.cover, bean.title, bean.author, bean.cat, bean.shortIntro, bean.latelyFollower, bean.retentionRatio));
+                            cats.books.add(new BooksByCats.BooksBean(bean._id, bean.cover, bean.title, bean.author, bean.cat, bean.shortIntro, bean.latelyFollower, bean.retentionRatio));
                         }
                         view.showCategoryList(cats);
                     }

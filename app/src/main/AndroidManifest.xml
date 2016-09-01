@@ -28,7 +28,8 @@
         <activity android:name=".ui.activity.SearchActivity" />
         <activity android:name=".ui.activity.BookDetailActivity" />
         <activity android:name=".ui.activity.BooksByTagActivity" />
-        <activity android:name=".ui.activity.BookReadActivity" />
+        <activity android:name=".ui.activity.BookReadActivity"
+            android:theme="@style/AppTheme.NoActionBar.FullScreen"/>
         <activity android:name=".ui.activity.TopCategoryListActivity" />
         <activity android:name=".ui.activity.SubCategoryListActivity" />
         <activity android:name=".ui.activity.SubjectBookListActivity" />
