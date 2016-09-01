@@ -18,12 +18,11 @@ import java.util.List;
  * @author lfh.
  * @date 16/8/31.
  */
-public class SubjectBookListDetailBooksAdapter extends EasyRVAdapter<BookListDetail.BookListBean.BooksBean
-        > {
+public class SubjectBookListDetailBooksAdapter extends EasyRVAdapter<BookListDetail.BookListBean.BooksBean> {
     private OnRvItemClickListener itemClickListener;
 
-    public SubjectBookListDetailBooksAdapter(Context context, List<BookListDetail
-            .BookListBean.BooksBean> list, OnRvItemClickListener listener) {
+    public SubjectBookListDetailBooksAdapter(Context context, List<BookListDetail.BookListBean.BooksBean> list,
+                                             OnRvItemClickListener listener) {
         super(context, list, R.layout.item_subject_book_list_detail);
         this.itemClickListener = listener;
     }
@@ -38,11 +37,11 @@ public class SubjectBookListDetailBooksAdapter extends EasyRVAdapter<BookListDet
 
         holder.setText(R.id.tvBookListTitle, item.getBook().getTitle())
                 .setText(R.id.tvBookAuthor, item.getBook().getAuthor())
-                .setText(R.id.tvBookLatelyFollower, String.format(mContext.getResources()
-                        .getString(R.string.subject_book_list_detail_book_lately_follower), item
-                        .getBook().getLatelyFollower()))
-                .setText(R.id.tvBookWordCount, String.format(mContext.getResources().getString(R
-                        .string.subject_book_list_detail_book_word_count), item.getBook().getWordCount()/10000));
+                .setText(R.id.tvBookLatelyFollower, String.format(mContext.getResources().getString(R.string.subject_book_list_detail_book_lately_follower),
+                        item.getBook().getLatelyFollower()))
+                .setText(R.id.tvBookWordCount, String.format(mContext.getResources().getString(R.string.subject_book_list_detail_book_word_count),
+                        item.getBook().getWordCount() / 10000))
+                .setText(R.id.tvBookDetail, item.getBook().getLongIntro());
 
         holder.setOnItemViewClickListener(new View.OnClickListener() {
             @Override

@@ -32,7 +32,7 @@ public class SupportDividerItemDecoration extends RecyclerView.ItemDecoration {
 
     public SupportDividerItemDecoration(Context context, int orientation, boolean dash) {
         if (dash) {
-            mDivider = ContextCompat.getDrawable(context, R.drawable.shape_dash_divide);
+            mDivider = ContextCompat.getDrawable(context, R.drawable.shape_common_dash_divide);
         } else {
             final TypedArray a = context.obtainStyledAttributes(ATTRS);
             mDivider = a.getDrawable(0);

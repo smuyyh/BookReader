@@ -2,12 +2,12 @@ package com.justwayward.reader.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,7 +23,8 @@ import com.justwayward.reader.ui.adapter.SubjectBookListDetailBooksAdapter;
 import com.justwayward.reader.ui.contract.SubjectBookListDetailContract;
 import com.justwayward.reader.ui.presenter.SubjectBookListDetailPresenter;
 import com.justwayward.reader.utils.GlideCircleTransform;
-import com.justwayward.reader.view.SupportDividerItemDecoration;
+import com.justwayward.reader.utils.ScreenUtils;
+import com.justwayward.reader.view.SpaceItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +33,8 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 
-public class SubjectBookListDetailActivity extends BaseActivity implements
-        SubjectBookListDetailContract.View, OnRvItemClickListener<BookListDetail.BookListBean
-        .BooksBean> {
+public class SubjectBookListDetailActivity extends BaseActivity implements SubjectBookListDetailContract.View,
+        OnRvItemClickListener<BookListDetail.BookListBean.BooksBean> {
 
     @Bind(R.id.tvBookListTitle)
     TextView tvBookListTitle;
@@ -45,7 +45,7 @@ public class SubjectBookListDetailActivity extends BaseActivity implements
     @Bind(R.id.tvBookListAuthor)
     TextView tvBookListAuthor;
     @Bind(R.id.btnShare)
-    Button btnShare;
+    TextView btnShare;
     @Bind(R.id.rvBooks)
     RecyclerView rvBooks;
 
@@ -90,10 +90,9 @@ public class SubjectBookListDetailActivity extends BaseActivity implements
 
         rvBooks.setHasFixedSize(true);
         rvBooks.setLayoutManager(new LinearLayoutManager(this));
-        rvBooks.addItemDecoration(new SupportDividerItemDecoration(this, LinearLayoutManager
-                .VERTICAL));
-        mSubjectBookListDetailBooksAdapter = new SubjectBookListDetailBooksAdapter(this, mBooks,
-                this);
+        rvBooks.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(5)));
+        rvBooks.setItemAnimator(new DefaultItemAnimator());
+        mSubjectBookListDetailBooksAdapter = new SubjectBookListDetailBooksAdapter(this, mBooks,this);
         rvBooks.setAdapter(mSubjectBookListDetailBooksAdapter);
 
         mPresenter.attachView(this);
@@ -140,11 +139,7 @@ public class SubjectBookListDetailActivity extends BaseActivity implements
     }
 
     @Override
-    public void onItemClick(View view, int position, BookListDetail.
-            BookListBean.BooksBean data) {
-//        startActivity(new Intent(this, BookReadActivity.class)
-//                .putExtra("bookId", data.getBook().get_id())
-//                .putExtra("bookName", data.getBook().getTitle()));
+    public void onItemClick(View view, int position, BookListDetail.BookListBean.BooksBean data) {
         startActivity(new Intent(this, BookDetailActivity.class).putExtra
                 ("bookId", data.getBook().get_id()));
     }
