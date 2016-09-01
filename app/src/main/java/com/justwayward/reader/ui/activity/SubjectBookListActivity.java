@@ -141,6 +141,9 @@ public class SubjectBookListActivity extends BaseActivity implements SubjectBook
             return true;
         } else if (id == R.id.menu_more) {
             return true;
+        } else if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -183,4 +186,5 @@ public class SubjectBookListActivity extends BaseActivity implements SubjectBook
         rvTags.startAnimation(mHiddenAction);
         rvTags.setVisibility(View.GONE);
     }
+
 }

@@ -40,6 +40,7 @@ import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerMainActivityComponent;
 import com.justwayward.reader.service.DownloadBookService;
 import com.justwayward.reader.ui.contract.MainContract;
+import com.justwayward.reader.ui.fragment.CommunityFragment;
 import com.justwayward.reader.ui.fragment.FindFragment;
 import com.justwayward.reader.ui.fragment.RecommendFragment;
 import com.justwayward.reader.ui.presenter.MainActivityPresenter;
@@ -103,7 +104,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         mDatas = Arrays.asList(getResources().getStringArray(R.array.home_tabs));
         mTabContents = new ArrayList<>();
         mTabContents.add(new RecommendFragment());
-        mTabContents.add(new RecommendFragment());
+        mTabContents.add(new CommunityFragment());
         mTabContents.add(new FindFragment());
 
         mAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {

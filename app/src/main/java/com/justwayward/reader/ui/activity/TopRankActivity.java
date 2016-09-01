@@ -2,6 +2,7 @@ package com.justwayward.reader.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 
@@ -136,5 +137,14 @@ public class TopRankActivity extends BaseActivity implements TopRankContract.Vie
         public void onItemClick(View view, int position, RankingList.MaleBean data) {
             SubRankActivity.startActivity(mContext, data._id, data.monthRank, data.totalRank, data.title);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

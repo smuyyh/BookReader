@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.MenuItem;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
@@ -104,5 +105,14 @@ public class SubRankActivity extends BaseActivity {
         mIndicator.setTabItemTitles(mDatas);
         mViewPager.setAdapter(mAdapter);
         mIndicator.setViewPager(mViewPager, 0);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

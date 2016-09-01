@@ -196,6 +196,9 @@ public class SubCategoryListActivity extends BaseActivity implements SubCategory
         if (id == R.id.menu_major) {
             showMinorPopupWindow();
             return true;
+        }else if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
