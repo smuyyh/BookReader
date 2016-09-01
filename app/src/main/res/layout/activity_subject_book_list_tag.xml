@@ -37,15 +37,21 @@
                 android:layout_weight="1" />
         </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvTags"
+        <com.justwayward.reader.view.ReboundScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foregroundGravity="center"
-            android:layerType="software"
-            android:background="@color/common_gray_bg"
-            android:paddingTop="10dp"
-            android:visibility="gone"/>
+            android:background="@color/common_gray_bg">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvTags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/common_gray_bg"
+                android:foregroundGravity="center"
+                android:layerType="software"
+                android:paddingTop="10dp"
+                android:visibility="gone" />
+        </com.justwayward.reader.view.ReboundScrollView>
     </FrameLayout>
 
 </LinearLayout>
