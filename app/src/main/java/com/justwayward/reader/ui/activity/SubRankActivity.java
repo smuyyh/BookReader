@@ -104,6 +104,7 @@ public class SubRankActivity extends BaseActivity {
     public void configViews() {
         mIndicator.setTabItemTitles(mDatas);
         mViewPager.setAdapter(mAdapter);
+        mViewPager.setOffscreenPageLimit(3);
         mIndicator.setViewPager(mViewPager, 0);
     }
 
