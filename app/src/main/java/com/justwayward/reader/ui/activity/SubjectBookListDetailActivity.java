@@ -168,8 +168,7 @@ public class SubjectBookListDetailActivity extends BaseActivity implements Subje
 
     @Override
     public void onItemClick(View view, int position, BookListDetail.BookListBean.BooksBean data) {
-        startActivity(new Intent(this, BookDetailActivity.class).putExtra
-                ("bookId", data.getBook().get_id()));
+        BookDetailActivity.startActivity(this, data.getBook().get_id());
     }
 
     private class ScrollListener extends RecyclerView.OnScrollListener {

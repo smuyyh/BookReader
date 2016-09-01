@@ -42,7 +42,8 @@ public class BooksByCats extends Base {
         public String lastChapter;
         public List<String> tags;
 
-        public BooksBean(String cover, String title, String author, String majorCate, String shortIntro, int latelyFollower, String retentionRatio) {
+        public BooksBean(String _id, String cover, String title, String author, String majorCate, String shortIntro, int latelyFollower, String retentionRatio) {
+            this._id = _id;
             this.cover = cover;
             this.title = title;
             this.author = author;

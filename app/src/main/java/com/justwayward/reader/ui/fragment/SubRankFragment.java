@@ -12,7 +12,7 @@ import com.justwayward.reader.bean.BooksByCats;
 import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerSubCategoryFragmentComponent;
-import com.justwayward.reader.ui.activity.SubRankActivity;
+import com.justwayward.reader.ui.activity.BookDetailActivity;
 import com.justwayward.reader.ui.adapter.SubCategoryAdapter;
 import com.justwayward.reader.ui.contract.SubRankContract;
 import com.justwayward.reader.ui.presenter.SubRankPresenter;
@@ -96,7 +96,7 @@ public class SubRankFragment extends BaseFragment implements SubRankContract.Vie
 
     @Override
     public void onItemClick(View view, int position, BooksByCats.BooksBean data) {
-
+        BookDetailActivity.startActivity(activity, data._id);
     }
 
 
