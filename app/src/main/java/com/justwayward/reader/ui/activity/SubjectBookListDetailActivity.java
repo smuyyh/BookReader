@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -23,7 +24,9 @@ import com.justwayward.reader.ui.adapter.SubjectBookListDetailBooksAdapter;
 import com.justwayward.reader.ui.contract.SubjectBookListDetailContract;
 import com.justwayward.reader.ui.presenter.SubjectBookListDetailPresenter;
 import com.justwayward.reader.utils.GlideCircleTransform;
+import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.ScreenUtils;
+import com.justwayward.reader.utils.ToastUtils;
 import com.justwayward.reader.view.SpaceItemDecoration;
 
 import java.util.ArrayList;
@@ -35,6 +38,9 @@ import butterknife.Bind;
 
 public class SubjectBookListDetailActivity extends BaseActivity implements SubjectBookListDetailContract.View,
         OnRvItemClickListener<BookListDetail.BookListBean.BooksBean> {
+
+    @Bind(R.id.llBookDetail)
+    LinearLayout llBookDetail;
 
     @Bind(R.id.tvBookListTitle)
     TextView tvBookListTitle;
@@ -51,6 +57,13 @@ public class SubjectBookListDetailActivity extends BaseActivity implements Subje
 
     private SubjectBookListDetailBooksAdapter mSubjectBookListDetailBooksAdapter;
     private List<BookListDetail.BookListBean.BooksBean> mBooks = new ArrayList<>();
+
+    private List<BookListDetail.BookListBean.BooksBean> mAllBooks = new ArrayList<>();
+
+    private LinearLayoutManager linearLayoutManager;
+
+    private int start = 0;
+    private int limit = 20;
 
     @Inject
     SubjectBookListDetailPresenter mPresenter;
@@ -89,10 +102,11 @@ public class SubjectBookListDetailActivity extends BaseActivity implements Subje
         showDialog();
 
         rvBooks.setHasFixedSize(true);
-        rvBooks.setLayoutManager(new LinearLayoutManager(this));
+        linearLayoutManager = new LinearLayoutManager(this);
+        rvBooks.setLayoutManager(linearLayoutManager);
         rvBooks.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(5)));
         rvBooks.setItemAnimator(new DefaultItemAnimator());
-        mSubjectBookListDetailBooksAdapter = new SubjectBookListDetailBooksAdapter(this, mBooks,this);
+        mSubjectBookListDetailBooksAdapter = new SubjectBookListDetailBooksAdapter(this, mBooks, this);
         rvBooks.setAdapter(mSubjectBookListDetailBooksAdapter);
 
         mPresenter.attachView(this);
@@ -122,15 +136,29 @@ public class SubjectBookListDetailActivity extends BaseActivity implements Subje
         tvBookListAuthor.setText(data.getBookList().getAuthor().getNickname());
 
 
-        Glide.with(mContext).load(Constant.IMG_BASE_URL + data.getBookList().getAuthor()
-                .getAvatar())
-                .placeholder(R.drawable.avatar_default).transform(new
-                GlideCircleTransform(mContext))
+        Glide.with(mContext).load(Constant.IMG_BASE_URL + data.getBookList().getAuthor().getAvatar())
+                .placeholder(R.drawable.avatar_default).transform(new GlideCircleTransform(mContext))
                 .into(ivAuthorAvatar);
 
+        List<BookListDetail.BookListBean.BooksBean> list = data.getBookList().getBooks();
+        mAllBooks.clear();
+        mAllBooks.addAll(list);
         mBooks.clear();
-        mBooks.addAll(data.getBookList().getBooks());
-        mSubjectBookListDetailBooksAdapter.notifyDataSetChanged();
+        loadNextPage();
+        rvBooks.addOnScrollListener(new ScrollListener());
+    }
+
+    private void loadNextPage() {
+        if(start < mAllBooks.size()) {
+            if (mAllBooks.size() - start > limit) {
+                mBooks.addAll(mAllBooks.subList(start, start + limit));
+            } else {
+                mBooks.addAll(mAllBooks.subList(start, mAllBooks.size()));
+            }
+            start += limit;
+
+            mSubjectBookListDetailBooksAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -142,6 +170,28 @@ public class SubjectBookListDetailActivity extends BaseActivity implements Subje
     public void onItemClick(View view, int position, BookListDetail.BookListBean.BooksBean data) {
         startActivity(new Intent(this, BookDetailActivity.class).putExtra
                 ("bookId", data.getBook().get_id()));
+    }
+
+    private class ScrollListener extends RecyclerView.OnScrollListener {
+
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+
+            int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
+
+            LogUtils.e(lastVisibleItemPosition + " .......");
+
+            if (lastVisibleItemPosition + 1 == mBooks.size()) { // 滑到倒数第二项就加载更多
+                ToastUtils.showSingleToast("------");
+                loadNextPage();
+            }
+        }
     }
 
 }
