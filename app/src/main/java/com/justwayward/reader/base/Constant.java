@@ -55,4 +55,18 @@ public class Constant {
 
         String OVER = "over";
     }
+
+    @StringDef({
+            RankType.WEEK,
+            RankType.MONTH,
+            RankType.ALL
+    })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface RankType {
+        String WEEK = "_id";
+
+        String MONTH = "monthRank";
+
+        String ALL = "totalRank";
+    }
 }

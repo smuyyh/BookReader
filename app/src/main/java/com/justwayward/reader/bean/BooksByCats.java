@@ -38,8 +38,18 @@ public class BooksByCats extends Base {
         public int latelyFollower;
         public int latelyFollowerBase;
         public String minRetentionRatio;
-        public double retentionRatio;
+        public String retentionRatio;
         public String lastChapter;
         public List<String> tags;
+
+        public BooksBean(String cover, String title, String author, String majorCate, String shortIntro, int latelyFollower, String retentionRatio) {
+            this.cover = cover;
+            this.title = title;
+            this.author = author;
+            this.majorCate = majorCate;
+            this.shortIntro = shortIntro;
+            this.latelyFollower = latelyFollower;
+            this.retentionRatio = retentionRatio;
+        }
     }
 }

@@ -14,7 +14,6 @@ import com.justwayward.reader.component.DaggerTopRankComponent;
 import com.justwayward.reader.ui.adapter.TopRankAdapter;
 import com.justwayward.reader.ui.contract.TopRankContract;
 import com.justwayward.reader.ui.presenter.TopRankPresenter;
-import com.justwayward.reader.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +41,7 @@ public class TopRankActivity extends BaseActivity implements TopRankContract.Vie
     @Inject
     TopRankPresenter mPresenter;
 
-    public static void startActivity(Context context){
+    public static void startActivity(Context context) {
         Intent intent = new Intent(context, TopRankActivity.class);
         context.startActivity(intent);
     }
@@ -69,13 +68,14 @@ public class TopRankActivity extends BaseActivity implements TopRankContract.Vie
     @Override
     public void initDatas() {
         maleAdapter = new TopRankAdapter(this, maleGroups, maleChilds);
-        femaleAdapter = new TopRankAdapter(this,femaleGroups, femaleChilds);
+        femaleAdapter = new TopRankAdapter(this, femaleGroups, femaleChilds);
         maleAdapter.setItemClickListener(new ClickListener());
         femaleAdapter.setItemClickListener(new ClickListener());
     }
 
     @Override
     public void configViews() {
+        showDialog();
         elvMale.setAdapter(maleAdapter);
         elvFeMale.setAdapter(femaleAdapter);
 
@@ -127,14 +127,14 @@ public class TopRankActivity extends BaseActivity implements TopRankContract.Vie
 
     @Override
     public void complete() {
-
+        dismissDialog();
     }
 
     class ClickListener implements OnRvItemClickListener<RankingList.MaleBean> {
 
         @Override
         public void onItemClick(View view, int position, RankingList.MaleBean data) {
-            ToastUtils.showSingleToast(data._id);
+            SubRankActivity.startActivity(mContext, data._id, data.monthRank, data.totalRank, data.title);
         }
     }
 }

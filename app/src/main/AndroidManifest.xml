@@ -33,10 +33,10 @@
         <activity android:name=".ui.activity.SubCategoryListActivity" />
         <activity android:name=".ui.activity.SubjectBookListActivity" />
         <activity android:name=".ui.activity.SubjectBookListDetailActivity" />
+        <activity android:name=".ui.activity.TopRankActivity"/>
+        <activity android:name=".ui.activity.SubRankActivity"/>
 
         <service android:name=".service.DownloadBookService" />
-
-        <activity android:name=".ui.activity.TopRankActivity"></activity>
     </application>
 
 </manifest>

@@ -45,11 +45,13 @@ public class TopRankPresenter implements TopRankContract.Presenter<TopRankContra
 
                     @Override
                     public void onCompleted() {
+                        view.complete();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         LogUtils.e("getRankList:" + e.toString());
+                        view.complete();
                     }
                 });
     }

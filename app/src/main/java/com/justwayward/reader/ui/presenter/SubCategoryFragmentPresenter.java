@@ -35,7 +35,6 @@ public class SubCategoryFragmentPresenter implements SubCategoryFragmentContract
         this.view = view;
     }
 
-
     @Override
     public void getCategoryList(String gender, String major, String minor, String type, int start) {
         bookApi.getBooksByCats(gender, type, major, minor, start, 20)
@@ -59,4 +58,6 @@ public class SubCategoryFragmentPresenter implements SubCategoryFragmentContract
                     }
                 });
     }
+
+
 }
