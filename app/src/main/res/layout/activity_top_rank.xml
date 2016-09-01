@@ -9,7 +9,8 @@
 
     <com.justwayward.reader.view.ReboundScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layerType="software">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,7 +31,6 @@
                 android:layout_height="wrap_content"
                 android:childDivider="@drawable/shape_common_dash_divide"
                 android:groupIndicator="@null"
-                android:layerType="software"
                 android:listSelector="@drawable/shape_common_selector" />
 
             <TextView
@@ -47,7 +47,6 @@
                 android:layout_height="wrap_content"
                 android:childDivider="@drawable/shape_common_dash_divide"
                 android:groupIndicator="@null"
-                android:layerType="software"
                 android:listSelector="@drawable/shape_common_selector" />
         </LinearLayout>
     </com.justwayward.reader.view.ReboundScrollView>
