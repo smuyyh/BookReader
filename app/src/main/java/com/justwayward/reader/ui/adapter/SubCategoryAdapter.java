@@ -34,7 +34,7 @@ public class SubCategoryAdapter extends EasyRVAdapter<BooksByCats.BooksBean> {
                 .into(ivRecommendCover);
 
         holder.setText(R.id.tvSubCateTitle, item.title)
-                .setText(R.id.tvSubCateAuthor, item.author + " | " + item.majorCate)
+                .setText(R.id.tvSubCateAuthor, (item.author == null ? "未知" : item.author) + " | " + (item.majorCate == null ? "未知" : item.majorCate))
                 .setText(R.id.tvSubCateShort, item.shortIntro)
                 .setText(R.id.tvSubCateMsg, String.format(mContext.getResources().getString(R.string.category_book_msg), item.latelyFollower, item.retentionRatio));
 
