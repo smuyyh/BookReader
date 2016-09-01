@@ -36,5 +36,12 @@ public class RankingList extends Base {
         public boolean collapse;
         public String monthRank;
         public String totalRank;
+
+        public MaleBean() {
+        }
+
+        public MaleBean(String title) {
+            this.title = title;
+        }
     }
 }

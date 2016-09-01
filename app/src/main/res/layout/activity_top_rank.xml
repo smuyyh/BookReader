@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/common_toolbar" />
+
+    <com.justwayward.reader.view.ReboundScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="男生"
+                android:textColor="@color/common_h1"
+                android:textSize="18dp" />
+
+            <com.justwayward.reader.view.CustomExpandableListView
+                android:id="@+id/elvMale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:groupIndicator="@null"
+                android:listSelector="@drawable/shape_common_selector" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="女生"
+                android:textColor="@color/common_h1"
+                android:textSize="18dp" />
+
+            <com.justwayward.reader.view.CustomExpandableListView
+                android:id="@+id/elvFeMale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:groupIndicator="@null"
+                android:listSelector="@drawable/shape_common_selector" />
+        </LinearLayout>
+    </com.justwayward.reader.view.ReboundScrollView>
+
+</LinearLayout>

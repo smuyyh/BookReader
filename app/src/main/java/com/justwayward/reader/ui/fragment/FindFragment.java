@@ -12,6 +12,7 @@ import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.ui.activity.SubjectBookListActivity;
 import com.justwayward.reader.ui.activity.TopCategoryListActivity;
+import com.justwayward.reader.ui.activity.TopRankActivity;
 import com.justwayward.reader.ui.adapter.FindAdapter;
 import com.justwayward.reader.view.SupportDividerItemDecoration;
 
@@ -63,7 +64,7 @@ public class FindFragment extends BaseFragment implements
     public void onItemClick(View view, int position, FindBean data) {
         switch (position) {
             case 0:
-                // startActivity(new Intent(activity, TopCategoryListActivity.class));
+                TopRankActivity.startActivity(activity);
                 break;
             case 1:
                 SubjectBookListActivity.startActivity(activity);
