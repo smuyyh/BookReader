@@ -16,6 +16,7 @@ import com.justwayward.reader.ui.contract.ComOverallDetailContract;
 import com.justwayward.reader.ui.presenter.ComOverallDetailPresenter;
 import com.justwayward.reader.utils.GlideCircleTransform;
 import com.justwayward.reader.utils.RelativeDateFormat;
+import com.justwayward.reader.view.BookContentTextView;
 
 import javax.inject.Inject;
 
@@ -39,7 +40,7 @@ public class ComOverallDetailActivity extends BaseActivity implements ComOverall
     @Bind(R.id.tvTitle)
     TextView tvTitle;
     @Bind(R.id.tvContent)
-    TextView tvContent;
+    BookContentTextView tvContent;
 
     private String id;
 

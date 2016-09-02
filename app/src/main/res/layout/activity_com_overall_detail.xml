@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="15dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -66,14 +66,15 @@
                 android:textColor="@color/common_h1"
                 android:textSize="16dp" />
 
-            <TextView
+            <com.justwayward.reader.view.BookContentTextView
                 android:id="@+id/tvContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="xxxx"
+                android:lineSpacingExtra="1dp"
+                android:text=""
                 android:textColor="@color/common_h2"
-                android:textSize="14dp" />
+                android:textSize="16dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
