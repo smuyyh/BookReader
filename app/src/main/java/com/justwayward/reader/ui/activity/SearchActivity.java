@@ -76,6 +76,7 @@ public class SearchActivity extends BaseActivity implements SearchContract.View,
     private List<String> mAutoList = new ArrayList<>();
 
     private String key;
+    private MenuItem searchMenuItem;
     private SearchView searchView;
 
     private ListPopupWindow mListPopupWindow;
@@ -124,15 +125,14 @@ public class SearchActivity extends BaseActivity implements SearchContract.View,
                 mListPopupWindow.dismiss();
                 TextView tv = (TextView) view.findViewById(R.id.tvAutoCompleteItem);
                 String str = tv.getText().toString();
-                searchView.setQuery(str, true);
+                search(str);
             }
         });
 
         mTagGroup.setOnTagClickListener(new TagGroup.OnTagClickListener() {
             @Override
             public void onTagClick(String tag) {
-                searchView.onActionViewExpanded();
-                searchView.setQuery(tag, true);
+                search(tag);
             }
         });
 
@@ -207,8 +207,8 @@ public class SearchActivity extends BaseActivity implements SearchContract.View,
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_search, menu);
 
-        MenuItem menuItem = menu.findItem(R.id.action_search);//在菜单中找到对应控件的item
-        searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        searchMenuItem = menu.findItem(R.id.action_search);//在菜单中找到对应控件的item
+        searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
@@ -230,11 +230,8 @@ public class SearchActivity extends BaseActivity implements SearchContract.View,
                 return false;
             }
         });
-        if (!TextUtils.isEmpty(key)) {
-            MenuItemCompat.expandActionView(menuItem);
-            searchView.setQuery(key, true);
-        }
-        MenuItemCompat.setOnActionExpandListener(menuItem,
+        search(key);
+        MenuItemCompat.setOnActionExpandListener(searchMenuItem,
                 new MenuItemCompat.OnActionExpandListener() {//设置打开关闭动作监听
                     @Override
                     public boolean onMenuItemActionExpand(MenuItem item) {
@@ -248,6 +245,13 @@ public class SearchActivity extends BaseActivity implements SearchContract.View,
                     }
                 });
         return true;
+    }
+
+    private void search(String key) {
+        if (!TextUtils.isEmpty(key)) {
+            MenuItemCompat.expandActionView(searchMenuItem);
+            searchView.setQuery(key, true);
+        }
     }
 
     @Override
