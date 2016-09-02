@@ -45,34 +45,37 @@
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@id/ivAvatar"
         android:ellipsize="end"
-        android:singleLine="true"
+        android:maxLines="2"
         android:text="越到后面越索然无味"
         android:textColor="@color/common_h1" />
 
     <TextView
-        android:id="@+id/tvContent"
+        android:id="@+id/tvPostCount"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="20dp"
         android:layout_below="@id/tvTitle"
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@id/ivAvatar"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:text="本人试毒500，前面还好后面真是"
-        android:textColor="@color/common_h2"
-        android:textSize="13sp" />
-
-    <TextView
-        android:id="@+id/tvHelpfulYes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvContent"
-        android:layout_marginTop="5dp"
-        android:layout_toRightOf="@id/ivAvatar"
-        android:drawableLeft="@drawable/review_useful_yes_nor"
+        android:drawableLeft="@drawable/ic_notif_post"
         android:drawablePadding="5dp"
+        android:gravity="center"
         android:text="308"
         android:textColor="@color/common_h3"
-        android:textSize="13sp" />
+        android:textSize="13dp" />
+
+    <TextView
+        android:id="@+id/tvLikeCount"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_below="@id/tvTitle"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/tvPostCount"
+        android:drawableLeft="@drawable/ic_book_review_like"
+        android:drawablePadding="5dp"
+        android:gravity="center"
+        android:text="308"
+        android:textColor="@color/common_h3"
+        android:textSize="13dp" />
 
 </RelativeLayout>

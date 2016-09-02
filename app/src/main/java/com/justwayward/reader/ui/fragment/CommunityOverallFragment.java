@@ -1,21 +1,18 @@
 package com.justwayward.reader.ui.fragment;
 
-import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseFragment;
-import com.justwayward.reader.bean.Recommend;
-import com.justwayward.reader.common.OnRvItemClickListener;
+import com.justwayward.reader.base.Constant;
+import com.justwayward.reader.bean.DiscussionList;
 import com.justwayward.reader.component.AppComponent;
-import com.justwayward.reader.component.DaggerRecommendFragmentComponent;
-import com.justwayward.reader.ui.activity.BookReadActivity;
-import com.justwayward.reader.ui.adapter.RecommendAdapter;
-import com.justwayward.reader.ui.contract.RecommendContract;
-import com.justwayward.reader.ui.presenter.RecommendPresenter;
+import com.justwayward.reader.component.DaggerCommunityComponent;
+import com.justwayward.reader.ui.adapter.ComminuteOverallAdapter;
+import com.justwayward.reader.ui.contract.ComminutyOverallContract;
+import com.justwayward.reader.ui.presenter.CommunityOverallPresenter;
 import com.justwayward.reader.view.SupportDividerItemDecoration;
 
 import java.util.ArrayList;
@@ -25,23 +22,42 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 
-public class RecommendFragment extends BaseFragment implements RecommendContract.View,
-        OnRvItemClickListener<Recommend.RecommendBooks> {
+/**
+ * @author yuyh.
+ * @date 16/9/2.
+ */
+public class CommunityOverallFragment extends BaseFragment implements ComminutyOverallContract.View {
+
 
     @Bind(R.id.recyclerview)
     RecyclerView mRecyclerView;
     @Bind(R.id.swiperefreshlayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    @Inject
-    RecommendPresenter mPresenter;
+    private List<DiscussionList.PostsBean> mList = new ArrayList<>();
+    private ComminuteOverallAdapter mAdapter;
 
-    private RecommendAdapter mAdapter;
-    private List<Recommend.RecommendBooks> mList = new ArrayList<>();
+    @Inject
+    CommunityOverallPresenter mPresenter;
+
+    private String sort = Constant.SortType.DEFAULT;
+    private String distillate = Constant.Distillate.ALL;
+
+    private int start = 0;
+    private int limit = 20;
+
 
     @Override
     public int getLayoutResId() {
         return R.layout.fragment_recommend;
+    }
+
+    @Override
+    protected void setupActivityComponent(AppComponent appComponent) {
+        DaggerCommunityComponent.builder()
+                .appComponent(appComponent)
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -59,38 +75,26 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
 
             @Override
             public void onRefresh() {
-                mPresenter.getRecommendList();
+                //mPresenter.getRecommendList();
             }
         });
 
-        mAdapter = new RecommendAdapter(mContext, mList, this);
+        mAdapter = new ComminuteOverallAdapter(mContext, mList);
         mRecyclerView.setAdapter(mAdapter);
 
         mPresenter.attachView(this);
-        mPresenter.getRecommendList();
+        mPresenter.getDisscussionList(sort, distillate, start, limit);
     }
 
     @Override
-    protected void setupActivityComponent(AppComponent appComponent) {
-        DaggerRecommendFragmentComponent.builder()
-                .appComponent(appComponent)
-                .build()
-                .inject(this);
-    }
-
-    @Override
-    public void showRecommendList(List<Recommend.RecommendBooks> list) {
+    public void showDisscussionList(List<DiscussionList.PostsBean> list) {
         mList.clear();
         mList.addAll(list);
-        mSwipeRefreshLayout.setRefreshing(false);
         mAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onItemClick(View view, int position, Recommend.RecommendBooks data) {
-        startActivity(new Intent(activity, BookReadActivity.class)
-                .putExtra("bookId", data._id)
-                .putExtra("bookName", data.title));
+    public void complete() {
+        mSwipeRefreshLayout.setRefreshing(false);
     }
-
 }

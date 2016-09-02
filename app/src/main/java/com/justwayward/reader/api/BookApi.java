@@ -13,6 +13,7 @@ import com.justwayward.reader.bean.BooksByTag;
 import com.justwayward.reader.bean.CategoryList;
 import com.justwayward.reader.bean.CategoryListLv2;
 import com.justwayward.reader.bean.ChapterRead;
+import com.justwayward.reader.bean.DiscussionList;
 import com.justwayward.reader.bean.HotReview;
 import com.justwayward.reader.bean.HotWord;
 import com.justwayward.reader.bean.RankingList;
@@ -100,11 +101,11 @@ public class BookApi {
         return service.getBookSource(view, book);
     }
 
-    public Observable<RankingList> getRanking(){
+    public Observable<RankingList> getRanking() {
         return service.getRanking();
     }
 
-    public Observable<Rankings> getRanking(String rankingId){
+    public Observable<Rankings> getRanking(String rankingId) {
         return service.getRanking(rankingId);
     }
 
@@ -116,7 +117,7 @@ public class BookApi {
         return service.getBookListTags();
     }
 
-    public Observable<BookListDetail> getBookListDetail(String bookListId){
+    public Observable<BookListDetail> getBookListDetail(String bookListId) {
         return service.getBookListDetail(bookListId);
     }
 
@@ -130,6 +131,10 @@ public class BookApi {
 
     public Observable<BooksByCats> getBooksByCats(String gender, String type, String major, String minor, int start, @Query("limit") int limit) {
         return service.getBooksByCats(gender, type, major, minor, start, limit);
+    }
+
+    public Observable<DiscussionList> getDisscussionList(String block, String duration, String sort, String type, String start, String limit, String distillate) {
+        return service.getDisscussionList(block, duration, sort, type, start, limit, distillate);
     }
 
 }

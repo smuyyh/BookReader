@@ -5,8 +5,8 @@
     android:background="@color/colorPrimary"
     android:gravity="center"
     android:orientation="horizontal"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp">
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp">
 
     <TextView
         android:id="@+id/tvSelTitle"
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="全部"
         android:textColor="@color/white"
-        android:textSize="16dp" />
+        android:textSize="15dp" />
 
     <ImageView
         android:id="@+id/ivSelArrow"

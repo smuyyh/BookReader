@@ -30,6 +30,8 @@ public abstract class BaseFragment extends Fragment {
     @LayoutRes
     int getLayoutResId();
 
+    protected abstract void setupActivityComponent(AppComponent appComponent);
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle state) {
         parentView = inflater.inflate(getLayoutResId(), container, false);
@@ -90,8 +92,6 @@ public abstract class BaseFragment extends Fragment {
     protected View getParentView() {
         return parentView;
     }
-
-    protected abstract void setupActivityComponent(AppComponent appComponent);
 
     public CustomDialog getDialog() {
         if (dialog == null) {
