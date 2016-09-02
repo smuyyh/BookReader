@@ -6,6 +6,8 @@ import com.justwayward.reader.bean.BookDetail;
 import com.justwayward.reader.bean.BookListDetail;
 import com.justwayward.reader.bean.BookListTags;
 import com.justwayward.reader.bean.BookLists;
+import com.justwayward.reader.bean.BookReview;
+import com.justwayward.reader.bean.BookReviewList;
 import com.justwayward.reader.bean.BookSource;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.BooksByCats;
@@ -16,6 +18,8 @@ import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.bean.CommentList;
 import com.justwayward.reader.bean.DiscussionList;
 import com.justwayward.reader.bean.Disscussion;
+import com.justwayward.reader.bean.Help;
+import com.justwayward.reader.bean.HelpList;
 import com.justwayward.reader.bean.HotReview;
 import com.justwayward.reader.bean.HotWord;
 import com.justwayward.reader.bean.RankingList;
@@ -148,7 +152,27 @@ public class BookApi {
     }
 
     public Observable<CommentList> getDisscussionComments(String disscussionId,String start,String limit) {
-        return service.getDisscussionComments( disscussionId,start,limit);
+        return service.getDisscussionComments(disscussionId,start,limit);
+    }
+
+    public Observable<BookReviewList> getBookReviewList(String duration, String sort, String type, String start, String limit, String distillate) {
+        return service.getBookReviewList(duration, sort, type, start, limit, distillate);
+    }
+
+    public Observable<BookReview> getBookReviewDetail(String bookReviewId) {
+        return service.getBookReviewDetail(bookReviewId);
+    }
+
+    public Observable<CommentList> getBookReviewComments(String bookReviewId,String start,String limit) {
+        return service.getBookReviewComments(bookReviewId,start,limit);
+    }
+
+    public Observable<HelpList> getHelpList(String duration, String sort,  String start, String limit, String distillate) {
+        return service.getHelpList(duration, sort, start, limit, distillate);
+    }
+
+    public Observable<Help> getHelpDetail(String helpId) {
+        return service.getHelpDetail(helpId);
     }
 
 }

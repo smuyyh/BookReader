@@ -12,6 +12,9 @@ import java.util.List;
 
 import butterknife.Bind;
 
+/**
+ * 书评区
+ */
 public class ComBookCommActivity extends BaseCommuniteActivity {
 
 
@@ -24,7 +27,7 @@ public class ComBookCommActivity extends BaseCommuniteActivity {
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_community_book_comment;
+        return R.layout.activity_community_book_review;
     }
 
     @Override

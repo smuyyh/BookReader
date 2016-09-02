@@ -77,7 +77,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     RecyclerView mRvHotReview;
     @Bind(R.id.tvCommunity)
     TextView mTvCommunity;
-    @Bind(R.id.tvPostCount)
+    @Bind(R.id.tvHelpfulYes)
     TextView mTvPostCount;
     @Bind(R.id.tvRecommendBookList)
     TextView mTvRecommendBookList;

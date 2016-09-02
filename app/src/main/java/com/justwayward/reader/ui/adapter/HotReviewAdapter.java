@@ -31,13 +31,13 @@ public class HotReviewAdapter extends EasyRVAdapter<HotReview.Reviews> {
     @Override
     protected void onBindData(final EasyRVHolder holder, final int position, final HotReview
             .Reviews item) {
-        ImageView ivCover = holder.getView(R.id.ivAvatar);
+        ImageView ivCover = holder.getView(R.id.ivBookCover);
         Glide.with(mContext).load(Constant.IMG_BASE_URL + item.author.avatar).placeholder(R
                 .drawable.avatar_default).transform(new
                 GlideCircleTransform(mContext)).into(ivCover);
 
-        holder.setText(R.id.tvNickName, item.author.nickname)
-                .setText(R.id.tvLv, String.format(mContext.getString(R.string
+        holder.setText(R.id.tvBookTitle, item.author.nickname)
+                .setText(R.id.tvBookType, String.format(mContext.getString(R.string
                         .book_detail_user_lv), item.author.lv))
                 .setText(R.id.tvTitle, item.title)
                 .setText(R.id.tvContent, String.valueOf(item.content))

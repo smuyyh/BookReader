@@ -97,7 +97,7 @@ public class Constant {
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface BookType {
-        String ALL = "updated";
+        String ALL = "all";
 
         String XHQH = "xhqh";
 

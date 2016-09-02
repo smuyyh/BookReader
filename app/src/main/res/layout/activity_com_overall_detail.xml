@@ -25,7 +25,7 @@
                 android:padding="15dp">
 
                 <ImageView
-                    android:id="@+id/ivAvatar"
+                    android:id="@+id/ivBookCover"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_alignParentLeft="true"
@@ -34,10 +34,10 @@
                     android:scaleType="centerInside" />
 
                 <TextView
-                    android:id="@+id/tvNickName"
+                    android:id="@+id/tvBookTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/ivAvatar"
+                    android:layout_toRightOf="@id/ivBookCover"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="我就是静静"
@@ -48,9 +48,9 @@
                     android:id="@+id/tvTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tvNickName"
+                    android:layout_below="@id/tvBookTitle"
                     android:layout_marginTop="5dp"
-                    android:layout_toRightOf="@id/ivAvatar"
+                    android:layout_toRightOf="@id/ivBookCover"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="昨天"

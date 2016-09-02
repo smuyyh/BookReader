@@ -4,12 +4,13 @@
     android:layout_height="wrap_content"
     android:background="@drawable/touch_bg"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="10dp"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
         android:id="@+id/ivBookCover"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
+        android:layout_width="45dp"
+        android:layout_height="60dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
@@ -22,7 +23,7 @@
         android:layout_toRightOf="@id/ivBookCover"
         android:ellipsize="end"
         android:singleLine="true"
-        android:text="我就是静静"
+        tools:text="诛仙"
         android:textColor="@color/light_coffee"
         android:textSize="13sp" />
 
@@ -33,7 +34,7 @@
         android:layout_toRightOf="@id/tvBookTitle"
         android:ellipsize="end"
         android:singleLine="true"
-        android:text="@string/book_detail_user_lv"
+        tools:text="@string/book_review_book_type"
         android:textColor="@color/light_coffee"
         android:textSize="13sp" />
 
@@ -77,9 +78,9 @@
         android:ellipsize="end"
         android:gravity="center"
         android:padding="5dp"
-        android:visibility="gone"
         android:singleLine="true"
         android:text="精品"
+        android:visibility="gone"
         android:textColor="@color/white"
         android:textSize="8dp" />
 
@@ -102,25 +103,10 @@
         android:layout_below="@id/tvTitle"
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@id/ivBookCover"
-        android:drawableLeft="@drawable/ic_notif_post"
+        android:drawableLeft="@drawable/post_item_like"
         android:drawablePadding="5dp"
         android:gravity="center"
-        android:text="308"
-        android:textColor="@color/common_h3"
-        android:textSize="13dp" />
-
-    <TextView
-        android:id="@+id/tvLikeCount"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_below="@id/tvTitle"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_toRightOf="@id/tvHelpfulYes"
-        android:drawableLeft="@drawable/ic_book_review_like"
-        android:drawablePadding="5dp"
-        android:gravity="center"
-        android:text="308"
+        android:text="@string/book_review_helpful_yes"
         android:textColor="@color/common_h3"
         android:textSize="13dp" />
 

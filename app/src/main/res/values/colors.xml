@@ -19,7 +19,8 @@
     <color name="light_pink">#fb9090</color>
     <color name="light_coffee">#A58D5E</color>
     <color name="light_gray">#B1B1B1</color>
-    <color name="light_read">#EC4A48</color>
+    <color name="light_red">#EC4A48</color>
+    <color name="light_blue">#039BE5</color>
 
     <!--通用背景色-->
     <color name="common_bg">@color/white</color>

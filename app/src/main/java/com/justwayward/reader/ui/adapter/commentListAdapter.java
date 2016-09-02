@@ -31,14 +31,14 @@ public class CommentListAdapter extends EasyRVAdapter<CommentList.CommentsBean> 
     @Override
     protected void onBindData(final EasyRVHolder viewHolder, final int position, final CommentList.CommentsBean item) {
 
-        ImageView ivCover = viewHolder.getView(R.id.ivAvatar);
+        ImageView ivCover = viewHolder.getView(R.id.ivBookCover);
         Glide.with(mContext).load(Constant.IMG_BASE_URL + item.author.avatar).placeholder(R.drawable.avatar_default)
                 .transform(new GlideCircleTransform(mContext))
                 .into(ivCover);
 
-        viewHolder.setText(R.id.tvNickName, item.author.nickname)
+        viewHolder.setText(R.id.tvBookTitle, item.author.nickname)
                 .setText(R.id.tvContent, item.content)
-                .setText(R.id.tvLv, String.format(mContext.getString(R.string.book_detail_user_lv), item.author.lv))
+                .setText(R.id.tvBookType, String.format(mContext.getString(R.string.book_detail_user_lv), item.author.lv))
                 .setText(R.id.tvFloor, String.format(mContext.getString(R.string.comment_floor), item.floor))
                 .setText(R.id.tvTime, RelativeDateFormat.format(item.created));
 

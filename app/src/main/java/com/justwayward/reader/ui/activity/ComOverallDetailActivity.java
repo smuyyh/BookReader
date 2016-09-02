@@ -44,9 +44,9 @@ public class ComOverallDetailActivity extends BaseActivity implements ComOverall
                 .putExtra(INTENT_ID, id));
     }
 
-    @Bind(R.id.ivAvatar)
+    @Bind(R.id.ivBookCover)
     ImageView ivAvatar;
-    @Bind(R.id.tvNickName)
+    @Bind(R.id.tvBookTitle)
     TextView tvNickName;
     @Bind(R.id.tvTime)
     TextView tvTime;

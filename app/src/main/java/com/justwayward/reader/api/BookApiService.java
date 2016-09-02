@@ -19,6 +19,7 @@ import com.justwayward.reader.bean.CommentList;
 import com.justwayward.reader.bean.DiscussionList;
 import com.justwayward.reader.bean.Disscussion;
 import com.justwayward.reader.bean.Help;
+import com.justwayward.reader.bean.HelpList;
 import com.justwayward.reader.bean.HotReview;
 import com.justwayward.reader.bean.HotWord;
 import com.justwayward.reader.bean.PostCount;
@@ -240,7 +241,7 @@ public interface BookApiService {
      * @return
      */
     @GET("/post/help")
-    Observable<BookReviewList> getHelpList(@Query("duration") String duration, @Query("sort") String sort, @Query("start") String start, @Query("limit") String limit, @Query("distillate") String distillate);
+    Observable<HelpList> getHelpList(@Query("duration") String duration, @Query("sort") String sort, @Query("start") String start, @Query("limit") String limit, @Query("distillate") String distillate);
 
     /**
      * 获取书荒区帖子详情
