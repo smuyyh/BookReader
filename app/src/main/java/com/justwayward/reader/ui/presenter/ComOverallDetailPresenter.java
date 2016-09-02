@@ -3,6 +3,7 @@ package com.justwayward.reader.ui.presenter;
 import android.content.Context;
 
 import com.justwayward.reader.api.BookApi;
+import com.justwayward.reader.bean.CommentList;
 import com.justwayward.reader.bean.Disscussion;
 import com.justwayward.reader.ui.contract.ComOverallDetailContract;
 import com.justwayward.reader.utils.LogUtils;
@@ -49,6 +50,54 @@ public class ComOverallDetailPresenter implements ComOverallDetailContract.Prese
                     @Override
                     public void onNext(Disscussion disscussion) {
                         view.showDisscussion(disscussion);
+                    }
+                });
+    }
+
+    @Override
+    public void getBestComments(String disscussionId) {
+        bookApi.getBestComments(disscussionId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<CommentList>() {
+                    @Override
+                    public void onCompleted() {
+                        view.complete();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtils.e("getBestComments:" + e.toString());
+                        view.complete();
+                    }
+
+                    @Override
+                    public void onNext(CommentList list) {
+                        view.showBestComments(list);
+                    }
+                });
+    }
+
+    @Override
+    public void getDisscussionComments(String disscussionId, String start, String limit) {
+        bookApi.getDisscussionComments(disscussionId,start,limit)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<CommentList>() {
+                    @Override
+                    public void onCompleted() {
+                        view.complete();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtils.e("getDisscussionComments:" + e.toString());
+                        view.complete();
+                    }
+
+                    @Override
+                    public void onNext(CommentList list) {
+                        view.showDisscussionComments(list);
                     }
                 });
     }

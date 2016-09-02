@@ -1,5 +1,6 @@
 package com.justwayward.reader.ui.contract;
 
+import com.justwayward.reader.bean.CommentList;
 import com.justwayward.reader.bean.Disscussion;
 
 /**
@@ -12,12 +13,20 @@ public interface ComOverallDetailContract {
 
         void showDisscussion(Disscussion disscussion);
 
+        void showBestComments(CommentList list);
+
+        void showDisscussionComments(CommentList list);
+
         void complete();
     }
 
     interface Presenter extends BaseContract.BasePresenter<View> {
 
         void getDisscussionDetail(String id);
+
+        void getBestComments(String disscussionId);
+
+        void getDisscussionComments(String disscussionId,String start,String limit);
 
     }
 

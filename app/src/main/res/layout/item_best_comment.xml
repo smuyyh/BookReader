@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/touch_bg"
+                android:orientation="vertical"
+                android:padding="15dp">
+
+    <ImageView
+        android:id="@+id/ivAvatar"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="10dp"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/tvFloor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/ivAvatar"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="@string/comment_floor"
+        android:textColor="@color/common_h3"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/tvNickName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/tvFloor"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="我就是静静"
+        android:textColor="@color/light_coffee"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/tvLv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/tvNickName"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="@string/book_detail_user_lv"
+        android:textColor="@color/light_coffee"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/tvLikeCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="@string/comment_like_count"
+        android:textColor="@color/common_h3"
+        android:textSize="13sp" />
+
+
+    <TextView
+        android:id="@+id/tvContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvNickName"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/ivAvatar"
+        android:text="越到后面越索然无味"
+        android:textColor="@color/common_h2" />
+
+</RelativeLayout>
