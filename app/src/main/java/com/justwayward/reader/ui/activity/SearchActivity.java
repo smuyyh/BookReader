@@ -1,5 +1,6 @@
 package com.justwayward.reader.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,8 +44,14 @@ import butterknife.Bind;
 /**
  * Created by Administrator on 2016/8/6.
  */
-public class SearchActivity extends BaseActivity implements SearchContract.View,
-        OnRvItemClickListener<SearchDetail.SearchBooks> {
+public class SearchActivity extends BaseActivity implements SearchContract.View, OnRvItemClickListener<SearchDetail.SearchBooks> {
+
+    public static final String INTENT_QUERY = "query";
+
+    public static void startActivity(Context context, String query) {
+        context.startActivity(new Intent(context, SearchActivity.class)
+                .putExtra(INTENT_QUERY, query));
+    }
 
     @Bind(R.id.tvChangeWords)
     TextView mTvChangeWords;
@@ -138,6 +145,8 @@ public class SearchActivity extends BaseActivity implements SearchContract.View,
 
         mPresenter.attachView(this);
         mPresenter.getHotWordList();
+
+        key = getIntent().getStringExtra(INTENT_QUERY);
     }
 
     @Override
@@ -221,6 +230,10 @@ public class SearchActivity extends BaseActivity implements SearchContract.View,
                 return false;
             }
         });
+        if (!TextUtils.isEmpty(key)) {
+            MenuItemCompat.expandActionView(menuItem);
+            searchView.setQuery(key, true);
+        }
         MenuItemCompat.setOnActionExpandListener(menuItem,
                 new MenuItemCompat.OnActionExpandListener() {//设置打开关闭动作监听
                     @Override

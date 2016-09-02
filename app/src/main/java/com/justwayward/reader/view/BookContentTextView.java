@@ -12,8 +12,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.justwayward.reader.R;
+import com.justwayward.reader.ui.activity.SearchActivity;
 import com.justwayward.reader.utils.LogUtils;
-import com.justwayward.reader.utils.ToastUtils;
 
 /**
  * 识别文字中的书名
@@ -76,7 +76,7 @@ public class BookContentTextView extends TextView {
 
         @Override
         public void onClick(View v) {
-            ToastUtils.showSingleToast(name);
+            SearchActivity.startActivity(getContext(), name.replaceAll("》","").replaceAll("《",""));
         }
     }
 }
