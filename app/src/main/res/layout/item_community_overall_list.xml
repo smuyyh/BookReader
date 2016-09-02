@@ -38,6 +38,33 @@
         android:textSize="13sp" />
 
     <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="昨天"
+        android:textColor="@color/common_h3"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/tvHot"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/shape_hot_bg"
+        android:drawableLeft="@drawable/ic_topic_hot"
+        android:drawablePadding="5dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:text="热门"
+        android:textColor="@color/white"
+        android:textSize="8dp" />
+
+    <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

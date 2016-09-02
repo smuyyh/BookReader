@@ -6,7 +6,6 @@ import android.content.Intent;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseCommuniteActivity;
 import com.justwayward.reader.component.AppComponent;
-import com.justwayward.reader.ui.fragment.CommunityOverallFragment;
 import com.justwayward.reader.view.SelectionLayout;
 
 import java.util.List;
@@ -22,8 +21,6 @@ public class CommunityOverallActivity extends BaseCommuniteActivity {
 
     @Bind(R.id.slOverall)
     SelectionLayout slOverall;
-
-    CommunityOverallFragment fragment;
 
 
     @Override
@@ -54,6 +51,5 @@ public class CommunityOverallActivity extends BaseCommuniteActivity {
 
     @Override
     public void configViews() {
-        fragment = (CommunityOverallFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentCO);
     }
 }

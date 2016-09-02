@@ -170,6 +170,7 @@ public class SelectionLayout extends LinearLayout {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             mAdapter.setSelPosition(position);
+            tvTitle.setText(data.get(position));
             if (listener != null) {
                 listener.onSelect((Integer) this.getTag(), position, data.get(position));
             }

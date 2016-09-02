@@ -8,12 +8,17 @@ import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseFragment;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.DiscussionList;
+import com.justwayward.reader.bean.support.SelectionEvent;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerCommunityComponent;
 import com.justwayward.reader.ui.adapter.ComminuteOverallAdapter;
 import com.justwayward.reader.ui.contract.ComminutyOverallContract;
 import com.justwayward.reader.ui.presenter.CommunityOverallPresenter;
 import com.justwayward.reader.view.SupportDividerItemDecoration;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +67,7 @@ public class CommunityOverallFragment extends BaseFragment implements ComminutyO
 
     @Override
     public void initDatas() {
-
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -75,7 +80,9 @@ public class CommunityOverallFragment extends BaseFragment implements ComminutyO
 
             @Override
             public void onRefresh() {
-                //mPresenter.getRecommendList();
+                start = 0;
+                limit = 20;
+                mPresenter.getDisscussionList(sort, distillate, start, limit);
             }
         });
 
@@ -96,5 +103,20 @@ public class CommunityOverallFragment extends BaseFragment implements ComminutyO
     @Override
     public void complete() {
         mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void initCategoryList(SelectionEvent event) {
+        sort = event.sort;
+        distillate = event.distillate;
+        start = 0;
+        limit = 20;
+        mPresenter.getDisscussionList(sort, distillate, start, limit);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
     }
 }
