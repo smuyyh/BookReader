@@ -7,6 +7,9 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -81,6 +84,11 @@ public class SelectionLayout extends LinearLayout {
         private ListPopupWindow mListPopupWindow;
         private SelAdapter mAdapter;
 
+        Animation operatingAnim1 = AnimationUtils.loadAnimation(mContext, R.anim.roate_0_180);
+        Animation operatingAnim2 = AnimationUtils.loadAnimation(mContext, R.anim.roate_180_360);
+        LinearInterpolator lin1 = new LinearInterpolator();
+        LinearInterpolator lin2 = new LinearInterpolator();
+
         public ChildView(Context context) {
             this(context, null);
         }
@@ -99,12 +107,20 @@ public class SelectionLayout extends LinearLayout {
 
         private void initView() {
             ivArrow = (ImageView) findViewById(R.id.ivSelArrow);
+            ivArrow.setScaleType(ImageView.ScaleType.MATRIX);   //required
             tvTitle = (TextView) findViewById(R.id.tvSelTitle);
             setOnClickListener(this);
+            operatingAnim1.setInterpolator(lin1);
+            operatingAnim1.setFillAfter(true);
+            operatingAnim2.setInterpolator(lin2);
+            operatingAnim2.setFillAfter(true);
         }
 
         private void setData(List<String> list) {
-            data.addAll(list);
+            if (list != null && !list.isEmpty()) {
+                data.addAll(list);
+                tvTitle.setText(list.get(0));
+            }
         }
 
         public void openPopupWindow() {
@@ -133,9 +149,11 @@ public class SelectionLayout extends LinearLayout {
         @Override
         public void onClick(View v) {
             if (isOpen) {
+                ivArrow.startAnimation(operatingAnim2);
                 closePopWindow();
                 isOpen = false;
             } else {
+                ivArrow.startAnimation(operatingAnim1);
                 openPopupWindow();
                 isOpen = true;
             }
