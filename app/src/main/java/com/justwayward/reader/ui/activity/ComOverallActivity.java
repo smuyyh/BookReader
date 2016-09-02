@@ -12,19 +12,20 @@ import java.util.List;
 
 import butterknife.Bind;
 
-public class CommunityBookCommentActivity extends BaseCommuniteActivity {
+public class ComOverallActivity extends BaseCommuniteActivity {
 
 
     public static void startActivity(Context context) {
-        context.startActivity(new Intent(context, CommunityBookCommentActivity.class));
+        context.startActivity(new Intent(context, ComOverallActivity.class));
     }
 
     @Bind(R.id.slOverall)
     SelectionLayout slOverall;
 
+
     @Override
     public int getLayoutId() {
-        return R.layout.activity_community_book_comment;
+        return R.layout.activity_community_overall;
     }
 
     @Override
@@ -34,7 +35,7 @@ public class CommunityBookCommentActivity extends BaseCommuniteActivity {
 
     @Override
     public void initToolBar() {
-        mCommonToolbar.setTitle("书评区");
+        mCommonToolbar.setTitle("综合讨论区");
         mCommonToolbar.setNavigationIcon(R.drawable.ab_back);
     }
 
@@ -45,11 +46,10 @@ public class CommunityBookCommentActivity extends BaseCommuniteActivity {
 
     @Override
     protected List<List<String>> getTabList() {
-        return list2;
+        return list1;
     }
 
     @Override
     public void configViews() {
-
     }
 }

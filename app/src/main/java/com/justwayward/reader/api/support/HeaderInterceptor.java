@@ -22,7 +22,8 @@ public class HeaderInterceptor implements Interceptor {
         Request original = chain.request();
         if (original.url().toString().contains("book/") ||
                 original.url().toString().contains("book-list/")||
-                original.url().toString().contains("toc/")) {
+                original.url().toString().contains("toc/") ||
+                original.url().toString().contains("post/")) {
             Request request = original.newBuilder()
                     .addHeader("User-Agent", "ZhuiShuShenQi/3.40[preload=false;locale=zh_CN;clientidbase=android-nvidia]") // 不能转UTF-8
                     .addHeader("X-User-Agent", "ZhuiShuShenQi/3.40[preload=false;locale=zh_CN;clientidbase=android-nvidia]")

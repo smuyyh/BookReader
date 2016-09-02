@@ -54,20 +54,12 @@ public class Disscussion extends Base {
      * id : 57b82323a2275fcd60bbbfbc
      */
 
-    private PostBean post;
-
-    public PostBean getPost() {
-        return post;
-    }
-
-    public void setPost(PostBean post) {
-        this.post = post;
-    }
+    public PostBean post;
 
     public static class PostBean {
-        private String _id;
-        private String title;
-        private String content;
+        public String _id;
+        public String title;
+        public String content;
         /**
          * _id : 55c43916ad75a05059fd23d7
          * avatar : /avatar/5a/1f/5a1fb41215c3e7f9cedb8310ad76d3d8
@@ -80,248 +72,32 @@ public class Disscussion extends Base {
          * id : 55c43916ad75a05059fd23d7
          */
 
-        private AuthorBean author;
-        private String type;
-        private boolean isStopPriority;
-        private boolean deleted;
-        private int likeCount;
-        private boolean isStick;
-        private String block;
-        private String state;
-        private String updated;
-        private String created;
-        private int commentCount;
-        private int voteCount;
-        private String shareLink;
-        private String id;
-        private List<?> votes;
-
-        public String get_id() {
-            return _id;
-        }
-
-        public void set_id(String _id) {
-            this._id = _id;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        public void setContent(String content) {
-            this.content = content;
-        }
-
-        public AuthorBean getAuthor() {
-            return author;
-        }
-
-        public void setAuthor(AuthorBean author) {
-            this.author = author;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public boolean isIsStopPriority() {
-            return isStopPriority;
-        }
-
-        public void setIsStopPriority(boolean isStopPriority) {
-            this.isStopPriority = isStopPriority;
-        }
-
-        public boolean isDeleted() {
-            return deleted;
-        }
-
-        public void setDeleted(boolean deleted) {
-            this.deleted = deleted;
-        }
-
-        public int getLikeCount() {
-            return likeCount;
-        }
-
-        public void setLikeCount(int likeCount) {
-            this.likeCount = likeCount;
-        }
-
-        public boolean isIsStick() {
-            return isStick;
-        }
-
-        public void setIsStick(boolean isStick) {
-            this.isStick = isStick;
-        }
-
-        public String getBlock() {
-            return block;
-        }
-
-        public void setBlock(String block) {
-            this.block = block;
-        }
-
-        public String getState() {
-            return state;
-        }
-
-        public void setState(String state) {
-            this.state = state;
-        }
-
-        public String getUpdated() {
-            return updated;
-        }
-
-        public void setUpdated(String updated) {
-            this.updated = updated;
-        }
-
-        public String getCreated() {
-            return created;
-        }
-
-        public void setCreated(String created) {
-            this.created = created;
-        }
-
-        public int getCommentCount() {
-            return commentCount;
-        }
-
-        public void setCommentCount(int commentCount) {
-            this.commentCount = commentCount;
-        }
-
-        public int getVoteCount() {
-            return voteCount;
-        }
-
-        public void setVoteCount(int voteCount) {
-            this.voteCount = voteCount;
-        }
-
-        public String getShareLink() {
-            return shareLink;
-        }
-
-        public void setShareLink(String shareLink) {
-            this.shareLink = shareLink;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public List<?> getVotes() {
-            return votes;
-        }
-
-        public void setVotes(List<?> votes) {
-            this.votes = votes;
-        }
+        public AuthorBean author;
+        public String type;
+        public boolean isStopPriority;
+        public boolean deleted;
+        public int likeCount;
+        public boolean isStick;
+        public String block;
+        public String state;
+        public String updated;
+        public String created;
+        public int commentCount;
+        public int voteCount;
+        public String shareLink;
+        public String id;
+        public List<?> votes;
 
         public static class AuthorBean {
-            private String _id;
-            private String avatar;
-            private String nickname;
-            private String type;
-            private int lv;
-            private String gender;
-            private Object rank;
-            private String created;
-            private String id;
-
-            public String get_id() {
-                return _id;
-            }
-
-            public void set_id(String _id) {
-                this._id = _id;
-            }
-
-            public String getAvatar() {
-                return avatar;
-            }
-
-            public void setAvatar(String avatar) {
-                this.avatar = avatar;
-            }
-
-            public String getNickname() {
-                return nickname;
-            }
-
-            public void setNickname(String nickname) {
-                this.nickname = nickname;
-            }
-
-            public String getType() {
-                return type;
-            }
-
-            public void setType(String type) {
-                this.type = type;
-            }
-
-            public int getLv() {
-                return lv;
-            }
-
-            public void setLv(int lv) {
-                this.lv = lv;
-            }
-
-            public String getGender() {
-                return gender;
-            }
-
-            public void setGender(String gender) {
-                this.gender = gender;
-            }
-
-            public Object getRank() {
-                return rank;
-            }
-
-            public void setRank(Object rank) {
-                this.rank = rank;
-            }
-
-            public String getCreated() {
-                return created;
-            }
-
-            public void setCreated(String created) {
-                this.created = created;
-            }
-
-            public String getId() {
-                return id;
-            }
-
-            public void setId(String id) {
-                this.id = id;
-            }
+            public String _id;
+            public String avatar;
+            public String nickname;
+            public String type;
+            public int lv;
+            public String gender;
+            public Object rank;
+            public String created;
+            public String id;
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.justwayward.reader.utils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -19,6 +21,16 @@ public class RelativeDateFormat {
     private static final String ONE_DAY_AGO = "天前";
     private static final String ONE_MONTH_AGO = "月前";
     private static final String ONE_YEAR_AGO = "年前";
+
+    public static String format(String date) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        try {
+            return format(format.parse(date.replaceAll("T", " ").replaceAll("Z", "")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 
     public static String format(Date date) {
         long delta = new Date().getTime() - date.getTime();

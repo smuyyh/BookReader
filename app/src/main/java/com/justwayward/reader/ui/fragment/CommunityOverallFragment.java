@@ -3,17 +3,20 @@ package com.justwayward.reader.ui.fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseFragment;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.DiscussionList;
 import com.justwayward.reader.bean.support.SelectionEvent;
+import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerCommunityComponent;
+import com.justwayward.reader.ui.activity.ComOverallDetailActivity;
 import com.justwayward.reader.ui.adapter.ComminuteOverallAdapter;
-import com.justwayward.reader.ui.contract.ComminutyOverallContract;
-import com.justwayward.reader.ui.presenter.CommunityOverallPresenter;
+import com.justwayward.reader.ui.contract.ComOverallContract;
+import com.justwayward.reader.ui.presenter.ComOverallPresenter;
 import com.justwayward.reader.view.SupportDividerItemDecoration;
 
 import org.greenrobot.eventbus.EventBus;
@@ -31,7 +34,7 @@ import butterknife.Bind;
  * @author yuyh.
  * @date 16/9/2.
  */
-public class CommunityOverallFragment extends BaseFragment implements ComminutyOverallContract.View {
+public class CommunityOverallFragment extends BaseFragment implements ComOverallContract.View, OnRvItemClickListener<DiscussionList.PostsBean> {
 
 
     @Bind(R.id.recyclerview)
@@ -43,7 +46,7 @@ public class CommunityOverallFragment extends BaseFragment implements ComminutyO
     private ComminuteOverallAdapter mAdapter;
 
     @Inject
-    CommunityOverallPresenter mPresenter;
+    ComOverallPresenter mPresenter;
 
     private String sort = Constant.SortType.DEFAULT;
     private String distillate = Constant.Distillate.ALL;
@@ -87,6 +90,7 @@ public class CommunityOverallFragment extends BaseFragment implements ComminutyO
         });
 
         mAdapter = new ComminuteOverallAdapter(mContext, mList);
+        mAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
 
         mPresenter.attachView(this);
@@ -118,5 +122,10 @@ public class CommunityOverallFragment extends BaseFragment implements ComminutyO
     public void onDestroyView() {
         super.onDestroyView();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onItemClick(View view, int position, DiscussionList.PostsBean data) {
+        ComOverallDetailActivity.startActivity(activity, data._id);
     }
 }

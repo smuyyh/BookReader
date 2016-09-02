@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/common_toolbar" />
+
+    <com.justwayward.reader.view.ReboundScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/ivAvatar"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:id="@+id/tvNickName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/ivAvatar"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="我就是静静"
+                    android:textColor="@color/light_coffee"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tvTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvNickName"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@id/ivAvatar"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="昨天"
+                    android:textColor="@color/common_h3" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="1111"
+                android:textColor="@color/common_h1"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/tvContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="xxxx"
+                android:textColor="@color/common_h2"
+                android:textSize="14dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvLike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_common_btn_selector"
+                    android:gravity="center"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="同感"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12dp" />
+
+                <ImageView
+                    android:id="@+id/ivMore"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/post_detail_more" />
+
+                <ImageView
+                    android:id="@+id/ivShare"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@+id/ivMore"
+                    android:src="@drawable/post_detail_share" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+    </com.justwayward.reader.view.ReboundScrollView>
+
+</LinearLayout>

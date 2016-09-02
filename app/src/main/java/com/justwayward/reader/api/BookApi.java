@@ -14,6 +14,7 @@ import com.justwayward.reader.bean.CategoryList;
 import com.justwayward.reader.bean.CategoryListLv2;
 import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.bean.DiscussionList;
+import com.justwayward.reader.bean.Disscussion;
 import com.justwayward.reader.bean.HotReview;
 import com.justwayward.reader.bean.HotWord;
 import com.justwayward.reader.bean.RankingList;
@@ -135,6 +136,10 @@ public class BookApi {
 
     public Observable<DiscussionList> getDisscussionList(String block, String duration, String sort, String type, String start, String limit, String distillate) {
         return service.getDisscussionList(block, duration, sort, type, start, limit, distillate);
+    }
+
+    public Observable<Disscussion> getDisscussionDetail(String disscussionId) {
+        return service.getDisscussionDetail(disscussionId);
     }
 
 }

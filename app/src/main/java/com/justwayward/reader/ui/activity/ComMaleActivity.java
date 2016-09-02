@@ -4,7 +4,7 @@ import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.component.AppComponent;
 
-public class CommunityMaleActivity extends BaseActivity {
+public class ComMaleActivity extends BaseActivity {
 
     @Override
     public int getLayoutId() {

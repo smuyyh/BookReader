@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.DiscussionList;
+import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.utils.GlideCircleTransform;
 import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.RelativeDateFormat;
@@ -18,8 +20,6 @@ import com.justwayward.reader.utils.ScreenUtils;
 import com.yuyh.easyadapter.recyclerview.EasyRVAdapter;
 import com.yuyh.easyadapter.recyclerview.EasyRVHolder;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,12 +28,14 @@ import java.util.List;
  */
 public class ComminuteOverallAdapter extends EasyRVAdapter<DiscussionList.PostsBean> {
 
+    private OnRvItemClickListener listener;
+
     public ComminuteOverallAdapter(Context context, List<DiscussionList.PostsBean> list) {
         super(context, list, R.layout.item_community_overall_list);
     }
 
     @Override
-    protected void onBindData(EasyRVHolder viewHolder, int position, DiscussionList.PostsBean item) {
+    protected void onBindData(final EasyRVHolder viewHolder, final int position, final DiscussionList.PostsBean item) {
 
         ImageView ivCover = viewHolder.getView(R.id.ivAvatar);
         Glide.with(mContext).load(Constant.IMG_BASE_URL + item.author.avatar).placeholder(R.drawable.avatar_default)
@@ -64,12 +66,22 @@ public class ComminuteOverallAdapter extends EasyRVAdapter<DiscussionList.PostsB
             } else {
                 viewHolder.setVisible(R.id.tvHot, false);
                 viewHolder.setVisible(R.id.tvTime, true);
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-                Date date = format.parse(item.created.replaceAll("T", " ").replaceAll("Z", ""));
-                viewHolder.setText(R.id.tvTime, RelativeDateFormat.format(date));
+                viewHolder.setText(R.id.tvTime, RelativeDateFormat.format(item.created));
             }
         } catch (Exception e) {
             LogUtils.e(e.toString());
         }
+
+        viewHolder.setOnItemViewClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(listener != null)
+                    listener.onItemClick(viewHolder.getItemView(), position, item);
+            }
+        });
+    }
+
+    public void setOnItemClickListener(OnRvItemClickListener listener){
+        this.listener = listener;
     }
 }

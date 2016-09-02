@@ -37,12 +37,14 @@
         <activity android:name=".ui.activity.SubjectBookListDetailActivity" />
         <activity android:name=".ui.activity.TopRankActivity" />
         <activity android:name=".ui.activity.SubRankActivity" />
-        <activity android:name=".ui.activity.CommunityOverallActivity" />
-        <activity android:name=".ui.activity.CommunityBookCommentActivity" />
-        <activity android:name=".ui.activity.CommunityHelpActivity" />
-        <activity android:name=".ui.activity.CommunityMaleActivity"/>
+        <activity android:name=".ui.activity.ComOverallActivity" />
+        <activity android:name=".ui.activity.ComBookCommActivity" />
+        <activity android:name=".ui.activity.ComHelpActivity" />
+        <activity android:name=".ui.activity.ComMaleActivity" />
 
         <service android:name=".service.DownloadBookService" />
+
+        <activity android:name=".ui.activity.ComOverallDetailActivity"></activity>
     </application>
 
 </manifest>

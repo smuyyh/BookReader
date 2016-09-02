@@ -8,7 +8,7 @@ import java.util.List;
  * @author yuyh.
  * @date 16/9/2.
  */
-public interface ComminutyOverallContract {
+public interface ComOverallContract {
 
     interface View {
         void showDisscussionList(List<DiscussionList.PostsBean> list);

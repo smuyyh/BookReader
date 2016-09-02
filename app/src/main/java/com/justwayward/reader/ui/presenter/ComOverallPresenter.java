@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.bean.DiscussionList;
-import com.justwayward.reader.ui.contract.ComminutyOverallContract;
+import com.justwayward.reader.ui.contract.ComOverallContract;
 import com.justwayward.reader.utils.LogUtils;
 
 import javax.inject.Inject;
@@ -17,15 +17,15 @@ import rx.schedulers.Schedulers;
  * @author yuyh.
  * @date 16/9/2.
  */
-public class CommunityOverallPresenter implements ComminutyOverallContract.Presenter {
+public class ComOverallPresenter implements ComOverallContract.Presenter {
 
     private Context context;
     private BookApi bookApi;
 
-    private ComminutyOverallContract.View view;
+    private ComOverallContract.View view;
 
     @Inject
-    public CommunityOverallPresenter(Context context, BookApi bookApi) {
+    public ComOverallPresenter(Context context, BookApi bookApi) {
         this.context = context;
         this.bookApi = bookApi;
     }
@@ -55,7 +55,7 @@ public class CommunityOverallPresenter implements ComminutyOverallContract.Prese
     }
 
     @Override
-    public void attachView(ComminutyOverallContract.View view) {
+    public void attachView(ComOverallContract.View view) {
         this.view = view;
     }
 }

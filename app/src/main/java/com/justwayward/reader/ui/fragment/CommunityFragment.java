@@ -9,9 +9,9 @@ import com.justwayward.reader.base.BaseFragment;
 import com.justwayward.reader.bean.support.FindBean;
 import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
-import com.justwayward.reader.ui.activity.CommunityBookCommentActivity;
-import com.justwayward.reader.ui.activity.CommunityHelpActivity;
-import com.justwayward.reader.ui.activity.CommunityOverallActivity;
+import com.justwayward.reader.ui.activity.ComBookCommActivity;
+import com.justwayward.reader.ui.activity.ComOverallActivity;
+import com.justwayward.reader.ui.activity.ComHelpActivity;
 import com.justwayward.reader.ui.adapter.FindAdapter;
 import com.justwayward.reader.view.SupportDividerItemDecoration;
 
@@ -62,13 +62,13 @@ public class CommunityFragment extends BaseFragment implements OnRvItemClickList
     public void onItemClick(View view, int position, FindBean data) {
         switch (position) {
             case 0:
-                CommunityOverallActivity.startActivity(activity);
+                ComOverallActivity.startActivity(activity);
                 break;
             case 1:
-                CommunityBookCommentActivity.startActivity(activity);
+                ComBookCommActivity.startActivity(activity);
                 break;
             case 2:
-                CommunityHelpActivity.startActivity(activity);
+                ComHelpActivity.startActivity(activity);
                 break;
             case 3:
                 break;
