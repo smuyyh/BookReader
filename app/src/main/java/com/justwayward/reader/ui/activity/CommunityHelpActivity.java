@@ -1,10 +1,19 @@
 package com.justwayward.reader.ui.activity;
 
+import android.content.Context;
+import android.content.Intent;
+
 import com.justwayward.reader.R;
-import com.justwayward.reader.base.BaseActivity;
+import com.justwayward.reader.base.BaseCommuniteActivity;
 import com.justwayward.reader.component.AppComponent;
 
-public class CommunityHelpActivity extends BaseActivity {
+import java.util.List;
+
+public class CommunityHelpActivity extends BaseCommuniteActivity {
+
+    public static void startActivity(Context context) {
+        context.startActivity(new Intent(context, CommunityHelpActivity.class));
+    }
 
     @Override
     public int getLayoutId() {
@@ -24,7 +33,12 @@ public class CommunityHelpActivity extends BaseActivity {
 
     @Override
     public void initDatas() {
+        super.initDatas();
+    }
 
+    @Override
+    protected List<List<String>> getTabList() {
+        return list1;
     }
 
     @Override

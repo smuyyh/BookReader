@@ -57,16 +57,70 @@ public class Constant {
     }
 
     @StringDef({
-            RankType.WEEK,
-            RankType.MONTH,
-            RankType.ALL
+            SortType.DEFAULT,
+            SortType.COMMENT_COUNT,
+            SortType.CREATED,
+            SortType.HELPFUL
     })
     @Retention(RetentionPolicy.SOURCE)
-    public @interface RankType {
-        String WEEK = "_id";
+    public @interface Distillate {
+        String ALL = "";
 
-        String MONTH = "monthRank";
+        String DISTILLATE = "true";
+    }
 
-        String ALL = "totalRank";
+    @StringDef({
+            SortType.DEFAULT,
+            SortType.COMMENT_COUNT,
+            SortType.CREATED,
+            SortType.HELPFUL
+    })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface SortType {
+        String DEFAULT = "updated";
+
+        String CREATED = "created";
+
+        String HELPFUL = "helpful";
+
+        String COMMENT_COUNT = "comment-count";
+    }
+
+    @StringDef({
+            BookType.ALL,
+            BookType.XHQH,
+            BookType.WXXX,
+            BookType.DSYN,
+            BookType.LSJS,
+            BookType.YXJJ,
+            BookType.KHLY
+    })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface BookType {
+        String ALL = "updated";
+
+        String XHQH = "xhqh";
+
+        String WXXX = "wxxx";
+
+        String DSYN = "dsyn";
+
+        String LSJS = "lsjs";
+
+        String YXJJ = "yxjj";
+
+        String KHLY = "khly";
+
+        String CYJK = "cyjk";
+
+        String HMZC = "hmzc";
+
+        String XDYQ = "cdyq";
+
+        String GDYQ = "gdyq";
+
+        String HXYQ = "hxyq";
+
+        String DMTR = "dmtr";
     }
 }

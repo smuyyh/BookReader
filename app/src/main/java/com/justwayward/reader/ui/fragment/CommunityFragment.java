@@ -1,6 +1,5 @@
 package com.justwayward.reader.ui.fragment;
 
-import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -10,9 +9,9 @@ import com.justwayward.reader.base.BaseFragment;
 import com.justwayward.reader.bean.support.FindBean;
 import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
+import com.justwayward.reader.ui.activity.CommunityBookCommentActivity;
+import com.justwayward.reader.ui.activity.CommunityHelpActivity;
 import com.justwayward.reader.ui.activity.CommunityOverallActivity;
-import com.justwayward.reader.ui.activity.SubjectBookListActivity;
-import com.justwayward.reader.ui.activity.TopCategoryListActivity;
 import com.justwayward.reader.ui.adapter.FindAdapter;
 import com.justwayward.reader.view.SupportDividerItemDecoration;
 
@@ -66,10 +65,10 @@ public class CommunityFragment extends BaseFragment implements OnRvItemClickList
                 CommunityOverallActivity.startActivity(activity);
                 break;
             case 1:
-                SubjectBookListActivity.startActivity(activity);
+                CommunityBookCommentActivity.startActivity(activity);
                 break;
             case 2:
-                startActivity(new Intent(activity, TopCategoryListActivity.class));
+                CommunityHelpActivity.startActivity(activity);
                 break;
             case 3:
                 break;

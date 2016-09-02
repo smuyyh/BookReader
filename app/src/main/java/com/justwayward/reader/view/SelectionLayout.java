@@ -13,6 +13,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.justwayward.reader.R;
@@ -138,6 +139,13 @@ public class SelectionLayout extends LinearLayout {
             mListPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
             mListPopupWindow.setAnchorView(parent.getChildAt(0));
             mListPopupWindow.setOnItemClickListener(this);
+            mListPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    ivArrow.startAnimation(operatingAnim2);
+                    isOpen = false;
+                }
+            });
         }
 
         public void closePopWindow() {

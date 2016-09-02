@@ -4,16 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.justwayward.reader.R;
-import com.justwayward.reader.base.BaseActivity;
+import com.justwayward.reader.base.BaseCommuniteActivity;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.view.SelectionLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 
-public class CommunityOverallActivity extends BaseActivity implements SelectionLayout.OnSelectListener {
+public class CommunityOverallActivity extends BaseCommuniteActivity {
 
 
     public static void startActivity(Context context) {
@@ -22,6 +21,7 @@ public class CommunityOverallActivity extends BaseActivity implements SelectionL
 
     @Bind(R.id.slOverall)
     SelectionLayout slOverall;
+
 
     @Override
     public int getLayoutId() {
@@ -41,26 +41,16 @@ public class CommunityOverallActivity extends BaseActivity implements SelectionL
 
     @Override
     public void initDatas() {
-        List<String> list0 = new ArrayList<String>() {{
-            add("全部");
-            add("精品");
-        }};
-        List<String> list1 = new ArrayList<String>() {{
-            add("默认排序");
-            add("最新发布");
-            add("最多评论");
-        }};
-        slOverall.setData(list0, list1);
-        slOverall.setOnSelectListener(this);
+        super.initDatas();
+    }
+
+    @Override
+    protected List<List<String>> getTabList() {
+        return list1;
     }
 
     @Override
     public void configViews() {
-
-    }
-
-    @Override
-    public void onSelect(int index, int position, String title) {
 
     }
 }
