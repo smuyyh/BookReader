@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseFragment;
-import com.justwayward.reader.bean.FindBean;
+import com.justwayward.reader.bean.support.FindBean;
 import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.ui.activity.SubjectBookListActivity;

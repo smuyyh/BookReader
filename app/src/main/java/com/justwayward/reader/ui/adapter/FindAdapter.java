@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.View;
 
 import com.justwayward.reader.R;
-import com.justwayward.reader.bean.FindBean;
+import com.justwayward.reader.bean.support.FindBean;
 import com.justwayward.reader.common.OnRvItemClickListener;
 import com.yuyh.easyadapter.recyclerview.EasyRVAdapter;
 import com.yuyh.easyadapter.recyclerview.EasyRVHolder;

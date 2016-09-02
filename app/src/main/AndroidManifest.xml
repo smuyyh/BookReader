@@ -28,14 +28,19 @@
         <activity android:name=".ui.activity.SearchActivity" />
         <activity android:name=".ui.activity.BookDetailActivity" />
         <activity android:name=".ui.activity.BooksByTagActivity" />
-        <activity android:name=".ui.activity.BookReadActivity"
-            android:theme="@style/AppTheme.NoActionBar.FullScreen"/>
+        <activity
+            android:name=".ui.activity.BookReadActivity"
+            android:theme="@style/AppTheme.NoActionBar.FullScreen" />
         <activity android:name=".ui.activity.TopCategoryListActivity" />
         <activity android:name=".ui.activity.SubCategoryListActivity" />
         <activity android:name=".ui.activity.SubjectBookListActivity" />
         <activity android:name=".ui.activity.SubjectBookListDetailActivity" />
-        <activity android:name=".ui.activity.TopRankActivity"/>
-        <activity android:name=".ui.activity.SubRankActivity"/>
+        <activity android:name=".ui.activity.TopRankActivity" />
+        <activity android:name=".ui.activity.SubRankActivity" />
+        <activity android:name=".ui.activity.CommunityOverallActivity" />
+        <activity android:name=".ui.activity.CommunityBookCommentActivity" />
+        <activity android:name=".ui.activity.CommunityHelpActivity" />
+        <activity android:name=".ui.activity.CommunityMaleActivity"/>
 
         <service android:name=".service.DownloadBookService" />
     </application>

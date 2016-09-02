@@ -7,12 +7,12 @@ import android.view.View;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseFragment;
-import com.justwayward.reader.bean.FindBean;
+import com.justwayward.reader.bean.support.FindBean;
 import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
+import com.justwayward.reader.ui.activity.CommunityOverallActivity;
 import com.justwayward.reader.ui.activity.SubjectBookListActivity;
 import com.justwayward.reader.ui.activity.TopCategoryListActivity;
-import com.justwayward.reader.ui.activity.TopRankActivity;
 import com.justwayward.reader.ui.adapter.FindAdapter;
 import com.justwayward.reader.view.SupportDividerItemDecoration;
 
@@ -21,8 +21,7 @@ import java.util.List;
 
 import butterknife.Bind;
 
-public class CommunityFragment extends BaseFragment implements
-        OnRvItemClickListener<FindBean> {
+public class CommunityFragment extends BaseFragment implements OnRvItemClickListener<FindBean> {
 
     @Bind(R.id.recyclerview)
     RecyclerView mRecyclerView;
@@ -64,7 +63,7 @@ public class CommunityFragment extends BaseFragment implements
     public void onItemClick(View view, int position, FindBean data) {
         switch (position) {
             case 0:
-                TopRankActivity.startActivity(activity);
+                CommunityOverallActivity.startActivity(activity);
                 break;
             case 1:
                 SubjectBookListActivity.startActivity(activity);

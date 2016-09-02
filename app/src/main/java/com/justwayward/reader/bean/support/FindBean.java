@@ -1,4 +1,4 @@
-package com.justwayward.reader.bean;
+package com.justwayward.reader.bean.support;
 
 /**
  * Created by lfh on 2016/8/16.
