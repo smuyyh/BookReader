@@ -21,16 +21,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:padding="10dp">
+                android:layout_marginBottom="10dp"
+                android:paddingLeft="10dp">
 
                 <ImageView
                     android:id="@+id/ivAvatar"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerInside" />
 
                 <TextView
                     android:id="@+id/tvNickName"
