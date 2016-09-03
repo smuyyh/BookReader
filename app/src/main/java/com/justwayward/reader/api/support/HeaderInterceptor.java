@@ -21,7 +21,7 @@ public class HeaderInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request original = chain.request();
         if (original.url().toString().contains("book/") ||
-                original.url().toString().contains("book-list/")||
+                original.url().toString().contains("book-list/") ||
                 original.url().toString().contains("toc/") ||
                 original.url().toString().contains("post/")) {
             Request request = original.newBuilder()

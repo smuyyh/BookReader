@@ -151,8 +151,8 @@ public class BookApi {
         return service.getBestComments(disscussionId);
     }
 
-    public Observable<CommentList> getDisscussionComments(String disscussionId,String start,String limit) {
-        return service.getDisscussionComments(disscussionId,start,limit);
+    public Observable<CommentList> getDisscussionComments(String disscussionId, String start, String limit) {
+        return service.getDisscussionComments(disscussionId, start, limit);
     }
 
     public Observable<BookReviewList> getBookReviewList(String duration, String sort, String type, String start, String limit, String distillate) {
@@ -163,11 +163,11 @@ public class BookApi {
         return service.getBookReviewDetail(bookReviewId);
     }
 
-    public Observable<CommentList> getBookReviewComments(String bookReviewId,String start,String limit) {
-        return service.getBookReviewComments(bookReviewId,start,limit);
+    public Observable<CommentList> getBookReviewComments(String bookReviewId, String start, String limit) {
+        return service.getBookReviewComments(bookReviewId, start, limit);
     }
 
-    public Observable<HelpList> getHelpList(String duration, String sort,  String start, String limit, String distillate) {
+    public Observable<HelpList> getHelpList(String duration, String sort, String start, String limit, String distillate) {
         return service.getHelpList(duration, sort, start, limit, distillate);
     }
 

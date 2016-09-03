@@ -25,8 +25,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 
-public class RecommendFragment extends BaseFragment implements RecommendContract.View,
-        OnRvItemClickListener<Recommend.RecommendBooks> {
+public class RecommendFragment extends BaseFragment implements RecommendContract.View, OnRvItemClickListener<Recommend.RecommendBooks> {
 
     @Bind(R.id.recyclerview)
     RecyclerView mRecyclerView;

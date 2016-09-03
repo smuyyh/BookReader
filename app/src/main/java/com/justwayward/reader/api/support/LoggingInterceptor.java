@@ -37,7 +37,7 @@ public final class LoggingInterceptor implements Interceptor {
          * <p>Example:
          * <pre>{@code
          * --> POST /greeting HTTP/1.1 (3-byte body)
-         *
+         * <p/>
          * <-- HTTP/1.1 200 OK (22ms, 6-byte body)
          * }</pre>
          */
@@ -52,7 +52,7 @@ public final class LoggingInterceptor implements Interceptor {
          * Content-Type: plain/text
          * Content-Length: 3
          * --> END POST
-         *
+         * <p/>
          * <-- HTTP/1.1 200 OK (22ms)
          * Content-Type: plain/text
          * Content-Length: 6
@@ -69,14 +69,14 @@ public final class LoggingInterceptor implements Interceptor {
          * Host: example.com
          * Content-Type: plain/text
          * Content-Length: 3
-         *
+         * <p/>
          * Hi?
          * --> END GET
-         *
+         * <p/>
          * <-- HTTP/1.1 200 OK (22ms)
          * Content-Type: plain/text
          * Content-Length: 6
-         *
+         * <p/>
          * Hello!
          * <-- END HTTP
          * }</pre>

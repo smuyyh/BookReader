@@ -42,7 +42,7 @@ public interface BookApiService {
     Observable<Recommend> getRecomend(@Query("gender") String gender);
 
     @GET("/atoc")
-    Observable<List<BookSource>> getBookSource(@Query("view") String view,@Query("book") String book);
+    Observable<List<BookSource>> getBookSource(@Query("view") String view, @Query("book") String book);
 
     @GET("/mix-toc/{bookId}")
     Observable<BookRead> getBookRead(@Path("bookId") String bookId);
@@ -85,6 +85,7 @@ public interface BookApiService {
 
     /**
      * 获取所有排行榜
+     *
      * @return
      */
     @GET("/ranking/gender")
@@ -95,6 +96,7 @@ public interface BookApiService {
      * 周榜：rankingId->_id
      * 月榜：rankingId->monthRank
      * 总榜：rankingId->totalRank
+     *
      * @return
      */
     @GET("/ranking/{rankingId}")
@@ -105,16 +107,18 @@ public interface BookApiService {
      * 本周最热：duration=last-seven-days&sort=collectorCount
      * 最新发布：duration=all&sort=created
      * 最多收藏：duration=all&sort=collectorCount
-     * @param tag   都市、古代、架空、重生、玄幻、网游
-     * @param gender   male、female
-     * @param limit 20
+     *
+     * @param tag    都市、古代、架空、重生、玄幻、网游
+     * @param gender male、female
+     * @param limit  20
      * @return
      */
     @GET("/book-list")
-    Observable<BookLists> getBookLists(@Query("duration") String duration, @Query("sort") String sort, @Query("start") String start, @Query("limit") String limit,@Query("tag") String tag,@Query("gender") String gender);
+    Observable<BookLists> getBookLists(@Query("duration") String duration, @Query("sort") String sort, @Query("start") String start, @Query("limit") String limit, @Query("tag") String tag, @Query("gender") String gender);
 
     /**
      * 获取主题书单标签列表
+     *
      * @return
      */
     @GET("/book-list/tagType")
@@ -122,6 +126,7 @@ public interface BookApiService {
 
     /**
      * 获取书单详情
+     *
      * @return
      */
     @GET("/book-list/{bookListId}")
@@ -129,6 +134,7 @@ public interface BookApiService {
 
     /**
      * 获取分类
+     *
      * @return
      */
     @GET("/cats/lv2/statistics")
@@ -136,6 +142,7 @@ public interface BookApiService {
 
     /**
      * 获取二级分类
+     *
      * @return
      */
     @GET("/cats/lv2")
@@ -143,11 +150,12 @@ public interface BookApiService {
 
     /**
      * 按分类获取书籍列表
+     *
      * @param gender male、female
-     * @param type hot(热门)、new(新书)、reputation(好评)、over(完结)
-     * @param major 玄幻
-     * @param minor 东方玄幻、异界大陆、异界争霸、远古神话
-     * @param limit 50
+     * @param type   hot(热门)、new(新书)、reputation(好评)、over(完结)
+     * @param major  玄幻
+     * @param minor  东方玄幻、异界大陆、异界争霸、远古神话
+     * @param limit  50
      * @return
      */
     @GET("/book/by-categories")
@@ -158,13 +166,14 @@ public interface BookApiService {
      * 获取综合讨论区帖子列表
      * 全部、默认排序  http://api.zhuishushenqi.com/post/by-block?block=ramble&duration=all&sort=updated&type=all&start=0&limit=20&distillate=
      * 精品、默认排序  http://api.zhuishushenqi.com/post/by-block?block=ramble&duration=all&sort=updated&type=all&start=0&limit=20&distillate=true
-     * @param block ramble
-     * @param duration  all
-     * @param sort updated(默认排序)、created(最新发布)、comment-count(最多评论)
-     * @param type  all
-     * @param start 0
-     * @param limit 20
-     * @param distillate    true(精品)
+     *
+     * @param block      ramble
+     * @param duration   all
+     * @param sort       updated(默认排序)、created(最新发布)、comment-count(最多评论)
+     * @param type       all
+     * @param start      0
+     * @param limit      20
+     * @param distillate true(精品)
      * @return
      */
     @GET("/post/by-block")
@@ -172,6 +181,7 @@ public interface BookApiService {
 
     /**
      * 获取综合讨论区帖子详情
+     *
      * @param disscussionId->_id
      * @return
      */
@@ -180,6 +190,7 @@ public interface BookApiService {
 
     /**
      * 获取神评论列表(综合讨论区、书评区、书荒区皆为同一接口)
+     *
      * @param disscussionId->_id
      * @return
      */
@@ -188,24 +199,26 @@ public interface BookApiService {
 
     /**
      * 获取综合讨论区帖子详情内的评论列表
+     *
      * @param disscussionId->_id
-     * @param start 0
-     * @param limit 30
+     * @param start              0
+     * @param limit              30
      * @return
      */
     @GET("/post/{disscussionId}/comment")
-    Observable<CommentList> getDisscussionComments(@Path("disscussionId") String disscussionId,@Query("start") String start,@Query("limit") String limit);
+    Observable<CommentList> getDisscussionComments(@Path("disscussionId") String disscussionId, @Query("start") String start, @Query("limit") String limit);
 
     /**
      * 获取书评区帖子列表
      * 全部、全部类型、默认排序  http://api.zhuishushenqi.com/post/review?duration=all&sort=updated&type=all&start=0&limit=20&distillate=
      * 精品、玄幻奇幻、默认排序  http://api.zhuishushenqi.com/post/review?duration=all&sort=updated&type=xhqh&start=0&limit=20&distillate=true
-     * @param duration  all
-     * @param sort updated(默认排序)、created(最新发布)、helpful(最有用的)、comment-count(最多评论)
-     * @param type  all(全部类型)、xhqh(玄幻奇幻)、dsyn(都市异能)
-     * @param start 0
-     * @param limit 20
-     * @param distillate    true(精品) 、空字符（全部）
+     *
+     * @param duration   all
+     * @param sort       updated(默认排序)、created(最新发布)、helpful(最有用的)、comment-count(最多评论)
+     * @param type       all(全部类型)、xhqh(玄幻奇幻)、dsyn(都市异能)
+     * @param start      0
+     * @param limit      20
+     * @param distillate true(精品) 、空字符（全部）
      * @return
      */
     @GET("/post/review")
@@ -213,6 +226,7 @@ public interface BookApiService {
 
     /**
      * 获取书评区帖子详情
+     *
      * @param bookReviewId->_id
      * @return
      */
@@ -221,23 +235,25 @@ public interface BookApiService {
 
     /**
      * 获取书评区、书荒区帖子详情内的评论列表
+     *
      * @param bookReviewId->_id
-     * @param start 0
-     * @param limit 30
+     * @param start             0
+     * @param limit             30
      * @return
      */
     @GET("/post/review/{bookReviewId}/comment?start=0&limit=30")
-    Observable<CommentList> getBookReviewComments(@Path("bookReviewId") String bookReviewId,@Query("start") String start,@Query("limit") String limit);
+    Observable<CommentList> getBookReviewComments(@Path("bookReviewId") String bookReviewId, @Query("start") String start, @Query("limit") String limit);
 
     /**
      * 获取书荒区帖子列表
      * 全部、默认排序  http://api.zhuishushenqi.com/post/help?duration=all&sort=updated&start=0&limit=20&distillate=
      * 精品、默认排序  http://api.zhuishushenqi.com/post/help?duration=all&sort=updated&start=0&limit=20&distillate=true
-     * @param duration  all
-     * @param sort updated(默认排序)、created(最新发布)、comment-count(最多评论)
-     * @param start 0
-     * @param limit 20
-     * @param distillate    true(精品) 、空字符（全部）
+     *
+     * @param duration   all
+     * @param sort       updated(默认排序)、created(最新发布)、comment-count(最多评论)
+     * @param start      0
+     * @param limit      20
+     * @param distillate true(精品) 、空字符（全部）
      * @return
      */
     @GET("/post/help")
@@ -245,6 +261,7 @@ public interface BookApiService {
 
     /**
      * 获取书荒区帖子详情
+     *
      * @param helpId->_id
      * @return
      */
