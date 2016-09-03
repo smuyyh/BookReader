@@ -193,7 +193,7 @@ public interface BookApiService {
      * @param limit 30
      * @return
      */
-    @GET("/post/{disscussionId}/comment?start=0&limit=30")
+    @GET("/post/{disscussionId}/comment")
     Observable<CommentList> getDisscussionComments(@Path("disscussionId") String disscussionId,@Query("start") String start,@Query("limit") String limit);
 
     /**

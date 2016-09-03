@@ -79,8 +79,8 @@ public class ComOverallDetailPresenter implements ComOverallDetailContract.Prese
     }
 
     @Override
-    public void getDisscussionComments(String disscussionId, String start, String limit) {
-        bookApi.getDisscussionComments(disscussionId,start,limit)
+    public void getDisscussionComments(String disscussionId, int start, int limit) {
+        bookApi.getDisscussionComments(disscussionId,start+"",limit+"")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<CommentList>() {

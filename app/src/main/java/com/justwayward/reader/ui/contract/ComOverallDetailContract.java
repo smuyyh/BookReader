@@ -26,7 +26,7 @@ public interface ComOverallDetailContract {
 
         void getBestComments(String disscussionId);
 
-        void getDisscussionComments(String disscussionId,String start,String limit);
+        void getDisscussionComments(String disscussionId,int start,int limit);
 
     }
 
