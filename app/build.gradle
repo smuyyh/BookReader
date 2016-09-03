@@ -48,8 +48,6 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
     compile 'com.squareup.retrofit2:converter-scalars:2.0.0-beta4'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
-    // Image
-    compile 'com.github.bumptech.glide:glide:3.7.0'
     // Dragger
     compile 'com.google.dagger:dagger:2.0.2'
     apt 'com.google.dagger:dagger-compiler:2.0.2'
