@@ -38,8 +38,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ComOverallDetailActivity extends BaseRVActivity implements ComOverallDetailContract
-        .View, OnRvItemClickListener<CommentList.CommentsBean> {
+public class ComOverallDetailActivity extends BaseRVActivity implements ComOverallDetailContract.View, OnRvItemClickListener<CommentList.CommentsBean> {
 
     private static final String INTENT_ID = "id";
 
@@ -114,11 +113,6 @@ public class ComOverallDetailActivity extends BaseRVActivity implements ComOvera
     public void configViews() {
         mAdapter = new CommentListAdapter(mContext);
         modiifyAdapter(false, true);
-
-//        DividerDecoration itemDecoration = new DividerDecoration(Color.GRAY, 1,0,0);
-//        itemDecoration.setDrawLastItem(true);
-//        itemDecoration.setDrawHeaderFooter(true);
-//        mRecyclerView.addItemDecoration(itemDecoration);
 
         mAdapter.addHeader(new RecyclerArrayAdapter.ItemView() {
             @Override
