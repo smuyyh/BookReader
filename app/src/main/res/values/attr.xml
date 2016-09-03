@@ -26,42 +26,24 @@
     </declare-styleable>
 
     <declare-styleable name="TagGroup">
-        <!-- Whether the tag group is in append mode. -->
         <attr name="atg_isAppendMode" format="boolean" />
-        <!-- If the tag group is in append mode, what the hint of input tag. -->
         <attr name="atg_inputHint" format="string" />
 
-        <!-- The tag view outline border color. -->
         <attr name="atg_borderColor" format="color" />
-        <!-- The tag view text color. -->
         <attr name="atg_textColor" format="color" />
-        <!-- The tag view background color. -->
         <attr name="atg_backgroundColor" format="color" />
 
-        <!-- The dash outline border color, when in append mode. -->
         <attr name="atg_dashBorderColor" format="color" />
-        <!-- The input tag hint text color, when in append mode. -->
         <attr name="atg_inputHintColor" format="color" />
-        <!-- The input tag type text color, when in append mode. -->
         <attr name="atg_inputTextColor" format="color" />
 
-        <!-- The checked tag view outline border color. -->
         <attr name="atg_checkedBorderColor" format="color" />
-        <!-- The checked text color. -->
         <attr name="atg_checkedTextColor" format="color" />
-        <!-- The checked marker color. -->
         <attr name="atg_checkedMarkerColor" format="color" />
-        <!-- The checked tag view background color. -->
         <attr name="atg_checkedBackgroundColor" format="color" />
-
-        <!-- The tag view background color, when the tag view is being pressed. -->
         <attr name="atg_pressedBackgroundColor" format="color" />
-
-        <!-- The tag view outline border stroke width. -->
         <attr name="atg_borderStrokeWidth" format="dimension" />
-        <!-- The tag view text size. -->
         <attr name="atg_textSize" format="dimension" />
-
         <attr name="atg_horizontalSpacing" format="dimension" />
         <attr name="atg_verticalSpacing" format="dimension" />
         <attr name="atg_horizontalPadding" format="dimension" />
@@ -70,6 +52,29 @@
 
     <declare-styleable name="Themes">
         <attr name="tagGroupStyle" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="superrecyclerview">
+        <attr name="layout_empty" format="reference" />
+        <attr name="layout_progress" format="reference" />
+        <attr name="layout_error" format="reference" />
+        <attr name="recyclerClipToPadding" format="boolean" />
+        <attr name="recyclerPadding" format="dimension" />
+        <attr name="recyclerPaddingTop" format="dimension" />
+        <attr name="recyclerPaddingBottom" format="dimension" />
+        <attr name="recyclerPaddingLeft" format="dimension" />
+        <attr name="recyclerPaddingRight" format="dimension" />
+        <attr name="scrollbarStyle">
+            <enum name="insideOverlay" value="0x0" />
+            <enum name="insideInset" value="0x01000000" />
+            <enum name="outsideOverlay" value="0x02000000" />
+            <enum name="outsideInset" value="0x03000000" />
+        </attr>
+        <attr name="scrollbars">
+            <enum name="vertical" value="1"/>
+            <enum name="horizontal" value="0"/>
+            <enum name="none" value="2"/>
+        </attr>
     </declare-styleable>
 
 </resources>

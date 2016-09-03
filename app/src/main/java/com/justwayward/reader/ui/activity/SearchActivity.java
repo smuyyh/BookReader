@@ -3,9 +3,7 @@ package com.justwayward.reader.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.ListPopupWindow;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -21,16 +19,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.justwayward.reader.R;
-import com.justwayward.reader.base.BaseActivity;
+import com.justwayward.reader.base.BaseRVActivity;
 import com.justwayward.reader.bean.SearchDetail;
 import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerSearchActivityComponent;
 import com.justwayward.reader.ui.adapter.AutoCompleteAdapter;
-import com.justwayward.reader.ui.adapter.SearchResultAdapter;
 import com.justwayward.reader.ui.contract.SearchContract;
+import com.justwayward.reader.ui.easyadapter.SearchAdapter;
 import com.justwayward.reader.ui.presenter.SearchPresenter;
-import com.justwayward.reader.view.SupportDividerItemDecoration;
+import com.justwayward.reader.utils.ToastUtils;
 import com.justwayward.reader.view.TagColor;
 import com.justwayward.reader.view.TagGroup;
 
@@ -44,7 +42,7 @@ import butterknife.Bind;
 /**
  * Created by Administrator on 2016/8/6.
  */
-public class SearchActivity extends BaseActivity implements SearchContract.View, OnRvItemClickListener<SearchDetail.SearchBooks> {
+public class SearchActivity extends BaseRVActivity implements SearchContract.View, OnRvItemClickListener<SearchDetail.SearchBooks>{
 
     public static final String INTENT_QUERY = "query";
 
@@ -59,8 +57,6 @@ public class SearchActivity extends BaseActivity implements SearchContract.View,
     TagGroup mTagGroup;
     @Bind(R.id.rootLayout)
     LinearLayout mRootLayout;
-    @Bind(R.id.recyclerview)
-    RecyclerView mRecyclerView;
     @Bind(R.id.layoutHotWord)
     RelativeLayout mLayoutHotWord;
 
@@ -70,8 +66,6 @@ public class SearchActivity extends BaseActivity implements SearchContract.View,
     private List<String> tagList = new ArrayList<>();
     private int times = 0;
 
-    private SearchResultAdapter mAdapter;
-    private List<SearchDetail.SearchBooks> mList = new ArrayList<>();
     private AutoCompleteAdapter mAutoAdapter;
     private List<String> mAutoList = new ArrayList<>();
 
@@ -107,11 +101,12 @@ public class SearchActivity extends BaseActivity implements SearchContract.View,
 
     @Override
     public void configViews() {
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.addItemDecoration(new SupportDividerItemDecoration(mContext, LinearLayoutManager.VERTICAL));
-        mAdapter = new SearchResultAdapter(mContext, mList, this);
+
+        // adapter 和 recyclerview 在父类定义。布局recyclerview 的id须为R.id.recyclerview
+        mAdapter = new SearchAdapter(mContext);
         mRecyclerView.setAdapter(mAdapter);
+        // 初始化完adapter 和 recyclerview 之后调用
+        modiifyAdapter(true, false);
 
         mAutoAdapter = new AutoCompleteAdapter(this, mAutoList);
         mListPopupWindow = new ListPopupWindow(this);
@@ -196,8 +191,8 @@ public class SearchActivity extends BaseActivity implements SearchContract.View,
 
     @Override
     public void showSearchResultList(List<SearchDetail.SearchBooks> list) {
-        mList.clear();
-        mList.addAll(list);
+        mAdapter.clear();
+        mAdapter.addAll(list);
         mAdapter.notifyDataSetChanged();
         initSearchResult();
     }
@@ -291,5 +286,11 @@ public class SearchActivity extends BaseActivity implements SearchContract.View,
     public void onItemClick(View view, int position, SearchDetail.SearchBooks data) {
         startActivity(new Intent(SearchActivity.this, BookDetailActivity.class).putExtra
                 ("bookId", data._id));
+    }
+
+    @Override
+    public void onRefresh() {
+        super.onRefresh();
+        ToastUtils.showSingleToast("+++++");
     }
 }
