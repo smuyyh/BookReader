@@ -1,38 +1,27 @@
 package com.justwayward.reader.ui.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.justwayward.reader.R;
-import com.justwayward.reader.base.BaseFragment;
+import com.justwayward.reader.base.BaseRVFragment;
 import com.justwayward.reader.bean.BookLists;
 import com.justwayward.reader.bean.support.TagEvent;
-import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerSubjectFragmentComponent;
 import com.justwayward.reader.ui.activity.SubjectBookListDetailActivity;
-import com.justwayward.reader.ui.adapter.SubjectBookListAdapter;
 import com.justwayward.reader.ui.contract.SubjectFragmentContract;
+import com.justwayward.reader.ui.easyadapter.SubjectBookListAdapter;
 import com.justwayward.reader.ui.presenter.SubjectFragmentPresenter;
-import com.justwayward.reader.view.SupportDividerItemDecoration;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
-
-public class SubjectFragment extends BaseFragment implements SubjectFragmentContract.View,
-        OnRvItemClickListener<BookLists.BookListsBean> {
+public class SubjectFragment extends BaseRVFragment<BookLists.BookListsBean> implements SubjectFragmentContract.View {
 
     public final static String BUNDLE_TAG = "tag";
     public final static String BUNDLE_TAB = "tab";
@@ -41,7 +30,7 @@ public class SubjectFragment extends BaseFragment implements SubjectFragmentCont
     public int currentTab;
 
     public String duration = "";
-    public String sort  = "";
+    public String sort = "";
 
     public static SubjectFragment newInstance(String tag, int tab) {
         SubjectFragment fragment = new SubjectFragment();
@@ -52,20 +41,12 @@ public class SubjectFragment extends BaseFragment implements SubjectFragmentCont
         return fragment;
     }
 
-    @Bind(R.id.recyclerview)
-    RecyclerView mRecyclerView;
-    @Bind(R.id.swiperefreshlayout)
-    SwipeRefreshLayout mSwipeRefreshLayout;
-
     @Inject
     SubjectFragmentPresenter mPresenter;
 
-    private SubjectBookListAdapter mAdapter;
-    private List<BookLists.BookListsBean> mList = new ArrayList<>();
-
     @Override
     public int getLayoutResId() {
-        return R.layout.fragment_recommend;
+        return R.layout.common_easy_recyclerview;
     }
 
     @Override
@@ -92,20 +73,9 @@ public class SubjectFragment extends BaseFragment implements SubjectFragmentCont
 
     @Override
     public void configViews() {
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.addItemDecoration(new SupportDividerItemDecoration(mContext, LinearLayoutManager.VERTICAL, true));
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 
-            @Override
-            public void onRefresh() {
-                //mPresenter.getCategoryList(cate, gender);
-            }
-        });
-
-        mAdapter = new SubjectBookListAdapter(mContext, mList, this);
-        mRecyclerView.setAdapter(mAdapter);
+        mAdapter = new SubjectBookListAdapter(mContext);
+        modiifyAdapter(true, true);
 
         showDialog();
         mPresenter.attachView(this);
@@ -121,15 +91,9 @@ public class SubjectFragment extends BaseFragment implements SubjectFragmentCont
     }
 
     @Override
-    public void onItemClick(View view, int position, BookLists.BookListsBean data) {
-        startActivity(new Intent(activity, SubjectBookListDetailActivity.class)
-                .putExtra("bookListId", data._id));
-    }
-
-    @Override
     public void showBookList(List<BookLists.BookListsBean> bookLists) {
-        mList.clear();
-        mList.addAll(bookLists);
+        mAdapter.clear();
+        mAdapter.addAll(bookLists);
         mAdapter.notifyDataSetChanged();
     }
 
@@ -141,7 +105,7 @@ public class SubjectFragment extends BaseFragment implements SubjectFragmentCont
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void initCategoryList(TagEvent event) {
         currendTag = event.tag;
-        if(getUserVisibleHint()) {
+        if (getUserVisibleHint()) {
             showDialog();
             mPresenter.getBookLists(duration, sort, 0, 20, currendTag, "male");
         }
@@ -151,5 +115,10 @@ public class SubjectFragment extends BaseFragment implements SubjectFragmentCont
     public void onDestroyView() {
         EventBus.getDefault().unregister(this);
         super.onDestroyView();
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        SubjectBookListDetailActivity.startActivity(activity, mAdapter.getItem(position)._id);
     }
 }

@@ -25,6 +25,7 @@ import com.justwayward.reader.ui.contract.SubjectBookListContract;
 import com.justwayward.reader.ui.fragment.SubjectFragment;
 import com.justwayward.reader.ui.presenter.SubjectBookListPresenter;
 import com.justwayward.reader.view.RVPIndicator;
+import com.justwayward.reader.view.ReboundScrollView;
 import com.justwayward.reader.view.SupportDividerItemDecoration;
 
 import org.greenrobot.eventbus.EventBus;
@@ -43,6 +44,8 @@ public class SubjectBookListActivity extends BaseActivity implements SubjectBook
     RVPIndicator mIndicator;
     @Bind(R.id.viewpagerSubject)
     ViewPager mViewPager;
+    @Bind(R.id.rsvTags)
+    ReboundScrollView rsvTags;
 
     @Bind(R.id.rvTags)
     RecyclerView rvTags;
@@ -133,7 +136,7 @@ public class SubjectBookListActivity extends BaseActivity implements SubjectBook
         int id = item.getItemId();
 
         if (id == R.id.menu_tags) {
-            if (isVisible(rvTags)) {
+            if (isVisible(rsvTags)) {
                 hideTagGroup();
             } else {
                 showTagGroup();
@@ -173,8 +176,8 @@ public class SubjectBookListActivity extends BaseActivity implements SubjectBook
                 Animation.RELATIVE_TO_SELF, -1.0f,
                 Animation.RELATIVE_TO_SELF, 0.0f);
         mShowAction.setDuration(400);
-        rvTags.startAnimation(mShowAction);
-        rvTags.setVisibility(View.VISIBLE);
+        rsvTags.startAnimation(mShowAction);
+        rsvTags.setVisibility(View.VISIBLE);
     }
 
     private void hideTagGroup() {
@@ -183,8 +186,8 @@ public class SubjectBookListActivity extends BaseActivity implements SubjectBook
                 Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, -1.0f);
         mHiddenAction.setDuration(400);
-        rvTags.startAnimation(mHiddenAction);
-        rvTags.setVisibility(View.GONE);
+        rsvTags.startAnimation(mHiddenAction);
+        rsvTags.setVisibility(View.GONE);
     }
 
 }

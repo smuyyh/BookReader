@@ -68,9 +68,11 @@ public class SubjectBookListDetailActivity extends BaseActivity implements Subje
     @Inject
     SubjectBookListDetailPresenter mPresenter;
 
-    public static void startActivity(Context context) {
-        Intent intent = new Intent(context, SubjectBookListDetailActivity.class);
-        context.startActivity(intent);
+    public static final String INTENT_ID = "bookListId";
+
+    public static void startActivity(Context context, String bookListId) {
+        context.startActivity(new Intent(context, SubjectBookListDetailActivity.class)
+                .putExtra(INTENT_ID, bookListId));
     }
 
     @Override
@@ -149,7 +151,7 @@ public class SubjectBookListDetailActivity extends BaseActivity implements Subje
     }
 
     private void loadNextPage() {
-        if(start < mAllBooks.size()) {
+        if (start < mAllBooks.size()) {
             if (mAllBooks.size() - start > limit) {
                 mBooks.addAll(mAllBooks.subList(start, start + limit));
             } else {
