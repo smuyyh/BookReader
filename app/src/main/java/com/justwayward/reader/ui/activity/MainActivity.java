@@ -122,11 +122,9 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     @Override
     public void configViews() {
-        // 设置Tab上的标题
         mIndicator.setTabItemTitles(mDatas);
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOffscreenPageLimit(3);
-        // 设置关联的ViewPager
         mIndicator.setViewPager(mViewPager, 0);
     }
 

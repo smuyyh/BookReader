@@ -100,11 +100,7 @@ public class SearchActivity extends BaseRVActivity implements SearchContract.Vie
 
     @Override
     public void configViews() {
-
-        // adapter 和 recyclerview 在父类定义。布局recyclerview 的id须为R.id.recyclerview
         mAdapter = new SearchAdapter(mContext);
-        mRecyclerView.setAdapter(mAdapter);
-        // 初始化完adapter 和 recyclerview 之后调用
         modiifyAdapter(true, false);
 
         mAutoAdapter = new AutoCompleteAdapter(this, mAutoList);
