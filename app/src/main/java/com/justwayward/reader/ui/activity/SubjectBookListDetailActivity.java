@@ -36,6 +36,9 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 
+/**
+ * 书单详情
+ */
 public class SubjectBookListDetailActivity extends BaseActivity implements SubjectBookListDetailContract.View,
         OnRvItemClickListener<BookListDetail.BookListBean.BooksBean> {
 

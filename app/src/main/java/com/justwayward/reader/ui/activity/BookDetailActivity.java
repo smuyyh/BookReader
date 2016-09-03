@@ -42,7 +42,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
 
     public static String INTENT_BOOK_ID = "bookId";
 
-    public static void startActivity(Context context, String bookId){
+    public static void startActivity(Context context, String bookId) {
         context.startActivity(new Intent(context, BookDetailActivity.class)
                 .putExtra(INTENT_BOOK_ID, bookId));
     }
@@ -106,7 +106,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerBookDetailActivityComponent.builder()
                 .appComponent(appComponent)
-                //.mainActivityModule(new MainActivityModule(this))
+                        //.mainActivityModule(new MainActivityModule(this))
                 .build()
                 .inject(this);
     }
@@ -119,7 +119,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
 
     @Override
     public void initDatas() {
-        bookId=getIntent().getStringExtra(INTENT_BOOK_ID);
+        bookId = getIntent().getStringExtra(INTENT_BOOK_ID);
     }
 
     @Override
@@ -218,7 +218,8 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
         if (data instanceof HotReview.Reviews) {
 
         } else if (data instanceof RecommendBookList.RecommendBook) {
-
+            String id = ((RecommendBookList.RecommendBook) data).id;
+            SubjectBookListDetailActivity.startActivity(this, id);
         }
     }
 
