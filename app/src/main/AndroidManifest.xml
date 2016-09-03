@@ -44,7 +44,9 @@
 
         <service android:name=".service.DownloadBookService" />
 
-        <activity android:name=".ui.activity.BookDiscussionDetailActivity"></activity>
+        <activity android:name=".ui.activity.BookDiscussionDetailActivity"/>
+        <activity android:name=".ui.activity.BookReviewDetailActivity"/>
+        <activity android:name=".ui.activity.BookHelpDetailActivity"/>
     </application>
 
 </manifest>

@@ -11,11 +11,11 @@ import java.util.List;
 public interface BookDiscussionContract {
 
     interface View {
-        void showDisscussionList(List<DiscussionList.PostsBean> list, boolean isRefresh);
+        void showBookDisscussionList(List<DiscussionList.PostsBean> list, boolean isRefresh);
     }
 
     interface Presenter extends BaseContract.BasePresenter<View> {
-        void getDisscussionList(String sort, String distillate, int start, int limit);
+        void getBookDisscussionList(String sort, String distillate, int start, int limit);
     }
 
 }

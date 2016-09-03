@@ -24,7 +24,7 @@ public class CommentListAdapter extends RecyclerArrayAdapter<CommentList.Comment
 
     @Override
     public BaseViewHolder OnCreateViewHolder(ViewGroup parent, int viewType) {
-        return new BaseViewHolder<CommentList.CommentsBean>(parent, R.layout.item_comment) {
+        return new BaseViewHolder<CommentList.CommentsBean>(parent, R.layout.item_comment_list) {
             @Override
             public void setData(CommentList.CommentsBean item) {
                 holder.setCircleImageUrl(R.id.ivBookCover, Constant.IMG_BASE_URL + item.author.avatar, R.drawable.avatar_default)

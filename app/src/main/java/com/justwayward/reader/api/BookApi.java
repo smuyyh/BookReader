@@ -3,6 +3,7 @@ package com.justwayward.reader.api;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.AutoComplete;
 import com.justwayward.reader.bean.BookDetail;
+import com.justwayward.reader.bean.BookHelpList;
 import com.justwayward.reader.bean.BookListDetail;
 import com.justwayward.reader.bean.BookListTags;
 import com.justwayward.reader.bean.BookLists;
@@ -18,8 +19,7 @@ import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.bean.CommentList;
 import com.justwayward.reader.bean.DiscussionList;
 import com.justwayward.reader.bean.Disscussion;
-import com.justwayward.reader.bean.Help;
-import com.justwayward.reader.bean.HelpList;
+import com.justwayward.reader.bean.BookHelp;
 import com.justwayward.reader.bean.HotReview;
 import com.justwayward.reader.bean.HotWord;
 import com.justwayward.reader.bean.RankingList;
@@ -139,20 +139,20 @@ public class BookApi {
         return service.getBooksByCats(gender, type, major, minor, start, limit);
     }
 
-    public Observable<DiscussionList> getDisscussionList(String block, String duration, String sort, String type, String start, String limit, String distillate) {
-        return service.getDisscussionList(block, duration, sort, type, start, limit, distillate);
+    public Observable<DiscussionList> getBookDisscussionList(String block, String duration, String sort, String type, String start, String limit, String distillate) {
+        return service.getBookDisscussionList(block, duration, sort, type, start, limit, distillate);
     }
 
-    public Observable<Disscussion> getDisscussionDetail(String disscussionId) {
-        return service.getDisscussionDetail(disscussionId);
+    public Observable<Disscussion> getBookDisscussionDetail(String disscussionId) {
+        return service.getBookDisscussionDetail(disscussionId);
     }
 
     public Observable<CommentList> getBestComments(String disscussionId) {
         return service.getBestComments(disscussionId);
     }
 
-    public Observable<CommentList> getDisscussionComments(String disscussionId, String start, String limit) {
-        return service.getDisscussionComments(disscussionId, start, limit);
+    public Observable<CommentList> getBookDisscussionComments(String disscussionId, String start, String limit) {
+        return service.getBookDisscussionComments(disscussionId, start, limit);
     }
 
     public Observable<BookReviewList> getBookReviewList(String duration, String sort, String type, String start, String limit, String distillate) {
@@ -167,12 +167,12 @@ public class BookApi {
         return service.getBookReviewComments(bookReviewId, start, limit);
     }
 
-    public Observable<HelpList> getHelpList(String duration, String sort, String start, String limit, String distillate) {
-        return service.getHelpList(duration, sort, start, limit, distillate);
+    public Observable<BookHelpList> getBookHelpList(String duration, String sort, String start, String limit, String distillate) {
+        return service.getBookHelpList(duration, sort, start, limit, distillate);
     }
 
-    public Observable<Help> getHelpDetail(String helpId) {
-        return service.getHelpDetail(helpId);
+    public Observable<BookHelp> getBookHelpDetail(String helpId) {
+        return service.getBookHelpDetail(helpId);
     }
 
 }

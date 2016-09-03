@@ -29,7 +29,7 @@ public class BookDiscussionAdapter extends RecyclerArrayAdapter<DiscussionList.P
 
     @Override
     public BaseViewHolder OnCreateViewHolder(ViewGroup parent, int viewType) {
-        return new BaseViewHolder<DiscussionList.PostsBean>(parent, R.layout.item_community_overall_list) {
+        return new BaseViewHolder<DiscussionList.PostsBean>(parent, R.layout.item_community_book_discussion_list) {
             @Override
             public void setData(DiscussionList.PostsBean item) {
                 holder.setCircleImageUrl(R.id.ivBookCover, Constant.IMG_BASE_URL + item.author.avatar,R.drawable.avatar_default)

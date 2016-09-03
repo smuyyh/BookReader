@@ -3,14 +3,14 @@ package com.justwayward.reader.ui.fragment;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseRVFragment;
 import com.justwayward.reader.base.Constant;
-import com.justwayward.reader.bean.HelpList;
+import com.justwayward.reader.bean.BookHelpList;
 import com.justwayward.reader.bean.support.SelectionEvent;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerCommunityComponent;
-import com.justwayward.reader.ui.activity.BookDiscussionDetailActivity;
+import com.justwayward.reader.ui.activity.BookHelpDetailActivity;
 import com.justwayward.reader.ui.contract.BookHelpContract;
 import com.justwayward.reader.ui.easyadapter.BookHelpAdapter;
-import com.justwayward.reader.ui.presenter.ComBookHelpPresenter;
+import com.justwayward.reader.ui.presenter.BookHelpPresenter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -24,10 +24,10 @@ import javax.inject.Inject;
  * @author lfh.
  * @date 16/9/3.
  */
-public class BookHelpFragment extends BaseRVFragment<HelpList.HelpsBean> implements BookHelpContract.View{
+public class BookHelpFragment extends BaseRVFragment<BookHelpList.HelpsBean> implements BookHelpContract.View{
 
     @Inject
-    ComBookHelpPresenter mPresenter;
+    BookHelpPresenter mPresenter;
 
     private String sort = Constant.SortType.DEFAULT;
     private String distillate = Constant.Distillate.ALL;
@@ -60,7 +60,7 @@ public class BookHelpFragment extends BaseRVFragment<HelpList.HelpsBean> impleme
     }
 
     @Override
-    public void showHelpList(List<HelpList.HelpsBean> list, boolean isRefresh) {
+    public void showBookHelpList(List<BookHelpList.HelpsBean> list, boolean isRefresh) {
         if (isRefresh) {
             mAdapter.clear();
         }
@@ -74,25 +74,25 @@ public class BookHelpFragment extends BaseRVFragment<HelpList.HelpsBean> impleme
         distillate = event.distillate;
         start = 0;
         limit = 20;
-        mPresenter.getHelpList(sort, distillate, start, limit);
+        mPresenter.getBookHelpList(sort, distillate, start, limit);
     }
 
     @Override
     public void onRefresh() {
         super.onRefresh();
-        mPresenter.getHelpList(sort, distillate, start, limit);
+        mPresenter.getBookHelpList(sort, distillate, start, limit);
     }
 
     @Override
     public void onLoadMore() {
         super.onLoadMore();
-        mPresenter.getHelpList(sort, distillate, start, limit);
+        mPresenter.getBookHelpList(sort, distillate, start, limit);
     }
 
     @Override
     public void onItemClick(int position) {
-        HelpList.HelpsBean data = mAdapter.getItem(position);
-        BookDiscussionDetailActivity.startActivity(activity, data._id);
+        BookHelpList.HelpsBean data = mAdapter.getItem(position);
+        BookHelpDetailActivity.startActivity(activity, data._id);
     }
 
     @Override

@@ -11,22 +11,21 @@ public interface BookDiscussionDetailContract {
 
     interface View {
 
-        void showDisscussion(Disscussion disscussion);
+        void showBookDisscussionDetail(Disscussion disscussion);
 
         void showBestComments(CommentList list);
 
-        void showDisscussionComments(CommentList list);
+        void showBookDisscussionComments(CommentList list);
 
-        void complete();
     }
 
     interface Presenter extends BaseContract.BasePresenter<View> {
 
-        void getDisscussionDetail(String id);
+        void getBookDisscussionDetail(String id);
 
         void getBestComments(String disscussionId);
 
-        void getDisscussionComments(String disscussionId,int start,int limit);
+        void getBookDisscussionComments(String disscussionId, int start, int limit);
 
     }
 

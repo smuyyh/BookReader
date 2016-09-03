@@ -8,21 +8,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseRVActivity;
 import com.justwayward.reader.base.Constant;
+import com.justwayward.reader.bean.BookReview;
 import com.justwayward.reader.bean.CommentList;
-import com.justwayward.reader.bean.Disscussion;
 import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerCommunityComponent;
 import com.justwayward.reader.ui.adapter.BestCommentListAdapter;
-import com.justwayward.reader.ui.contract.BookDiscussionDetailContract;
+import com.justwayward.reader.ui.contract.BookReviewDetailContract;
 import com.justwayward.reader.ui.easyadapter.CommentListAdapter;
-import com.justwayward.reader.ui.presenter.BookDiscussionDetailPresenter;
+import com.justwayward.reader.ui.presenter.BookReviewDetailPresenter;
 import com.justwayward.reader.utils.RelativeDateFormat;
 import com.justwayward.reader.view.BookContentTextView;
 import com.justwayward.reader.view.SupportDividerItemDecoration;
@@ -38,21 +39,21 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * 综合讨论区详情
+ * 书评区详情
  */
-public class BookDiscussionDetailActivity extends BaseRVActivity implements BookDiscussionDetailContract.View, OnRvItemClickListener<CommentList.CommentsBean> {
+public class BookReviewDetailActivity extends BaseRVActivity implements BookReviewDetailContract.View, OnRvItemClickListener<CommentList.CommentsBean> {
 
     private static final String INTENT_ID = "id";
 
     public static void startActivity(Context context, String id) {
-        context.startActivity(new Intent(context, BookDiscussionDetailActivity.class)
+        context.startActivity(new Intent(context, BookReviewDetailActivity.class)
                 .putExtra(INTENT_ID, id));
     }
 
     private String id;
 
     @Inject
-    BookDiscussionDetailPresenter mPresenter;
+    BookReviewDetailPresenter mPresenter;
 
     private List<CommentList.CommentsBean> mBestCommentList = new ArrayList<>();
     private BestCommentListAdapter mBestCommentListAdapter;
@@ -60,16 +61,26 @@ public class BookDiscussionDetailActivity extends BaseRVActivity implements Book
     private HeaderViewHolder headerViewHolder;
 
     static class HeaderViewHolder {
-        @Bind(R.id.ivBookCover)
-        ImageView ivAvatar;
-        @Bind(R.id.tvBookTitle)
-        TextView tvNickName;
+        @Bind(R.id.ivAuthorAvatar)
+        ImageView ivAuthorAvatar;
+        @Bind(R.id.tvBookAuthor)
+        TextView tvBookAuthor;
         @Bind(R.id.tvTime)
         TextView tvTime;
         @Bind(R.id.tvTitle)
         TextView tvTitle;
         @Bind(R.id.tvContent)
         BookContentTextView tvContent;
+        @Bind(R.id.rlBookInfo)
+        RelativeLayout rlBookInfo;
+        @Bind(R.id.ivBookCover)
+        ImageView ivBookCover;
+        @Bind(R.id.tvBookTitle)
+        TextView tvBookTitle;
+        @Bind(R.id.tvHelpfullYesCount)
+        TextView tvHelpfullYesCount;
+        @Bind(R.id.tvHelpfullNoCount)
+        TextView tvHelpfullNoCount;
         @Bind(R.id.tvBestComments)
         TextView tvBestComments;
         @Bind(R.id.rvBestComments)
@@ -97,7 +108,7 @@ public class BookDiscussionDetailActivity extends BaseRVActivity implements Book
 
     @Override
     public void initToolBar() {
-        mCommonToolbar.setTitle("详情");
+        mCommonToolbar.setTitle("书评详情");
         mCommonToolbar.setNavigationIcon(R.drawable.ab_back);
     }
 
@@ -106,9 +117,9 @@ public class BookDiscussionDetailActivity extends BaseRVActivity implements Book
         id = getIntent().getStringExtra(INTENT_ID);
 
         mPresenter.attachView(this);
-        mPresenter.getBookDisscussionDetail(id);
+        mPresenter.getBookReviewDetail(id);
         mPresenter.getBestComments(id);
-        mPresenter.getBookDisscussionComments(id,start, limit);
+        mPresenter.getBookReviewComments(id,start, limit);
     }
 
     @Override
@@ -119,7 +130,7 @@ public class BookDiscussionDetailActivity extends BaseRVActivity implements Book
         mAdapter.addHeader(new RecyclerArrayAdapter.ItemView() {
             @Override
             public View onCreateView(ViewGroup parent) {
-                View headerView =  LayoutInflater.from(BookDiscussionDetailActivity.this).inflate(R.layout.header_view_book_discussion_detail, parent, false);
+                View headerView =  LayoutInflater.from(BookReviewDetailActivity.this).inflate(R.layout.header_view_book_review_detail, parent, false);
                 return headerView;
             }
 
@@ -132,17 +143,33 @@ public class BookDiscussionDetailActivity extends BaseRVActivity implements Book
     }
 
     @Override
-    public void showBookDisscussionDetail(Disscussion disscussion) {
-        Glide.with(mContext).load(Constant.IMG_BASE_URL + disscussion.post.author.avatar)
+    public void showBookReviewDetail(final BookReview data) {
+        Glide.with(mContext).load(Constant.IMG_BASE_URL + data.review.author.avatar)
                 .placeholder(R.drawable.avatar_default)
                 .transform(new GlideCircleTransform(mContext))
-                .into(headerViewHolder.ivAvatar);
+                .into(headerViewHolder.ivAuthorAvatar);
 
-        headerViewHolder.tvNickName.setText(disscussion.post.author.nickname);
-        headerViewHolder.tvTime.setText(RelativeDateFormat.format(disscussion.post.created));
-        headerViewHolder.tvTitle.setText(disscussion.post.title);
-        headerViewHolder.tvContent.setText(disscussion.post.content);
-        headerViewHolder.tvCommentCount.setText(String.format(mContext.getString(R.string.comment_comment_count), disscussion.post.commentCount));
+        headerViewHolder.tvBookAuthor.setText(data.review.author.nickname);
+        headerViewHolder.tvTime.setText(RelativeDateFormat.format(data.review.created));
+        headerViewHolder.tvTitle.setText(data.review.title);
+        headerViewHolder.tvContent.setText(data.review.content);
+
+        Glide.with(mContext).load(Constant.IMG_BASE_URL + data.review.book.cover)
+                .placeholder(R.drawable.cover_default)
+                .into(headerViewHolder.ivBookCover);
+        headerViewHolder.tvBookTitle.setText(data.review.book.title);
+
+        headerViewHolder.tvHelpfullYesCount.setText(String.valueOf(data.review.helpful.yes));
+        headerViewHolder.tvHelpfullNoCount.setText(String.valueOf(data.review.helpful.no));
+
+        headerViewHolder.tvCommentCount.setText(String.format(mContext.getString(R.string.comment_comment_count), data.review.commentCount));
+
+        headerViewHolder.rlBookInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BookDetailActivity.startActivity(BookReviewDetailActivity.this,data.review.book._id);
+            }
+        });
     }
 
     @Override
@@ -162,7 +189,7 @@ public class BookDiscussionDetailActivity extends BaseRVActivity implements Book
     }
 
     @Override
-    public void showBookDisscussionComments(CommentList list) {
+    public void showBookReviewComments(CommentList list) {
         mAdapter.addAll(list.comments);
         start=start+list.comments.size();
     }
@@ -170,7 +197,7 @@ public class BookDiscussionDetailActivity extends BaseRVActivity implements Book
     @Override
     public void onLoadMore() {
         super.onLoadMore();
-        mPresenter.getBookDisscussionComments(id,start, limit);
+        mPresenter.getBookReviewComments(id,start, limit);
     }
 
     @Override

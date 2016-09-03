@@ -34,22 +34,14 @@ public class BookReview extends Base {
      * id : 57c70079eac0de2b0f5302ed
      */
 
-    private ReviewBean review;
-
-    public ReviewBean getReview() {
-        return review;
-    }
-
-    public void setReview(ReviewBean review) {
-        this.review = review;
-    }
+    public ReviewBean review;
 
     public static class ReviewBean {
-        private String _id;
-        private int rating;
-        private String content;
-        private String title;
-        private String type;
+        public String _id;
+        public int rating;
+        public String content;
+        public String title;
+        public String type;
         /**
          * _id : 50975b961db679b876000029
          * cover : /agent/http://static.zongheng.com/upload/cover/2012/07/1342262264139.jpg
@@ -57,7 +49,7 @@ public class BookReview extends Base {
          * id : 50975b961db679b876000029
          */
 
-        private BookBean book;
+        public BookBean book;
         /**
          * _id : 5655095abbb1cb9b7b100377
          * avatar : /avatar/df/32/df32b5817e989477ed479edb3ed960bf
@@ -70,284 +62,44 @@ public class BookReview extends Base {
          * id : 5655095abbb1cb9b7b100377
          */
 
-        private AuthorBean author;
+        public AuthorBean author;
         /**
          * total : 45
          * yes : 58
          * no : 13
          */
 
-        private HelpfulBean helpful;
-        private String state;
-        private String updated;
-        private String created;
-        private int commentCount;
-        private String shareLink;
-        private String id;
-
-        public String get_id() {
-            return _id;
-        }
-
-        public void set_id(String _id) {
-            this._id = _id;
-        }
-
-        public int getRating() {
-            return rating;
-        }
-
-        public void setRating(int rating) {
-            this.rating = rating;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        public void setContent(String content) {
-            this.content = content;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public BookBean getBook() {
-            return book;
-        }
-
-        public void setBook(BookBean book) {
-            this.book = book;
-        }
-
-        public AuthorBean getAuthor() {
-            return author;
-        }
-
-        public void setAuthor(AuthorBean author) {
-            this.author = author;
-        }
-
-        public HelpfulBean getHelpful() {
-            return helpful;
-        }
-
-        public void setHelpful(HelpfulBean helpful) {
-            this.helpful = helpful;
-        }
-
-        public String getState() {
-            return state;
-        }
-
-        public void setState(String state) {
-            this.state = state;
-        }
-
-        public String getUpdated() {
-            return updated;
-        }
-
-        public void setUpdated(String updated) {
-            this.updated = updated;
-        }
-
-        public String getCreated() {
-            return created;
-        }
-
-        public void setCreated(String created) {
-            this.created = created;
-        }
-
-        public int getCommentCount() {
-            return commentCount;
-        }
-
-        public void setCommentCount(int commentCount) {
-            this.commentCount = commentCount;
-        }
-
-        public String getShareLink() {
-            return shareLink;
-        }
-
-        public void setShareLink(String shareLink) {
-            this.shareLink = shareLink;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
+        public HelpfulBean helpful;
+        public String state;
+        public String updated;
+        public String created;
+        public int commentCount;
+        public String shareLink;
+        public String id;
 
         public static class BookBean {
-            private String _id;
-            private String cover;
-            private String title;
-            private String id;
-
-            public String get_id() {
-                return _id;
-            }
-
-            public void set_id(String _id) {
-                this._id = _id;
-            }
-
-            public String getCover() {
-                return cover;
-            }
-
-            public void setCover(String cover) {
-                this.cover = cover;
-            }
-
-            public String getTitle() {
-                return title;
-            }
-
-            public void setTitle(String title) {
-                this.title = title;
-            }
-
-            public String getId() {
-                return id;
-            }
-
-            public void setId(String id) {
-                this.id = id;
-            }
+            public String _id;
+            public String cover;
+            public String title;
+            public String id;
         }
 
         public static class AuthorBean {
-            private String _id;
-            private String avatar;
-            private String nickname;
-            private String type;
-            private int lv;
-            private String gender;
-            private Object rank;
-            private String created;
-            private String id;
-
-            public String get_id() {
-                return _id;
-            }
-
-            public void set_id(String _id) {
-                this._id = _id;
-            }
-
-            public String getAvatar() {
-                return avatar;
-            }
-
-            public void setAvatar(String avatar) {
-                this.avatar = avatar;
-            }
-
-            public String getNickname() {
-                return nickname;
-            }
-
-            public void setNickname(String nickname) {
-                this.nickname = nickname;
-            }
-
-            public String getType() {
-                return type;
-            }
-
-            public void setType(String type) {
-                this.type = type;
-            }
-
-            public int getLv() {
-                return lv;
-            }
-
-            public void setLv(int lv) {
-                this.lv = lv;
-            }
-
-            public String getGender() {
-                return gender;
-            }
-
-            public void setGender(String gender) {
-                this.gender = gender;
-            }
-
-            public Object getRank() {
-                return rank;
-            }
-
-            public void setRank(Object rank) {
-                this.rank = rank;
-            }
-
-            public String getCreated() {
-                return created;
-            }
-
-            public void setCreated(String created) {
-                this.created = created;
-            }
-
-            public String getId() {
-                return id;
-            }
-
-            public void setId(String id) {
-                this.id = id;
-            }
+            public String _id;
+            public String avatar;
+            public String nickname;
+            public String type;
+            public int lv;
+            public String gender;
+            public Object rank;
+            public String created;
+            public String id;
         }
 
         public static class HelpfulBean {
-            private int total;
-            private int yes;
-            private int no;
-
-            public int getTotal() {
-                return total;
-            }
-
-            public void setTotal(int total) {
-                this.total = total;
-            }
-
-            public int getYes() {
-                return yes;
-            }
-
-            public void setYes(int yes) {
-                this.yes = yes;
-            }
-
-            public int getNo() {
-                return no;
-            }
-
-            public void setNo(int no) {
-                this.no = no;
-            }
+            public int total;
+            public int yes;
+            public int no;
         }
     }
 }

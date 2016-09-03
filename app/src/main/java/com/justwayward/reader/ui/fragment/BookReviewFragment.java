@@ -7,10 +7,10 @@ import com.justwayward.reader.bean.BookReviewList;
 import com.justwayward.reader.bean.support.SelectionEvent;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerCommunityComponent;
-import com.justwayward.reader.ui.activity.BookDiscussionDetailActivity;
+import com.justwayward.reader.ui.activity.BookReviewDetailActivity;
 import com.justwayward.reader.ui.contract.BookReviewContract;
 import com.justwayward.reader.ui.easyadapter.BookReviewAdapter;
-import com.justwayward.reader.ui.presenter.ComBookReviewPresenter;
+import com.justwayward.reader.ui.presenter.BookReviewPresenter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -28,7 +28,7 @@ import javax.inject.Inject;
 public class BookReviewFragment extends BaseRVFragment<BookReviewList.ReviewsBean> implements BookReviewContract.View {
 
     @Inject
-    ComBookReviewPresenter mPresenter;
+    BookReviewPresenter mPresenter;
 
     private String sort = Constant.SortType.DEFAULT;
     private String type = Constant.BookType.ALL;
@@ -95,7 +95,7 @@ public class BookReviewFragment extends BaseRVFragment<BookReviewList.ReviewsBea
     @Override
     public void onItemClick(int position) {
         BookReviewList.ReviewsBean data = mAdapter.getItem(position);
-        BookDiscussionDetailActivity.startActivity(activity, data._id);
+        BookReviewDetailActivity.startActivity(activity, data._id);
     }
 
     @Override

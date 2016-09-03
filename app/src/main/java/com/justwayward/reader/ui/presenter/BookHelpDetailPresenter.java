@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.bean.CommentList;
-import com.justwayward.reader.bean.Disscussion;
-import com.justwayward.reader.ui.contract.BookDiscussionDetailContract;
+import com.justwayward.reader.bean.BookHelp;
+import com.justwayward.reader.ui.contract.BookHelpDetailContract;
 import com.justwayward.reader.utils.LogUtils;
 
 import javax.inject.Inject;
@@ -15,41 +15,40 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * @author yuyh.
- * @date 16/9/2.
+ * @author lfh.
+ * @date 16/9/3.
  */
-public class ComOverallDetailPresenter implements BookDiscussionDetailContract.Presenter {
+public class BookHelpDetailPresenter implements BookHelpDetailContract.Presenter {
 
     private Context context;
     private BookApi bookApi;
 
-    private BookDiscussionDetailContract.View view;
+    private BookHelpDetailContract.View view;
 
     @Inject
-    public ComOverallDetailPresenter(Context context, BookApi bookApi) {
+    public BookHelpDetailPresenter(Context context, BookApi bookApi) {
         this.context = context;
         this.bookApi = bookApi;
     }
 
     @Override
-    public void getDisscussionDetail(String id) {
-        bookApi.getDisscussionDetail(id).subscribeOn(Schedulers.io())
+    public void getBookHelpDetail(String id) {
+        bookApi.getBookHelpDetail(id).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Disscussion>() {
+                .subscribe(new Observer<BookHelp>() {
                     @Override
                     public void onCompleted() {
-                        view.complete();
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        LogUtils.e("getDisscussionDetail:" + e.toString());
-                        view.complete();
+                        LogUtils.e("getBookHelpDetail:" + e.toString());
                     }
 
                     @Override
-                    public void onNext(Disscussion disscussion) {
-                        view.showDisscussion(disscussion);
+                    public void onNext(BookHelp bookHelp) {
+                        view.showBookHelpDetail(bookHelp);
                     }
                 });
     }
@@ -62,13 +61,12 @@ public class ComOverallDetailPresenter implements BookDiscussionDetailContract.P
                 .subscribe(new Observer<CommentList>() {
                     @Override
                     public void onCompleted() {
-                        view.complete();
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         LogUtils.e("getBestComments:" + e.toString());
-                        view.complete();
                     }
 
                     @Override
@@ -79,31 +77,30 @@ public class ComOverallDetailPresenter implements BookDiscussionDetailContract.P
     }
 
     @Override
-    public void getDisscussionComments(String disscussionId, int start, int limit) {
-        bookApi.getDisscussionComments(disscussionId,start+"",limit+"")
+    public void getBookHelpComments(String disscussionId, int start, int limit) {
+        bookApi.getBookReviewComments(disscussionId,start+"",limit+"")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<CommentList>() {
                     @Override
                     public void onCompleted() {
-                        view.complete();
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        LogUtils.e("getDisscussionComments:" + e.toString());
-                        view.complete();
+                        LogUtils.e("getBookHelpComments:" + e.toString());
                     }
 
                     @Override
                     public void onNext(CommentList list) {
-                        view.showDisscussionComments(list);
+                        view.showBookHelpComments(list);
                     }
                 });
     }
 
     @Override
-    public void attachView(BookDiscussionDetailContract.View view) {
+    public void attachView(BookHelpDetailContract.View view) {
         this.view = view;
     }
 }

@@ -17,7 +17,7 @@ import rx.schedulers.Schedulers;
  * @author yuyh.
  * @date 16/9/2.
  */
-public class ComOverallPresenter implements BookDiscussionContract.Presenter {
+public class BookDiscussionPresenter implements BookDiscussionContract.Presenter {
 
     private Context context;
     private BookApi bookApi;
@@ -25,14 +25,14 @@ public class ComOverallPresenter implements BookDiscussionContract.Presenter {
     private BookDiscussionContract.View view;
 
     @Inject
-    public ComOverallPresenter(Context context, BookApi bookApi) {
+    public BookDiscussionPresenter(Context context, BookApi bookApi) {
         this.context = context;
         this.bookApi = bookApi;
     }
 
     @Override
-    public void getDisscussionList(String sort, String distillate, final int start, int limit) {
-        bookApi.getDisscussionList("ramble", "all", sort, "all", start + "", limit + "", distillate)
+    public void getBookDisscussionList(String sort, String distillate, final int start, int limit) {
+        bookApi.getBookDisscussionList("ramble", "all", sort, "all", start + "", limit + "", distillate)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<DiscussionList>() {
@@ -49,7 +49,7 @@ public class ComOverallPresenter implements BookDiscussionContract.Presenter {
                     @Override
                     public void onNext(DiscussionList list) {
                         boolean isRefresh = start == 0 ? true : false;
-                        view.showDisscussionList(list.posts, isRefresh);
+                        view.showBookDisscussionList(list.posts, isRefresh);
                     }
                 });
     }

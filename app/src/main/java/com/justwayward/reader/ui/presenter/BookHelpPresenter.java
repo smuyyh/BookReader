@@ -3,7 +3,7 @@ package com.justwayward.reader.ui.presenter;
 import android.content.Context;
 
 import com.justwayward.reader.api.BookApi;
-import com.justwayward.reader.bean.HelpList;
+import com.justwayward.reader.bean.BookHelpList;
 import com.justwayward.reader.ui.contract.BookHelpContract;
 import com.justwayward.reader.utils.LogUtils;
 
@@ -17,7 +17,7 @@ import rx.schedulers.Schedulers;
  * @author lfh.
  * @date 16/9/3.
  */
-public class ComBookHelpPresenter implements BookHelpContract.Presenter {
+public class BookHelpPresenter implements BookHelpContract.Presenter {
 
     private Context context;
     private BookApi bookApi;
@@ -25,17 +25,17 @@ public class ComBookHelpPresenter implements BookHelpContract.Presenter {
     private BookHelpContract.View view;
 
     @Inject
-    public ComBookHelpPresenter(Context context, BookApi bookApi) {
+    public BookHelpPresenter(Context context, BookApi bookApi) {
         this.context = context;
         this.bookApi = bookApi;
     }
 
     @Override
-    public void getHelpList(String sort, String distillate, final int start, int limit) {
-        bookApi.getHelpList("all", sort, start + "", limit + "", distillate)
+    public void getBookHelpList(String sort, String distillate, final int start, int limit) {
+        bookApi.getBookHelpList("all", sort, start + "", limit + "", distillate)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<HelpList>() {
+                .subscribe(new Observer<BookHelpList>() {
                     @Override
                     public void onCompleted() {
 
@@ -43,13 +43,13 @@ public class ComBookHelpPresenter implements BookHelpContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        LogUtils.e("getHelpList:" + e.toString());
+                        LogUtils.e("getBookHelpList:" + e.toString());
                     }
 
                     @Override
-                    public void onNext(HelpList list) {
+                    public void onNext(BookHelpList list) {
                         boolean isRefresh = start == 0 ? true : false;
-                        view.showHelpList(list.helps,isRefresh);
+                        view.showBookHelpList(list.helps,isRefresh);
                     }
                 });
     }

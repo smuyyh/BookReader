@@ -52,7 +52,13 @@
     <string name="comment_comment_count">共%1$d条评论</string>
     <string name="comment_reply_floor">(%1$d楼)</string>
     <string name="comment_reply_nickname">回复 %1$s</string>
+
+    <!--书评区相关-->
     <string name="book_review_book_type">[%1$s]</string>
     <string name="book_review_helpful_yes">%1$d 人推荐</string>
+    <string name="book_review_detail_helpful_yes">有用</string>
+    <string name="book_review_detail_helpful_no">无用</string>
+    <string name="book_review_detail_to_review_the_scoring">给书评打分</string>
+    <string name="book_review_detail_score">楼主打分：</string>
 
 </resources>

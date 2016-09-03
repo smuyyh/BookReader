@@ -28,7 +28,7 @@ public class BookDiscussionActivity extends BaseCommuniteActivity {
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_community_overall;
+        return R.layout.activity_community_book_discussion;
     }
 
     @Override

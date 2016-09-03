@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.Constant;
-import com.justwayward.reader.bean.HelpList;
+import com.justwayward.reader.bean.BookHelpList;
 import com.justwayward.reader.utils.RelativeDateFormat;
 import com.justwayward.reader.view.recyclerview.adapter.BaseViewHolder;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
@@ -15,7 +15,7 @@ import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
  * @author lfh.
  * @date 16/9/3.
  */
-public class BookHelpAdapter extends RecyclerArrayAdapter<HelpList.HelpsBean> {
+public class BookHelpAdapter extends RecyclerArrayAdapter<BookHelpList.HelpsBean> {
 
 
     public BookHelpAdapter(Context context) {
@@ -24,9 +24,9 @@ public class BookHelpAdapter extends RecyclerArrayAdapter<HelpList.HelpsBean> {
 
     @Override
     public BaseViewHolder OnCreateViewHolder(ViewGroup parent, int viewType) {
-        return new BaseViewHolder<HelpList.HelpsBean>(parent, R.layout.item_community_book_help_list) {
+        return new BaseViewHolder<BookHelpList.HelpsBean>(parent, R.layout.item_community_book_help_list) {
             @Override
-            public void setData(HelpList.HelpsBean item) {
+            public void setData(BookHelpList.HelpsBean item) {
                 holder.setCircleImageUrl(R.id.ivBookCover, Constant.IMG_BASE_URL + item.author.avatar,R.drawable.avatar_default)
                         .setText(R.id.tvBookType, String.format(mContext.getString(R.string
                                 .book_detail_user_lv), item.author.lv))

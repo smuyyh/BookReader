@@ -11,7 +11,7 @@ public class BookMaleActivity extends BaseActivity {
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_community_male;
+        return R.layout.activity_community_book_male;
     }
 
     @Override

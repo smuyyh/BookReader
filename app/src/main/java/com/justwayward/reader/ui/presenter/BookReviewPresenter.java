@@ -17,7 +17,7 @@ import rx.schedulers.Schedulers;
  * @author lfh.
  * @date 16/9/3.
  */
-public class ComBookReviewPresenter implements BookReviewContract.Presenter {
+public class BookReviewPresenter implements BookReviewContract.Presenter {
 
     private Context context;
     private BookApi bookApi;
@@ -25,7 +25,7 @@ public class ComBookReviewPresenter implements BookReviewContract.Presenter {
     private BookReviewContract.View view;
 
     @Inject
-    public ComBookReviewPresenter(Context context, BookApi bookApi) {
+    public BookReviewPresenter(Context context, BookApi bookApi) {
         this.context = context;
         this.bookApi = bookApi;
     }

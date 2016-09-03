@@ -20,7 +20,7 @@ public class BookHelpActivity extends BaseCommuniteActivity {
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_community_help;
+        return R.layout.activity_community_book_help;
     }
 
     @Override

@@ -6,7 +6,7 @@ import com.justwayward.reader.bean.base.Base;
  * Created by lfh on 2016/9/1.
  * 书荒区帖子详情
  */
-public class Help extends Base{
+public class BookHelp extends Base{
 
     /**
      * _id : 579df15f8eaf3ec231d8bc2b
@@ -87,19 +87,11 @@ public class Help extends Base{
      * id : 579df15f8eaf3ec231d8bc2b
      */
 
-    private HelpBean help;
-
-    public HelpBean getHelp() {
-        return help;
-    }
-
-    public void setHelp(HelpBean help) {
-        this.help = help;
-    }
+    public HelpBean help;
 
     public static class HelpBean {
-        private String _id;
-        private String type;
+        public String _id;
+        public String type;
         /**
          * _id : 54ec360d77bace32513eabc1
          * avatar : /avatar/f1/ca/f1cad586d81253f48b360738b1b90780
@@ -112,186 +104,26 @@ public class Help extends Base{
          * id : 54ec360d77bace32513eabc1
          */
 
-        private AuthorBean author;
-        private String title;
-        private String content;
-        private String state;
-        private String updated;
-        private String created;
-        private int commentCount;
-        private String shareLink;
-        private String id;
-
-        public String get_id() {
-            return _id;
-        }
-
-        public void set_id(String _id) {
-            this._id = _id;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public AuthorBean getAuthor() {
-            return author;
-        }
-
-        public void setAuthor(AuthorBean author) {
-            this.author = author;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        public void setContent(String content) {
-            this.content = content;
-        }
-
-        public String getState() {
-            return state;
-        }
-
-        public void setState(String state) {
-            this.state = state;
-        }
-
-        public String getUpdated() {
-            return updated;
-        }
-
-        public void setUpdated(String updated) {
-            this.updated = updated;
-        }
-
-        public String getCreated() {
-            return created;
-        }
-
-        public void setCreated(String created) {
-            this.created = created;
-        }
-
-        public int getCommentCount() {
-            return commentCount;
-        }
-
-        public void setCommentCount(int commentCount) {
-            this.commentCount = commentCount;
-        }
-
-        public String getShareLink() {
-            return shareLink;
-        }
-
-        public void setShareLink(String shareLink) {
-            this.shareLink = shareLink;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
+        public AuthorBean author;
+        public String title;
+        public String content;
+        public String state;
+        public String updated;
+        public String created;
+        public int commentCount;
+        public String shareLink;
+        public String id;
 
         public static class AuthorBean {
-            private String _id;
-            private String avatar;
-            private String nickname;
-            private String type;
-            private int lv;
-            private String gender;
-            private Object rank;
-            private String created;
-            private String id;
-
-            public String get_id() {
-                return _id;
-            }
-
-            public void set_id(String _id) {
-                this._id = _id;
-            }
-
-            public String getAvatar() {
-                return avatar;
-            }
-
-            public void setAvatar(String avatar) {
-                this.avatar = avatar;
-            }
-
-            public String getNickname() {
-                return nickname;
-            }
-
-            public void setNickname(String nickname) {
-                this.nickname = nickname;
-            }
-
-            public String getType() {
-                return type;
-            }
-
-            public void setType(String type) {
-                this.type = type;
-            }
-
-            public int getLv() {
-                return lv;
-            }
-
-            public void setLv(int lv) {
-                this.lv = lv;
-            }
-
-            public String getGender() {
-                return gender;
-            }
-
-            public void setGender(String gender) {
-                this.gender = gender;
-            }
-
-            public Object getRank() {
-                return rank;
-            }
-
-            public void setRank(Object rank) {
-                this.rank = rank;
-            }
-
-            public String getCreated() {
-                return created;
-            }
-
-            public void setCreated(String created) {
-                this.created = created;
-            }
-
-            public String getId() {
-                return id;
-            }
-
-            public void setId(String id) {
-                this.id = id;
-            }
+            public String _id;
+            public String avatar;
+            public String nickname;
+            public String type;
+            public int lv;
+            public String gender;
+            public Object rank;
+            public String created;
+            public String id;
         }
     }
 }

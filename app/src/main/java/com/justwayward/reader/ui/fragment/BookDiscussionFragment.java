@@ -10,7 +10,7 @@ import com.justwayward.reader.component.DaggerCommunityComponent;
 import com.justwayward.reader.ui.activity.BookDiscussionDetailActivity;
 import com.justwayward.reader.ui.contract.BookDiscussionContract;
 import com.justwayward.reader.ui.easyadapter.BookDiscussionAdapter;
-import com.justwayward.reader.ui.presenter.ComOverallPresenter;
+import com.justwayward.reader.ui.presenter.BookDiscussionPresenter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -29,7 +29,7 @@ import javax.inject.Inject;
 public class BookDiscussionFragment extends BaseRVFragment<DiscussionList.PostsBean> implements BookDiscussionContract.View{
 
     @Inject
-    ComOverallPresenter mPresenter;
+    BookDiscussionPresenter mPresenter;
 
     private String sort = Constant.SortType.DEFAULT;
     private String distillate = Constant.Distillate.ALL;
@@ -62,7 +62,7 @@ public class BookDiscussionFragment extends BaseRVFragment<DiscussionList.PostsB
     }
 
     @Override
-    public void showDisscussionList(List<DiscussionList.PostsBean> list, boolean isRefresh) {
+    public void showBookDisscussionList(List<DiscussionList.PostsBean> list, boolean isRefresh) {
         if (isRefresh) {
             mAdapter.clear();
         }
@@ -76,19 +76,19 @@ public class BookDiscussionFragment extends BaseRVFragment<DiscussionList.PostsB
         distillate = event.distillate;
         start = 0;
         limit = 20;
-        mPresenter.getDisscussionList(sort, distillate, start, limit);
+        mPresenter.getBookDisscussionList(sort, distillate, start, limit);
     }
 
     @Override
     public void onRefresh() {
         super.onRefresh();
-        mPresenter.getDisscussionList(sort, distillate, start, limit);
+        mPresenter.getBookDisscussionList(sort, distillate, start, limit);
     }
 
     @Override
     public void onLoadMore() {
         super.onLoadMore();
-        mPresenter.getDisscussionList(sort, distillate, start, limit);
+        mPresenter.getBookDisscussionList(sort, distillate, start, limit);
     }
 
     @Override
