@@ -27,8 +27,6 @@ import javax.inject.Inject;
  */
 public class CommunityBookReviewFragment extends BaseRVFragment implements ComBookReviewContract.View {
 
-    private CommunityBookReviewAdapter mAdapter;
-
     @Inject
     ComBookReviewPresenter mPresenter;
 
