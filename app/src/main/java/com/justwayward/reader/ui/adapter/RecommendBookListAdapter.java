@@ -2,9 +2,7 @@ package com.justwayward.reader.ui.adapter;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.RecommendBookList;
@@ -19,23 +17,19 @@ import java.util.List;
  * @date 16/8/7.
  */
 public class RecommendBookListAdapter extends EasyRVAdapter<RecommendBookList.RecommendBook> {
+
     private OnRvItemClickListener itemClickListener;
 
     public RecommendBookListAdapter(Context context, List<RecommendBookList.RecommendBook> list,
-                                    OnRvItemClickListener
-            listener) {
+                                    OnRvItemClickListener listener) {
         super(context, list, R.layout.item_book_detail_recommend_book_list);
         this.itemClickListener = listener;
     }
 
     @Override
-    protected void onBindData(final EasyRVHolder holder, final int position, final RecommendBookList
-            .RecommendBook item) {
-        ImageView ivCover = holder.getView(R.id.ivBookListCover);
-        Glide.with(mContext).load(Constant.IMG_BASE_URL + item.cover).placeholder(R
-                .drawable.cover_default).into(ivCover);
-
-        holder.setText(R.id.tvBookListTitle, item.title)
+    protected void onBindData(final EasyRVHolder holder, final int position, final RecommendBookList.RecommendBook item) {
+        holder.setImageUrl(R.id.ivBookListCover, Constant.IMG_BASE_URL + item.cover, R.drawable.cover_default)
+                .setText(R.id.tvBookListTitle, item.title)
                 .setText(R.id.tvBookAuthor, item.author)
                 .setText(R.id.tvBookListTitle, item.title)
                 .setText(R.id.tvBookListDesc, item.desc)

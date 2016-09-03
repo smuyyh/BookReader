@@ -15,6 +15,8 @@ import com.justwayward.reader.ui.presenter.SubRankPresenter;
 import javax.inject.Inject;
 
 /**
+ * 二级排行榜
+ *
  * @author yuyh.
  * @date 16/9/1.
  */

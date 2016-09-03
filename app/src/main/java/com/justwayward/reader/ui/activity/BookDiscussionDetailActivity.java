@@ -23,11 +23,11 @@ import com.justwayward.reader.ui.adapter.BestCommentListAdapter;
 import com.justwayward.reader.ui.contract.BookDiscussionDetailContract;
 import com.justwayward.reader.ui.easyadapter.CommentListAdapter;
 import com.justwayward.reader.ui.presenter.ComOverallDetailPresenter;
-import com.justwayward.reader.utils.GlideCircleTransform;
 import com.justwayward.reader.utils.RelativeDateFormat;
 import com.justwayward.reader.view.BookContentTextView;
 import com.justwayward.reader.view.SupportDividerItemDecoration;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
+import com.yuyh.easyadapter.glide.GlideCircleTransform;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -20,8 +20,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.justwayward.reader.utils.GlideCircleTransform;
-import com.justwayward.reader.utils.GlideRoundTransform;
+import com.yuyh.easyadapter.glide.GlideCircleTransform;
+import com.yuyh.easyadapter.glide.GlideRoundTransform;
 
 /**
  * M为这个itemView对应的model。

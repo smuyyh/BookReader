@@ -21,6 +21,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+/**
+ * 主题书单
+ *
+ * @author yuyh.
+ * @date 16/9/1.
+ */
 public class SubjectFragment extends BaseRVFragment<BookLists.BookListsBean> implements SubjectFragmentContract.View {
 
     public final static String BUNDLE_TAG = "tag";
@@ -73,7 +79,6 @@ public class SubjectFragment extends BaseRVFragment<BookLists.BookListsBean> imp
 
     @Override
     public void configViews() {
-
         mAdapter = new SubjectBookListAdapter(mContext);
         modiifyAdapter(true, true);
 

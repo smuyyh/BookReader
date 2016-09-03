@@ -21,8 +21,13 @@ import java.util.List;
 
 import butterknife.Bind;
 
-public class FindFragment extends BaseFragment implements
-        OnRvItemClickListener<FindBean> {
+/**
+ * 发现
+ *
+ * @author yuyh.
+ * @date 16/9/1.
+ */
+public class FindFragment extends BaseFragment implements OnRvItemClickListener<FindBean> {
 
     @Bind(R.id.recyclerview)
     RecyclerView mRecyclerView;

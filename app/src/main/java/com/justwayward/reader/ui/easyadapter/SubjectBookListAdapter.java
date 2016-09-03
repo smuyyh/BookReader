@@ -10,6 +10,8 @@ import com.justwayward.reader.view.recyclerview.adapter.BaseViewHolder;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
 
 /**
+ * 主题书单
+ *
  * @author yuyh.
  * @date 16/9/3.
  */

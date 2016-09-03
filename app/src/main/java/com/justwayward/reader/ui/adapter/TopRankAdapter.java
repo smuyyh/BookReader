@@ -14,7 +14,7 @@ import com.justwayward.reader.R;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.RankingList;
 import com.justwayward.reader.common.OnRvItemClickListener;
-import com.justwayward.reader.utils.GlideCircleTransform;
+import com.yuyh.easyadapter.glide.GlideCircleTransform;
 
 import java.util.List;
 

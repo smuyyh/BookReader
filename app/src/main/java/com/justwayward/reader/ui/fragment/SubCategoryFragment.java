@@ -21,6 +21,12 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
+/**
+ * 二级分类
+ *
+ * @author yuyh.
+ * @date 16/9/1.
+ */
 public class SubCategoryFragment extends BaseRVFragment<BooksByCats.BooksBean> implements SubCategoryFragmentContract.View {
 
     public final static String BUNDLE_MAJOR = "major";
@@ -64,7 +70,6 @@ public class SubCategoryFragment extends BaseRVFragment<BooksByCats.BooksBean> i
 
     @Override
     public void configViews() {
-
         mAdapter = new SubCategoryAdapter(mContext);
         modiifyAdapter(true, true);
 

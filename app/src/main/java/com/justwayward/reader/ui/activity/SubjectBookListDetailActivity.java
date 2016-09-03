@@ -23,11 +23,11 @@ import com.justwayward.reader.component.DaggerSubjectBookListDetailActivityCompo
 import com.justwayward.reader.ui.adapter.SubjectBookListDetailBooksAdapter;
 import com.justwayward.reader.ui.contract.SubjectBookListDetailContract;
 import com.justwayward.reader.ui.presenter.SubjectBookListDetailPresenter;
-import com.justwayward.reader.utils.GlideCircleTransform;
 import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.ScreenUtils;
 import com.justwayward.reader.utils.ToastUtils;
 import com.justwayward.reader.view.SpaceItemDecoration;
+import com.yuyh.easyadapter.glide.GlideCircleTransform;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
@@ -14,6 +15,9 @@ import android.widget.Checkable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.yuyh.easyadapter.glide.GlideCircleTransform;
+import com.yuyh.easyadapter.glide.GlideRoundTransform;
 import com.yuyh.easyadapter.helper.ViewHelper;
 
 public class EasyRVHolder extends RecyclerView.ViewHolder implements ViewHelper.RecyclerView<EasyRVHolder> {
@@ -76,7 +80,7 @@ public class EasyRVHolder extends RecyclerView.ViewHolder implements ViewHelper.
     @Override
     public EasyRVHolder setTextColorRes(int viewId, int colorRes) {
         TextView view = getView(viewId);
-        view.setTextColor(mContext.getResources().getColor(colorRes, null));
+        view.setTextColor(ContextCompat.getColor(mContext, colorRes));
         return this;
     }
 
@@ -110,13 +114,32 @@ public class EasyRVHolder extends RecyclerView.ViewHolder implements ViewHelper.
 
     @Override
     public EasyRVHolder setImageDrawableRes(int viewId, int drawableRes) {
-        Drawable drawable = mContext.getResources().getDrawable(drawableRes, null);
+        Drawable drawable = ContextCompat.getDrawable(mContext, drawableRes);
         return setImageDrawable(viewId, drawable);
     }
 
     @Override
     public EasyRVHolder setImageUrl(int viewId, String imgUrl) {
-        // TODO: Use Glide/Picasso/ImageLoader/Fresco
+        ImageView view = getView(viewId);
+        Glide.with(mContext).load(imgUrl).into(view);
+        return this;
+    }
+
+    public EasyRVHolder setImageUrl(int viewId, String imgUrl, int placeHolderRes) {
+        ImageView view = getView(viewId);
+        Glide.with(mContext).load(imgUrl).placeholder(placeHolderRes).into(view);
+        return this;
+    }
+
+    public EasyRVHolder setCircleImageUrl(int viewId, String imgUrl, int placeHolderRes) {
+        ImageView view = getView(viewId);
+        Glide.with(mContext).load(imgUrl).placeholder(placeHolderRes) .transform(new GlideCircleTransform(mContext)).into(view);
+        return this;
+    }
+
+    public EasyRVHolder setRoundImageUrl(int viewId, String imgUrl, int placeHolderRes) {
+        ImageView view = getView(viewId);
+        Glide.with(mContext).load(imgUrl).placeholder(placeHolderRes) .transform(new GlideRoundTransform(mContext)).into(view);
         return this;
     }
 

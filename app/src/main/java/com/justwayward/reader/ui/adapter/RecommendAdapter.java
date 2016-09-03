@@ -2,9 +2,7 @@ package com.justwayward.reader.ui.adapter;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.Recommend;
@@ -19,21 +17,19 @@ import java.util.List;
  * @date 16/8/5.
  */
 public class RecommendAdapter extends EasyRVAdapter<Recommend.RecommendBooks> {
+
     private OnRvItemClickListener itemClickListener;
 
-    public RecommendAdapter(Context context, List<Recommend.RecommendBooks> list,OnRvItemClickListener
-            listener) {
+    public RecommendAdapter(Context context, List<Recommend.RecommendBooks> list, OnRvItemClickListener listener) {
         super(context, list, R.layout.item_recommend_list);
         this.itemClickListener = listener;
     }
 
     @Override
     protected void onBindData(final EasyRVHolder holder, final int position, final Recommend.RecommendBooks item) {
-        ImageView ivRecommendCover = holder.getView(R.id.ivRecommendCover);
-        Glide.with(mContext).load(Constant.IMG_BASE_URL + item.cover).placeholder(R.drawable
-                .cover_default).into(ivRecommendCover);
 
-        holder.setText(R.id.tvRecommendTitle, item.title)
+        holder.setImageUrl(R.id.ivRecommendCover, Constant.IMG_BASE_URL + item.cover, R.drawable.cover_default)
+                .setText(R.id.tvRecommendTitle, item.title)
                 .setText(R.id.tvRecommendShort, item.lastChapter);
 
         holder.setOnItemViewClickListener(new View.OnClickListener() {
