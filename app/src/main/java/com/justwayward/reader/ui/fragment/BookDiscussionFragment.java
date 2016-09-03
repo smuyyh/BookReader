@@ -7,9 +7,9 @@ import com.justwayward.reader.bean.DiscussionList;
 import com.justwayward.reader.bean.support.SelectionEvent;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerCommunityComponent;
-import com.justwayward.reader.ui.activity.ComOverallDetailActivity;
-import com.justwayward.reader.ui.contract.ComOverallContract;
-import com.justwayward.reader.ui.easyadapter.CommunityOverallAdapter;
+import com.justwayward.reader.ui.activity.BookDiscussionDetailActivity;
+import com.justwayward.reader.ui.contract.BookDiscussionContract;
+import com.justwayward.reader.ui.easyadapter.BookDiscussionAdapter;
 import com.justwayward.reader.ui.presenter.ComOverallPresenter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -26,7 +26,7 @@ import javax.inject.Inject;
  * @author yuyh.
  * @date 16/9/2.
  */
-public class CommunityOverallFragment extends BaseRVFragment<DiscussionList.PostsBean> implements ComOverallContract.View{
+public class BookDiscussionFragment extends BaseRVFragment<DiscussionList.PostsBean> implements BookDiscussionContract.View{
 
     @Inject
     ComOverallPresenter mPresenter;
@@ -54,7 +54,7 @@ public class CommunityOverallFragment extends BaseRVFragment<DiscussionList.Post
 
     @Override
     public void configViews() {
-        mAdapter = new CommunityOverallAdapter(mContext);
+        mAdapter = new BookDiscussionAdapter(mContext);
         modiifyAdapter(true, true);
 
         mPresenter.attachView(this);
@@ -94,7 +94,7 @@ public class CommunityOverallFragment extends BaseRVFragment<DiscussionList.Post
     @Override
     public void onItemClick(int position) {
         DiscussionList.PostsBean data = (DiscussionList.PostsBean) mAdapter.getItem(position);
-        ComOverallDetailActivity.startActivity(activity, data._id);
+        BookDiscussionDetailActivity.startActivity(activity, data._id);
     }
 
     @Override

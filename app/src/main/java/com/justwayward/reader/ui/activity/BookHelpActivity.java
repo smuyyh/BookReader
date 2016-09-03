@@ -6,26 +6,21 @@ import android.content.Intent;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseCommuniteActivity;
 import com.justwayward.reader.component.AppComponent;
-import com.justwayward.reader.view.SelectionLayout;
 
 import java.util.List;
 
-import butterknife.Bind;
-
-public class ComOverallActivity extends BaseCommuniteActivity {
-
+/**
+ * 书荒求助区
+ */
+public class BookHelpActivity extends BaseCommuniteActivity {
 
     public static void startActivity(Context context) {
-        context.startActivity(new Intent(context, ComOverallActivity.class));
+        context.startActivity(new Intent(context, BookHelpActivity.class));
     }
-
-    @Bind(R.id.slOverall)
-    SelectionLayout slOverall;
-
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_community_overall;
+        return R.layout.activity_community_help;
     }
 
     @Override
@@ -35,7 +30,7 @@ public class ComOverallActivity extends BaseCommuniteActivity {
 
     @Override
     public void initToolBar() {
-        mCommonToolbar.setTitle("综合讨论区");
+        mCommonToolbar.setTitle("书荒互助区");
         mCommonToolbar.setNavigationIcon(R.drawable.ab_back);
     }
 
@@ -51,5 +46,6 @@ public class ComOverallActivity extends BaseCommuniteActivity {
 
     @Override
     public void configViews() {
+
     }
 }

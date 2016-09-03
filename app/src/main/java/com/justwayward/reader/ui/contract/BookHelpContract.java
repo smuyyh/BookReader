@@ -8,7 +8,7 @@ import java.util.List;
  * @author lfh.
  * @date 16/9/3.
  */
-public interface ComBookHelpContract {
+public interface BookHelpContract {
 
     interface View {
         void showHelpList(List<HelpList.HelpsBean> list, boolean isRefresh);

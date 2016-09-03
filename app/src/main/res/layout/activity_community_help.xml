@@ -14,7 +14,7 @@
 
     <fragment
         android:id="@+id/fragmentCO"
-        android:name="com.justwayward.reader.ui.fragment.CommunityBookHelpFragment"
+        android:name="com.justwayward.reader.ui.fragment.BookHelpFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

@@ -7,7 +7,7 @@ import com.justwayward.reader.bean.Disscussion;
  * @author yuyh.
  * @date 16/9/2.
  */
-public interface ComOverallDetailContract {
+public interface BookDiscussionDetailContract {
 
     interface View {
 

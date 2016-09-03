@@ -20,10 +20,10 @@ import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
  * @author lfh.
  * @date 16/9/3.
  */
-public class CommunityOverallAdapter extends RecyclerArrayAdapter<DiscussionList.PostsBean> {
+public class BookDiscussionAdapter extends RecyclerArrayAdapter<DiscussionList.PostsBean> {
 
 
-    public CommunityOverallAdapter(Context context) {
+    public BookDiscussionAdapter(Context context) {
         super(context);
     }
 

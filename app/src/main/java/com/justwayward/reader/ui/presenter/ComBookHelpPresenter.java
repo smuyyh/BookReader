@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.bean.HelpList;
-import com.justwayward.reader.ui.contract.ComBookHelpContract;
+import com.justwayward.reader.ui.contract.BookHelpContract;
 import com.justwayward.reader.utils.LogUtils;
 
 import javax.inject.Inject;
@@ -17,12 +17,12 @@ import rx.schedulers.Schedulers;
  * @author lfh.
  * @date 16/9/3.
  */
-public class ComBookHelpPresenter implements ComBookHelpContract.Presenter {
+public class ComBookHelpPresenter implements BookHelpContract.Presenter {
 
     private Context context;
     private BookApi bookApi;
 
-    private ComBookHelpContract.View view;
+    private BookHelpContract.View view;
 
     @Inject
     public ComBookHelpPresenter(Context context, BookApi bookApi) {
@@ -55,7 +55,7 @@ public class ComBookHelpPresenter implements ComBookHelpContract.Presenter {
     }
 
     @Override
-    public void attachView(ComBookHelpContract.View view) {
+    public void attachView(BookHelpContract.View view) {
         this.view = view;
     }
 }

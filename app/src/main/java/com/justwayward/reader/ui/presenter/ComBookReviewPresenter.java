@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.bean.BookReviewList;
-import com.justwayward.reader.ui.contract.ComBookReviewContract;
+import com.justwayward.reader.ui.contract.BookReviewContract;
 import com.justwayward.reader.utils.LogUtils;
 
 import javax.inject.Inject;
@@ -17,12 +17,12 @@ import rx.schedulers.Schedulers;
  * @author lfh.
  * @date 16/9/3.
  */
-public class ComBookReviewPresenter implements ComBookReviewContract.Presenter {
+public class ComBookReviewPresenter implements BookReviewContract.Presenter {
 
     private Context context;
     private BookApi bookApi;
 
-    private ComBookReviewContract.View view;
+    private BookReviewContract.View view;
 
     @Inject
     public ComBookReviewPresenter(Context context, BookApi bookApi) {
@@ -55,7 +55,7 @@ public class ComBookReviewPresenter implements ComBookReviewContract.Presenter {
     }
 
     @Override
-    public void attachView(ComBookReviewContract.View view) {
+    public void attachView(BookReviewContract.View view) {
         this.view = view;
     }
 }

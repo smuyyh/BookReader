@@ -4,7 +4,10 @@ import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.component.AppComponent;
 
-public class ComMaleActivity extends BaseActivity {
+/**
+ * 女生区
+ */
+public class BookMaleActivity extends BaseActivity {
 
     @Override
     public int getLayoutId() {

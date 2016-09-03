@@ -7,9 +7,9 @@ import com.justwayward.reader.bean.HelpList;
 import com.justwayward.reader.bean.support.SelectionEvent;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerCommunityComponent;
-import com.justwayward.reader.ui.activity.ComOverallDetailActivity;
-import com.justwayward.reader.ui.contract.ComBookHelpContract;
-import com.justwayward.reader.ui.easyadapter.CommunityBookHelpAdapter;
+import com.justwayward.reader.ui.activity.BookDiscussionDetailActivity;
+import com.justwayward.reader.ui.contract.BookHelpContract;
+import com.justwayward.reader.ui.easyadapter.BookHelpAdapter;
 import com.justwayward.reader.ui.presenter.ComBookHelpPresenter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -24,7 +24,7 @@ import javax.inject.Inject;
  * @author lfh.
  * @date 16/9/3.
  */
-public class CommunityBookHelpFragment extends BaseRVFragment<HelpList.HelpsBean> implements ComBookHelpContract.View{
+public class BookHelpFragment extends BaseRVFragment<HelpList.HelpsBean> implements BookHelpContract.View{
 
     @Inject
     ComBookHelpPresenter mPresenter;
@@ -52,7 +52,7 @@ public class CommunityBookHelpFragment extends BaseRVFragment<HelpList.HelpsBean
 
     @Override
     public void configViews() {
-        mAdapter = new CommunityBookHelpAdapter(mContext);
+        mAdapter = new BookHelpAdapter(mContext);
         modiifyAdapter(true, true);
 
         mPresenter.attachView(this);
@@ -92,7 +92,7 @@ public class CommunityBookHelpFragment extends BaseRVFragment<HelpList.HelpsBean
     @Override
     public void onItemClick(int position) {
         HelpList.HelpsBean data = mAdapter.getItem(position);
-        ComOverallDetailActivity.startActivity(activity, data._id);
+        BookDiscussionDetailActivity.startActivity(activity, data._id);
     }
 
     @Override

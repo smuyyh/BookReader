@@ -20,7 +20,7 @@ import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerCommunityComponent;
 import com.justwayward.reader.ui.adapter.BestCommentListAdapter;
-import com.justwayward.reader.ui.contract.ComOverallDetailContract;
+import com.justwayward.reader.ui.contract.BookDiscussionDetailContract;
 import com.justwayward.reader.ui.easyadapter.CommentListAdapter;
 import com.justwayward.reader.ui.presenter.ComOverallDetailPresenter;
 import com.justwayward.reader.utils.GlideCircleTransform;
@@ -37,12 +37,15 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ComOverallDetailActivity extends BaseRVActivity implements ComOverallDetailContract.View, OnRvItemClickListener<CommentList.CommentsBean> {
+/**
+ * 综合讨论区详情
+ */
+public class BookDiscussionDetailActivity extends BaseRVActivity implements BookDiscussionDetailContract.View, OnRvItemClickListener<CommentList.CommentsBean> {
 
     private static final String INTENT_ID = "id";
 
     public static void startActivity(Context context, String id) {
-        context.startActivity(new Intent(context, ComOverallDetailActivity.class)
+        context.startActivity(new Intent(context, BookDiscussionDetailActivity.class)
                 .putExtra(INTENT_ID, id));
     }
 
@@ -116,7 +119,7 @@ public class ComOverallDetailActivity extends BaseRVActivity implements ComOvera
         mAdapter.addHeader(new RecyclerArrayAdapter.ItemView() {
             @Override
             public View onCreateView(ViewGroup parent) {
-                View headerView =  LayoutInflater.from(ComOverallDetailActivity.this).inflate(R.layout.header_view_com_overall_detail, parent, false);
+                View headerView =  LayoutInflater.from(BookDiscussionDetailActivity.this).inflate(R.layout.header_view_com_overall_detail, parent, false);
                 return headerView;
             }
 

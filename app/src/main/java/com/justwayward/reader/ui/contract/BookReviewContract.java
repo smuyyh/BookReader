@@ -8,7 +8,7 @@ import java.util.List;
  * @author lfh.
  * @date 16/9/3.
  */
-public interface ComBookReviewContract {
+public interface BookReviewContract {
 
     interface View {
         void showBookReviewList(List<BookReviewList.ReviewsBean> list, boolean isRefresh);

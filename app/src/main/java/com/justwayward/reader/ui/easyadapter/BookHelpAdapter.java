@@ -15,10 +15,10 @@ import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
  * @author lfh.
  * @date 16/9/3.
  */
-public class CommunityBookHelpAdapter extends RecyclerArrayAdapter<HelpList.HelpsBean> {
+public class BookHelpAdapter extends RecyclerArrayAdapter<HelpList.HelpsBean> {
 
 
-    public CommunityBookHelpAdapter(Context context) {
+    public BookHelpAdapter(Context context) {
         super(context);
     }
 

@@ -15,11 +15,11 @@ import butterknife.Bind;
 /**
  * 书评区
  */
-public class ComBookCommActivity extends BaseCommuniteActivity {
+public class BookReviewActivity extends BaseCommuniteActivity {
 
 
     public static void startActivity(Context context) {
-        context.startActivity(new Intent(context, ComBookCommActivity.class));
+        context.startActivity(new Intent(context, BookReviewActivity.class));
     }
 
     @Bind(R.id.slOverall)

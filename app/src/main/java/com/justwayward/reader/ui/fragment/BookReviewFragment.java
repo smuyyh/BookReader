@@ -7,9 +7,9 @@ import com.justwayward.reader.bean.BookReviewList;
 import com.justwayward.reader.bean.support.SelectionEvent;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerCommunityComponent;
-import com.justwayward.reader.ui.activity.ComOverallDetailActivity;
-import com.justwayward.reader.ui.contract.ComBookReviewContract;
-import com.justwayward.reader.ui.easyadapter.CommunityBookReviewAdapter;
+import com.justwayward.reader.ui.activity.BookDiscussionDetailActivity;
+import com.justwayward.reader.ui.contract.BookReviewContract;
+import com.justwayward.reader.ui.easyadapter.BookReviewAdapter;
 import com.justwayward.reader.ui.presenter.ComBookReviewPresenter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -25,7 +25,7 @@ import javax.inject.Inject;
  * @author lfh.
  * @date 16/9/3.
  */
-public class CommunityBookReviewFragment extends BaseRVFragment<BookReviewList.ReviewsBean> implements ComBookReviewContract.View {
+public class BookReviewFragment extends BaseRVFragment<BookReviewList.ReviewsBean> implements BookReviewContract.View {
 
     @Inject
     ComBookReviewPresenter mPresenter;
@@ -54,7 +54,7 @@ public class CommunityBookReviewFragment extends BaseRVFragment<BookReviewList.R
 
     @Override
     public void configViews() {
-        mAdapter = new CommunityBookReviewAdapter(mContext);
+        mAdapter = new BookReviewAdapter(mContext);
         modiifyAdapter(true, true);
 
         mPresenter.attachView(this);
@@ -95,7 +95,7 @@ public class CommunityBookReviewFragment extends BaseRVFragment<BookReviewList.R
     @Override
     public void onItemClick(int position) {
         BookReviewList.ReviewsBean data = mAdapter.getItem(position);
-        ComOverallDetailActivity.startActivity(activity, data._id);
+        BookDiscussionDetailActivity.startActivity(activity, data._id);
     }
 
     @Override
