@@ -65,20 +65,46 @@ public interface BookApiService {
     @GET("/book/hot-word")
     Observable<HotWord> getHotWord();
 
+    /**
+     * 关键字自动补全
+     *
+     * @param query
+     * @return
+     */
     @GET("/book/auto-complete")
     Observable<AutoComplete> autoComplete(@Query("query") String query);
 
+    /**
+     * 书籍查询
+     *
+     * @param query
+     * @return
+     */
     @GET("/book/fuzzy-search")
     Observable<SearchDetail> searchBooks(@Query("query") String query);
 
+    /**
+     * 通过作者查询书名
+     *
+     * @param author
+     * @return
+     */
+    @GET("/book/accurate-search")
+    Observable<BooksByTag> searchBooksByAuthor(@Query("author") String author);
+
+    /**
+     * 热门评论
+     *
+     * @param book
+     * @return
+     */
     @GET("/post/review/best-by-book")
     Observable<HotReview> getHotReview(@Query("book") String book);
 
     /**
-     *
      * @param book
-     * @param sort updated(默认排序)、created(最新发布)、comment-count(最多评论)
-     * @param type 默认“normal,vote”
+     * @param sort  updated(默认排序)、created(最新发布)、comment-count(最多评论)
+     * @param type  默认“normal,vote”
      * @param start
      * @param limit
      * @return
@@ -91,7 +117,7 @@ public interface BookApiService {
      * 书籍详情->社区->书评
      *
      * @param book
-     * @param sort updated(默认排序)、created(最新发布)、comment-count(最多评论)
+     * @param sort  updated(默认排序)、created(最新发布)、comment-count(最多评论)
      * @param start
      * @param limit
      * @return

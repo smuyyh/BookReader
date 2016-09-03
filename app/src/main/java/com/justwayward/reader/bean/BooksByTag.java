@@ -34,6 +34,7 @@ public class BooksByTag extends Base {
         public String author;
         public String shortIntro;
         public String cover;
+        public String site;
         public String cat;
         public String majorCate;
         public String minorCate;
