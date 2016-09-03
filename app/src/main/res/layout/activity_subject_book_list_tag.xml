@@ -38,19 +38,18 @@
         </LinearLayout>
 
         <com.justwayward.reader.view.ReboundScrollView
+            android:id="@+id/rsvTags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/common_gray_bg">
+            android:background="@color/common_gray_bg"
+            android:visibility="gone">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvTags"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/common_gray_bg"
-                android:foregroundGravity="center"
-                android:layerType="software"
-                android:paddingTop="10dp"
-                android:visibility="gone" />
+                android:paddingTop="10dp" />
         </com.justwayward.reader.view.ReboundScrollView>
     </FrameLayout>
 
