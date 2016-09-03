@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -140,6 +139,7 @@ public class ComOverallDetailActivity extends BaseRVActivity implements ComOvera
         headerViewHolder.tvTime.setText(RelativeDateFormat.format(disscussion.post.created));
         headerViewHolder.tvTitle.setText(disscussion.post.title);
         headerViewHolder.tvContent.setText(disscussion.post.content);
+        headerViewHolder.tvCommentCount.setText(String.format(mContext.getString(R.string.comment_comment_count), disscussion.post.commentCount));
     }
 
     @Override
@@ -160,7 +160,6 @@ public class ComOverallDetailActivity extends BaseRVActivity implements ComOvera
 
     @Override
     public void showDisscussionComments(CommentList list) {
-        headerViewHolder.tvCommentCount.setText(String.format(mContext.getString(R.string.comment_comment_count), list.comments.size()));
         mAdapter.addAll(list.comments);
         start=start+list.comments.size();
     }
@@ -186,12 +185,4 @@ public class ComOverallDetailActivity extends BaseRVActivity implements ComOvera
         CommentList.CommentsBean data  = (CommentList.CommentsBean) mAdapter.getItem(position);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

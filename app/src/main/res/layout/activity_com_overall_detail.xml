@@ -11,7 +11,7 @@
     <com.justwayward.reader.view.recyclerview.EasyRecyclerView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_empty="@layout/common_empty_view"
         app:layout_progress="@layout/common_progress_view"
         app:scrollbarStyle="insideOverlay" />
