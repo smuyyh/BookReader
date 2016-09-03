@@ -26,7 +26,7 @@ import javax.inject.Inject;
  * @author yuyh.
  * @date 16/9/2.
  */
-public class CommunityOverallFragment extends BaseRVFragment implements ComOverallContract.View{
+public class CommunityOverallFragment extends BaseRVFragment<DiscussionList.PostsBean> implements ComOverallContract.View{
 
     @Inject
     ComOverallPresenter mPresenter;

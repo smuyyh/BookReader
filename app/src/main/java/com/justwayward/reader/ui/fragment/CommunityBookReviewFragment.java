@@ -25,7 +25,7 @@ import javax.inject.Inject;
  * @author lfh.
  * @date 16/9/3.
  */
-public class CommunityBookReviewFragment extends BaseRVFragment implements ComBookReviewContract.View {
+public class CommunityBookReviewFragment extends BaseRVFragment<BookReviewList.ReviewsBean> implements ComBookReviewContract.View {
 
     @Inject
     ComBookReviewPresenter mPresenter;
@@ -94,7 +94,7 @@ public class CommunityBookReviewFragment extends BaseRVFragment implements ComBo
 
     @Override
     public void onItemClick(int position) {
-        BookReviewList.ReviewsBean data = (BookReviewList.ReviewsBean) mAdapter.getItem(position);
+        BookReviewList.ReviewsBean data = mAdapter.getItem(position);
         ComOverallDetailActivity.startActivity(activity, data._id);
     }
 

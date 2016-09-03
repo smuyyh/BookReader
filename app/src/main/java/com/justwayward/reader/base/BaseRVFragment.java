@@ -16,11 +16,11 @@ import butterknife.Bind;
  * @author lfh.
  * @date 16/9/3.
  */
-public abstract class BaseRVFragment extends BaseFragment implements OnLoadMoreListener, OnRefreshListener,RecyclerArrayAdapter.OnItemClickListener {
+public abstract class BaseRVFragment<T> extends BaseFragment implements OnLoadMoreListener, OnRefreshListener,RecyclerArrayAdapter.OnItemClickListener {
 
     @Bind(R.id.recyclerview)
     protected EasyRecyclerView mRecyclerView;
-    protected RecyclerArrayAdapter mAdapter;
+    protected RecyclerArrayAdapter<T> mAdapter;
 
     protected int start = 0;
     protected int limit = 20;

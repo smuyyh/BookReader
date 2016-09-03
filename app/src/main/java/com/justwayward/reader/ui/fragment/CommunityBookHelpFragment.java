@@ -24,7 +24,7 @@ import javax.inject.Inject;
  * @author lfh.
  * @date 16/9/3.
  */
-public class CommunityBookHelpFragment extends BaseRVFragment implements ComBookHelpContract.View{
+public class CommunityBookHelpFragment extends BaseRVFragment<HelpList.HelpsBean> implements ComBookHelpContract.View{
 
     @Inject
     ComBookHelpPresenter mPresenter;
@@ -91,7 +91,7 @@ public class CommunityBookHelpFragment extends BaseRVFragment implements ComBook
 
     @Override
     public void onItemClick(int position) {
-        HelpList.HelpsBean data = (HelpList.HelpsBean) mAdapter.getItem(position);
+        HelpList.HelpsBean data = mAdapter.getItem(position);
         ComOverallDetailActivity.startActivity(activity, data._id);
     }
 
