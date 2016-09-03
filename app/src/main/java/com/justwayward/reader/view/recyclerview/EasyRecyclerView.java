@@ -292,7 +292,7 @@ public class EasyRecyclerView extends FrameLayout {
             } else {
                 count = recyclerView.getAdapter().getItemCount();
             }
-            if (count == 0) {
+            if (count == 0 &&((RecyclerArrayAdapter) recyclerView.getAdapter()).getHeaderCount()==0) {
                 log("no data:"+"show empty");
                 recyclerView.showEmpty();
             } else{
