@@ -11,15 +11,11 @@ import java.util.List;
 public interface ComOverallContract {
 
     interface View {
-        void showDisscussionList(List<DiscussionList.PostsBean> list);
-
-        void complete();
+        void showDisscussionList(List<DiscussionList.PostsBean> list, boolean isRefresh);
     }
 
     interface Presenter extends BaseContract.BasePresenter<View> {
-
         void getDisscussionList(String sort, String distillate, int start, int limit);
-
     }
 
 }

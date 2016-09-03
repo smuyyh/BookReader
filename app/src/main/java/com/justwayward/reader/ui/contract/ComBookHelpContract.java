@@ -11,15 +11,11 @@ import java.util.List;
 public interface ComBookHelpContract {
 
     interface View {
-        void showHelpList(List<HelpList.HelpsBean> list);
-
-        void complete();
+        void showHelpList(List<HelpList.HelpsBean> list, boolean isRefresh);
     }
 
     interface Presenter extends BaseContract.BasePresenter<View> {
-
         void getHelpList(String sort, String distillate, int start, int limit);
-
     }
 
 }

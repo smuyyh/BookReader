@@ -31,25 +31,25 @@ public class ComBookReviewPresenter implements ComBookReviewContract.Presenter {
     }
 
     @Override
-    public void getBookReviewList(String sort, String type,String distillate, int start, int limit) {
+    public void getBookReviewList(String sort, String type, String distillate, final int start, int limit) {
         bookApi.getBookReviewList("all", sort, type, start + "", limit + "", distillate)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BookReviewList>() {
                     @Override
                     public void onCompleted() {
-                        view.complete();
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         LogUtils.e("getBookReviewList:" + e.toString());
-                        view.complete();
                     }
 
                     @Override
                     public void onNext(BookReviewList list) {
-                        view.showBookReviewList(list.reviews);
+                        boolean isRefresh = start == 0 ? true : false;
+                        view.showBookReviewList(list.reviews,isRefresh);
                     }
                 });
     }

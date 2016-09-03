@@ -20,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.justwayward.reader.utils.GlideCircleTransform;
+import com.justwayward.reader.utils.GlideRoundTransform;
 
 /**
  * M为这个itemView对应的model。
@@ -156,7 +158,17 @@ abstract public class BaseViewHolder<M> extends RecyclerView.ViewHolder {
         return this;
     }
 
+    public BaseViewHolder setCircleImageUrl(int viewId, String imgUrl, int placeHolderRes) {
+        ImageView view = getView(viewId);
+        Glide.with(mContext).load(imgUrl).placeholder(placeHolderRes) .transform(new GlideCircleTransform(mContext)).into(view);
+        return this;
+    }
 
+    public BaseViewHolder setRoundImageUrl(int viewId, String imgUrl, int placeHolderRes) {
+        ImageView view = getView(viewId);
+        Glide.with(mContext).load(imgUrl).placeholder(placeHolderRes) .transform(new GlideRoundTransform(mContext)).into(view);
+        return this;
+    }
 
     public BaseViewHolder setImageBitmap(int viewId, Bitmap imgBitmap) {
         ImageView view = getView(viewId);

@@ -11,15 +11,11 @@ import java.util.List;
 public interface ComBookReviewContract {
 
     interface View {
-        void showBookReviewList(List<BookReviewList.ReviewsBean> list);
-
-        void complete();
+        void showBookReviewList(List<BookReviewList.ReviewsBean> list, boolean isRefresh);
     }
 
     interface Presenter extends BaseContract.BasePresenter<View> {
-
         void getBookReviewList(String sort, String type,String distillate, int start, int limit);
-
     }
 
 }

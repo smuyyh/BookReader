@@ -31,25 +31,25 @@ public class ComBookHelpPresenter implements ComBookHelpContract.Presenter {
     }
 
     @Override
-    public void getHelpList(String sort, String distillate, int start, int limit) {
+    public void getHelpList(String sort, String distillate, final int start, int limit) {
         bookApi.getHelpList("all", sort, start + "", limit + "", distillate)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<HelpList>() {
                     @Override
                     public void onCompleted() {
-                        view.complete();
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         LogUtils.e("getHelpList:" + e.toString());
-                        view.complete();
                     }
 
                     @Override
                     public void onNext(HelpList list) {
-                        view.showHelpList(list.helps);
+                        boolean isRefresh = start == 0 ? true : false;
+                        view.showHelpList(list.helps,isRefresh);
                     }
                 });
     }

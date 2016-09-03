@@ -31,25 +31,25 @@ public class ComOverallPresenter implements ComOverallContract.Presenter {
     }
 
     @Override
-    public void getDisscussionList(String sort, String distillate, int start, int limit) {
+    public void getDisscussionList(String sort, String distillate, final int start, int limit) {
         bookApi.getDisscussionList("ramble", "all", sort, "all", start + "", limit + "", distillate)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<DiscussionList>() {
                     @Override
                     public void onCompleted() {
-                        view.complete();
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         LogUtils.e("getCategoryList:" + e.toString());
-                        view.complete();
                     }
 
                     @Override
                     public void onNext(DiscussionList list) {
-                        view.showDisscussionList(list.posts);
+                        boolean isRefresh = start == 0 ? true : false;
+                        view.showDisscussionList(list.posts, isRefresh);
                     }
                 });
     }
