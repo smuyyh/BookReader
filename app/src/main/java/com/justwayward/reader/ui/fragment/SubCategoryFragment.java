@@ -83,7 +83,6 @@ public class SubCategoryFragment extends BaseRVFragment<BooksByCats.BooksBean> i
     public void showCategoryList(BooksByCats data) {
         mAdapter.clear();
         mAdapter.addAll(data.books);
-        mAdapter.notifyDataSetChanged();
     }
 
     @Override

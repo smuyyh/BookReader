@@ -94,7 +94,6 @@ public class SubjectFragment extends BaseRVFragment<BookLists.BookListsBean> imp
     public void showBookList(List<BookLists.BookListsBean> bookLists) {
         mAdapter.clear();
         mAdapter.addAll(bookLists);
-        mAdapter.notifyDataSetChanged();
     }
 
     @Override

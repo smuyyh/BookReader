@@ -66,7 +66,6 @@ public class SubRankFragment extends BaseRVFragment<BooksByCats.BooksBean> imple
     public void showCategoryList(BooksByCats data) {
         mAdapter.clear();
         mAdapter.addAll(data.books);
-        mAdapter.notifyDataSetChanged();
     }
 
     @Override
