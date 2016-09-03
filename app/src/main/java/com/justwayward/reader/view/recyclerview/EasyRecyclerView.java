@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
+import com.justwayward.reader.view.recyclerview.decoration.DividerDecoration;
 import com.justwayward.reader.view.recyclerview.swipe.OnRefreshListener;
 import com.justwayward.reader.view.recyclerview.swipe.SwipeRefreshLayout;
 
@@ -228,6 +229,20 @@ public class EasyRecyclerView extends FrameLayout {
      */
     public void setLayoutManager(RecyclerView.LayoutManager manager) {
         mRecycler.setLayoutManager(manager);
+    }
+
+    /**
+     * Set the ItemDecoration to the recycler
+     *
+     * @param color
+     * @param height
+     * @param paddingLeft
+     * @param paddingRight
+     */
+    public void setItemDecoration(int color, int height, int paddingLeft, int paddingRight) {
+        DividerDecoration itemDecoration = new DividerDecoration(color,height,paddingLeft,paddingRight);
+        itemDecoration.setDrawLastItem(false);
+        mRecycler.addItemDecoration(itemDecoration);
     }
 
 

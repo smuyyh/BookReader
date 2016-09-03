@@ -3,7 +3,6 @@ package com.justwayward.reader.base;
 import android.support.v7.widget.LinearLayoutManager;
 
 import com.justwayward.reader.R;
-import com.justwayward.reader.view.SupportDividerItemDecoration;
 import com.justwayward.reader.view.recyclerview.EasyRecyclerView;
 import com.justwayward.reader.view.recyclerview.adapter.OnLoadMoreListener;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
@@ -35,7 +34,7 @@ public abstract class BaseRVActivity extends BaseActivity implements OnLoadMoreL
         }
         if (mRecyclerView != null) {
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            mRecyclerView.addItemDecoration(new SupportDividerItemDecoration(mContext, LinearLayoutManager.VERTICAL));
+            mRecyclerView.setItemDecoration(R.color.common_divider_narrow, 1,0,0);
         }
     }
 
