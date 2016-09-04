@@ -27,7 +27,7 @@ import javax.inject.Inject;
  * @author yuyh.
  * @date 16/9/1.
  */
-public class SubCategoryFragment extends BaseRVFragment<BooksByCats.BooksBean> implements SubCategoryFragmentContract.View {
+public class SubCategoryFragment extends BaseRVFragment<BooksByCats.BooksBean, SubCategoryAdapter> implements SubCategoryFragmentContract.View {
 
     public final static String BUNDLE_MAJOR = "major";
     public final static String BUNDLE_MINOR = "minor";
@@ -70,8 +70,7 @@ public class SubCategoryFragment extends BaseRVFragment<BooksByCats.BooksBean> i
 
     @Override
     public void configViews() {
-        mAdapter = new SubCategoryAdapter(mContext);
-        modiifyAdapter(true, true);
+        initAdapter(SubCategoryAdapter.class, true, true);
 
         mPresenter.attachView(this);
     }

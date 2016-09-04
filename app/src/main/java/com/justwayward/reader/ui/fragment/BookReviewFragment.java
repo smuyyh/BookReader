@@ -25,7 +25,7 @@ import javax.inject.Inject;
  * @author lfh.
  * @date 16/9/3.
  */
-public class BookReviewFragment extends BaseRVFragment<BookReviewList.ReviewsBean> implements BookReviewContract.View {
+public class BookReviewFragment extends BaseRVFragment<BookReviewList.ReviewsBean, BookReviewAdapter> implements BookReviewContract.View {
 
     @Inject
     BookReviewPresenter mPresenter;
@@ -54,8 +54,7 @@ public class BookReviewFragment extends BaseRVFragment<BookReviewList.ReviewsBea
 
     @Override
     public void configViews() {
-        mAdapter = new BookReviewAdapter(mContext);
-        modiifyAdapter(true, true);
+        initAdapter(BookReviewAdapter.class, true, true);
 
         mPresenter.attachView(this);
         onRefresh();

@@ -26,7 +26,7 @@ import javax.inject.Inject;
  * @author yuyh.
  * @date 16/9/2.
  */
-public class BookDiscussionFragment extends BaseRVFragment<DiscussionList.PostsBean> implements BookDiscussionContract.View{
+public class BookDiscussionFragment extends BaseRVFragment<DiscussionList.PostsBean, BookDiscussionAdapter> implements BookDiscussionContract.View{
 
     @Inject
     BookDiscussionPresenter mPresenter;
@@ -54,8 +54,7 @@ public class BookDiscussionFragment extends BaseRVFragment<DiscussionList.PostsB
 
     @Override
     public void configViews() {
-        mAdapter = new BookDiscussionAdapter(mContext);
-        modiifyAdapter(true, true);
+        initAdapter(BookDiscussionAdapter.class, true, true);
 
         mPresenter.attachView(this);
         onRefresh();

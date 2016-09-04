@@ -24,7 +24,7 @@ import javax.inject.Inject;
  * @author lfh.
  * @date 16/9/3.
  */
-public class BookHelpFragment extends BaseRVFragment<BookHelpList.HelpsBean> implements BookHelpContract.View{
+public class BookHelpFragment extends BaseRVFragment<BookHelpList.HelpsBean, BookHelpAdapter> implements BookHelpContract.View{
 
     @Inject
     BookHelpPresenter mPresenter;
@@ -52,8 +52,7 @@ public class BookHelpFragment extends BaseRVFragment<BookHelpList.HelpsBean> imp
 
     @Override
     public void configViews() {
-        mAdapter = new BookHelpAdapter(mContext);
-        modiifyAdapter(true, true);
+        initAdapter(BookHelpAdapter.class, true, true);
 
         mPresenter.attachView(this);
         onRefresh();

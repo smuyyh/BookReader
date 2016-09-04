@@ -20,7 +20,7 @@ import javax.inject.Inject;
  * @author yuyh.
  * @date 16/9/1.
  */
-public class SubRankFragment extends BaseRVFragment<BooksByCats.BooksBean> implements SubRankContract.View {
+public class SubRankFragment extends BaseRVFragment<BooksByCats.BooksBean, SubCategoryAdapter> implements SubRankContract.View {
 
     public final static String BUNDLE_ID = "_id";
 
@@ -49,8 +49,7 @@ public class SubRankFragment extends BaseRVFragment<BooksByCats.BooksBean> imple
 
     @Override
     public void configViews() {
-        mAdapter = new SubCategoryAdapter(mContext);
-        modiifyAdapter(true, false);
+        initAdapter(SubCategoryAdapter.class, true, false);
 
         mPresenter.attachView(this);
         mPresenter.getRankList(id);
