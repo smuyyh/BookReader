@@ -22,6 +22,8 @@ import com.justwayward.reader.bean.Disscussion;
 import com.justwayward.reader.bean.BookHelp;
 import com.justwayward.reader.bean.HotReview;
 import com.justwayward.reader.bean.HotWord;
+import com.justwayward.reader.bean.user.Following;
+import com.justwayward.reader.bean.user.Login;
 import com.justwayward.reader.bean.PostCount;
 import com.justwayward.reader.bean.RankingList;
 import com.justwayward.reader.bean.Rankings;
@@ -32,6 +34,7 @@ import com.justwayward.reader.bean.SearchDetail;
 import java.util.List;
 
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -318,4 +321,18 @@ public interface BookApiService {
      */
     @GET("/post/help/{helpId}")
     Observable<BookHelp> getBookHelpDetail(@Path("helpId") String helpId);
+
+    /**
+     * 第三方登陆
+     *
+     * @param platform_uid
+     * @param platform_token
+     * @param platform_code  “QQ”
+     * @return
+     */
+    @POST("/user/login")
+    Observable<Login> login(String platform_uid, String platform_token, String platform_code);
+
+    @GET("/user/followings/{userid}")
+    Observable<Following> getFollowings(@Path("userid") String userId);
 }
