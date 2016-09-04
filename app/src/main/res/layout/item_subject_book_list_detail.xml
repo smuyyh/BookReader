@@ -119,7 +119,7 @@
                 android:ellipsize="end"
                 android:maxLines="10"
                 android:text="00000"
-                android:textColor="@color/common_h3" />
+                android:textColor="@color/common_h2" />
 
         </LinearLayout>
 
