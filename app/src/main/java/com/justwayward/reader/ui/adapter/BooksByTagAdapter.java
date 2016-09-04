@@ -37,7 +37,7 @@ public class BooksByTagAdapter extends EasyRVAdapter<BooksByTag.TagBook> {
             }
         }
 
-        holder.setImageUrl(R.id.ivBookCover, Constant.IMG_BASE_URL + item.cover, R.drawable.cover_default)
+        holder.setRoundImageUrl(R.id.ivBookCover, Constant.IMG_BASE_URL + item.cover, R.drawable.cover_default)
                 .setText(R.id.tvBookListTitle, item.title)
                 .setText(R.id.tvShortIntro, item.shortIntro)
                 .setText(R.id.tvTags, (item.tags.size() == 0 ? "" : sbTags.substring(0, sbTags

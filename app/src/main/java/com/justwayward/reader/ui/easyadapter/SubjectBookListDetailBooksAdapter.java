@@ -24,7 +24,7 @@ public class SubjectBookListDetailBooksAdapter extends RecyclerArrayAdapter<Book
         return new BaseViewHolder<BookListDetail.BookListBean.BooksBean>(parent, R.layout.item_subject_book_list_detail) {
             @Override
             public void setData(BookListDetail.BookListBean.BooksBean item) {
-                holder.setImageUrl(R.id.ivBookCover, Constant.IMG_BASE_URL + item.getBook().getCover(), R.drawable.cover_default)
+                holder.setRoundImageUrl(R.id.ivBookCover, Constant.IMG_BASE_URL + item.getBook().getCover(), R.drawable.cover_default)
                         .setText(R.id.tvBookListTitle, item.getBook().getTitle())
                         .setText(R.id.tvBookAuthor, item.getBook().getAuthor())
                         .setText(R.id.tvBookLatelyFollower, String.format(mContext.getResources().getString(R.string.subject_book_list_detail_book_lately_follower),

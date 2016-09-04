@@ -26,6 +26,7 @@ import com.justwayward.reader.ui.presenter.BookDetailPresenter;
 import com.justwayward.reader.view.DrawableCenterButton;
 import com.justwayward.reader.view.TagColor;
 import com.justwayward.reader.view.TagGroup;
+import com.yuyh.easyadapter.glide.GlideRoundTransform;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -152,7 +153,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     @Override
     public void showBookDetail(BookDetail data) {
         Glide.with(mContext).load(Constant.IMG_BASE_URL + data.cover).placeholder(R.drawable
-                .cover_default).into(mIvBookCover);
+                .cover_default).transform(new GlideRoundTransform(mContext)).into(mIvBookCover);
 
         mTvBookTitle.setText(data.title);
         mTvAuthor.setText(String.format(getString(R.string.book_detail_author), data.author));

@@ -90,7 +90,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:background="@color/common_bg"
             android:layout_toRightOf="@id/ivBookCover">
 
             <TextView
@@ -165,7 +164,7 @@
         android:id="@+id/tvToReviewTheScoring"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/common_bg"
+        android:background="@color/common_gray_bg"
         android:padding="15dp"
         android:text="@string/book_review_detail_to_review_the_scoring"
         android:textColor="@color/common_h3" />
@@ -232,7 +231,7 @@
         android:id="@+id/tvBestComments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/common_bg"
+        android:background="@color/common_gray_bg"
         android:padding="15dp"
         android:text="@string/comment_best_comment"
         android:textColor="@color/common_h3"
@@ -250,7 +249,7 @@
         android:id="@+id/tvCommentCount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/common_bg"
+        android:background="@color/common_gray_bg"
         android:padding="15dp"
         android:text="@string/comment_comment_count"
         android:textColor="@color/common_h3" />

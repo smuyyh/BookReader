@@ -27,7 +27,7 @@ public class BookReviewAdapter extends RecyclerArrayAdapter<BookReviewList.Revie
         return new BaseViewHolder<BookReviewList.ReviewsBean>(parent, R.layout.item_community_book_review_list) {
             @Override
             public void setData(BookReviewList.ReviewsBean item) {
-                holder.setImageUrl(R.id.ivBookCover, Constant.IMG_BASE_URL + item.book.cover,R.drawable.cover_default)
+                holder.setRoundImageUrl(R.id.ivBookCover, Constant.IMG_BASE_URL + item.book.cover,R.drawable.cover_default)
                         .setText(R.id.tvBookTitle, item.book.title)
                         .setText(R.id.tvBookType, String.format(mContext.getString(R.string.book_review_book_type), Constant.bookType.get(item.book.type)))
                         .setText(R.id.tvTitle, item.title)

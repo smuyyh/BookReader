@@ -28,7 +28,7 @@ public class SearchAdapter extends RecyclerArrayAdapter<SearchDetail.SearchBooks
         return new BaseViewHolder<SearchDetail.SearchBooks>(parent, R.layout.item_search_result_list) {
             @Override
             public void setData(SearchDetail.SearchBooks item) {
-                holder.setImageUrl(R.id.ivBookCover, Constant.IMG_BASE_URL + item.cover, R.drawable.cover_default)
+                holder.setRoundImageUrl(R.id.ivBookCover, Constant.IMG_BASE_URL + item.cover, R.drawable.cover_default)
                         .setText(R.id.tvBookListTitle, item.title)
                         .setText(R.id.tvLatelyFollower, String.format(mContext.getString(R.string.search_result_lately_follower), item.latelyFollower))
                         .setText(R.id.tvRetentionRatio, (TextUtils.isEmpty(item.retentionRatio) ? String.format(mContext.getString(R.string.search_result_retention_ratio), "0")

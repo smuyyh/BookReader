@@ -26,7 +26,7 @@ public class SubjectBookListAdapter extends RecyclerArrayAdapter<BookLists.BookL
             @Override
             public void setData(BookLists.BookListsBean item) {
                 super.setData(item);
-                holder.setImageUrl(R.id.ivSubCateCover, Constant.IMG_BASE_URL + item.cover, R.drawable.cover_default)
+                holder.setRoundImageUrl(R.id.ivSubCateCover, Constant.IMG_BASE_URL + item.cover, R.drawable.cover_default)
                         .setText(R.id.tvSubCateTitle, item.title)
                         .setText(R.id.tvSubCateAuthor, item.author)
                         .setText(R.id.tvSubCateShort, item.desc)

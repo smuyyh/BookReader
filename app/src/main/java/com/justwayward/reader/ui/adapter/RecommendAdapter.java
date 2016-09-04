@@ -28,7 +28,7 @@ public class RecommendAdapter extends EasyRVAdapter<Recommend.RecommendBooks> {
     @Override
     protected void onBindData(final EasyRVHolder holder, final int position, final Recommend.RecommendBooks item) {
 
-        holder.setImageUrl(R.id.ivRecommendCover, Constant.IMG_BASE_URL + item.cover, R.drawable.cover_default)
+        holder.setRoundImageUrl(R.id.ivRecommendCover, Constant.IMG_BASE_URL + item.cover, R.drawable.cover_default)
                 .setText(R.id.tvRecommendTitle, item.title)
                 .setText(R.id.tvRecommendShort, item.lastChapter);
 

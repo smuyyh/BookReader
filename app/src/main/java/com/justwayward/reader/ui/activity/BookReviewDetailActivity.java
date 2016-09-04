@@ -30,6 +30,7 @@ import com.justwayward.reader.view.SupportDividerItemDecoration;
 import com.justwayward.reader.view.XLHRatingBar;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
 import com.yuyh.easyadapter.glide.GlideCircleTransform;
+import com.yuyh.easyadapter.glide.GlideRoundTransform;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -158,6 +159,7 @@ public class BookReviewDetailActivity extends BaseRVActivity<CommentList.Comment
 
         Glide.with(mContext).load(Constant.IMG_BASE_URL + data.review.book.cover)
                 .placeholder(R.drawable.cover_default)
+                .transform(new GlideRoundTransform(mContext))
                 .into(headerViewHolder.ivBookCover);
         headerViewHolder.tvBookTitle.setText(data.review.book.title);
 

@@ -27,7 +27,7 @@ public class SubCategoryAdapter extends RecyclerArrayAdapter<BooksByCats.BooksBe
             @Override
             public void setData(BooksByCats.BooksBean item) {
                 super.setData(item);
-                holder.setImageUrl(R.id.ivSubCateCover, Constant.IMG_BASE_URL + item.cover, R.drawable.cover_default)
+                holder.setRoundImageUrl(R.id.ivSubCateCover, Constant.IMG_BASE_URL + item.cover, R.drawable.cover_default)
                         .setText(R.id.tvSubCateTitle, item.title)
                         .setText(R.id.tvSubCateAuthor, (item.author == null ? "未知" : item.author) + " | " + (item.majorCate == null ? "未知" : item.majorCate))
                         .setText(R.id.tvSubCateShort, item.shortIntro)
