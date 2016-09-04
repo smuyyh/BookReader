@@ -3,8 +3,11 @@ package com.justwayward.reader.base;
 import android.graphics.Color;
 import android.support.annotation.StringDef;
 
+import org.apache.commons.collections4.map.HashedMap;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.Map;
 
 /**
  * @author yuyh.
@@ -93,7 +96,13 @@ public class Constant {
             BookType.DSYN,
             BookType.LSJS,
             BookType.YXJJ,
-            BookType.KHLY
+            BookType.KHLY,
+            BookType.CYJK,
+            BookType.HMZC,
+            BookType.XDYQ,
+            BookType.GDYQ,
+            BookType.HXYQ,
+            BookType.DMTR
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface BookType {
@@ -123,4 +132,20 @@ public class Constant {
 
         String DMTR = "dmtr";
     }
+
+    public static Map<String, String> bookType = new HashedMap<String, String>() {{
+        put("qt", "其他");
+        put(BookType.XHQH, "玄幻奇幻");
+        put(BookType.WXXX, "武侠仙侠");
+        put(BookType.DSYN, "都市异能");
+        put(BookType.LSJS, "历史军事");
+        put(BookType.YXJJ, "游戏竞技");
+        put(BookType.KHLY, "科幻灵异");
+        put(BookType.CYJK, "穿越架空");
+        put(BookType.HMZC, "豪门总裁");
+        put(BookType.XDYQ, "现代言情");
+        put(BookType.GDYQ, "古代言情");
+        put(BookType.HXYQ, "幻想言情");
+        put(BookType.DMTR, "耽美同人");
+    }};
 }
