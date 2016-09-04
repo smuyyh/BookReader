@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:xlhRatingBar="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,7 +20,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:scaleType="centerInside"/>
+            android:scaleType="centerInside" />
 
         <TextView
             android:id="@+id/tvBookAuthor"
@@ -30,7 +31,7 @@
             android:singleLine="true"
             android:text="我就是静静"
             android:textColor="@color/light_coffee"
-            android:textSize="13sp"/>
+            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/tvTime"
@@ -42,7 +43,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:text="昨天"
-            android:textColor="@color/common_h3"/>
+            android:textColor="@color/common_h3" />
 
     </RelativeLayout>
 
@@ -52,9 +53,8 @@
         android:layout_height="wrap_content"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:text="1111"
         android:textColor="@color/common_h1"
-        android:textSize="16dp"/>
+        android:textSize="16dp" />
 
     <com.justwayward.reader.view.BookContentTextView
         android:id="@+id/tvContent"
@@ -66,7 +66,7 @@
         android:paddingRight="15dp"
         android:text=""
         android:textColor="@color/common_h2"
-        android:textSize="16dp"/>
+        android:textSize="16dp" />
 
     <RelativeLayout
         android:id="@+id/rlBookInfo"
@@ -84,7 +84,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:scaleType="centerCrop"
-            tools:src="@drawable/cover_default"/>
+            tools:src="@drawable/cover_default" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -101,18 +101,41 @@
                 android:singleLine="true"
                 android:textColor="@color/common_h1"
                 android:textSize="15sp"
-                tools:text="灭生决"/>
+                tools:text="灭生决" />
 
-            <TextView
-                android:id="@+id/tvScore"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tvBookTitle"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:textColor="@color/common_h2"
-                android:textSize="13sp"
-                android:text="@string/book_review_detail_score"/>
+                android:layout_below="@id/tvBookTitle">
+
+                <TextView
+                    android:id="@+id/tvScore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="@string/book_review_detail_score"
+                    android:textColor="@color/common_h2"
+                    android:textSize="13sp" />
+
+                <com.justwayward.reader.view.XLHRatingBar
+                    android:id="@+id/rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/tvScore"
+                    xlhRatingBar:canEdit="false"
+                    xlhRatingBar:countSelected="0"
+                    xlhRatingBar:differentSize="false"
+                    xlhRatingBar:dividerWidth="3dp"
+                    xlhRatingBar:starCount="5"
+                    xlhRatingBar:stateResId="@drawable/rating_bar_selector"
+                    xlhRatingBar:widthAndHeight="15dp" />
+            </RelativeLayout>
+
+
         </RelativeLayout>
     </RelativeLayout>
 
@@ -126,7 +149,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
-            android:src="@drawable/post_detail_more"/>
+            android:src="@drawable/post_detail_more" />
 
         <ImageView
             android:id="@+id/ivShare"
@@ -134,7 +157,7 @@
             android:layout_height="30dp"
             android:layout_marginRight="10dp"
             android:layout_toLeftOf="@+id/ivMore"
-            android:src="@drawable/post_detail_share"/>
+            android:src="@drawable/post_detail_share" />
     </RelativeLayout>
 
     <TextView
@@ -144,7 +167,7 @@
         android:background="@color/light_white"
         android:padding="15dp"
         android:text="@string/book_review_detail_to_review_the_scoring"
-        android:textColor="@color/common_h3"/>
+        android:textColor="@color/common_h3" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -165,7 +188,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="3dp"
                 android:textColor="@color/common_h2"
-                tools:text="6"/>
+                tools:text="6" />
 
             <TextView
                 android:id="@+id/tvHelpfullYes"
@@ -174,7 +197,7 @@
                 android:drawableLeft="@drawable/review_useful_yes_nor"
                 android:drawablePadding="5dp"
                 android:text="@string/book_review_detail_helpful_yes"
-                android:textColor="@color/common_h2"/>
+                android:textColor="@color/common_h2" />
         </LinearLayout>
 
         <LinearLayout
@@ -190,7 +213,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="3dp"
                 android:textColor="@color/common_h2"
-                tools:text="0"/>
+                tools:text="0" />
 
             <TextView
                 android:id="@+id/tvHelpfullNo"
@@ -199,7 +222,7 @@
                 android:drawableLeft="@drawable/review_useful_no_nor"
                 android:drawablePadding="5dp"
                 android:text="@string/book_review_detail_helpful_no"
-                android:textColor="@color/common_h2"/>
+                android:textColor="@color/common_h2" />
         </LinearLayout>
 
     </LinearLayout>
@@ -213,14 +236,14 @@
         android:text="@string/comment_best_comment"
         android:textColor="@color/common_h3"
         android:visibility="gone"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvBestComments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/tvCommentCount"
@@ -229,6 +252,6 @@
         android:background="@color/light_white"
         android:padding="15dp"
         android:text="@string/comment_comment_count"
-        android:textColor="@color/common_h3"/>
+        android:textColor="@color/common_h3" />
 
 </LinearLayout>

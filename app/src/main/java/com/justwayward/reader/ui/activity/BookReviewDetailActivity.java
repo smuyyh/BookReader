@@ -27,6 +27,7 @@ import com.justwayward.reader.ui.presenter.BookReviewDetailPresenter;
 import com.justwayward.reader.utils.RelativeDateFormat;
 import com.justwayward.reader.view.BookContentTextView;
 import com.justwayward.reader.view.SupportDividerItemDecoration;
+import com.justwayward.reader.view.XLHRatingBar;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
 import com.yuyh.easyadapter.glide.GlideCircleTransform;
 
@@ -87,6 +88,8 @@ public class BookReviewDetailActivity extends BaseRVActivity implements BookRevi
         RecyclerView rvBestComments;
         @Bind(R.id.tvCommentCount)
         TextView tvCommentCount;
+        @Bind(R.id.rating)
+        XLHRatingBar ratingBar;
 
         public HeaderViewHolder(View view) {
             ButterKnife.bind(this, view);   //view绑定
@@ -167,9 +170,11 @@ public class BookReviewDetailActivity extends BaseRVActivity implements BookRevi
         headerViewHolder.rlBookInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BookDetailActivity.startActivity(BookReviewDetailActivity.this,data.review.book._id);
+                BookDetailActivity.startActivity(BookReviewDetailActivity.this, data.review.book._id);
             }
         });
+
+        headerViewHolder.ratingBar.setCountSelected(data.review.rating);
     }
 
     @Override

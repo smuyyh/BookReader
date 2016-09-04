@@ -77,4 +77,14 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="XlHRatingBar">
+        <attr name="starCount" format="integer" /><!--总的星星数-->
+        <attr name="canEdit" format="boolean" /><!--是否可以点击选择，有时候纯展示用不需要选择-->
+        <attr name="widthAndHeight" format="dimension" /><!--单个星星的宽度-->
+        <attr name="dividerWidth" format="dimension" /><!--星星左右间距-->
+        <attr name="countSelected" format="integer" /><!--当前已选中的星星个数-->
+        <attr name="stateResId" format="reference" /><!--单个星星不同状态下对应的图标-->
+        <attr name="differentSize" format="boolean" /><!--是否支持大小不等星星样式-->
+    </declare-styleable>
+
 </resources>

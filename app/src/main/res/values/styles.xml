@@ -1,6 +1,7 @@
 <resources>
 
-     BaseContract application theme.
+    BaseContract application theme.
+
     <style name="AppTheme" parent="Theme.AppCompat.DayNight">
         <!--标题栏的颜色-->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -19,7 +20,6 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
-
 
 
     <style name="TagGroup">
@@ -81,5 +81,7 @@
         <item name="atg_checkedMarkerColor">#FF3D7F</item>
         <item name="atg_checkedBackgroundColor">#FFFFFF</item>
         <item name="atg_pressedBackgroundColor">#FF99B1</item>
+
     </style>
+
 </resources>
