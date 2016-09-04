@@ -61,4 +61,14 @@
     <string name="book_review_detail_to_review_the_scoring">给书评打分</string>
     <string name="book_review_detail_score">楼主打分：</string>
 
+    <!--主页菜单-->
+    <string name="menu_main_please_login">请登录</string>
+    <string name="menu_main_my_message">我的消息</string>
+    <string name="menu_main_sync_bookshelf">同步书架</string>
+    <string name="menu_main_wifi_book">WIFI传书</string>
+    <string name="menu_main_feedback">意见反馈</string>
+    <string name="menu_main_night_mode">夜间模式</string>
+    <string name="menu_main_settings">设置</string>
+    <string name="menu_main_scan_local_book">扫描本地书籍</string>
+
 </resources>

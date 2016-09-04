@@ -1,4 +1,5 @@
 <resources>
     <string name="book_read_mode_day">日间</string>
+    <string name="menu_main_night_mode">日间模式</string>
 
 </resources>

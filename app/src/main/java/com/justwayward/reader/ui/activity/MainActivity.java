@@ -31,11 +31,15 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.view.menu.MenuBuilder;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
+import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerMainActivityComponent;
 import com.justwayward.reader.service.DownloadBookService;
@@ -44,8 +48,10 @@ import com.justwayward.reader.ui.fragment.CommunityFragment;
 import com.justwayward.reader.ui.fragment.FindFragment;
 import com.justwayward.reader.ui.fragment.RecommendFragment;
 import com.justwayward.reader.ui.presenter.MainActivityPresenter;
+import com.justwayward.reader.utils.SharedPreferencesUtil;
 import com.justwayward.reader.view.RVPIndicator;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -137,13 +143,59 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-        if (id == R.id.ab_search) {
-            startActivity(new Intent(MainActivity.this, SearchActivity.class));
-            return true;
+        switch (id){
+            case R.id.action_search:
+                startActivity(new Intent(MainActivity.this, SearchActivity.class));
+                break;
+            case R.id.action_my_message:
+                break;
+            case R.id.action_sync_bookshelf:
+                break;
+            case R.id.action_scan_local_book:
+                break;
+            case R.id.action_wifi_book:
+                break;
+            case R.id.action_feedback:
+                break;
+            case R.id.action_night_mode:
+                if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)) {
+                    SharedPreferencesUtil.getInstance().putBoolean(Constant.ISNIGHT, false);
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                } else {
+                    SharedPreferencesUtil.getInstance().putBoolean(Constant.ISNIGHT, true);
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                }
+                recreate();
+                break;
+            case R.id.action_settings:
+                break;
+            default:
+                break;
         }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * 显示item中的图片；
+     *
+     * @param view
+     * @param menu
+     * @return
+     */
+    @Override
+    protected boolean onPrepareOptionsPanel(View view, Menu menu) {
+        if (menu != null) {
+            if (menu.getClass() == MenuBuilder.class) {
+                try {
+                    Method m = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
+                    m.setAccessible(true);
+                    m.invoke(menu, true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return super.onPrepareOptionsPanel(view, menu);
     }
 
     @Override
