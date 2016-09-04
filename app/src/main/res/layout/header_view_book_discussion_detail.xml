@@ -108,7 +108,7 @@
         android:id="@+id/tvBestComments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_white"
+        android:background="@color/common_bg"
         android:padding="15dp"
         android:text="@string/comment_best_comment"
         android:textColor="@color/common_h3"
@@ -126,7 +126,7 @@
         android:id="@+id/tvCommentCount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_white"
+        android:background="@color/common_bg"
         android:padding="15dp"
         android:text="@string/comment_comment_count"
         android:textColor="@color/common_h3"/>

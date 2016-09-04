@@ -24,6 +24,8 @@
 
     <!--通用背景色-->
     <color name="common_bg">@color/white</color>
+    <!--通用触摸背景色-->
+    <color name="common_touch_bg">#E3E3E3</color>
     <!--通用背景色-->
     <color name="common_gray_bg">#DDDDDD</color>
     <!--通用一级标题的颜色-->
@@ -36,7 +38,6 @@
     <color name="common_divider_narrow">#E3E3E3</color>
     <!--通用分割线粗-->
     <color name="common_divider_wide">@color/light_white</color>
-    <color name="common_touch_bg">#E3E3E3</color>
 
     <!--阅读页面的背景色-->
     <color name="book_read_bg">@color/white</color>

@@ -24,7 +24,7 @@
                 android:layout_height="55dp"
                 android:background="@color/colorPrimary"
                 android:orientation="horizontal"
-                rvp:indicator_color="@color/white"
+                rvp:indicator_color="@color/common_bg"
                 rvp:indicator_style="triangle"
                 rvp:item_count="3"
                 rvp:text_color_hightlight="@color/white"
