@@ -33,6 +33,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.view.menu.MenuBuilder;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,6 +50,7 @@ import com.justwayward.reader.ui.fragment.FindFragment;
 import com.justwayward.reader.ui.fragment.RecommendFragment;
 import com.justwayward.reader.ui.presenter.MainActivityPresenter;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
+import com.justwayward.reader.utils.ToastUtils;
 import com.justwayward.reader.view.RVPIndicator;
 
 import java.lang.reflect.Method;
@@ -76,6 +78,11 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     @Inject
     MainActivityPresenter mPresenter;
+
+    // 退出时间
+    private long currentBackPressedTime = 0;
+    // 退出间隔
+    private static final int BACK_PRESSED_INTERVAL = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,6 +180,21 @@ public class MainActivity extends BaseActivity implements MainContract.View {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN
+                && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            if (System.currentTimeMillis() - currentBackPressedTime > BACK_PRESSED_INTERVAL) {
+                currentBackPressedTime = System.currentTimeMillis();
+                ToastUtils.showToast(getString(R.string.exit_tips));
+                return true;
+            } else {
+                finish(); // 退出
+            }
+        }
+        return super.dispatchKeyEvent(event);
     }
 
     /**

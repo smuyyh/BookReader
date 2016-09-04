@@ -71,4 +71,6 @@
     <string name="menu_main_settings">设置</string>
     <string name="menu_main_scan_local_book">扫描本地书籍</string>
 
+    <string name="exit_tips">再按一次退出程序</string>
+
 </resources>
