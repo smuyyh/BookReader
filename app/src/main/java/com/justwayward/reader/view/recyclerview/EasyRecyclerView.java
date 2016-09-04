@@ -46,6 +46,8 @@ public class EasyRecyclerView extends FrameLayout {
     protected SwipeRefreshLayout mPtrLayout;
     protected OnRefreshListener mRefreshListener;
 
+    public RecyclerView.ItemDecoration decoration;
+
 
     public SwipeRefreshLayout getSwipeToRefresh() {
         return mPtrLayout;
@@ -242,6 +244,7 @@ public class EasyRecyclerView extends FrameLayout {
     public void setItemDecoration(int color, int height, int paddingLeft, int paddingRight) {
         DividerDecoration itemDecoration = new DividerDecoration(color,height,paddingLeft,paddingRight);
         itemDecoration.setDrawLastItem(false);
+        decoration = (itemDecoration);
         mRecycler.addItemDecoration(itemDecoration);
     }
 

@@ -2,31 +2,25 @@ package com.justwayward.reader.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.justwayward.reader.R;
-import com.justwayward.reader.base.BaseActivity;
+import com.justwayward.reader.base.BaseRVActivity;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.BookListDetail;
-import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerSubjectBookListDetailActivityComponent;
-import com.justwayward.reader.ui.adapter.SubjectBookListDetailBooksAdapter;
 import com.justwayward.reader.ui.contract.SubjectBookListDetailContract;
+import com.justwayward.reader.ui.easyadapter.SubjectBookListDetailBooksAdapter;
 import com.justwayward.reader.ui.presenter.SubjectBookListDetailPresenter;
-import com.justwayward.reader.utils.LogUtils;
-import com.justwayward.reader.utils.ScreenUtils;
-import com.justwayward.reader.utils.ToastUtils;
-import com.justwayward.reader.view.SpaceItemDecoration;
+import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
 import com.yuyh.easyadapter.glide.GlideCircleTransform;
 
 import java.util.ArrayList;
@@ -35,35 +29,33 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * 书单详情
  */
-public class SubjectBookListDetailActivity extends BaseActivity implements SubjectBookListDetailContract.View,
-        OnRvItemClickListener<BookListDetail.BookListBean.BooksBean> {
+public class SubjectBookListDetailActivity extends BaseRVActivity<BookListDetail.BookListBean.BooksBean> implements SubjectBookListDetailContract.View {
 
-    @Bind(R.id.llBookDetail)
-    LinearLayout llBookDetail;
+    private HeaderViewHolder headerViewHolder;
 
-    @Bind(R.id.tvBookListTitle)
-    TextView tvBookListTitle;
-    @Bind(R.id.tvBookListDesc)
-    TextView tvBookListDesc;
-    @Bind(R.id.ivAuthorAvatar)
-    ImageView ivAuthorAvatar;
-    @Bind(R.id.tvBookListAuthor)
-    TextView tvBookListAuthor;
-    @Bind(R.id.btnShare)
-    TextView btnShare;
-    @Bind(R.id.rvBooks)
-    RecyclerView rvBooks;
+    static class HeaderViewHolder {
+        @Bind(R.id.tvBookListTitle)
+        TextView tvBookListTitle;
+        @Bind(R.id.tvBookListDesc)
+        TextView tvBookListDesc;
+        @Bind(R.id.ivAuthorAvatar)
+        ImageView ivAuthorAvatar;
+        @Bind(R.id.tvBookListAuthor)
+        TextView tvBookListAuthor;
+        @Bind(R.id.btnShare)
+        TextView btnShare;
 
-    private SubjectBookListDetailBooksAdapter mSubjectBookListDetailBooksAdapter;
-    private List<BookListDetail.BookListBean.BooksBean> mBooks = new ArrayList<>();
+        public HeaderViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
+    }
 
     private List<BookListDetail.BookListBean.BooksBean> mAllBooks = new ArrayList<>();
-
-    private LinearLayoutManager linearLayoutManager;
 
     private int start = 0;
     private int limit = 20;
@@ -104,18 +96,82 @@ public class SubjectBookListDetailActivity extends BaseActivity implements Subje
 
     @Override
     public void configViews() {
-        showDialog();
+        initAdapter(SubjectBookListDetailBooksAdapter.class, false, true);
+        if (mRecyclerView.decoration != null)
+            mRecyclerView.removeItemDecoration(mRecyclerView.decoration);
+        mAdapter.addHeader(new RecyclerArrayAdapter.ItemView() {
+            @Override
+            public View onCreateView(ViewGroup parent) {
+                View headerView = LayoutInflater.from(mContext).inflate(R.layout.header_view_book_list_detail, parent, false);
+                return headerView;
+            }
 
-        rvBooks.setHasFixedSize(true);
-        linearLayoutManager = new LinearLayoutManager(this);
-        rvBooks.setLayoutManager(linearLayoutManager);
-        rvBooks.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(5)));
-        rvBooks.setItemAnimator(new DefaultItemAnimator());
-        mSubjectBookListDetailBooksAdapter = new SubjectBookListDetailBooksAdapter(this, mBooks, this);
-        rvBooks.setAdapter(mSubjectBookListDetailBooksAdapter);
+            @Override
+            public void onBindView(View headerView) {
+                headerViewHolder = new HeaderViewHolder(headerView);
+            }
+        });
 
         mPresenter.attachView(this);
         mPresenter.getBookListDetail(getIntent().getStringExtra("bookListId"));
+    }
+
+    @Override
+    public void showBookListDetail(BookListDetail data) {
+        headerViewHolder.tvBookListTitle.setText(data.getBookList().getTitle());
+        headerViewHolder.tvBookListDesc.setText(data.getBookList().getDesc());
+
+        headerViewHolder.tvBookListAuthor.setText(data.getBookList().getAuthor().getNickname());
+
+
+        Glide.with(mContext).load(Constant.IMG_BASE_URL + data.getBookList().getAuthor().getAvatar())
+                .placeholder(R.drawable.avatar_default).transform(new GlideCircleTransform(mContext))
+                .into(headerViewHolder.ivAuthorAvatar);
+
+        List<BookListDetail.BookListBean.BooksBean> list = data.getBookList().getBooks();
+        mAllBooks.clear();
+        mAllBooks.addAll(list);
+        mAdapter.clear();
+        loadNextPage();
+    }
+
+    private void loadNextPage() {
+        if (start < mAllBooks.size()) {
+            if (mAllBooks.size() - start > limit) {
+                mAdapter.addAll(mAllBooks.subList(start, start + limit));
+            } else {
+                mAdapter.addAll(mAllBooks.subList(start, mAllBooks.size()));
+            }
+            start += limit;
+        } else {
+            mAdapter.addAll(new ArrayList<BookListDetail.BookListBean.BooksBean>());
+        }
+    }
+
+    @Override
+    public void complete() {
+
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        BookDetailActivity.startActivity(this, mAdapter.getItem(position).getBook().get_id());
+    }
+
+    @Override
+    public void onRefresh() {
+        mPresenter.getBookListDetail(getIntent().getStringExtra("bookListId"));
+    }
+
+    @Override
+    public void onLoadMore() {
+        mRecyclerView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadNextPage();
+            }
+        }, 500);
+
     }
 
     @Override
@@ -134,68 +190,8 @@ public class SubjectBookListDetailActivity extends BaseActivity implements Subje
     }
 
     @Override
-    public void showBookListDetail(BookListDetail data) {
-        tvBookListTitle.setText(data.getBookList().getTitle());
-        tvBookListDesc.setText(data.getBookList().getDesc());
-
-        tvBookListAuthor.setText(data.getBookList().getAuthor().getNickname());
-
-
-        Glide.with(mContext).load(Constant.IMG_BASE_URL + data.getBookList().getAuthor().getAvatar())
-                .placeholder(R.drawable.avatar_default).transform(new GlideCircleTransform(mContext))
-                .into(ivAuthorAvatar);
-
-        List<BookListDetail.BookListBean.BooksBean> list = data.getBookList().getBooks();
-        mAllBooks.clear();
-        mAllBooks.addAll(list);
-        mBooks.clear();
-        loadNextPage();
-        rvBooks.addOnScrollListener(new ScrollListener());
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(headerViewHolder);
     }
-
-    private void loadNextPage() {
-        if (start < mAllBooks.size()) {
-            if (mAllBooks.size() - start > limit) {
-                mBooks.addAll(mAllBooks.subList(start, start + limit));
-            } else {
-                mBooks.addAll(mAllBooks.subList(start, mAllBooks.size()));
-            }
-            start += limit;
-
-            mSubjectBookListDetailBooksAdapter.notifyDataSetChanged();
-        }
-    }
-
-    @Override
-    public void complete() {
-        dismissDialog();
-    }
-
-    @Override
-    public void onItemClick(View view, int position, BookListDetail.BookListBean.BooksBean data) {
-        BookDetailActivity.startActivity(this, data.getBook().get_id());
-    }
-
-    private class ScrollListener extends RecyclerView.OnScrollListener {
-
-        @Override
-        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-            super.onScrollStateChanged(recyclerView, newState);
-        }
-
-        @Override
-        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            super.onScrolled(recyclerView, dx, dy);
-
-            int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
-
-            LogUtils.e(lastVisibleItemPosition + " .......");
-
-            if (lastVisibleItemPosition + 1 == mBooks.size()) { // 滑到倒数第二项就加载更多
-                ToastUtils.showSingleToast("------");
-                loadNextPage();
-            }
-        }
-    }
-
 }
