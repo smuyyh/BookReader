@@ -81,7 +81,6 @@ public class SubjectFragment extends BaseRVFragment<BookLists.BookListsBean> imp
     public void configViews() {
         initAdapter(SubjectBookListAdapter.class, true, true);
 
-        showDialog();
         mPresenter.attachView(this);
         mPresenter.getBookLists(duration, sort, 0, 20, currendTag, "male");
     }
@@ -95,14 +94,18 @@ public class SubjectFragment extends BaseRVFragment<BookLists.BookListsBean> imp
     }
 
     @Override
-    public void showBookList(List<BookLists.BookListsBean> bookLists) {
-        mAdapter.clear();
+    public void showBookList(List<BookLists.BookListsBean> bookLists, boolean isRefresh) {
+        if (isRefresh) {
+            mAdapter.clear();
+            start = 0;
+        }
         mAdapter.addAll(bookLists);
+        start = start + bookLists.size();
     }
 
     @Override
-    public void complete() {
-        dismissDialog();
+    public void showError() {
+        loaddingError();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -110,7 +113,7 @@ public class SubjectFragment extends BaseRVFragment<BookLists.BookListsBean> imp
         currendTag = event.tag;
         if (getUserVisibleHint()) {
             showDialog();
-            mPresenter.getBookLists(duration, sort, 0, 20, currendTag, "male");
+            mPresenter.getBookLists(duration, sort, 0, limit, currendTag, "male");
         }
     }
 
@@ -123,5 +126,15 @@ public class SubjectFragment extends BaseRVFragment<BookLists.BookListsBean> imp
     @Override
     public void onItemClick(int position) {
         SubjectBookListDetailActivity.startActivity(activity, mAdapter.getItem(position)._id);
+    }
+
+    @Override
+    public void onRefresh() {
+        mPresenter.getBookLists(duration, sort, 0, limit, currendTag, "male");
+    }
+
+    @Override
+    public void onLoadMore() {
+        mPresenter.getBookLists(duration, sort, start, limit, currendTag, "male");
     }
 }

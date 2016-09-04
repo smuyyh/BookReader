@@ -80,10 +80,16 @@ public abstract class BaseRVFragment<T> extends BaseFragment implements OnLoadMo
 
     @Override
     public void onRefresh() {
-        start = 0;
         if (!NetworkUtils.isConnected(getApplicationContext())) {
-            mAdapter.pauseMore();
+            mAdapter.clear();
+            mRecyclerView.setRefreshing(false);
             return;
         }
+    }
+
+    protected void loaddingError(){
+        mAdapter.clear();
+        mAdapter.pauseMore();
+        mRecyclerView.setRefreshing(false);
     }
 }

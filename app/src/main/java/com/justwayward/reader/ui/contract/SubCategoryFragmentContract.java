@@ -9,13 +9,13 @@ import com.justwayward.reader.bean.BooksByCats;
 public interface SubCategoryFragmentContract {
 
     interface View {
-        void showCategoryList(BooksByCats data);
+        void showCategoryList(BooksByCats data, boolean isRefresh);
 
-        void complete();
+        void showError();
     }
 
     interface Presenter<T> extends BaseContract.BasePresenter<T> {
-        void getCategoryList(String gender, String major, String minor, String type, int start);
+        void getCategoryList(String gender, String major, String minor, String type, int start, int limit);
     }
 
 }

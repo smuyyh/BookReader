@@ -37,24 +37,23 @@ public class SubjectFragmentPresenter implements SubjectFragmentContract.Present
     }
 
     @Override
-    public void getBookLists(String duration, String sort, int start, int limit, String tag, String gender) {
+    public void getBookLists(String duration, String sort, final int start, int limit, String tag, String gender) {
         bookApi.getBookLists(duration, sort, start + "", limit + "", tag, gender).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BookLists>() {
                     @Override
                     public void onCompleted() {
-                        view.complete();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         LogUtils.e("getBookLists:" + e.toString());
-                        view.complete();
+                        view.showError();
                     }
 
                     @Override
                     public void onNext(BookLists tags) {
-                        view.showBookList(tags.bookLists);
+                        view.showBookList(tags.bookLists, start == 0 ? true : false);
                         if (tags.bookLists == null || tags.bookLists.size() <= 0) {
                             ToastUtils.showSingleToast("暂无相关书单");
                         }

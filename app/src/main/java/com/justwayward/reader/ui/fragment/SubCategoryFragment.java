@@ -84,14 +84,18 @@ public class SubCategoryFragment extends BaseRVFragment<BooksByCats.BooksBean> i
     }
 
     @Override
-    public void showCategoryList(BooksByCats data) {
-        mAdapter.clear();
+    public void showCategoryList(BooksByCats data, boolean isRefresh) {
+        if (isRefresh) {
+            start = 0;
+            mAdapter.clear();
+        }
         mAdapter.addAll(data.books);
+        start += data.books.size();
     }
 
     @Override
-    public void complete() {
-        dismissDialog();
+    public void showError() {
+        loaddingError();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -99,8 +103,7 @@ public class SubCategoryFragment extends BaseRVFragment<BooksByCats.BooksBean> i
         minor = event.minor;
         String type = event.type;
         if (this.type.equals(type)) {
-            showDialog();
-            mPresenter.getCategoryList(gender, major, minor, this.type, 0);
+            mPresenter.getCategoryList(gender, major, minor, this.type, 0, limit);
         }
     }
 
@@ -116,5 +119,15 @@ public class SubCategoryFragment extends BaseRVFragment<BooksByCats.BooksBean> i
         startActivity(new Intent(activity, BookReadActivity.class)
                 .putExtra("bookId", data._id)
                 .putExtra("bookName", data.title));
+    }
+
+    @Override
+    public void onRefresh() {
+        mPresenter.getCategoryList(gender, major, minor, this.type, 0, limit);
+    }
+
+    @Override
+    public void onLoadMore() {
+        mPresenter.getCategoryList(gender, major, minor, this.type, start, limit);
     }
 }

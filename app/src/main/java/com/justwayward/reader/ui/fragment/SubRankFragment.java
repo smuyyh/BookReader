@@ -78,5 +78,8 @@ public class SubRankFragment extends BaseRVFragment<BooksByCats.BooksBean> imple
         BookDetailActivity.startActivity(activity, mAdapter.getItem(position)._id);
     }
 
-
+    @Override
+    public void onRefresh() {
+        mPresenter.getRankList(id);
+    }
 }

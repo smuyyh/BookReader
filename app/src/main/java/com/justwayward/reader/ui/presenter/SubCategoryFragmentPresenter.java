@@ -36,25 +36,25 @@ public class SubCategoryFragmentPresenter implements SubCategoryFragmentContract
     }
 
     @Override
-    public void getCategoryList(String gender, String major, String minor, String type, int start) {
-        bookApi.getBooksByCats(gender, type, major, minor, start, 20)
+    public void getCategoryList(String gender, String major, String minor, String type, final int start, int limit) {
+        bookApi.getBooksByCats(gender, type, major, minor, start, limit)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BooksByCats>() {
                     @Override
                     public void onCompleted() {
-                        view.complete();
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        LogUtils.e("getCategoryList:"+e.toString());
-                        view.complete();
+                        LogUtils.e("getCategoryList:" + e.toString());
+                        view.showError();
                     }
 
                     @Override
                     public void onNext(BooksByCats booksByCats) {
-                        view.showCategoryList(booksByCats);
+                        view.showCategoryList(booksByCats, start == 0 ? true : false);
                     }
                 });
     }
