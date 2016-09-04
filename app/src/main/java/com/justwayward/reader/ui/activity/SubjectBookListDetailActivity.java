@@ -97,8 +97,7 @@ public class SubjectBookListDetailActivity extends BaseRVActivity<BookListDetail
     @Override
     public void configViews() {
         initAdapter(SubjectBookListDetailBooksAdapter.class, false, true);
-        if (mRecyclerView.decoration != null)
-            mRecyclerView.removeItemDecoration(mRecyclerView.decoration);
+        mRecyclerView.removeAllItemDecoration();
         mAdapter.addHeader(new RecyclerArrayAdapter.ItemView() {
             @Override
             public View onCreateView(ViewGroup parent) {
