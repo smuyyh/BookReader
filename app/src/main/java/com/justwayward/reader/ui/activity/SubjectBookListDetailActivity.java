@@ -175,7 +175,7 @@ public class SubjectBookListDetailActivity extends BaseRVActivity<BookListDetail
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_subject, menu);
+        getMenuInflater().inflate(R.menu.menu_subject_detail, menu);
         return true;
     }
 

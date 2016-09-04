@@ -179,7 +179,12 @@ public class BookDiscussionDetailActivity extends BaseRVActivity<CommentList.Com
 
     @Override
     public void onItemClick(int position) {
-        CommentList.CommentsBean data = (CommentList.CommentsBean) mAdapter.getItem(position);
+        CommentList.CommentsBean data = mAdapter.getItem(position);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(headerViewHolder);
+    }
 }
