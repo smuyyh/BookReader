@@ -1,5 +1,6 @@
 package com.justwayward.reader.base;
 
+import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
@@ -10,22 +11,24 @@ import com.justwayward.reader.view.recyclerview.adapter.OnLoadMoreListener;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
 import com.justwayward.reader.view.recyclerview.swipe.OnRefreshListener;
 
+import java.lang.reflect.Constructor;
+
 import butterknife.Bind;
 
 /**
  * @author yuyh.
  * @date 16/9/3.
  */
-public abstract class BaseRVActivity extends BaseActivity implements OnLoadMoreListener, OnRefreshListener,RecyclerArrayAdapter.OnItemClickListener  {
+public abstract class BaseRVActivity<T> extends BaseActivity implements OnLoadMoreListener, OnRefreshListener, RecyclerArrayAdapter.OnItemClickListener {
 
     @Bind(R.id.recyclerview)
     protected EasyRecyclerView mRecyclerView;
-    protected RecyclerArrayAdapter mAdapter;
+    protected RecyclerArrayAdapter<T> mAdapter;
 
     protected int start = 0;
     protected int limit = 20;
 
-    protected void modiifyAdapter(boolean refreshable, boolean loadmoreable) {
+    protected void initAdapter(boolean refreshable, boolean loadmoreable) {
         if (mAdapter != null) {
             mAdapter.setOnItemClickListener(this);
             mAdapter.setError(R.layout.common_error_view).setOnClickListener(new View.OnClickListener() {
@@ -44,14 +47,31 @@ public abstract class BaseRVActivity extends BaseActivity implements OnLoadMoreL
         }
         if (mRecyclerView != null) {
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            mRecyclerView.setItemDecoration(R.color.common_divider_narrow, 1,0,0);
+            mRecyclerView.setItemDecoration(R.color.common_divider_narrow, 1, 0, 0);
             mRecyclerView.setAdapterWithProgress(mAdapter);
         }
     }
 
+    protected void initAdapter(Class<? extends RecyclerArrayAdapter<T>> clazz, boolean refreshable, boolean loadmoreable) {
+        mAdapter = (RecyclerArrayAdapter) createInstance(clazz);
+        initAdapter(refreshable, loadmoreable);
+    }
+
+    public Object createInstance(Class<?> cls) {
+        Object obj;
+        try {
+            Constructor c1 = cls.getDeclaredConstructor(new Class[]{Context.class});
+            c1.setAccessible(true);
+            obj = c1.newInstance(new Object[]{mContext});
+        } catch (Exception e) {
+            obj = null;
+        }
+        return obj;
+    }
+
     @Override
     public void onLoadMore() {
-        if(!NetworkUtils.isConnected(getApplicationContext())){
+        if (!NetworkUtils.isConnected(getApplicationContext())) {
             mAdapter.pauseMore();
             return;
         }
@@ -60,7 +80,7 @@ public abstract class BaseRVActivity extends BaseActivity implements OnLoadMoreL
     @Override
     public void onRefresh() {
         start = 0;
-        if(!NetworkUtils.isConnected(getApplicationContext())){
+        if (!NetworkUtils.isConnected(getApplicationContext())) {
             mAdapter.pauseMore();
             return;
         }

@@ -41,7 +41,7 @@ import butterknife.Bind;
 /**
  * Created by Administrator on 2016/8/6.
  */
-public class SearchActivity extends BaseRVActivity implements SearchContract.View{
+public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> implements SearchContract.View{
 
     public static final String INTENT_QUERY = "query";
 
@@ -100,8 +100,7 @@ public class SearchActivity extends BaseRVActivity implements SearchContract.Vie
 
     @Override
     public void configViews() {
-        mAdapter = new SearchAdapter(mContext);
-        modiifyAdapter(true, false);
+        initAdapter(SearchAdapter.class, false, false);
 
         mAutoAdapter = new AutoCompleteAdapter(this, mAutoList);
         mListPopupWindow = new ListPopupWindow(this);

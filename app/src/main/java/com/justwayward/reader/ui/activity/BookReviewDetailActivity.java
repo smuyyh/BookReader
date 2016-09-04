@@ -42,7 +42,7 @@ import butterknife.ButterKnife;
 /**
  * 书评区详情
  */
-public class BookReviewDetailActivity extends BaseRVActivity implements BookReviewDetailContract.View, OnRvItemClickListener<CommentList.CommentsBean> {
+public class BookReviewDetailActivity extends BaseRVActivity<CommentList.CommentsBean> implements BookReviewDetailContract.View, OnRvItemClickListener<CommentList.CommentsBean> {
 
     private static final String INTENT_ID = "id";
 
@@ -127,8 +127,7 @@ public class BookReviewDetailActivity extends BaseRVActivity implements BookRevi
 
     @Override
     public void configViews() {
-        mAdapter = new CommentListAdapter(mContext);
-        modiifyAdapter(false, true);
+        initAdapter(CommentListAdapter.class, false, true);
 
         mAdapter.addHeader(new RecyclerArrayAdapter.ItemView() {
             @Override

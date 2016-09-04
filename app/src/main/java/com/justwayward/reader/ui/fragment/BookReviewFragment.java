@@ -25,7 +25,7 @@ import javax.inject.Inject;
  * @author lfh.
  * @date 16/9/3.
  */
-public class BookReviewFragment extends BaseRVFragment<BookReviewList.ReviewsBean, BookReviewAdapter> implements BookReviewContract.View {
+public class BookReviewFragment extends BaseRVFragment<BookReviewList.ReviewsBean> implements BookReviewContract.View {
 
     @Inject
     BookReviewPresenter mPresenter;

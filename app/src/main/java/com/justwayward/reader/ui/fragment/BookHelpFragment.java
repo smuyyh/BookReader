@@ -24,7 +24,7 @@ import javax.inject.Inject;
  * @author lfh.
  * @date 16/9/3.
  */
-public class BookHelpFragment extends BaseRVFragment<BookHelpList.HelpsBean, BookHelpAdapter> implements BookHelpContract.View{
+public class BookHelpFragment extends BaseRVFragment<BookHelpList.HelpsBean> implements BookHelpContract.View{
 
     @Inject
     BookHelpPresenter mPresenter;

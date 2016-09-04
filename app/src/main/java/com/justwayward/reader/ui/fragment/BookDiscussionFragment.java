@@ -26,7 +26,7 @@ import javax.inject.Inject;
  * @author yuyh.
  * @date 16/9/2.
  */
-public class BookDiscussionFragment extends BaseRVFragment<DiscussionList.PostsBean, BookDiscussionAdapter> implements BookDiscussionContract.View{
+public class BookDiscussionFragment extends BaseRVFragment<DiscussionList.PostsBean> implements BookDiscussionContract.View{
 
     @Inject
     BookDiscussionPresenter mPresenter;

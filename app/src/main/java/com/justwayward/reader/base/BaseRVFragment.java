@@ -19,7 +19,7 @@ import butterknife.Bind;
  * @author lfh.
  * @date 16/9/3.
  */
-public abstract class BaseRVFragment<T, Adapter extends RecyclerArrayAdapter<T>> extends BaseFragment implements OnLoadMoreListener, OnRefreshListener, RecyclerArrayAdapter.OnItemClickListener {
+public abstract class BaseRVFragment<T> extends BaseFragment implements OnLoadMoreListener, OnRefreshListener, RecyclerArrayAdapter.OnItemClickListener {
 
     @Bind(R.id.recyclerview)
     protected EasyRecyclerView mRecyclerView;
@@ -53,17 +53,17 @@ public abstract class BaseRVFragment<T, Adapter extends RecyclerArrayAdapter<T>>
         }
     }
 
-    protected void initAdapter(Class<Adapter> clazz, boolean refreshable, boolean loadmoreable){
-        mAdapter = createInstance(clazz);
+    protected void initAdapter(Class<? extends RecyclerArrayAdapter<T>> clazz, boolean refreshable, boolean loadmoreable) {
+        mAdapter = (RecyclerArrayAdapter<T>) createInstance(clazz);
         initAdapter(refreshable, loadmoreable);
     }
 
-    public <Adapter> Adapter createInstance(Class<Adapter> cls) {
-        Adapter obj;
+    public Object createInstance(Class<?> cls) {
+        Object obj;
         try {
-            Constructor c1= cls.getDeclaredConstructor(new Class[]{Context.class});
+            Constructor c1 = cls.getDeclaredConstructor(new Class[]{Context.class});
             c1.setAccessible(true);
-            obj =(Adapter)c1.newInstance(new Object[]{mContext});
+            obj = c1.newInstance(new Object[]{mContext});
         } catch (Exception e) {
             obj = null;
         }

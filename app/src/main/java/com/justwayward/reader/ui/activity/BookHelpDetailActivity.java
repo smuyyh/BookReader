@@ -41,7 +41,7 @@ import butterknife.ButterKnife;
 /**
  * 书荒互助区详情
  */
-public class BookHelpDetailActivity extends BaseRVActivity implements BookHelpDetailContract.View, OnRvItemClickListener<CommentList.CommentsBean> {
+public class BookHelpDetailActivity extends BaseRVActivity<CommentList.CommentsBean> implements BookHelpDetailContract.View, OnRvItemClickListener<CommentList.CommentsBean> {
 
     private static final String INTENT_ID = "id";
 
@@ -109,18 +109,17 @@ public class BookHelpDetailActivity extends BaseRVActivity implements BookHelpDe
         mPresenter.attachView(this);
         mPresenter.getBookHelpDetail(id);
         mPresenter.getBestComments(id);
-        mPresenter.getBookHelpComments(id,start, limit);
+        mPresenter.getBookHelpComments(id, start, limit);
     }
 
     @Override
     public void configViews() {
-        mAdapter = new CommentListAdapter(mContext);
-        modiifyAdapter(false, true);
+        initAdapter(CommentListAdapter.class, false, true);
 
         mAdapter.addHeader(new RecyclerArrayAdapter.ItemView() {
             @Override
             public View onCreateView(ViewGroup parent) {
-                View headerView =  LayoutInflater.from(BookHelpDetailActivity.this).inflate(R.layout.header_view_book_discussion_detail, parent, false);
+                View headerView = LayoutInflater.from(BookHelpDetailActivity.this).inflate(R.layout.header_view_book_discussion_detail, parent, false);
                 return headerView;
             }
 
@@ -148,9 +147,9 @@ public class BookHelpDetailActivity extends BaseRVActivity implements BookHelpDe
 
     @Override
     public void showBestComments(CommentList list) {
-        if(list.comments.isEmpty()){
+        if (list.comments.isEmpty()) {
             gone(headerViewHolder.tvBestComments, headerViewHolder.rvBestComments);
-        }else{
+        } else {
             mBestCommentList.addAll(list.comments);
             headerViewHolder.rvBestComments.setHasFixedSize(true);
             headerViewHolder.rvBestComments.setLayoutManager(new LinearLayoutManager(this));
@@ -165,13 +164,13 @@ public class BookHelpDetailActivity extends BaseRVActivity implements BookHelpDe
     @Override
     public void showBookHelpComments(CommentList list) {
         mAdapter.addAll(list.comments);
-        start=start+list.comments.size();
+        start = start + list.comments.size();
     }
 
     @Override
     public void onLoadMore() {
         super.onLoadMore();
-        mPresenter.getBookHelpComments(id,start, limit);
+        mPresenter.getBookHelpComments(id, start, limit);
     }
 
     @Override
@@ -181,7 +180,7 @@ public class BookHelpDetailActivity extends BaseRVActivity implements BookHelpDe
 
     @Override
     public void onItemClick(int position) {
-        CommentList.CommentsBean data  = (CommentList.CommentsBean) mAdapter.getItem(position);
+        CommentList.CommentsBean data = (CommentList.CommentsBean) mAdapter.getItem(position);
     }
 
 }

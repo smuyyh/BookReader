@@ -27,7 +27,7 @@ import javax.inject.Inject;
  * @author yuyh.
  * @date 16/9/1.
  */
-public class SubjectFragment extends BaseRVFragment<BookLists.BookListsBean, SubjectBookListAdapter> implements SubjectFragmentContract.View {
+public class SubjectFragment extends BaseRVFragment<BookLists.BookListsBean> implements SubjectFragmentContract.View {
 
     public final static String BUNDLE_TAG = "tag";
     public final static String BUNDLE_TAB = "tab";

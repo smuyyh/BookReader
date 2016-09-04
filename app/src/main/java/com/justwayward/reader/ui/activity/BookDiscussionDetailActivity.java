@@ -40,7 +40,7 @@ import butterknife.ButterKnife;
 /**
  * 综合讨论区详情
  */
-public class BookDiscussionDetailActivity extends BaseRVActivity implements BookDiscussionDetailContract.View, OnRvItemClickListener<CommentList.CommentsBean> {
+public class BookDiscussionDetailActivity extends BaseRVActivity<CommentList.CommentsBean> implements BookDiscussionDetailContract.View, OnRvItemClickListener<CommentList.CommentsBean> {
 
     private static final String INTENT_ID = "id";
 
@@ -108,18 +108,17 @@ public class BookDiscussionDetailActivity extends BaseRVActivity implements Book
         mPresenter.attachView(this);
         mPresenter.getBookDisscussionDetail(id);
         mPresenter.getBestComments(id);
-        mPresenter.getBookDisscussionComments(id,start, limit);
+        mPresenter.getBookDisscussionComments(id, start, limit);
     }
 
     @Override
     public void configViews() {
-        mAdapter = new CommentListAdapter(mContext);
-        modiifyAdapter(false, true);
+        initAdapter(CommentListAdapter.class, false, true);
 
         mAdapter.addHeader(new RecyclerArrayAdapter.ItemView() {
             @Override
             public View onCreateView(ViewGroup parent) {
-                View headerView =  LayoutInflater.from(BookDiscussionDetailActivity.this).inflate(R.layout.header_view_book_discussion_detail, parent, false);
+                View headerView = LayoutInflater.from(BookDiscussionDetailActivity.this).inflate(R.layout.header_view_book_discussion_detail, parent, false);
                 return headerView;
             }
 
@@ -147,9 +146,9 @@ public class BookDiscussionDetailActivity extends BaseRVActivity implements Book
 
     @Override
     public void showBestComments(CommentList list) {
-        if(list.comments.isEmpty()){
+        if (list.comments.isEmpty()) {
             gone(headerViewHolder.tvBestComments, headerViewHolder.rvBestComments);
-        }else{
+        } else {
             mBestCommentList.addAll(list.comments);
             headerViewHolder.rvBestComments.setHasFixedSize(true);
             headerViewHolder.rvBestComments.setLayoutManager(new LinearLayoutManager(this));
@@ -164,13 +163,13 @@ public class BookDiscussionDetailActivity extends BaseRVActivity implements Book
     @Override
     public void showBookDisscussionComments(CommentList list) {
         mAdapter.addAll(list.comments);
-        start=start+list.comments.size();
+        start = start + list.comments.size();
     }
 
     @Override
     public void onLoadMore() {
         super.onLoadMore();
-        mPresenter.getBookDisscussionComments(id,start, limit);
+        mPresenter.getBookDisscussionComments(id, start, limit);
     }
 
     @Override
@@ -180,7 +179,7 @@ public class BookDiscussionDetailActivity extends BaseRVActivity implements Book
 
     @Override
     public void onItemClick(int position) {
-        CommentList.CommentsBean data  = (CommentList.CommentsBean) mAdapter.getItem(position);
+        CommentList.CommentsBean data = (CommentList.CommentsBean) mAdapter.getItem(position);
     }
 
 }
