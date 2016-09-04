@@ -331,7 +331,7 @@ public interface BookApiService {
      * @return
      */
     @POST("/user/login")
-    Observable<Login> login(String platform_uid, String platform_token, String platform_code);
+    Observable<Login> login(@Query("platform_uid") String platform_uid, @Query("platform_token") String platform_token, @Query("platform_code") String platform_code);
 
     @GET("/user/followings/{userid}")
     Observable<Following> getFollowings(@Path("userid") String userId);
