@@ -112,7 +112,6 @@ public class SubjectFragment extends BaseRVFragment<BookLists.BookListsBean> imp
     public void initCategoryList(TagEvent event) {
         currendTag = event.tag;
         if (getUserVisibleHint()) {
-            showDialog();
             mPresenter.getBookLists(duration, sort, 0, limit, currendTag, "male");
         }
     }
