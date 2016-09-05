@@ -28,13 +28,11 @@ package com.justwayward.reader.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.view.menu.MenuBuilder;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -159,6 +157,8 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOffscreenPageLimit(3);
         mIndicator.setViewPager(mViewPager, 0);
+
+        mPresenter.attachView(this);
     }
 
     @Override
@@ -254,20 +254,23 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
     }
 
     @Override
+    public void loginSuccess() {
+        ToastUtils.showSingleToast("登陆成功");
+    }
+
+    @Override
     public void onLogin(ImageView view, String type) {
         if (type.equals("QQ")) {
             if (!mTencent.isSessionValid()) {
-                if(loginListener == null)
-                    loginListener = new BaseUIListener();
+                if (loginListener == null) loginListener = new BaseUIListener();
                 mTencent.login(this, "all", loginListener);
-                Log.d("SDKQQAgentPref", "FirstLaunch_SDK:" + SystemClock.elapsedRealtime());
             }
         }
         //4f45e920ff5d1a0e29d997986cd97181
     }
 
-    public class BaseUIListener implements IUiListener {
 
+    public class BaseUIListener implements IUiListener {
 
         @Override
         public void onComplete(Object o) {
@@ -276,11 +279,13 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
             Gson gson = new Gson();
             TencentLoginResult result = gson.fromJson(json, TencentLoginResult.class);
             LogUtils.e(result.toString());
+            mPresenter.login("91F9E4AE709D635225C2C6E439C4F23A", "D953840B3B04169D7CF438887E9905CC", "QQ");
         }
 
         @Override
         public void onError(UiError uiError) {
-
+            //http://api.zhuishushenqi.com/user/login?platform_uid=91F9E4AE709D635225C2C6E439C4F23A&platform_token=D953840B3B04169D7CF438887E9905CC&platform_code=QQ
+            //http://api.zhuishushenqi.com/user/login?platform_uid=91F9E4AE709D635225C2C6E439C4F23A&platform_token=D953840B3B04169D7CF438887E9905CC&platform_code=QQ
         }
 
         @Override

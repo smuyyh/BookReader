@@ -7,11 +7,12 @@ package com.justwayward.reader.ui.contract;
 public interface MainContract {
 
     interface View{
-
+        void loginSuccess();
     }
 
     interface Presenter<T> extends BaseContract.BasePresenter<T>{
 
+        void login(String uid, String token, String platform);
     }
 
 }

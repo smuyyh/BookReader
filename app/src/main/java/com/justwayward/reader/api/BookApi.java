@@ -3,6 +3,7 @@ package com.justwayward.reader.api;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.AutoComplete;
 import com.justwayward.reader.bean.BookDetail;
+import com.justwayward.reader.bean.BookHelp;
 import com.justwayward.reader.bean.BookHelpList;
 import com.justwayward.reader.bean.BookListDetail;
 import com.justwayward.reader.bean.BookListTags;
@@ -19,7 +20,6 @@ import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.bean.CommentList;
 import com.justwayward.reader.bean.DiscussionList;
 import com.justwayward.reader.bean.Disscussion;
-import com.justwayward.reader.bean.BookHelp;
 import com.justwayward.reader.bean.HotReview;
 import com.justwayward.reader.bean.HotWord;
 import com.justwayward.reader.bean.RankingList;
@@ -27,6 +27,7 @@ import com.justwayward.reader.bean.Rankings;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.RecommendBookList;
 import com.justwayward.reader.bean.SearchDetail;
+import com.justwayward.reader.bean.user.Login;
 
 import java.util.List;
 
@@ -173,6 +174,10 @@ public class BookApi {
 
     public Observable<BookHelp> getBookHelpDetail(String helpId) {
         return service.getBookHelpDetail(helpId);
+    }
+
+    public Observable<Login> login(String platform_uid, String platform_token, String platform_code) {
+        return service.login(platform_uid, platform_token, platform_code);
     }
 
 }

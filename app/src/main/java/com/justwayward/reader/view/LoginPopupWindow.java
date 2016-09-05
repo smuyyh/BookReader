@@ -78,6 +78,8 @@ public class LoginPopupWindow extends PopupWindow implements View.OnTouchListene
                     listener.onLogin(qq, "QQ");
                     break;
             }
+
+            dismiss();
         }
     }
 

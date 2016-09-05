@@ -35,5 +35,20 @@ public class Login extends Base {
         public int lv;
         public String gender;
         public String type;
+
+        @Override
+        public String toString() {
+            return "UserBean{" +
+                    "_id='" + _id + '\'' +
+                    ", nickname='" + nickname + '\'' +
+                    ", avatar='" + avatar + '\'' +
+                    ", exp=" + exp +
+                    ", lv=" + lv +
+                    ", gender='" + gender + '\'' +
+                    ", type='" + type + '\'' +
+                    '}';
+        }
     }
+
+
 }
