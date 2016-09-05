@@ -15,7 +15,7 @@ import okhttp3.Response;
  * @author yuyh.
  * @date 16/8/6.
  */
-public class HeaderInterceptor implements Interceptor {
+public final class HeaderInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {

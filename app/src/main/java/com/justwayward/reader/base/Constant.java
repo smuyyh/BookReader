@@ -7,6 +7,8 @@ import org.apache.commons.collections4.map.HashedMap;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -89,6 +91,13 @@ public class Constant {
         String COMMENT_COUNT = "comment-count";
     }
 
+    public static List<String> sortTypeList = new ArrayList<String>() {{
+        add(SortType.DEFAULT);
+        add(SortType.CREATED);
+        add(SortType.COMMENT_COUNT);
+        add(SortType.HELPFUL);
+    }};
+
     @StringDef({
             BookType.ALL,
             BookType.XHQH,
@@ -132,6 +141,22 @@ public class Constant {
 
         String DMTR = "dmtr";
     }
+
+    public static List<String> bookTypeList = new ArrayList<String>() {{
+        add(BookType.ALL);
+        add(BookType.XHQH);
+        add(BookType.WXXX);
+        add(BookType.DSYN);
+        add(BookType.LSJS);
+        add(BookType.YXJJ);
+        add(BookType.KHLY);
+        add(BookType.CYJK);
+        add(BookType.HMZC);
+        add(BookType.XDYQ);
+        add(BookType.GDYQ);
+        add(BookType.HXYQ);
+        add(BookType.DMTR);
+    }};
 
     public static Map<String, String> bookType = new HashedMap<String, String>() {{
         put("qt", "其他");
