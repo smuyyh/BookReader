@@ -279,13 +279,11 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
             Gson gson = new Gson();
             TencentLoginResult result = gson.fromJson(json, TencentLoginResult.class);
             LogUtils.e(result.toString());
-            mPresenter.login("91F9E4AE709D635225C2C6E439C4F23A", "D953840B3B04169D7CF438887E9905CC", "QQ");
+            mPresenter.login(result.openid, result.access_token, "QQ");
         }
 
         @Override
         public void onError(UiError uiError) {
-            //http://api.zhuishushenqi.com/user/login?platform_uid=91F9E4AE709D635225C2C6E439C4F23A&platform_token=D953840B3B04169D7CF438887E9905CC&platform_code=QQ
-            //http://api.zhuishushenqi.com/user/login?platform_uid=91F9E4AE709D635225C2C6E439C4F23A&platform_token=D953840B3B04169D7CF438887E9905CC&platform_code=QQ
         }
 
         @Override

@@ -30,9 +30,11 @@ import com.justwayward.reader.bean.Rankings;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.RecommendBookList;
 import com.justwayward.reader.bean.SearchDetail;
+import com.justwayward.reader.bean.user.LoginReq;
 
 import java.util.List;
 
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -331,7 +333,7 @@ public interface BookApiService {
      * @return
      */
     @POST("/user/login")
-    Observable<Login> login(@Query("platform_uid") String platform_uid, @Query("platform_token") String platform_token, @Query("platform_code") String platform_code);
+    Observable<Login> login(@Body LoginReq loginReq);
 
     @GET("/user/followings/{userid}")
     Observable<Following> getFollowings(@Path("userid") String userId);

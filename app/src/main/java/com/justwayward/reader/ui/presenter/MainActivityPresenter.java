@@ -43,9 +43,9 @@ public class MainActivityPresenter implements MainContract.Presenter<MainContrac
                 .subscribe(new Observer<Login>() {
                     @Override
                     public void onNext(Login data) {
-                        LogUtils.e(data.user.toString());
-                        if (data != null && view != null) {
+                        if (data != null && view != null && data.ok) {
                             view.loginSuccess();
+                            LogUtils.e(data.user.toString());
                         }
                     }
 

@@ -28,6 +28,7 @@ import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.RecommendBookList;
 import com.justwayward.reader.bean.SearchDetail;
 import com.justwayward.reader.bean.user.Login;
+import com.justwayward.reader.bean.user.LoginReq;
 
 import java.util.List;
 
@@ -177,7 +178,11 @@ public class BookApi {
     }
 
     public Observable<Login> login(String platform_uid, String platform_token, String platform_code) {
-        return service.login(platform_uid, platform_token, platform_code);
+        LoginReq loginReq = new LoginReq();
+        loginReq.platform_code = platform_code;
+        loginReq.platform_token = platform_token;
+        loginReq.platform_uid = platform_uid;
+        return service.login(loginReq);
     }
 
 }
