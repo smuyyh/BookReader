@@ -26,7 +26,7 @@ import javax.inject.Inject;
  * @author yuyh.
  * @date 16/9/2.
  */
-public class BookDiscussionFragment extends BaseRVFragment<DiscussionList.PostsBean> implements BookDiscussionContract.View{
+public class BookDiscussionFragment extends BaseRVFragment<DiscussionList.PostsBean> implements BookDiscussionContract.View {
 
     @Inject
     BookDiscussionPresenter mPresenter;
@@ -68,10 +68,18 @@ public class BookDiscussionFragment extends BaseRVFragment<DiscussionList.PostsB
         }
         mAdapter.addAll(list);
         start = start + list.size();
+        dismissDialog();
+    }
+
+    @Override
+    public void showError() {
+        dismissDialog();
+        loaddingError();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void initCategoryList(SelectionEvent event) {
+        showDialog();
         sort = event.sort;
         distillate = event.distillate;
         start = 0;

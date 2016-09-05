@@ -44,6 +44,7 @@ public class BookHelpPresenter implements BookHelpContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         LogUtils.e("getBookHelpList:" + e.toString());
+                        view.showError();
                     }
 
                     @Override

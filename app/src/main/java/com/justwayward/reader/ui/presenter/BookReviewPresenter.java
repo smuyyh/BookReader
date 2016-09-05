@@ -44,6 +44,7 @@ public class BookReviewPresenter implements BookReviewContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         LogUtils.e("getBookReviewList:" + e.toString());
+                        view.showError();
                     }
 
                     @Override

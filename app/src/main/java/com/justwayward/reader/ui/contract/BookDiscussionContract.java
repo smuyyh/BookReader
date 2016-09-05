@@ -12,6 +12,8 @@ public interface BookDiscussionContract {
 
     interface View {
         void showBookDisscussionList(List<DiscussionList.PostsBean> list, boolean isRefresh);
+
+        void showError();
     }
 
     interface Presenter extends BaseContract.BasePresenter<View> {

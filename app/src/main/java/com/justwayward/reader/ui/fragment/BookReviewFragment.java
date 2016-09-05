@@ -67,10 +67,18 @@ public class BookReviewFragment extends BaseRVFragment<BookReviewList.ReviewsBea
         }
         mAdapter.addAll(list);
         start = start + list.size();
+        dismissDialog();
+    }
+
+    @Override
+    public void showError() {
+        loaddingError();
+        dismissDialog();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void initCategoryList(SelectionEvent event) {
+        showDialog();
         sort = event.sort;
         type = event.type;
         distillate = event.distillate;

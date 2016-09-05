@@ -65,10 +65,18 @@ public class BookHelpFragment extends BaseRVFragment<BookHelpList.HelpsBean> imp
         }
         mAdapter.addAll(list);
         start = start + list.size();
+        dismissDialog();
+    }
+
+    @Override
+    public void showError() {
+        dismissDialog();
+        loaddingError();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void initCategoryList(SelectionEvent event) {
+        showDialog();
         sort = event.sort;
         distillate = event.distillate;
         start = 0;
