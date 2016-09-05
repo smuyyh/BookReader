@@ -33,6 +33,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.view.menu.MenuBuilder;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -51,6 +52,7 @@ import com.justwayward.reader.ui.fragment.RecommendFragment;
 import com.justwayward.reader.ui.presenter.MainActivityPresenter;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
 import com.justwayward.reader.utils.ToastUtils;
+import com.justwayward.reader.view.LoginPopupWindow;
 import com.justwayward.reader.view.RVPIndicator;
 
 import java.lang.reflect.Method;
@@ -153,6 +155,10 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         switch (id){
             case R.id.action_search:
                 startActivity(new Intent(MainActivity.this, SearchActivity.class));
+                break;
+            case R.id.action_login:
+                LoginPopupWindow popupWindow = new LoginPopupWindow(this);
+                popupWindow.showAtLocation(mCommonToolbar, Gravity.CENTER, 0, 0);
                 break;
             case R.id.action_my_message:
                 break;
