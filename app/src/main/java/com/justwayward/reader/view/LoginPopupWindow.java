@@ -28,6 +28,8 @@ public class LoginPopupWindow extends PopupWindow implements View.OnTouchListene
     private ImageView weibo;
     private ImageView wechat;
 
+    LoginTypeListener listener;
+
 
     public LoginPopupWindow(Activity activity) {
         mActivity = activity;
@@ -70,6 +72,13 @@ public class LoginPopupWindow extends PopupWindow implements View.OnTouchListene
                 v.startAnimation(testAnim);
             }
         }
+        if (!isDown && listener!=null) {
+            switch (v.getId()) {
+                case R.id.ivQQ:
+                    listener.onLogin(qq, "QQ");
+                    break;
+            }
+        }
     }
 
     private void lighton() {
@@ -108,4 +117,14 @@ public class LoginPopupWindow extends PopupWindow implements View.OnTouchListene
         }
         return false;
     }
+
+    public interface LoginTypeListener {
+
+        void onLogin(ImageView view, String type);
+    }
+
+    public void setLoginTypeListener(LoginTypeListener listener){
+        this.listener = listener;
+    }
+
 }

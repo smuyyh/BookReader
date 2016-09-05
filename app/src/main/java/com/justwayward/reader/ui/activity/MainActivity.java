@@ -28,20 +28,25 @@ package com.justwayward.reader.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.view.menu.MenuBuilder;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
+import com.google.gson.Gson;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.base.Constant;
+import com.justwayward.reader.bean.user.TencentLoginResult;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerMainActivityComponent;
 import com.justwayward.reader.service.DownloadBookService;
@@ -50,10 +55,17 @@ import com.justwayward.reader.ui.fragment.CommunityFragment;
 import com.justwayward.reader.ui.fragment.FindFragment;
 import com.justwayward.reader.ui.fragment.RecommendFragment;
 import com.justwayward.reader.ui.presenter.MainActivityPresenter;
+import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
 import com.justwayward.reader.utils.ToastUtils;
 import com.justwayward.reader.view.LoginPopupWindow;
 import com.justwayward.reader.view.RVPIndicator;
+import com.tencent.connect.common.Constants;
+import com.tencent.tauth.IUiListener;
+import com.tencent.tauth.Tencent;
+import com.tencent.tauth.UiError;
+
+import org.json.JSONObject;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -67,7 +79,7 @@ import butterknife.Bind;
 /**
  * https://github.com/JustWayward/BookReader
  */
-public class MainActivity extends BaseActivity implements MainContract.View {
+public class MainActivity extends BaseActivity implements MainContract.View, LoginPopupWindow.LoginTypeListener {
 
     @Bind(R.id.indicator)
     RVPIndicator mIndicator;
@@ -86,6 +98,10 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     // 退出间隔
     private static final int BACK_PRESSED_INTERVAL = 2000;
 
+    private LoginPopupWindow popupWindow;
+    public static Tencent mTencent;
+    public IUiListener loginListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +109,8 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
         initDatas();
         configViews();
+
+        mTencent = Tencent.createInstance("1105670298", MainActivity.this);
     }
 
     @Override
@@ -152,12 +170,15 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id){
+        switch (id) {
             case R.id.action_search:
                 startActivity(new Intent(MainActivity.this, SearchActivity.class));
                 break;
             case R.id.action_login:
-                LoginPopupWindow popupWindow = new LoginPopupWindow(this);
+                if (popupWindow == null) {
+                    popupWindow = new LoginPopupWindow(this);
+                    popupWindow.setLoginTypeListener(this);
+                }
                 popupWindow.showAtLocation(mCommonToolbar, Gravity.CENTER, 0, 0);
                 break;
             case R.id.action_my_message:
@@ -230,5 +251,49 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     protected void onDestroy() {
         super.onDestroy();
         stopService(new Intent(this, DownloadBookService.class));
+    }
+
+    @Override
+    public void onLogin(ImageView view, String type) {
+        if (type.equals("QQ")) {
+            if (!mTencent.isSessionValid()) {
+                if(loginListener == null)
+                    loginListener = new BaseUIListener();
+                mTencent.login(this, "all", loginListener);
+                Log.d("SDKQQAgentPref", "FirstLaunch_SDK:" + SystemClock.elapsedRealtime());
+            }
+        }
+        //4f45e920ff5d1a0e29d997986cd97181
+    }
+
+    public class BaseUIListener implements IUiListener {
+
+
+        @Override
+        public void onComplete(Object o) {
+            JSONObject jsonObject = (JSONObject) o;
+            String json = jsonObject.toString();
+            Gson gson = new Gson();
+            TencentLoginResult result = gson.fromJson(json, TencentLoginResult.class);
+            LogUtils.e(result.toString());
+        }
+
+        @Override
+        public void onError(UiError uiError) {
+
+        }
+
+        @Override
+        public void onCancel() {
+
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.REQUEST_LOGIN || requestCode == Constants.REQUEST_APPBAR) {
+            Tencent.onActivityResultData(requestCode, resultCode, data, loginListener);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
