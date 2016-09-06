@@ -12,4 +12,52 @@
 * [ ] 账号相关
 
 ## 截图
-稍后附上。
+
+- **首页**
+
+<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/home_zhuishu.png?raw=true" width="280"/>
+<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/home_communication.png?raw=true" width="280"/>
+<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/home_discover.png?raw=true" width="280"/>
+
+</br>
+
+- **阅读**
+
+<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/read_page.png?raw=true" width="280"/>
+<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/read_page_1.png?raw=true" width="280"/>
+<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/read_page_2.png?raw=true" width="280"/>
+
+</br>
+
+- **书籍**
+
+<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/search.png?raw=true" width="280"/>
+<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/book_detail.png?raw=true" width="280"/>
+
+</br>
+
+- **社区**
+
+<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/discuss.png?raw=true" width="280"/>
+<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/discuss_detail.png?raw=true" width="280"/>
+
+</br>
+
+- **排行榜**
+
+<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/rank_type.png?raw=true" width="280"/>
+<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/rank_list.png?raw=true" width="280"/>
+
+</br>
+
+- **主题书单**
+
+<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/subject_tag.png?raw=true" width="280"/>
+<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/subject_detail.png?raw=true" width="280"/>
+
+</br>
+
+- **书籍分类**
+
+<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/category.png?raw=true" width="280"/>
+<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/category_list.png?raw=true" width="280"/>
