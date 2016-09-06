@@ -79,7 +79,13 @@ public class LoginPopupWindow extends PopupWindow implements View.OnTouchListene
                     break;
             }
 
-            dismiss();
+            qq.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    dismiss();
+                }
+            }, 500);
+
         }
     }
 
