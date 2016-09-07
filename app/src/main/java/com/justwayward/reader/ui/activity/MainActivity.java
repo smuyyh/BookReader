@@ -126,7 +126,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
 
     @Override
     public void initToolBar() {
-        mCommonToolbar.setLogo(R.mipmap.icon);
+        mCommonToolbar.setLogo(R.mipmap.logo);
         setTitle("");
     }
 
