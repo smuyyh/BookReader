@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.BookReviewList;
-import com.justwayward.reader.utils.RelativeDateFormat;
+import com.justwayward.reader.utils.FormatUtils;
 import com.justwayward.reader.view.recyclerview.adapter.BaseViewHolder;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
 
@@ -45,7 +45,7 @@ public class BookReviewAdapter extends RecyclerArrayAdapter<BookReviewList.Revie
                     holder.setVisible(R.id.tvTime, true);
                     holder.setVisible(R.id.tvHot, false);
                     holder.setVisible(R.id.tvDistillate, false);
-                    holder.setText(R.id.tvTime, RelativeDateFormat.format(item.created));
+                    holder.setText(R.id.tvTime, FormatUtils.formatDate(item.created));
                 }
             }
         };

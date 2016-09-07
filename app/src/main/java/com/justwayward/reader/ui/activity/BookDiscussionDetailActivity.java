@@ -23,7 +23,7 @@ import com.justwayward.reader.ui.adapter.BestCommentListAdapter;
 import com.justwayward.reader.ui.contract.BookDiscussionDetailContract;
 import com.justwayward.reader.ui.easyadapter.CommentListAdapter;
 import com.justwayward.reader.ui.presenter.BookDiscussionDetailPresenter;
-import com.justwayward.reader.utils.RelativeDateFormat;
+import com.justwayward.reader.utils.FormatUtils;
 import com.justwayward.reader.view.BookContentTextView;
 import com.justwayward.reader.view.SupportDividerItemDecoration;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
@@ -138,7 +138,7 @@ public class BookDiscussionDetailActivity extends BaseRVActivity<CommentList.Com
                 .into(headerViewHolder.ivAvatar);
 
         headerViewHolder.tvNickName.setText(disscussion.post.author.nickname);
-        headerViewHolder.tvTime.setText(RelativeDateFormat.format(disscussion.post.created));
+        headerViewHolder.tvTime.setText(FormatUtils.formatDate(disscussion.post.created));
         headerViewHolder.tvTitle.setText(disscussion.post.title);
         headerViewHolder.tvContent.setText(disscussion.post.content);
         headerViewHolder.tvCommentCount.setText(String.format(mContext.getString(R.string.comment_comment_count), disscussion.post.commentCount));

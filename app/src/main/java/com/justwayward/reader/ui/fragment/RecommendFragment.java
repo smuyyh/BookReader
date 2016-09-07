@@ -1,72 +1,87 @@
 package com.justwayward.reader.ui.fragment;
 
 import android.content.Intent;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.graphics.Color;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 
+import com.bumptech.glide.Glide;
 import com.justwayward.reader.R;
-import com.justwayward.reader.base.BaseFragment;
+import com.justwayward.reader.base.BaseRVFragment;
+import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.Recommend;
-import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerRecommendFragmentComponent;
 import com.justwayward.reader.ui.activity.BookReadActivity;
-import com.justwayward.reader.ui.adapter.RecommendAdapter;
 import com.justwayward.reader.ui.contract.RecommendContract;
+import com.justwayward.reader.ui.easyadapter.RecommendAdapter;
 import com.justwayward.reader.ui.presenter.RecommendPresenter;
-import com.justwayward.reader.view.SupportDividerItemDecoration;
+import com.justwayward.reader.utils.SharedPreferencesUtil;
+import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+public class RecommendFragment extends BaseRVFragment<Recommend.RecommendBooks> implements RecommendContract.View{
 
-public class RecommendFragment extends BaseFragment implements RecommendContract.View, OnRvItemClickListener<Recommend.RecommendBooks> {
-
-    @Bind(R.id.recyclerview)
-    RecyclerView mRecyclerView;
-    @Bind(R.id.swiperefreshlayout)
-    SwipeRefreshLayout mSwipeRefreshLayout;
+    private TableLayout shelf;
 
     @Inject
     RecommendPresenter mPresenter;
 
-    private RecommendAdapter mAdapter;
-    private List<Recommend.RecommendBooks> mList = new ArrayList<>();
-
     @Override
     public int getLayoutResId() {
-        return R.layout.fragment_recommend;
+        return R.layout.common_easy_recyclerview;
     }
 
     @Override
     public void initDatas() {
-
     }
 
     @Override
     public void configViews() {
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.addItemDecoration(new SupportDividerItemDecoration(mContext, LinearLayoutManager.VERTICAL, true));
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-
-            @Override
-            public void onRefresh() {
-                mPresenter.getRecommendList();
-            }
-        });
-
-        mAdapter = new RecommendAdapter(mContext, mList, this);
-        mRecyclerView.setAdapter(mAdapter);
+        initAdapter(RecommendAdapter.class, true, false);
+        //initCollect();
 
         mPresenter.attachView(this);
         mPresenter.getRecommendList();
+    }
+
+    private void initCollect() {
+
+        final List<Recommend.RecommendBooks> collect = SharedPreferencesUtil.getInstance().getObject("collect", List.class);
+        if(collect != null) {
+            mAdapter.addHeader(new RecyclerArrayAdapter.ItemView() {
+                @Override
+                public View onCreateView(ViewGroup parent) {
+                    View headerView = LayoutInflater.from(activity).inflate(R.layout.header_view_shelf, parent, false);
+                    shelf = (TableLayout) headerView.findViewById(R.id.tblLayout);
+                    return headerView;
+                }
+
+                @Override
+                public void onBindView(View headerView) {
+                    TableRow tblRow = new TableRow(activity);
+                    tblRow.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT));
+                    tblRow.setBackgroundColor(Color.GRAY);
+
+                    for(Recommend.RecommendBooks books:collect){
+                        ImageView iv = new ImageView(activity);
+                        tblRow.addView(iv);
+                        Glide.with(activity).load(Constant.IMG_BASE_URL + books.cover).into(iv);
+                    }
+
+                    shelf.addView(tblRow, 0);
+
+                }
+            });
+        }
     }
 
     @Override
@@ -79,17 +94,21 @@ public class RecommendFragment extends BaseFragment implements RecommendContract
 
     @Override
     public void showRecommendList(List<Recommend.RecommendBooks> list) {
-        mList.clear();
-        mList.addAll(list);
-        mSwipeRefreshLayout.setRefreshing(false);
-        mAdapter.notifyDataSetChanged();
+        mAdapter.clear();
+        mAdapter.addAll(list);
+
+        //SharedPreferencesUtil.getInstance().putObject("collect", list);
     }
 
     @Override
-    public void onItemClick(View view, int position, Recommend.RecommendBooks data) {
+    public void onItemClick(int position) {
         startActivity(new Intent(activity, BookReadActivity.class)
-                .putExtra("bookId", data._id)
-                .putExtra("bookName", data.title));
+                .putExtra("bookId", mAdapter.getItem(position)._id)
+                .putExtra("bookName", mAdapter.getItem(position).title));
     }
 
+    @Override
+    public void onRefresh() {
+        mPresenter.getRecommendList();
+    }
 }

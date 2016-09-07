@@ -24,7 +24,7 @@ import com.justwayward.reader.ui.adapter.BestCommentListAdapter;
 import com.justwayward.reader.ui.contract.BookReviewDetailContract;
 import com.justwayward.reader.ui.easyadapter.CommentListAdapter;
 import com.justwayward.reader.ui.presenter.BookReviewDetailPresenter;
-import com.justwayward.reader.utils.RelativeDateFormat;
+import com.justwayward.reader.utils.FormatUtils;
 import com.justwayward.reader.view.BookContentTextView;
 import com.justwayward.reader.view.SupportDividerItemDecoration;
 import com.justwayward.reader.view.XLHRatingBar;
@@ -153,7 +153,7 @@ public class BookReviewDetailActivity extends BaseRVActivity<CommentList.Comment
                 .into(headerViewHolder.ivAuthorAvatar);
 
         headerViewHolder.tvBookAuthor.setText(data.review.author.nickname);
-        headerViewHolder.tvTime.setText(RelativeDateFormat.format(data.review.created));
+        headerViewHolder.tvTime.setText(FormatUtils.formatDate(data.review.created));
         headerViewHolder.tvTitle.setText(data.review.title);
         headerViewHolder.tvContent.setText(data.review.content);
 

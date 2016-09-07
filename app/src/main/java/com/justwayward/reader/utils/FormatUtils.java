@@ -1,6 +1,5 @@
 package com.justwayward.reader.utils;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -8,7 +7,7 @@ import java.util.Date;
  * @author yuyh.
  * @date 16/9/2.
  */
-public class RelativeDateFormat {
+public class FormatUtils {
 
     private static final long ONE_MINUTE = 60000L;
     private static final long ONE_HOUR = 3600000L;
@@ -22,17 +21,17 @@ public class RelativeDateFormat {
     private static final String ONE_MONTH_AGO = "月前";
     private static final String ONE_YEAR_AGO = "年前";
 
-    public static String format(String date) {
+    public static String formatDate(String date) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         try {
-            return format(format.parse(date.replaceAll("T", " ").replaceAll("Z", "")));
+            return formatDate(format.parse(date.replaceAll("T", " ").replaceAll("Z", "")));
         } catch (Exception e) {
             e.printStackTrace();
         }
         return "";
     }
 
-    public static String format(Date date) {
+    public static String formatDate(Date date) {
         long delta = new Date().getTime() - date.getTime();
         if (delta < 1L * ONE_MINUTE) {
             long seconds = toSeconds(delta);
@@ -86,4 +85,13 @@ public class RelativeDateFormat {
         return toMonths(date) / 365L;
     }
 
+    public static String formatWordCount(int wordCount) {
+        if (wordCount / 10000 > 0) {
+            return (int) ((wordCount / 1000f) + 0.5) + "万字";
+        } else if (wordCount / 1000 > 0) {
+            return (int) ((wordCount / 1000f) + 0.5) + "千字";
+        } else {
+            return wordCount + "字";
+        }
+    }
 }

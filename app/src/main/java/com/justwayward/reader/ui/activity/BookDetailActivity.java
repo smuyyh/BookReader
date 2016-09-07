@@ -23,6 +23,7 @@ import com.justwayward.reader.ui.adapter.HotReviewAdapter;
 import com.justwayward.reader.ui.adapter.RecommendBookListAdapter;
 import com.justwayward.reader.ui.contract.BookDetailContract;
 import com.justwayward.reader.ui.presenter.BookDetailPresenter;
+import com.justwayward.reader.utils.FormatUtils;
 import com.justwayward.reader.view.DrawableCenterButton;
 import com.justwayward.reader.view.TagColor;
 import com.justwayward.reader.view.TagGroup;
@@ -158,7 +159,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
         mTvBookTitle.setText(data.title);
         mTvAuthor.setText(String.format(getString(R.string.book_detail_author), data.author));
         mTvCatgory.setText(String.format(getString(R.string.book_detail_category), data.cat));
-        mTvWordCount.setText(String.valueOf(data.wordCount));
+        mTvWordCount.setText(FormatUtils.formatWordCount(data.wordCount));
         mTvLatelyFollower.setText(String.valueOf(data.latelyFollower));
         mTvRetentionRatio.setText(String.valueOf(data.retentionRatio));
         mTvSerializeWordCount.setText(String.valueOf(data.serializeWordCount));
