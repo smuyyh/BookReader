@@ -24,4 +24,9 @@
         <item>最新发布</item>
         <item>最多收藏</item>
     </string-array>
+
+    <string-array name="bookdetail_community_tabs">
+        <item>讨论</item>
+        <item>书评</item>
+    </string-array>
 </resources>

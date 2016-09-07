@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -77,6 +78,8 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     TextView mTvMoreReview;
     @Bind(R.id.rvHotReview)
     RecyclerView mRvHotReview;
+    @Bind(R.id.rlCommunity)
+    RelativeLayout mRlCommunity;
     @Bind(R.id.tvCommunity)
     TextView mTvCommunity;
     @Bind(R.id.tvHelpfulYes)
@@ -259,6 +262,16 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
             mTvlongIntro.setMaxLines(4);
             collapseLongIntro = true;
         }
+    }
+
+    @OnClick(R.id.tvMoreReview)
+    public void onClickMoreReview() {
+        BookDetailCommunityActivity.startActivity(this,bookId,mTvBookTitle.getText().toString(),1);
+    }
+
+    @OnClick(R.id.rlCommunity)
+    public void onClickCommunity() {
+        BookDetailCommunityActivity.startActivity(this,bookId,mTvBookTitle.getText().toString(),0);
     }
 
 }

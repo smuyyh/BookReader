@@ -4,6 +4,8 @@ import com.justwayward.reader.ui.activity.BookDetailActivity;
 import com.justwayward.reader.ui.activity.BookReadActivity;
 import com.justwayward.reader.ui.activity.BooksByTagActivity;
 import com.justwayward.reader.ui.activity.SearchActivity;
+import com.justwayward.reader.ui.fragment.BookDetailDiscussionFragment;
+import com.justwayward.reader.ui.fragment.BookDetailReviewFragment;
 
 import dagger.Component;
 
@@ -16,4 +18,8 @@ public interface BookComponent {
     BooksByTagActivity inject(BooksByTagActivity tagBookListActivity);
 
     SearchActivity inject(SearchActivity searchActivity);
+
+    BookDetailReviewFragment inject(BookDetailReviewFragment bookDetailReviewFragment);
+
+    BookDetailDiscussionFragment inject(BookDetailDiscussionFragment bookDetailDiscussionFragment);
 }

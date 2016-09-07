@@ -100,7 +100,7 @@ public class XLHRatingBar extends LinearLayout {
             addView(cb, layoutParams);
             cb.setButtonDrawable(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
             if (stateResId == -1) {
-                stateResId = R.drawable.rating_bar_selector;
+                stateResId = R.drawable.book_review_rating_bar_selector;
             }
             cb.setBackgroundResource(stateResId);
             if (i + 1 <= countSelected) {

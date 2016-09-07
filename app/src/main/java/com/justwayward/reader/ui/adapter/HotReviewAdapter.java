@@ -7,6 +7,7 @@ import com.justwayward.reader.R;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.HotReview;
 import com.justwayward.reader.common.OnRvItemClickListener;
+import com.justwayward.reader.view.XLHRatingBar;
 import com.yuyh.easyadapter.recyclerview.EasyRVAdapter;
 import com.yuyh.easyadapter.recyclerview.EasyRVHolder;
 
@@ -33,6 +34,8 @@ public class HotReviewAdapter extends EasyRVAdapter<HotReview.Reviews> {
                 .setText(R.id.tvTitle, item.title)
                 .setText(R.id.tvContent, String.valueOf(item.content))
                 .setText(R.id.tvHelpfulYes, String.valueOf(item.helpful.yes));
+        XLHRatingBar ratingBar = holder.getView(R.id.rating);
+        ratingBar.setCountSelected(item.rating);
         holder.setOnItemViewClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

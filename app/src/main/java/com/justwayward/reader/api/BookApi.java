@@ -189,7 +189,7 @@ public class BookApi {
         return service.getBookDetailDisscussionList(book, sort, type, start, limit);
     }
 
-    public Observable<BookReviewList> getBookDetailReviewList(String book, String sort,  String start, String limit) {
+    public Observable<HotReview> getBookDetailReviewList(String book, String sort,  String start, String limit) {
         return service.getBookDetailReviewList(book, sort,  start, limit);
     }
 

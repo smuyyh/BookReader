@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/touch_bg"
@@ -22,7 +23,7 @@
         android:layout_toRightOf="@id/ivBookCover"
         android:ellipsize="end"
         android:singleLine="true"
-        android:text="我就是静静"
+        tools:text="我就是静静"
         android:textColor="@color/light_coffee"
         android:textSize="13sp" />
 
@@ -46,19 +47,36 @@
         android:layout_toRightOf="@id/ivBookCover"
         android:ellipsize="end"
         android:singleLine="true"
-        android:text="越到后面越索然无味"
+        tools:text="越到后面越索然无味"
         android:textColor="@color/common_h1" />
+
+    <com.justwayward.reader.view.XLHRatingBar
+        xmlns:xlhRatingBar="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/ivBookCover"
+        android:layout_below="@id/tvTitle"
+        xlhRatingBar:canEdit="false"
+        xlhRatingBar:countSelected="0"
+        xlhRatingBar:differentSize="false"
+        xlhRatingBar:dividerWidth="1dp"
+        xlhRatingBar:starCount="5"
+        android:layout_marginBottom="10dp"
+        xlhRatingBar:stateResId="@drawable/hot_review_rating_bar_selector"
+        xlhRatingBar:widthAndHeight="10dp" />
 
     <TextView
         android:id="@+id/tvContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvTitle"
+        android:layout_below="@id/rating"
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@id/ivBookCover"
         android:ellipsize="end"
         android:maxLines="2"
-        android:text="本人试毒500，前面还好后面真是"
+        tools:text="本人试毒500，前面还好后面真是"
         android:textColor="@color/common_h2"
         android:textSize="13sp" />
 
@@ -69,9 +87,22 @@
         android:layout_below="@id/tvContent"
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@id/ivBookCover"
-        android:drawableLeft="@drawable/review_useful_yes_nor"
+        android:drawableLeft="@drawable/post_item_like"
         android:drawablePadding="5dp"
-        android:text="308"
+        tools:text="308"
+        android:textColor="@color/common_h3"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:ellipsize="end"
+        android:singleLine="true"
+        tools:text="昨天"
+        android:visibility="gone"
+        tools:visibility="visible"
         android:textColor="@color/common_h3"
         android:textSize="13sp" />
 

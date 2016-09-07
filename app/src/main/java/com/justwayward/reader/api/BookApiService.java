@@ -348,7 +348,7 @@ public interface BookApiService {
      * @param limit      20
      * @return
      */
-    @GET("/post/by-block")
+    @GET("/post/by-book")
     Observable<DiscussionList> getBookDetailDisscussionList(@Query("book") String book, @Query("sort") String sort, @Query("type") String type, @Query("start") String start, @Query("limit") String limit);
 
     /**
@@ -361,6 +361,6 @@ public interface BookApiService {
      * @return
      */
     @GET("/post/review/by-book")
-    Observable<BookReviewList> getBookDetailReviewList(@Query("book") String book, @Query("sort") String sort, @Query("start") String start, @Query("limit") String limit);
+    Observable<HotReview> getBookDetailReviewList(@Query("book") String book, @Query("sort") String sort, @Query("start") String start, @Query("limit") String limit);
 
 }

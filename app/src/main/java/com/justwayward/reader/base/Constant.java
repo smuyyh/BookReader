@@ -133,7 +133,7 @@ public class Constant {
 
         String HMZC = "hmzc";
 
-        String XDYQ = "cdyq";
+        String XDYQ = "xdyq";
 
         String GDYQ = "gdyq";
 

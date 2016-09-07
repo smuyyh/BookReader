@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/common_bg"
@@ -17,7 +18,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp">
@@ -40,7 +41,7 @@
                     android:layout_toRightOf="@+id/ivBookCover"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="武侠世界自由行"
+                    tools:text="武侠世界自由行"
                     android:textColor="@color/common_h1"
                     android:textSize="16sp" />
 
@@ -52,7 +53,7 @@
                     android:layout_toRightOf="@+id/ivBookCover"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="w风雪 | "
+                    tools:text="w风雪 | "
                     android:textColor="@color/orange"
                     android:textSize="13sp" />
 
@@ -64,7 +65,7 @@
                     android:layout_toRightOf="@id/tvBookListAuthor"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="仙侠 | "
+                    tools:text="仙侠 | "
                     android:textColor="@color/common_h2"
                     android:textSize="13sp" />
 
@@ -76,7 +77,7 @@
                     android:layout_toRightOf="@id/tvCatgory"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="594万字"
+                    tools:text="594万字"
                     android:textColor="@color/common_h2"
                     android:textSize="13sp" />
 
@@ -89,7 +90,7 @@
                     android:layout_toRightOf="@id/ivBookCover"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="4月前"
+                    tools:text="4月前"
                     android:textColor="@color/common_h2"
                     android:textSize="13sp" />
 
@@ -166,7 +167,7 @@
                         android:layout_marginTop="5dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:text="82"
+                        tools:text="82"
                         android:textColor="@color/common_h1"
                         android:textSize="15sp" />
 
@@ -195,7 +196,7 @@
                         android:layout_marginTop="5dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:text="20.29%"
+                        tools:text="20.29%"
                         android:textColor="@color/common_h1"
                         android:textSize="15sp" />
 
@@ -224,7 +225,7 @@
                         android:layout_marginTop="5dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:text="4614"
+                        tools:text="4614"
                         android:textColor="@color/common_h1"
                         android:textSize="15sp" />
 
@@ -257,7 +258,6 @@
                 android:ellipsize="end"
                 android:maxLines="4"
                 android:padding="15dp"
-                android:text=""
                 android:textColor="@color/common_h1"
                 android:textSize="15sp" />
 
@@ -301,6 +301,7 @@
                 android:background="@color/common_divider_wide" />
 
             <RelativeLayout
+                android:id="@+id/rlCommunity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp">

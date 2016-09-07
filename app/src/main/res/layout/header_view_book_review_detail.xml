@@ -131,7 +131,7 @@
                     xlhRatingBar:differentSize="false"
                     xlhRatingBar:dividerWidth="3dp"
                     xlhRatingBar:starCount="5"
-                    xlhRatingBar:stateResId="@drawable/rating_bar_selector"
+                    xlhRatingBar:stateResId="@drawable/book_review_rating_bar_selector"
                     xlhRatingBar:widthAndHeight="15dp" />
             </RelativeLayout>
 
