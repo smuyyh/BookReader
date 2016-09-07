@@ -11,7 +11,7 @@ import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.bean.RankingList;
 import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
-import com.justwayward.reader.component.DaggerTopRankComponent;
+import com.justwayward.reader.component.DaggerFindComponent;
 import com.justwayward.reader.ui.adapter.TopRankAdapter;
 import com.justwayward.reader.ui.contract.TopRankContract;
 import com.justwayward.reader.ui.presenter.TopRankPresenter;
@@ -54,7 +54,7 @@ public class TopRankActivity extends BaseActivity implements TopRankContract.Vie
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
-        DaggerTopRankComponent.builder()
+        DaggerFindComponent.builder()
                 .appComponent(appComponent)
                 .build()
                 .inject(this);

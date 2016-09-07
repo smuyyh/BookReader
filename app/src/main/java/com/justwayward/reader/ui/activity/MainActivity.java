@@ -46,7 +46,7 @@ import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.user.TencentLoginResult;
 import com.justwayward.reader.component.AppComponent;
-import com.justwayward.reader.component.DaggerMainActivityComponent;
+import com.justwayward.reader.component.DaggerMainComponent;
 import com.justwayward.reader.service.DownloadBookService;
 import com.justwayward.reader.ui.contract.MainContract;
 import com.justwayward.reader.ui.fragment.CommunityFragment;
@@ -118,7 +118,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
-        DaggerMainActivityComponent.builder()
+        DaggerMainComponent.builder()
                 .appComponent(appComponent)
                 .build()
                 .inject(this);

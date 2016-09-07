@@ -19,7 +19,7 @@ import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.CategoryListLv2;
 import com.justwayward.reader.bean.support.SubEvent;
 import com.justwayward.reader.component.AppComponent;
-import com.justwayward.reader.component.DaggerSubCategoryActivityComponent;
+import com.justwayward.reader.component.DaggerFindComponent;
 import com.justwayward.reader.ui.adapter.MinorAdapter;
 import com.justwayward.reader.ui.contract.SubCategoryActivityContract;
 import com.justwayward.reader.ui.fragment.SubCategoryFragment;
@@ -82,7 +82,7 @@ public class SubCategoryListActivity extends BaseActivity implements SubCategory
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
-        DaggerSubCategoryActivityComponent.builder()
+        DaggerFindComponent.builder()
                 .appComponent(appComponent)
                 .build()
                 .inject(this);

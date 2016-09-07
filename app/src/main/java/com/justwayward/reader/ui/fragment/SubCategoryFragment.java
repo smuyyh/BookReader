@@ -9,7 +9,7 @@ import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.BooksByCats;
 import com.justwayward.reader.bean.support.SubEvent;
 import com.justwayward.reader.component.AppComponent;
-import com.justwayward.reader.component.DaggerSubCategoryFragmentComponent;
+import com.justwayward.reader.component.DaggerFindComponent;
 import com.justwayward.reader.ui.activity.BookReadActivity;
 import com.justwayward.reader.ui.contract.SubCategoryFragmentContract;
 import com.justwayward.reader.ui.easyadapter.SubCategoryAdapter;
@@ -77,7 +77,7 @@ public class SubCategoryFragment extends BaseRVFragment<BooksByCats.BooksBean> i
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
-        DaggerSubCategoryFragmentComponent.builder()
+        DaggerFindComponent.builder()
                 .appComponent(appComponent)
                 .build()
                 .inject(this);

@@ -15,7 +15,7 @@ import com.justwayward.reader.base.BaseRVFragment;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.component.AppComponent;
-import com.justwayward.reader.component.DaggerRecommendFragmentComponent;
+import com.justwayward.reader.component.DaggerMainComponent;
 import com.justwayward.reader.ui.activity.BookReadActivity;
 import com.justwayward.reader.ui.contract.RecommendContract;
 import com.justwayward.reader.ui.easyadapter.RecommendAdapter;
@@ -86,7 +86,7 @@ public class RecommendFragment extends BaseRVFragment<Recommend.RecommendBooks> 
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
-        DaggerRecommendFragmentComponent.builder()
+        DaggerMainComponent.builder()
                 .appComponent(appComponent)
                 .build()
                 .inject(this);

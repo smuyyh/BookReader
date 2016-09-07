@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.component.AppComponent;
-import com.justwayward.reader.component.DaggerSubRankCompoent;
+import com.justwayward.reader.component.DaggerFindComponent;
 import com.justwayward.reader.ui.fragment.SubRankFragment;
 import com.justwayward.reader.view.RVPIndicator;
 
@@ -61,7 +61,7 @@ public class SubRankActivity extends BaseActivity {
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
-        DaggerSubRankCompoent.builder()
+        DaggerFindComponent.builder()
                 .appComponent(appComponent)
                 .build()
                 .inject(this);

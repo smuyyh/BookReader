@@ -30,7 +30,7 @@ import com.justwayward.reader.bean.support.DownloadComplete;
 import com.justwayward.reader.bean.support.DownloadProgress;
 import com.justwayward.reader.bean.support.DownloadQueue;
 import com.justwayward.reader.component.AppComponent;
-import com.justwayward.reader.component.DaggerBookReadActivityComponent;
+import com.justwayward.reader.component.DaggerBookComponent;
 import com.justwayward.reader.service.DownloadBookService;
 import com.justwayward.reader.ui.adapter.BookReadPageAdapter;
 import com.justwayward.reader.ui.adapter.TocListAdapter;
@@ -155,7 +155,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
-        DaggerBookReadActivityComponent.builder()
+        DaggerBookComponent.builder()
                 .appComponent(appComponent)
                 .build()
                 .inject(this);

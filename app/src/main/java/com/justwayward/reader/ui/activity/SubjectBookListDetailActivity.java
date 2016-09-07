@@ -16,7 +16,7 @@ import com.justwayward.reader.base.BaseRVActivity;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.BookListDetail;
 import com.justwayward.reader.component.AppComponent;
-import com.justwayward.reader.component.DaggerSubjectBookListDetailActivityComponent;
+import com.justwayward.reader.component.DaggerFindComponent;
 import com.justwayward.reader.ui.contract.SubjectBookListDetailContract;
 import com.justwayward.reader.ui.easyadapter.SubjectBookListDetailBooksAdapter;
 import com.justwayward.reader.ui.presenter.SubjectBookListDetailPresenter;
@@ -77,7 +77,7 @@ public class SubjectBookListDetailActivity extends BaseRVActivity<BookListDetail
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
-        DaggerSubjectBookListDetailActivityComponent.builder()
+        DaggerFindComponent.builder()
                 .appComponent(appComponent)
                 .build()
                 .inject(this);

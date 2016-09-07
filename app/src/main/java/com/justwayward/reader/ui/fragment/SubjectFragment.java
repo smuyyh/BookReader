@@ -7,7 +7,7 @@ import com.justwayward.reader.base.BaseRVFragment;
 import com.justwayward.reader.bean.BookLists;
 import com.justwayward.reader.bean.support.TagEvent;
 import com.justwayward.reader.component.AppComponent;
-import com.justwayward.reader.component.DaggerSubjectFragmentComponent;
+import com.justwayward.reader.component.DaggerFindComponent;
 import com.justwayward.reader.ui.activity.SubjectBookListDetailActivity;
 import com.justwayward.reader.ui.contract.SubjectFragmentContract;
 import com.justwayward.reader.ui.easyadapter.SubjectBookListAdapter;
@@ -87,7 +87,7 @@ public class SubjectFragment extends BaseRVFragment<BookLists.BookListsBean> imp
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
-        DaggerSubjectFragmentComponent.builder()
+        DaggerFindComponent.builder()
                 .appComponent(appComponent)
                 .build()
                 .inject(this);

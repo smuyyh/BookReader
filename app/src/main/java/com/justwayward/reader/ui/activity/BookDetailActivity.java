@@ -18,7 +18,7 @@ import com.justwayward.reader.bean.HotReview;
 import com.justwayward.reader.bean.RecommendBookList;
 import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
-import com.justwayward.reader.component.DaggerBookDetailActivityComponent;
+import com.justwayward.reader.component.DaggerBookComponent;
 import com.justwayward.reader.ui.adapter.HotReviewAdapter;
 import com.justwayward.reader.ui.adapter.RecommendBookListAdapter;
 import com.justwayward.reader.ui.contract.BookDetailContract;
@@ -106,7 +106,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
-        DaggerBookDetailActivityComponent.builder()
+        DaggerBookComponent.builder()
                 .appComponent(appComponent)
                 //.mainActivityModule(new MainActivityModule(this))
                 .build()

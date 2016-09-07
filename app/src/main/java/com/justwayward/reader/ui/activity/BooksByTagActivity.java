@@ -12,7 +12,7 @@ import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.bean.BooksByTag;
 import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
-import com.justwayward.reader.component.DaggerBooksByTagActivityComponent;
+import com.justwayward.reader.component.DaggerBookComponent;
 import com.justwayward.reader.ui.adapter.BooksByTagAdapter;
 import com.justwayward.reader.ui.contract.BooksByTagContract;
 import com.justwayward.reader.ui.presenter.BooksByTagPresenter;
@@ -53,7 +53,7 @@ public class BooksByTagActivity extends BaseActivity implements BooksByTagContra
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
-        DaggerBooksByTagActivityComponent.builder()
+        DaggerBookComponent.builder()
                 .appComponent(appComponent)
                 .build()
                 .inject(this);

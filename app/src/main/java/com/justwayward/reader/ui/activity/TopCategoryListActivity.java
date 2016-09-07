@@ -11,7 +11,7 @@ import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.CategoryList;
 import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
-import com.justwayward.reader.component.DaggerTopCategoryListActivityComponent;
+import com.justwayward.reader.component.DaggerFindComponent;
 import com.justwayward.reader.ui.adapter.TopCategoryListAdapter;
 import com.justwayward.reader.ui.contract.TopCategoryListContract;
 import com.justwayward.reader.ui.presenter.TopCategoryListPresenter;
@@ -49,7 +49,7 @@ public class TopCategoryListActivity extends BaseActivity implements TopCategory
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
-        DaggerTopCategoryListActivityComponent.builder()
+        DaggerFindComponent.builder()
                 .appComponent(appComponent)
                 .build()
                 .inject(this);

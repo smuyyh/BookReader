@@ -22,7 +22,7 @@ import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseRVActivity;
 import com.justwayward.reader.bean.SearchDetail;
 import com.justwayward.reader.component.AppComponent;
-import com.justwayward.reader.component.DaggerSearchActivityComponent;
+import com.justwayward.reader.component.DaggerBookComponent;
 import com.justwayward.reader.ui.adapter.AutoCompleteAdapter;
 import com.justwayward.reader.ui.contract.SearchContract;
 import com.justwayward.reader.ui.easyadapter.SearchAdapter;
@@ -81,7 +81,7 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
-        DaggerSearchActivityComponent.builder()
+        DaggerBookComponent.builder()
                 .appComponent(appComponent)
                 .build()
                 .inject(this);
