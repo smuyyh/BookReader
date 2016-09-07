@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="@color/common_bg"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <include layout="@layout/common_toolbar" />
@@ -64,8 +64,8 @@
                     android:layout_toRightOf="@id/tvBookListAuthor"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:textColor="@color/common_h2"
                     android:text="仙侠 | "
+                    android:textColor="@color/common_h2"
                     android:textSize="13sp" />
 
                 <TextView
@@ -76,8 +76,8 @@
                     android:layout_toRightOf="@id/tvCatgory"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:textColor="@color/common_h2"
                     android:text="594万字"
+                    android:textColor="@color/common_h2"
                     android:textSize="13sp" />
 
                 <TextView
@@ -89,8 +89,8 @@
                     android:layout_toRightOf="@id/ivBookCover"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:textColor="@color/common_h2"
                     android:text="4月前"
+                    android:textColor="@color/common_h2"
                     android:textSize="13sp" />
 
                 <LinearLayout
@@ -166,8 +166,8 @@
                         android:layout_marginTop="5dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:textColor="@color/common_h1"
                         android:text="82"
+                        android:textColor="@color/common_h1"
                         android:textSize="15sp" />
 
                 </LinearLayout>
@@ -254,8 +254,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-10dp"
+                android:ellipsize="end"
+                android:maxLines="4"
                 android:padding="15dp"
-                android:text="zzzzzzzzz"
+                android:text=""
                 android:textColor="@color/common_h1"
                 android:textSize="15sp" />
 
@@ -282,8 +284,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:padding="15dp"
-                    android:textColor="@color/common_h2"
                     android:text="更多"
+                    android:textColor="@color/common_h2"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -317,8 +319,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tvCommunity"
                     android:layout_marginTop="5dp"
-                    android:textColor="@color/common_h2"
                     android:text="@string/book_detail_post_count"
+                    android:textColor="@color/common_h2"
                     android:textSize="13sp" />
 
                 <ImageView

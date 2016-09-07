@@ -99,6 +99,8 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     private List<RecommendBookList.RecommendBook> mRecommendBookList = new ArrayList<>();
     private String bookId;
 
+    private boolean collapseLongIntro = true;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_book_detail;
@@ -219,7 +221,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     @Override
     public void onItemClick(View view, int position, Object data) {
         if (data instanceof HotReview.Reviews) {
-
+            BookDiscussionDetailActivity.startActivity(this, ((HotReview.Reviews)data)._id);
         } else if (data instanceof RecommendBookList.RecommendBook) {
             String id = ((RecommendBookList.RecommendBook) data).id;
             SubjectBookListDetailActivity.startActivity(this, id);
@@ -246,6 +248,17 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     public void searchByAuthor() {
         String author = mTvAuthor.getText().toString().replaceAll(" ", "");
         // TODO search
+    }
+
+    @OnClick(R.id.tvlongIntro)
+    public void collapseLongIntro() {
+        if (collapseLongIntro) {
+            mTvlongIntro.setMaxLines(20);
+            collapseLongIntro = false;
+        } else {
+            mTvlongIntro.setMaxLines(4);
+            collapseLongIntro = true;
+        }
     }
 
 }
