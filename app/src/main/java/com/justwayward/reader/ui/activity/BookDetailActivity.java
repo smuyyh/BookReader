@@ -108,7 +108,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerBookDetailActivityComponent.builder()
                 .appComponent(appComponent)
-                        //.mainActivityModule(new MainActivityModule(this))
+                //.mainActivityModule(new MainActivityModule(this))
                 .build()
                 .inject(this);
     }
@@ -160,6 +160,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
         mTvAuthor.setText(String.format(getString(R.string.book_detail_author), data.author));
         mTvCatgory.setText(String.format(getString(R.string.book_detail_category), data.cat));
         mTvWordCount.setText(FormatUtils.formatWordCount(data.wordCount));
+        mTvLatelyUpdate.setText(FormatUtils.formatDate(data.updated));
         mTvLatelyFollower.setText(String.valueOf(data.latelyFollower));
         mTvRetentionRatio.setText(String.valueOf(data.retentionRatio));
         mTvSerializeWordCount.setText(String.valueOf(data.serializeWordCount));
@@ -239,6 +240,12 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     public void onClickRead() {
         startActivity(new Intent(this, BookReadActivity.class)
                 .putExtra("bookId", bookId));
+    }
+
+    @OnClick(R.id.tvBookListAuthor)
+    public void searchByAuthor() {
+        String author = mTvAuthor.getText().toString().replaceAll(" ", "");
+        // TODO search
     }
 
 }

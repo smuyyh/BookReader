@@ -104,7 +104,6 @@ public class BookDetailPresenter implements BookDetailContract.Presenter<BookDet
 
                     @Override
                     public void onCompleted() {
-                        LogUtils.e("+++comp");
                     }
 
                     @Override
