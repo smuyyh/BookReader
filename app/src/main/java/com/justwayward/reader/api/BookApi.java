@@ -185,4 +185,12 @@ public class BookApi {
         return service.login(loginReq);
     }
 
+    public Observable<DiscussionList> getBookDetailDisscussionList(String book, String sort, String type, String start, String limit) {
+        return service.getBookDetailDisscussionList(book, sort, type, start, limit);
+    }
+
+    public Observable<BookReviewList> getBookDetailReviewList(String book, String sort,  String start, String limit) {
+        return service.getBookDetailReviewList(book, sort,  start, limit);
+    }
+
 }
