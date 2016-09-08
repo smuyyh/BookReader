@@ -4,4 +4,5 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:indeterminate="false" />
+    android:indeterminate="false"
+    android:indeterminateDrawable="@drawable/bg_progressbar"/>

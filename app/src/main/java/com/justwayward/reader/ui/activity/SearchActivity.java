@@ -108,6 +108,8 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
 
     @Override
     public void initDatas() {
+        key = getIntent().getStringExtra(INTENT_QUERY);
+
         mHisAdapter = new SearchHistoryAdapter(this, mHisList);
         lvSearchHistory.setAdapter(mHisAdapter);
         initSearchHistory();
@@ -149,8 +151,6 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
 
         mPresenter.attachView(this);
         mPresenter.getHotWordList();
-
-        key = getIntent().getStringExtra(INTENT_QUERY);
     }
 
     @Override
@@ -162,7 +162,7 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
     }
 
     /**
-     * 每次显示8个
+     * 每次显示8个热搜词
      */
     private void showHotWord() {
         int start, end;
@@ -235,7 +235,7 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
                 return false;
             }
         });
-        search(key);
+        search(key); // 外部调用搜索，则打开页面立即进行搜索
         MenuItemCompat.setOnActionExpandListener(searchMenuItem,
                 new MenuItemCompat.OnActionExpandListener() {//设置打开关闭动作监听
                     @Override
@@ -253,7 +253,7 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
     }
 
     /**
-     * 保存搜索记录
+     * 保存搜索记录.不重复，最多保存20条
      *
      * @param query
      */
