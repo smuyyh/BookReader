@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,18 +25,22 @@ import com.justwayward.reader.bean.SearchDetail;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerBookComponent;
 import com.justwayward.reader.ui.adapter.AutoCompleteAdapter;
+import com.justwayward.reader.ui.adapter.SearchHistoryAdapter;
 import com.justwayward.reader.ui.contract.SearchContract;
 import com.justwayward.reader.ui.easyadapter.SearchAdapter;
 import com.justwayward.reader.ui.presenter.SearchPresenter;
+import com.justwayward.reader.utils.SharedPreferencesUtil;
 import com.justwayward.reader.view.TagColor;
 import com.justwayward.reader.view.TagGroup;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2016/8/6.
@@ -57,6 +62,12 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
     LinearLayout mRootLayout;
     @Bind(R.id.layoutHotWord)
     RelativeLayout mLayoutHotWord;
+    @Bind(R.id.rlHistory)
+    RelativeLayout rlHistory;
+    @Bind(R.id.tvClear)
+    TextView tvClear;
+    @Bind(R.id.lvSearchHistory)
+    ListView lvSearchHistory;
 
     @Inject
     SearchPresenter mPresenter;
@@ -66,6 +77,9 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
 
     private AutoCompleteAdapter mAutoAdapter;
     private List<String> mAutoList = new ArrayList<>();
+
+    private SearchHistoryAdapter mHisAdapter;
+    private List<String> mHisList = new ArrayList<>();
 
     private String key;
     private MenuItem searchMenuItem;
@@ -94,7 +108,9 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
 
     @Override
     public void initDatas() {
-
+        mHisAdapter = new SearchHistoryAdapter(this, mHisList);
+        lvSearchHistory.setAdapter(mHisAdapter);
+        initSearchHistory();
     }
 
     @Override
@@ -203,6 +219,7 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
             public boolean onQueryTextSubmit(String query) {
                 key = query;
                 mPresenter.getSearchResultList(query);
+                saveSearchHistory(query);
                 return false;
             }
 
@@ -235,10 +252,58 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
         return true;
     }
 
+    /**
+     * 保存搜索记录
+     *
+     * @param query
+     */
+    private void saveSearchHistory(String query) {
+        List<String> list = SharedPreferencesUtil.getInstance().getObject("searchHistory", List.class);
+        if (list == null) {
+            list = new ArrayList<>();
+            list.add(query);
+        } else {
+            Iterator<String> iterator = list.iterator();
+            while (iterator.hasNext()) {
+                String item = iterator.next();
+                if (TextUtils.equals(query, item)) {
+                    iterator.remove();
+                }
+            }
+            list.add(0, query);
+        }
+        int size = list.size();
+        if (size > 20) { // 最多保存20条
+            for (int i = size - 1; i >= 20; i--) {
+                list.remove(i);
+            }
+        }
+        SharedPreferencesUtil.getInstance().putObject("searchHistory", list);
+        initSearchHistory();
+    }
+
+    private void initSearchHistory() {
+        List<String> list = SharedPreferencesUtil.getInstance().getObject("searchHistory", List.class);
+        mHisAdapter.clear();
+        if (list != null && list.size() > 0) {
+            tvClear.setEnabled(true);
+            mHisAdapter.addAll(list);
+        } else {
+            tvClear.setEnabled(false);
+        }
+        mHisAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 展开SearchView进行查询
+     *
+     * @param key
+     */
     private void search(String key) {
         if (!TextUtils.isEmpty(key)) {
             MenuItemCompat.expandActionView(searchMenuItem);
             searchView.setQuery(key, true);
+            saveSearchHistory(key);
         }
     }
 
@@ -252,17 +317,15 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
     }
 
     private void initSearchResult() {
-        mTagGroup.setVisibility(View.GONE);
-        mLayoutHotWord.setVisibility(View.GONE);
-        mRecyclerView.setVisibility(View.VISIBLE);
+        gone(mTagGroup, mLayoutHotWord, rlHistory);
+        visible(mRecyclerView);
         if (mListPopupWindow.isShowing())
             mListPopupWindow.dismiss();
     }
 
     private void initTagGroup() {
-        mTagGroup.setVisibility(View.VISIBLE);
-        mLayoutHotWord.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(View.GONE);
+        visible(mTagGroup, mLayoutHotWord, rlHistory);
+        gone(mRecyclerView);
         if (mListPopupWindow.isShowing())
             mListPopupWindow.dismiss();
     }
@@ -271,5 +334,11 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
     public void onItemClick(int position) {
         SearchDetail.SearchBooks data = mAdapter.getItem(position);
         BookDetailActivity.startActivity(this, data._id);
+    }
+
+    @OnClick(R.id.tvClear)
+    public void clearSearchHistory() {
+        SharedPreferencesUtil.getInstance().putObject("searchHistory", null);
+        initSearchHistory();
     }
 }
