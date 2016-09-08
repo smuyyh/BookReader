@@ -12,6 +12,8 @@ public interface BookDetailReviewContract {
 
     interface View {
         void showBookDetailReviewList(List<HotReview.Reviews> list, boolean isRefresh);
+
+        void showError();
     }
 
     interface Presenter<T> extends BaseContract.BasePresenter<T> {

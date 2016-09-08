@@ -21,4 +21,8 @@ public class SelectionEvent {
         this.type = type;
         this.sort = sort;
     }
+
+    public SelectionEvent(@Constant.SortType String sort) {
+        this.sort = sort;
+    }
 }

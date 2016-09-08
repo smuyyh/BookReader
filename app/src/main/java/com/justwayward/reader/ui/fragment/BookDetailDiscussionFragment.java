@@ -85,18 +85,20 @@ public class BookDetailDiscussionFragment extends BaseRVFragment<DiscussionList.
         dismissDialog();
     }
 
-//    @Override
-//    public void showError() {
-//        dismissDialog();
-//        loaddingError();
-//    }
+    @Override
+    public void showError() {
+        dismissDialog();
+        loaddingError();
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void initCategoryList(SelectionEvent event) {
-        showDialog();
-        sort = event.sort;
-        start = 0;
-        mPresenter.getBookDetailDiscussionList(bookId,sort, start, limit);
+        if (getUserVisibleHint()) {
+            showDialog();
+            sort = event.sort;
+            start = 0;
+            mPresenter.getBookDetailDiscussionList(bookId, sort, start, limit);
+        }
     }
 
     @Override

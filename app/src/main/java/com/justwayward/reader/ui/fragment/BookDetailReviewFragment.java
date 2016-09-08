@@ -24,6 +24,7 @@ import javax.inject.Inject;
 
 /**
  * 书籍详情 书评列表Fragment
+ *
  * @author lfh.
  * @date 16/9/7.
  */
@@ -84,31 +85,33 @@ public class BookDetailReviewFragment extends BaseRVFragment<HotReview.Reviews> 
         dismissDialog();
     }
 
-//    @Override
-//    public void showError() {
-//        loaddingError();
-//        dismissDialog();
-//    }
+    @Override
+    public void showError() {
+        loaddingError();
+        dismissDialog();
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void initCategoryList(SelectionEvent event) {
-        showDialog();
-        sort = event.sort;
-        start = 0;
-        limit = 20;
-        mPresenter.getBookDetailReviewList(bookId,sort, start, limit);
+        if (getUserVisibleHint()) {
+            showDialog();
+            sort = event.sort;
+            start = 0;
+            limit = 20;
+            mPresenter.getBookDetailReviewList(bookId, sort, start, limit);
+        }
     }
 
     @Override
     public void onRefresh() {
         super.onRefresh();
-        mPresenter.getBookDetailReviewList(bookId,sort, start, limit);
+        mPresenter.getBookDetailReviewList(bookId, sort, start, limit);
     }
 
     @Override
     public void onLoadMore() {
         super.onLoadMore();
-        mPresenter.getBookDetailReviewList(sort,type, start, limit);
+        mPresenter.getBookDetailReviewList(sort, type, start, limit);
     }
 
     @Override
