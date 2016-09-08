@@ -23,9 +23,9 @@
         android:layout_toRightOf="@id/ivBookCover"
         android:ellipsize="end"
         android:singleLine="true"
-        tools:text="我就是静静"
         android:textColor="@color/light_coffee"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        tools:text="我就是静静" />
 
     <TextView
         android:id="@+id/tvBookType"
@@ -47,25 +47,23 @@
         android:layout_toRightOf="@id/ivBookCover"
         android:ellipsize="end"
         android:singleLine="true"
-        tools:text="越到后面越索然无味"
-        android:textColor="@color/common_h1" />
+        android:textColor="@color/common_h1"
+        tools:text="越到后面越索然无味" />
 
-    <com.justwayward.reader.view.XLHRatingBar
-        xmlns:xlhRatingBar="http://schemas.android.com/apk/res-auto"
+    <com.justwayward.reader.view.XLHRatingBar xmlns:xlhRatingBar="http://schemas.android.com/apk/res-auto"
         android:id="@+id/rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/ivBookCover"
         android:layout_below="@id/tvTitle"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/ivBookCover"
         xlhRatingBar:canEdit="false"
-        xlhRatingBar:countSelected="0"
+        xlhRatingBar:countSelected="2"
         xlhRatingBar:differentSize="false"
         xlhRatingBar:dividerWidth="1dp"
         xlhRatingBar:starCount="5"
-        android:layout_marginBottom="10dp"
         xlhRatingBar:stateResId="@drawable/hot_review_rating_bar_selector"
-        xlhRatingBar:widthAndHeight="10dp" />
+        xlhRatingBar:widthAndHeight="15dp" />
 
     <TextView
         android:id="@+id/tvContent"
@@ -76,9 +74,9 @@
         android:layout_toRightOf="@id/ivBookCover"
         android:ellipsize="end"
         android:maxLines="2"
-        tools:text="本人试毒500，前面还好后面真是"
         android:textColor="@color/common_h2"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        tools:text="本人试毒500，前面还好后面真是" />
 
     <TextView
         android:id="@+id/tvHelpfulYes"
@@ -89,9 +87,9 @@
         android:layout_toRightOf="@id/ivBookCover"
         android:drawableLeft="@drawable/post_item_like"
         android:drawablePadding="5dp"
-        tools:text="308"
         android:textColor="@color/common_h3"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        tools:text="308" />
 
     <TextView
         android:id="@+id/tvTime"
@@ -100,10 +98,10 @@
         android:layout_alignParentRight="true"
         android:ellipsize="end"
         android:singleLine="true"
-        tools:text="昨天"
-        android:visibility="gone"
-        tools:visibility="visible"
         android:textColor="@color/common_h3"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        android:visibility="gone"
+        tools:text="昨天"
+        tools:visibility="visible" />
 
 </RelativeLayout>

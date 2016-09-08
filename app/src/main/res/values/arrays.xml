@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="home_tabs">
-        <item>追书</item>
+        <item>推荐</item>
         <item>社区</item>
         <item>发现</item>
     </string-array>

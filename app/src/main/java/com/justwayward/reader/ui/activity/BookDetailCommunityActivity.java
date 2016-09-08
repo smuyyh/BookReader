@@ -33,7 +33,7 @@ public class BookDetailCommunityActivity extends BaseActivity {
         context.startActivity(new Intent(context, BookDetailCommunityActivity.class)
                 .putExtra(INTENT_ID, bookId)
                 .putExtra(INTENT_TITLE, title)
-                .putExtra(INTENT_TITLE, index));
+                .putExtra(INTENT_INDEX, index));
     }
 
     private String bookId;
