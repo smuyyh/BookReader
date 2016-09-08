@@ -46,6 +46,7 @@
         <activity android:name=".ui.activity.BookReviewDetailActivity" />
         <activity android:name=".ui.activity.BookHelpDetailActivity" />
         <activity android:name=".ui.activity.BookDetailCommunityActivity" />
+        <activity android:name=".ui.activity.GirlBookDiscussionActivity" />
 
         <service android:name=".service.DownloadBookService" />
 

@@ -6,6 +6,7 @@ import com.justwayward.reader.ui.activity.BookReviewDetailActivity;
 import com.justwayward.reader.ui.fragment.BookDiscussionFragment;
 import com.justwayward.reader.ui.fragment.BookHelpFragment;
 import com.justwayward.reader.ui.fragment.BookReviewFragment;
+import com.justwayward.reader.ui.fragment.GirlBookDiscussionFragment;
 
 import dagger.Component;
 
@@ -27,4 +28,6 @@ public interface CommunityComponent {
     BookHelpFragment inject(BookHelpFragment fragment);
 
     BookHelpDetailActivity inject(BookHelpDetailActivity activity);
+
+    GirlBookDiscussionFragment inject(GirlBookDiscussionFragment fragment);
 }

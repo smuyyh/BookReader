@@ -12,6 +12,7 @@ import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.ui.activity.BookDiscussionActivity;
 import com.justwayward.reader.ui.activity.BookReviewActivity;
 import com.justwayward.reader.ui.activity.BookHelpActivity;
+import com.justwayward.reader.ui.activity.GirlBookDiscussionActivity;
 import com.justwayward.reader.ui.adapter.FindAdapter;
 import com.justwayward.reader.view.SupportDividerItemDecoration;
 
@@ -71,6 +72,7 @@ public class CommunityFragment extends BaseFragment implements OnRvItemClickList
                 BookHelpActivity.startActivity(activity);
                 break;
             case 3:
+                GirlBookDiscussionActivity.startActivity(activity);
                 break;
             default:
                 break;

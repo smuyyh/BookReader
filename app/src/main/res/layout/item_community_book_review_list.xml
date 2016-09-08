@@ -12,7 +12,6 @@
         android:layout_width="45dp"
         android:layout_height="60dp"
         android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
         android:scaleType="centerCrop" />
 
