@@ -2,7 +2,6 @@ package com.justwayward.reader.ui.activity;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.justwayward.reader.R;
@@ -110,16 +109,6 @@ public class TopCategoryListActivity extends BaseActivity implements TopCategory
         public void onItemClick(View view, int position, CategoryList.MaleBean data) {
             SubCategoryListActivity.startActivity(mContext, data.name, gender);
         }
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
 }

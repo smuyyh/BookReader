@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.justwayward.reader.R;
@@ -99,17 +98,6 @@ public class BooksByTagActivity extends BaseActivity implements BooksByTagContra
     @Override
     public void onLoadComplete(boolean isSuccess, String msg) {
         refreshLayout.setRefreshing(false);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -57,7 +57,6 @@ public class BookDetailCommunityActivity extends BaseActivity {
     private List<String> mDatas;
 
     private AlertDialog dialog;
-
     private int[] select = new int[]{0, 0};
 
     @Override
@@ -69,7 +68,6 @@ public class BookDetailCommunityActivity extends BaseActivity {
     protected void setupActivityComponent(AppComponent appComponent) {
 
     }
-
 
     @Override
     public void initToolBar() {

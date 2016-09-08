@@ -192,13 +192,8 @@ public class SubCategoryListActivity extends BaseActivity implements SubCategory
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.menu_major) {
+        if (item.getItemId() == R.id.menu_major) {
             showMinorPopupWindow();
-            return true;
-        }else if (item.getItemId() == android.R.id.home) {
-            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);

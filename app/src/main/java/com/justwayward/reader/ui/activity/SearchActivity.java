@@ -245,18 +245,10 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_search) {
+        if (item.getItemId() == R.id.action_search) {
             //initSearchResult();
             return true;
         }
-
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 

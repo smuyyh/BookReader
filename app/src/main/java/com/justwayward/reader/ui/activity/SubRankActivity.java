@@ -107,13 +107,4 @@ public class SubRankActivity extends BaseActivity {
         mViewPager.setOffscreenPageLimit(3);
         mIndicator.setViewPager(mViewPager, 0);
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

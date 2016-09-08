@@ -133,19 +133,14 @@ public class SubjectBookListActivity extends BaseActivity implements SubjectBook
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.menu_tags) {
+        if (item.getItemId() == R.id.menu_tags) {
             if (isVisible(rsvTags)) {
                 hideTagGroup();
             } else {
                 showTagGroup();
             }
             return true;
-        } else if (id == R.id.menu_more) {
-            return true;
-        } else if (item.getItemId() == android.R.id.home) {
-            finish();
+        } else if (item.getItemId() == R.id.menu_more) {
             return true;
         }
         return super.onOptionsItemSelected(item);
