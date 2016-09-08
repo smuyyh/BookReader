@@ -86,4 +86,10 @@ public abstract class BaseRVActivity<T> extends BaseActivity implements OnLoadMo
             return;
         }
     }
+
+    protected void loaddingError(){
+        mAdapter.clear();
+        mAdapter.pauseMore();
+        mRecyclerView.setRefreshing(false);
+    }
 }

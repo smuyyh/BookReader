@@ -106,30 +106,6 @@ public interface BookApiService {
     @GET("/post/review/best-by-book")
     Observable<HotReview> getHotReview(@Query("book") String book);
 
-    /**
-     * @param book
-     * @param sort  updated(默认排序)、created(最新发布)、comment-count(最多评论)
-     * @param type  默认“normal,vote”
-     * @param start
-     * @param limit
-     * @return
-     */
-    @GET(("/post/by-book"))
-    Observable<DiscussionList> getBookDisscussionList(@Query("book") String book, @Query("sort") String sort, @Query("type") String type, @Query("start") String start, @Query("limit") String limit);
-
-
-    /**
-     * 书籍详情->社区->书评
-     *
-     * @param book
-     * @param sort  updated(默认排序)、created(最新发布)、comment-count(最多评论)
-     * @param start
-     * @param limit
-     * @return
-     */
-    @GET("/post/review/by-book")
-    Observable<HotReview> getReview(@Query("book") String book, @Query("sort") String sort, @Query("start") String start, @Query("limit") String limit);
-
     @GET("/book-list/{bookId}/recommend")
     Observable<RecommendBookList> getRecommendBookList(@Path("bookId") String bookId, @Query("limit") String limit);
 

@@ -27,7 +27,6 @@ import com.justwayward.reader.ui.adapter.AutoCompleteAdapter;
 import com.justwayward.reader.ui.contract.SearchContract;
 import com.justwayward.reader.ui.easyadapter.SearchAdapter;
 import com.justwayward.reader.ui.presenter.SearchPresenter;
-import com.justwayward.reader.utils.ToastUtils;
 import com.justwayward.reader.view.TagColor;
 import com.justwayward.reader.view.TagGroup;
 
@@ -41,7 +40,7 @@ import butterknife.Bind;
 /**
  * Created by Administrator on 2016/8/6.
  */
-public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> implements SearchContract.View{
+public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> implements SearchContract.View {
 
     public static final String INTENT_QUERY = "query";
 
@@ -269,15 +268,8 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
     }
 
     @Override
-    public void onRefresh() {
-        super.onRefresh();
-        ToastUtils.showSingleToast("+++++");
-    }
-
-    @Override
     public void onItemClick(int position) {
-        SearchDetail.SearchBooks data = (SearchDetail.SearchBooks) mAdapter.getItem(position);
-        startActivity(new Intent(SearchActivity.this, BookDetailActivity.class).putExtra
-                ("bookId", data._id));
+        SearchDetail.SearchBooks data = mAdapter.getItem(position);
+        BookDetailActivity.startActivity(this, data._id);
     }
 }

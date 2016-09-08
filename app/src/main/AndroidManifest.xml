@@ -26,6 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.SearchActivity" />
+        <activity android:name=".ui.activity.SearchByAuthorActivity" />
         <activity android:name=".ui.activity.BookDetailActivity" />
         <activity android:name=".ui.activity.BooksByTagActivity" />
         <activity
@@ -41,13 +42,12 @@
         <activity android:name=".ui.activity.BookReviewActivity" />
         <activity android:name=".ui.activity.BookHelpActivity" />
         <activity android:name=".ui.activity.BookMaleActivity" />
-
-        <service android:name=".service.DownloadBookService" />
-
         <activity android:name=".ui.activity.BookDiscussionDetailActivity" />
         <activity android:name=".ui.activity.BookReviewDetailActivity" />
         <activity android:name=".ui.activity.BookHelpDetailActivity" />
         <activity android:name=".ui.activity.BookDetailCommunityActivity" />
+
+        <service android:name=".service.DownloadBookService" />
 
         <activity
             android:name="com.tencent.tauth.AuthActivity"

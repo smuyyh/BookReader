@@ -223,7 +223,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     @Override
     public void onItemClick(View view, int position, Object data) {
         if (data instanceof HotReview.Reviews) {
-            BookDiscussionDetailActivity.startActivity(this, ((HotReview.Reviews)data)._id);
+            BookDiscussionDetailActivity.startActivity(this, ((HotReview.Reviews) data)._id);
         } else if (data instanceof RecommendBookList.RecommendBook) {
             String id = ((RecommendBookList.RecommendBook) data).id;
             SubjectBookListDetailActivity.startActivity(this, id);
@@ -239,7 +239,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     @OnClick(R.id.tvBookListAuthor)
     public void searchByAuthor() {
         String author = mTvAuthor.getText().toString().replaceAll(" ", "");
-        // TODO search
+        SearchByAuthorActivity.startActivity(this, author);
     }
 
     @OnClick(R.id.tvlongIntro)
@@ -255,12 +255,12 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
 
     @OnClick(R.id.tvMoreReview)
     public void onClickMoreReview() {
-        BookDetailCommunityActivity.startActivity(this,bookId,mTvBookTitle.getText().toString(),1);
+        BookDetailCommunityActivity.startActivity(this, bookId, mTvBookTitle.getText().toString(), 1);
     }
 
     @OnClick(R.id.rlCommunity)
     public void onClickCommunity() {
-        BookDetailCommunityActivity.startActivity(this,bookId,mTvBookTitle.getText().toString(),0);
+        BookDetailCommunityActivity.startActivity(this, bookId, mTvBookTitle.getText().toString(), 0);
     }
 
 }

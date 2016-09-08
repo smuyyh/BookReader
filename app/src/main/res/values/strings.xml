@@ -10,8 +10,8 @@
     <string name="search_result_author">%1$s著</string>
 
     <string name="book_detail">书籍详情</string>
-    <string name="book_detail_author">%1$s &#160;</string>
-    <string name="book_detail_category">|&#160;%1$s |&#160;</string>
+    <string name="book_detail_author">%1$s</string>
+    <string name="book_detail_category"> &#160;|&#160;%1$s |&#160;</string>
     <string name="book_detail_user_lv">&#160;lv.%1$d</string>
     <string name="book_detail_hot_reviews">热门书评</string>
     <string name="book_detail_community">%1$s的社区</string>

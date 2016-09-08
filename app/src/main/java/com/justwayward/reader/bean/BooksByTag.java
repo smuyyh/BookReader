@@ -39,7 +39,7 @@ public class BooksByTag extends Base {
         public String majorCate;
         public String minorCate;
         public int latelyFollower;
-        public double retentionRatio;
+        public String retentionRatio;
         public String lastChapter;
         public List<String> tags;
     }

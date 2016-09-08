@@ -81,6 +81,10 @@ public class BookApi {
         return service.searchBooks(query);
     }
 
+    public Observable<BooksByTag> searchBooksByAuthor(String author){
+        return service.searchBooksByAuthor(author);
+    }
+
     public Observable<BookDetail> getBookDetail(String bookId) {
         return service.getBookDetail(bookId);
     }

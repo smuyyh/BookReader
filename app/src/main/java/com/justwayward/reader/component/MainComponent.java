@@ -7,7 +7,7 @@ import dagger.Component;
 
 @Component(dependencies = AppComponent.class)
 public interface MainComponent {
-    MainActivity inject(MainActivity mainActivity);
+    MainActivity inject(MainActivity activity);
 
-    RecommendFragment inject(RecommendFragment recommendFragment);
+    RecommendFragment inject(RecommendFragment fragment);
 }

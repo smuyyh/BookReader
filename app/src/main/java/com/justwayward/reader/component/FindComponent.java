@@ -20,18 +20,18 @@ import dagger.Component;
 public interface FindComponent {
 
     /** 分类 **/
-    TopCategoryListActivity inject(TopCategoryListActivity categoryListActivity);
+    TopCategoryListActivity inject(TopCategoryListActivity activity);
 
-    SubCategoryListActivity inject(SubCategoryListActivity categoryListActivity);
+    SubCategoryListActivity inject(SubCategoryListActivity activity);
 
-    SubCategoryFragment inject(SubCategoryFragment recommendFragment);
+    SubCategoryFragment inject(SubCategoryFragment fragment);
 
     /** 排行 **/
-    TopRankActivity inject(TopRankActivity rankActivity);
+    TopRankActivity inject(TopRankActivity activity);
 
-    SubRankActivity inject(SubRankActivity rankActivity);
+    SubRankActivity inject(SubRankActivity activity);
 
-    SubRankFragment inject(SubRankFragment rankFragment);
+    SubRankFragment inject(SubRankFragment fragment);
 
     /** 主题书单 **/
     SubjectBookListActivity inject(SubjectBookListActivity subjectBookListActivity);

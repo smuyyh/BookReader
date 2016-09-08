@@ -41,5 +41,17 @@ public class SearchDetail extends Base {
         public String retentionRatio;
         public int latelyFollower;
         public int wordCount;
+
+        public SearchBooks(String _id, String title, String author, String cover, String retentionRatio, int latelyFollower) {
+            this._id = _id;
+            this.title = title;
+            this.author = author;
+            this.cover = cover;
+            this.retentionRatio = retentionRatio;
+            this.latelyFollower = latelyFollower;
+        }
+
+        public SearchBooks() {
+        }
     }
 }
