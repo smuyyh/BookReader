@@ -163,9 +163,6 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
 
     @Override
     public void initToolBar() {
-//        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mLlBookReadTop.getLayoutParams();
-//        params.topMargin = ScreenUtils.getStatusBarHeight(this);
-//        mLlBookReadTop.setLayoutParams(params);
         showDialog();
     }
 
