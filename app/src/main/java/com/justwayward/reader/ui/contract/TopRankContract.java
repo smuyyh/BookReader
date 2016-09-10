@@ -1,5 +1,7 @@
 package com.justwayward.reader.ui.contract;
 
+import com.justwayward.reader.base.BaseContract;
+import com.justwayward.reader.base.BaseView;
 import com.justwayward.reader.bean.RankingList;
 
 /**
@@ -8,7 +10,7 @@ import com.justwayward.reader.bean.RankingList;
  */
 public interface TopRankContract {
 
-    interface View {
+    interface View extends BaseView {
         void showRankList(RankingList rankingList);
 
         void complete();

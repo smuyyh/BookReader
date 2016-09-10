@@ -60,6 +60,11 @@ public class CommunityFragment extends BaseFragment implements OnRvItemClickList
     }
 
     @Override
+    public void attachView() {
+
+    }
+
+    @Override
     public void onItemClick(View view, int position, FindBean data) {
         switch (position) {
             case 0:

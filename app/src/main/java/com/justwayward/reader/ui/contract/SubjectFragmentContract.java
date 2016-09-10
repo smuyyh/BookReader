@@ -1,5 +1,7 @@
 package com.justwayward.reader.ui.contract;
 
+import com.justwayward.reader.base.BaseContract;
+import com.justwayward.reader.base.BaseView;
 import com.justwayward.reader.bean.BookLists;
 
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.List;
  */
 public interface SubjectFragmentContract {
 
-    interface View {
+    interface View extends BaseView {
         void showBookList(List<BookLists.BookListsBean> bookLists, boolean isRefresh);
 
         void showError();

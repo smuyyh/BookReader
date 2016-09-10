@@ -1,5 +1,7 @@
 package com.justwayward.reader.ui.contract;
 
+import com.justwayward.reader.base.BaseContract;
+import com.justwayward.reader.base.BaseView;
 import com.justwayward.reader.bean.HotReview;
 
 import java.util.List;
@@ -10,13 +12,13 @@ import java.util.List;
  */
 public interface BookDetailReviewContract {
 
-    interface View {
+    interface View extends BaseView {
         void showBookDetailReviewList(List<HotReview.Reviews> list, boolean isRefresh);
 
         void showError();
     }
 
     interface Presenter<T> extends BaseContract.BasePresenter<T> {
-        void getBookDetailReviewList(String bookId,String sort,int start, int limit);
+        void getBookDetailReviewList(String bookId, String sort, int start, int limit);
     }
 }

@@ -18,16 +18,11 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 /**
  * @author lfh.
  * @date 16/9/3.
  */
-public class BookHelpFragment extends BaseRVFragment<BookHelpList.HelpsBean> implements BookHelpContract.View{
-
-    @Inject
-    BookHelpPresenter mPresenter;
+public class BookHelpFragment extends BaseRVFragment<BookHelpPresenter,BookHelpList.HelpsBean> implements BookHelpContract.View{
 
     private String sort = Constant.SortType.DEFAULT;
     private String distillate = Constant.Distillate.ALL;
@@ -53,8 +48,6 @@ public class BookHelpFragment extends BaseRVFragment<BookHelpList.HelpsBean> imp
     @Override
     public void configViews() {
         initAdapter(BookHelpAdapter.class, true, true);
-
-        mPresenter.attachView(this);
         onRefresh();
     }
 

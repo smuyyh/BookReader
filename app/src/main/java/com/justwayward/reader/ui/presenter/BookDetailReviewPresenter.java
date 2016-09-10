@@ -1,8 +1,7 @@
 package com.justwayward.reader.ui.presenter;
 
-import android.content.Context;
-
 import com.justwayward.reader.api.BookApi;
+import com.justwayward.reader.base.RxPresenter;
 import com.justwayward.reader.bean.HotReview;
 import com.justwayward.reader.ui.contract.BookDetailReviewContract;
 import com.justwayward.reader.utils.LogUtils;
@@ -10,6 +9,7 @@ import com.justwayward.reader.utils.LogUtils;
 import javax.inject.Inject;
 
 import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -17,21 +17,17 @@ import rx.schedulers.Schedulers;
  * @author lfh.
  * @date 16/9/7.
  */
-public class BookDetailReviewPresenter implements BookDetailReviewContract.Presenter<BookDetailReviewContract.View> {
+public class BookDetailReviewPresenter extends RxPresenter<BookDetailReviewContract.View> implements BookDetailReviewContract.Presenter<BookDetailReviewContract.View> {
 
-    private Context context;
     private BookApi bookApi;
 
-    private BookDetailReviewContract.View view;
-
     @Inject
-    public BookDetailReviewPresenter(Context context, BookApi bookApi) {
-        this.context = context;
+    public BookDetailReviewPresenter(BookApi bookApi) {
         this.bookApi = bookApi;
     }
 
     public void getBookDetailReviewList(String bookId, String sort, final int start, int limit) {
-        bookApi.getBookDetailReviewList(bookId, sort, start + "", limit + "")
+        Subscription rxSubscription = bookApi.getBookDetailReviewList(bookId, sort, start + "", limit + "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<HotReview>() {
@@ -48,14 +44,10 @@ public class BookDetailReviewPresenter implements BookDetailReviewContract.Prese
                     @Override
                     public void onNext(HotReview list) {
                         boolean isRefresh = start == 0 ? true : false;
-                        view.showBookDetailReviewList(list.reviews,isRefresh);
+                        mView.showBookDetailReviewList(list.reviews, isRefresh);
                     }
                 });
+        addSubscrebe(rxSubscription);
     }
 
-
-    @Override
-    public void attachView(BookDetailReviewContract.View view) {
-        this.view = view;
-    }
 }

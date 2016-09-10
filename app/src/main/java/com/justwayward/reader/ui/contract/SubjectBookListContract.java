@@ -1,5 +1,7 @@
 package com.justwayward.reader.ui.contract;
 
+import com.justwayward.reader.base.BaseContract;
+import com.justwayward.reader.base.BaseView;
 import com.justwayward.reader.bean.BookListTags;
 
 /**
@@ -8,7 +10,7 @@ import com.justwayward.reader.bean.BookListTags;
  */
 public interface SubjectBookListContract {
 
-    interface View {
+    interface View extends BaseView {
         void showBookListTags(BookListTags data);
 
         void complete();

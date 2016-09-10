@@ -1,5 +1,7 @@
 package com.justwayward.reader.ui.contract;
 
+import com.justwayward.reader.base.BaseContract;
+import com.justwayward.reader.base.BaseView;
 import com.justwayward.reader.bean.CategoryList;
 
 /**
@@ -8,13 +10,13 @@ import com.justwayward.reader.bean.CategoryList;
  */
 public interface TopCategoryListContract {
 
-    interface View {
+    interface View extends BaseView {
         void showCategoryList(CategoryList data);
 
         void complete();
     }
 
-    interface Presenter<T> extends BaseContract.BasePresenter<T>{
+    interface Presenter<T> extends BaseContract.BasePresenter<T> {
         void getCategoryList();
     }
 

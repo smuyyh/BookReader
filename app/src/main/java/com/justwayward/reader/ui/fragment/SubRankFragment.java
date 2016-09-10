@@ -12,15 +12,13 @@ import com.justwayward.reader.ui.contract.SubRankContract;
 import com.justwayward.reader.ui.easyadapter.SubCategoryAdapter;
 import com.justwayward.reader.ui.presenter.SubRankPresenter;
 
-import javax.inject.Inject;
-
 /**
  * 二级排行榜
  *
  * @author yuyh.
  * @date 16/9/1.
  */
-public class SubRankFragment extends BaseRVFragment<BooksByCats.BooksBean> implements SubRankContract.View {
+public class SubRankFragment extends BaseRVFragment<SubRankPresenter,BooksByCats.BooksBean> implements SubRankContract.View {
 
     public final static String BUNDLE_ID = "_id";
 
@@ -33,9 +31,6 @@ public class SubRankFragment extends BaseRVFragment<BooksByCats.BooksBean> imple
     }
 
     private String id;
-
-    @Inject
-    SubRankPresenter mPresenter;
 
     @Override
     public int getLayoutResId() {

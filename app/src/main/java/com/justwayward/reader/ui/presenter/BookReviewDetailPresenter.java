@@ -1,8 +1,7 @@
 package com.justwayward.reader.ui.presenter;
 
-import android.content.Context;
-
 import com.justwayward.reader.api.BookApi;
+import com.justwayward.reader.base.RxPresenter;
 import com.justwayward.reader.bean.BookReview;
 import com.justwayward.reader.bean.CommentList;
 import com.justwayward.reader.ui.contract.BookReviewDetailContract;
@@ -11,6 +10,7 @@ import com.justwayward.reader.utils.LogUtils;
 import javax.inject.Inject;
 
 import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -18,22 +18,18 @@ import rx.schedulers.Schedulers;
  * @author yuyh.
  * @date 16/9/2.
  */
-public class BookReviewDetailPresenter implements BookReviewDetailContract.Presenter {
+public class BookReviewDetailPresenter extends RxPresenter<BookReviewDetailContract.View> implements BookReviewDetailContract.Presenter {
 
-    private Context context;
     private BookApi bookApi;
 
-    private BookReviewDetailContract.View view;
-
     @Inject
-    public BookReviewDetailPresenter(Context context, BookApi bookApi) {
-        this.context = context;
+    public BookReviewDetailPresenter(BookApi bookApi) {
         this.bookApi = bookApi;
     }
 
     @Override
     public void getBookReviewDetail(String id) {
-        bookApi.getBookReviewDetail(id).subscribeOn(Schedulers.io())
+        Subscription rxSubscription = bookApi.getBookReviewDetail(id).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BookReview>() {
                     @Override
@@ -48,14 +44,15 @@ public class BookReviewDetailPresenter implements BookReviewDetailContract.Prese
 
                     @Override
                     public void onNext(BookReview data) {
-                        view.showBookReviewDetail(data);
+                        mView.showBookReviewDetail(data);
                     }
                 });
+        addSubscrebe(rxSubscription);
     }
 
     @Override
     public void getBestComments(String bookReviewId) {
-        bookApi.getBestComments(bookReviewId)
+        Subscription rxSubscription = bookApi.getBestComments(bookReviewId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<CommentList>() {
@@ -71,14 +68,15 @@ public class BookReviewDetailPresenter implements BookReviewDetailContract.Prese
 
                     @Override
                     public void onNext(CommentList list) {
-                        view.showBestComments(list);
+                        mView.showBestComments(list);
                     }
                 });
+        addSubscrebe(rxSubscription);
     }
 
     @Override
     public void getBookReviewComments(String bookReviewId, int start, int limit) {
-        bookApi.getBookReviewComments(bookReviewId,start+"",limit+"")
+        Subscription rxSubscription = bookApi.getBookReviewComments(bookReviewId, start + "", limit + "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<CommentList>() {
@@ -89,18 +87,15 @@ public class BookReviewDetailPresenter implements BookReviewDetailContract.Prese
 
                     @Override
                     public void onError(Throwable e) {
-                        LogUtils.e("getBookDisscussionComments:" + e.toString());
+                        LogUtils.e("getBookReviewComments:" + e.toString());
                     }
 
                     @Override
                     public void onNext(CommentList list) {
-                        view.showBookReviewComments(list);
+                        mView.showBookReviewComments(list);
                     }
                 });
+        addSubscrebe(rxSubscription);
     }
 
-    @Override
-    public void attachView(BookReviewDetailContract.View view) {
-        this.view = view;
-    }
 }

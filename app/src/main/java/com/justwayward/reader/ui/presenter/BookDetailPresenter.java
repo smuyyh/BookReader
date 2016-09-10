@@ -1,9 +1,9 @@
 package com.justwayward.reader.ui.presenter;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.justwayward.reader.api.BookApi;
+import com.justwayward.reader.base.RxPresenter;
 import com.justwayward.reader.bean.BookDetail;
 import com.justwayward.reader.bean.HotReview;
 import com.justwayward.reader.bean.RecommendBookList;
@@ -15,6 +15,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -22,34 +23,25 @@ import rx.schedulers.Schedulers;
  * @author lfh.
  * @date 2016/8/6.
  */
-public class BookDetailPresenter implements BookDetailContract.Presenter<BookDetailContract.View> {
+public class BookDetailPresenter extends RxPresenter<BookDetailContract.View> implements BookDetailContract.Presenter<BookDetailContract.View> {
 
-    private Context context;
     private BookApi bookApi;
-
-    private BookDetailContract.View view;
 
     private static final String TAG = "BookDetailPresenter";
 
     @Inject
-    public BookDetailPresenter(Context context, BookApi bookApi) {
-        this.context = context;
+    public BookDetailPresenter(BookApi bookApi) {
         this.bookApi = bookApi;
     }
 
-    @Override
-    public void attachView(BookDetailContract.View view) {
-        this.view = view;
-    }
-
     public void getBookDetail(String bookId) {
-        bookApi.getBookDetail(bookId).subscribeOn(Schedulers.io())
+        Subscription rxSubscription = bookApi.getBookDetail(bookId).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BookDetail>() {
                     @Override
                     public void onNext(BookDetail data) {
-                        if (data != null && view != null) {
-                            view.showBookDetail(data);
+                        if (data != null && mView != null) {
+                            mView.showBookDetail(data);
                         }
                     }
 
@@ -62,19 +54,20 @@ public class BookDetailPresenter implements BookDetailContract.Presenter<BookDet
                         Log.e(TAG, "onError: " + e);
                     }
                 });
+        addSubscrebe(rxSubscription);
     }
 
     @Override
     public void getHotReview(String book) {
-        bookApi.getHotReview(book).subscribeOn(Schedulers.io())
+        Subscription rxSubscription = bookApi.getHotReview(book).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<HotReview>() {
                     @Override
                     public void onNext(HotReview data) {
                         Log.e(TAG, "getHotReview" + data.reviews);
                         List<HotReview.Reviews> list = data.reviews;
-                        if (list != null && !list.isEmpty() && view != null) {
-                            view.showHotReview(list);
+                        if (list != null && !list.isEmpty() && mView != null) {
+                            mView.showHotReview(list);
                         }
                     }
 
@@ -86,19 +79,20 @@ public class BookDetailPresenter implements BookDetailContract.Presenter<BookDet
                     public void onError(Throwable e) {
                     }
                 });
+        addSubscrebe(rxSubscription);
     }
 
     @Override
     public void getRecommendBookList(String bookId, String limit) {
-        bookApi.getRecommendBookList(bookId,limit).subscribeOn(Schedulers.io())
+        Subscription rxSubscription = bookApi.getRecommendBookList(bookId, limit).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<RecommendBookList>() {
                     @Override
                     public void onNext(RecommendBookList data) {
                         LogUtils.i(data.booklists);
                         List<RecommendBookList.RecommendBook> list = data.booklists;
-                        if (list != null && !list.isEmpty() && view != null) {
-                            view.showRecommendBookList(list);
+                        if (list != null && !list.isEmpty() && mView != null) {
+                            mView.showRecommendBookList(list);
                         }
                     }
 
@@ -108,9 +102,10 @@ public class BookDetailPresenter implements BookDetailContract.Presenter<BookDet
 
                     @Override
                     public void onError(Throwable e) {
-                        LogUtils.e("+++"+e.toString());
+                        LogUtils.e("+++" + e.toString());
                     }
                 });
+        addSubscrebe(rxSubscription);
     }
 
 }

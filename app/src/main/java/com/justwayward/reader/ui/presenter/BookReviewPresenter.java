@@ -1,8 +1,7 @@
 package com.justwayward.reader.ui.presenter;
 
-import android.content.Context;
-
 import com.justwayward.reader.api.BookApi;
+import com.justwayward.reader.base.RxPresenter;
 import com.justwayward.reader.bean.BookReviewList;
 import com.justwayward.reader.ui.contract.BookReviewContract;
 import com.justwayward.reader.utils.LogUtils;
@@ -13,22 +12,19 @@ import javax.inject.Inject;
 
 import rx.Observable;
 import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * @author lfh.
  * @date 16/9/3.
  */
-public class BookReviewPresenter implements BookReviewContract.Presenter {
+public class BookReviewPresenter extends RxPresenter<BookReviewContract.View> implements BookReviewContract.Presenter {
 
-    private Context context;
     private BookApi bookApi;
 
-    private BookReviewContract.View view;
-
     @Inject
-    public BookReviewPresenter(Context context, BookApi bookApi) {
-        this.context = context;
+    public BookReviewPresenter(BookApi bookApi) {
         this.bookApi = bookApi;
     }
 
@@ -38,7 +34,7 @@ public class BookReviewPresenter implements BookReviewContract.Presenter {
         Observable<BookReviewList> fromNetWork = bookApi.getBookReviewList("all", sort, type, start + "", limit + "", distillate)
                 .compose(RxUtil.<BookReviewList>rxCacheHelper(key));
         //依次检查disk、network
-        Observable.concat(RxUtil.rxCreateDiskObservable(key,BookReviewList.class), fromNetWork)
+        Subscription rxSubscription = Observable.concat(RxUtil.rxCreateDiskObservable(key, BookReviewList.class), fromNetWork)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BookReviewList>() {
                     @Override
@@ -49,21 +45,19 @@ public class BookReviewPresenter implements BookReviewContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         LogUtils.e("getBookReviewList:" + e.toString());
-                        view.showError();
+                        LogUtils.e("getBookReviewList:view==" + mView);
+                        mView.showError();
                     }
 
                     @Override
                     public void onNext(BookReviewList list) {
                         LogUtils.d("getBookReviewList", "onNext:get data finish");
                         boolean isRefresh = start == 0 ? true : false;
-                        view.showBookReviewList(list.reviews, isRefresh);
+                        LogUtils.e("getBookReviewList:view==" + mView);
+                        mView.showBookReviewList(list.reviews, isRefresh);
                     }
                 });
-    }
-
-    @Override
-    public void attachView(BookReviewContract.View view) {
-        this.view = view;
+        addSubscrebe(rxSubscription);
     }
 
 }

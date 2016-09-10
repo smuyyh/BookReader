@@ -14,20 +14,34 @@ import com.justwayward.reader.view.recyclerview.swipe.OnRefreshListener;
 
 import java.lang.reflect.Constructor;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 
 /**
  * @author lfh.
  * @date 16/9/3.
  */
-public abstract class BaseRVFragment<T> extends BaseFragment implements OnLoadMoreListener, OnRefreshListener, RecyclerArrayAdapter.OnItemClickListener {
+public abstract class BaseRVFragment<T1 extends BaseContract.BasePresenter,T2> extends BaseFragment implements OnLoadMoreListener, OnRefreshListener, RecyclerArrayAdapter.OnItemClickListener {
+
+    @Inject
+    protected T1 mPresenter;
 
     @Bind(R.id.recyclerview)
     protected EasyRecyclerView mRecyclerView;
-    protected RecyclerArrayAdapter<T> mAdapter;
+    protected RecyclerArrayAdapter<T2> mAdapter;
 
     protected int start = 0;
     protected int limit = 20;
+
+    /**
+     * [此方法不可再重写]
+     */
+    @Override
+    public void attachView() {
+        if (mPresenter != null)
+            mPresenter.attachView(this);
+    }
 
     protected void initAdapter(boolean refreshable, boolean loadmoreable) {
         if (mRecyclerView != null) {
@@ -54,8 +68,8 @@ public abstract class BaseRVFragment<T> extends BaseFragment implements OnLoadMo
         }
     }
 
-    protected void initAdapter(Class<? extends RecyclerArrayAdapter<T>> clazz, boolean refreshable, boolean loadmoreable) {
-        mAdapter = (RecyclerArrayAdapter<T>) createInstance(clazz);
+    protected void initAdapter(Class<? extends RecyclerArrayAdapter<T2>> clazz, boolean refreshable, boolean loadmoreable) {
+        mAdapter = (RecyclerArrayAdapter<T2>) createInstance(clazz);
         initAdapter(refreshable, loadmoreable);
     }
 

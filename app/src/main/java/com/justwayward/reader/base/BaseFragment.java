@@ -47,9 +47,12 @@ public abstract class BaseFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         setupActivityComponent(ReaderApplication.getsInstance().getAppComponent());
+        attachView();
         initDatas();
         configViews();
     }
+
+    public abstract void attachView();
 
     public abstract void initDatas();
 

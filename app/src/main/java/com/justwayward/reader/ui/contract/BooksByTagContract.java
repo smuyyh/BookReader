@@ -1,5 +1,7 @@
 package com.justwayward.reader.ui.contract;
 
+import com.justwayward.reader.base.BaseContract;
+import com.justwayward.reader.base.BaseView;
 import com.justwayward.reader.bean.BooksByTag;
 
 import java.util.List;
@@ -10,13 +12,13 @@ import java.util.List;
  */
 public interface BooksByTagContract {
 
-    interface View {
+    interface View extends BaseView {
         void showBooksByTag(List<BooksByTag.TagBook> list, boolean isRefresh);
 
         void onLoadComplete(boolean isSuccess, String msg);
     }
 
-    interface Presenter<T> extends BaseContract.BasePresenter<T>{
+    interface Presenter<T> extends BaseContract.BasePresenter<T> {
 
         void getBooksByTag(String tags, String start, String limit);
     }

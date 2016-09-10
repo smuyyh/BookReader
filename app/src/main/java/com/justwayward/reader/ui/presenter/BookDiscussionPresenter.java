@@ -1,8 +1,7 @@
 package com.justwayward.reader.ui.presenter;
 
-import android.content.Context;
-
 import com.justwayward.reader.api.BookApi;
+import com.justwayward.reader.base.RxPresenter;
 import com.justwayward.reader.bean.DiscussionList;
 import com.justwayward.reader.ui.contract.BookDiscussionContract;
 import com.justwayward.reader.utils.LogUtils;
@@ -10,6 +9,7 @@ import com.justwayward.reader.utils.LogUtils;
 import javax.inject.Inject;
 
 import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -17,22 +17,18 @@ import rx.schedulers.Schedulers;
  * @author yuyh.
  * @date 16/9/2.
  */
-public class BookDiscussionPresenter implements BookDiscussionContract.Presenter {
+public class BookDiscussionPresenter extends RxPresenter<BookDiscussionContract.View> implements BookDiscussionContract.Presenter {
 
-    private Context context;
     private BookApi bookApi;
 
-    private BookDiscussionContract.View view;
-
     @Inject
-    public BookDiscussionPresenter(Context context, BookApi bookApi) {
-        this.context = context;
+    public BookDiscussionPresenter(BookApi bookApi) {
         this.bookApi = bookApi;
     }
 
     @Override
     public void getBookDisscussionList(String sort, String distillate, final int start, int limit) {
-        bookApi.getBookDisscussionList("ramble", "all", sort, "all", start + "", limit + "", distillate)
+        Subscription rxSubscription = bookApi.getBookDisscussionList("ramble", "all", sort, "all", start + "", limit + "", distillate)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<DiscussionList>() {
@@ -44,19 +40,16 @@ public class BookDiscussionPresenter implements BookDiscussionContract.Presenter
                     @Override
                     public void onError(Throwable e) {
                         LogUtils.e("getBookDisscussionList:" + e.toString());
-                        view.showError();
+                        mView.showError();
                     }
 
                     @Override
                     public void onNext(DiscussionList list) {
                         boolean isRefresh = start == 0 ? true : false;
-                        view.showBookDisscussionList(list.posts, isRefresh);
+                        mView.showBookDisscussionList(list.posts, isRefresh);
                     }
                 });
+        addSubscrebe(rxSubscription);
     }
 
-    @Override
-    public void attachView(BookDiscussionContract.View view) {
-        this.view = view;
-    }
 }

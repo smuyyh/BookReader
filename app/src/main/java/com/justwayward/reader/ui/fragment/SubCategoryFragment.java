@@ -19,15 +19,13 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import javax.inject.Inject;
-
 /**
  * 二级分类
  *
  * @author yuyh.
  * @date 16/9/1.
  */
-public class SubCategoryFragment extends BaseRVFragment<BooksByCats.BooksBean> implements SubCategoryFragmentContract.View {
+public class SubCategoryFragment extends BaseRVFragment<SubCategoryFragmentPresenter,BooksByCats.BooksBean> implements SubCategoryFragmentContract.View {
 
     public final static String BUNDLE_MAJOR = "major";
     public final static String BUNDLE_MINOR = "minor";
@@ -45,9 +43,6 @@ public class SubCategoryFragment extends BaseRVFragment<BooksByCats.BooksBean> i
         fragment.setArguments(bundle);
         return fragment;
     }
-
-    @Inject
-    SubCategoryFragmentPresenter mPresenter;
 
     private String major = "";
     private String minor = "";
@@ -71,8 +66,6 @@ public class SubCategoryFragment extends BaseRVFragment<BooksByCats.BooksBean> i
     @Override
     public void configViews() {
         initAdapter(SubCategoryAdapter.class, true, true);
-
-        mPresenter.attachView(this);
     }
 
     @Override

@@ -20,15 +20,13 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 /**
  * 书籍详情 讨论列表Fragment
  *
  * @author lfj.
  * @date 16/9/7.
  */
-public class BookDetailDiscussionFragment extends BaseRVFragment<DiscussionList.PostsBean> implements BookDetailDiscussionContract.View {
+public class BookDetailDiscussionFragment extends BaseRVFragment<BookDetailDiscussionPresenter,DiscussionList.PostsBean> implements BookDetailDiscussionContract.View {
 
     public final static String BUNDLE_ID = "bookId";
 
@@ -41,9 +39,6 @@ public class BookDetailDiscussionFragment extends BaseRVFragment<DiscussionList.
     }
 
     private String bookId;
-
-    @Inject
-    BookDetailDiscussionPresenter mPresenter;
 
     private String sort = Constant.SortType.DEFAULT;
 
@@ -69,8 +64,6 @@ public class BookDetailDiscussionFragment extends BaseRVFragment<DiscussionList.
     @Override
     public void configViews() {
         initAdapter(BookDiscussionAdapter.class, true, true);
-
-        mPresenter.attachView(this);
         onRefresh();
     }
 

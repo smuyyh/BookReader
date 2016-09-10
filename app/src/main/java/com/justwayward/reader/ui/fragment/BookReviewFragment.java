@@ -11,6 +11,7 @@ import com.justwayward.reader.ui.activity.BookReviewDetailActivity;
 import com.justwayward.reader.ui.contract.BookReviewContract;
 import com.justwayward.reader.ui.easyadapter.BookReviewAdapter;
 import com.justwayward.reader.ui.presenter.BookReviewPresenter;
+import com.justwayward.reader.utils.LogUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -18,17 +19,12 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 /**
  * 书评区Fragment
  * @author lfh.
  * @date 16/9/3.
  */
-public class BookReviewFragment extends BaseRVFragment<BookReviewList.ReviewsBean> implements BookReviewContract.View {
-
-    @Inject
-    BookReviewPresenter mPresenter;
+public class BookReviewFragment extends BaseRVFragment<BookReviewPresenter,BookReviewList.ReviewsBean> implements BookReviewContract.View {
 
     private String sort = Constant.SortType.DEFAULT;
     private String type = Constant.BookType.ALL;
@@ -54,9 +50,8 @@ public class BookReviewFragment extends BaseRVFragment<BookReviewList.ReviewsBea
 
     @Override
     public void configViews() {
+        LogUtils.d("attachView: configViews");
         initAdapter(BookReviewAdapter.class, true, true);
-
-        mPresenter.attachView(this);
         onRefresh();
     }
 

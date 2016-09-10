@@ -66,6 +66,11 @@ public class FindFragment extends BaseFragment implements OnRvItemClickListener<
     }
 
     @Override
+    public void attachView() {
+
+    }
+
+    @Override
     public void onItemClick(View view, int position, FindBean data) {
         switch (position) {
             case 0:
