@@ -3,8 +3,11 @@ package com.justwayward.reader.base;
 import android.graphics.Color;
 import android.support.annotation.StringDef;
 
+import com.justwayward.reader.ReaderApplication;
+
 import org.apache.commons.collections4.map.HashedMap;
 
+import java.io.File;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
@@ -20,6 +23,8 @@ public class Constant {
     public static final String IMG_BASE_URL = "http://statics.zhuishushenqi.com";
 
     public static final String API_BASE_URL = "http://api.zhuishushenqi.com";
+
+    public static final String PATH_DATA = ReaderApplication.getsInstance().getCacheDir().getAbsolutePath() + File.separator + "data";
 
     public static final String ISNIGHT = "isNight";
 
