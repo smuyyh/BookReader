@@ -65,7 +65,13 @@ public class SubRankFragment extends BaseRVFragment<SubRankPresenter,BooksByCats
     }
 
     @Override
+    public void showError() {
+        loaddingError();
+    }
+
+    @Override
     public void complete() {
+        mRecyclerView.setRefreshing(false);
     }
 
     @Override

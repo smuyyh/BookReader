@@ -101,6 +101,11 @@ public class SubjectFragment extends BaseRVFragment<SubjectFragmentPresenter,Boo
         loaddingError();
     }
 
+    @Override
+    public void complete() {
+        mRecyclerView.setRefreshing(false);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void initCategoryList(TagEvent event) {
         currendTag = event.tag;

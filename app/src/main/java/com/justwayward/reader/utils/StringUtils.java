@@ -5,9 +5,12 @@ package com.justwayward.reader.utils;
  */
 public class StringUtils {
 
-    public static String creatAcacheKey(String tag, String sort,  String type,  String distillate,  int start,  int limit){
-        String key = tag+"-"+sort+"-"+type+"-"+distillate+"-"+start+"-"+limit;
-        return key;
+    public static String creatAcacheKey(Object... param) {
+        String key = "";
+        for (Object o : param) {
+            key = key + "-" + o;
+        }
+        return key.replaceFirst("-","");
     }
 
 }

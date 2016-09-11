@@ -5,13 +5,15 @@ import com.justwayward.reader.base.RxPresenter;
 import com.justwayward.reader.bean.BookListTags;
 import com.justwayward.reader.ui.contract.SubjectBookListContract;
 import com.justwayward.reader.utils.LogUtils;
+import com.justwayward.reader.utils.RxUtil;
+import com.justwayward.reader.utils.StringUtils;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * @author yuyh.
@@ -28,7 +30,12 @@ public class SubjectBookListPresenter extends RxPresenter<SubjectBookListContrac
 
     @Override
     public void getBookListTags() {
-        Subscription rxSubscription = bookApi.getBookListTags().subscribeOn(Schedulers.io())
+        String key = StringUtils.creatAcacheKey("book-list-tags");
+        Observable<BookListTags> fromNetWork = bookApi.getBookListTags()
+                .compose(RxUtil.<BookListTags>rxCacheHelper(key));
+
+        //依次检查disk、network
+        Subscription rxSubscription = Observable.concat(RxUtil.rxCreateDiskObservable(key, BookListTags.class), fromNetWork)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BookListTags>() {
                     @Override
@@ -38,8 +45,8 @@ public class SubjectBookListPresenter extends RxPresenter<SubjectBookListContrac
 
                     @Override
                     public void onError(Throwable e) {
-                        LogUtils.e("getCategoryList:" + e.toString());
-                        mView.complete();
+                        LogUtils.e("getBookListTags:" + e.toString());
+                        mView.showError();
                     }
 
                     @Override

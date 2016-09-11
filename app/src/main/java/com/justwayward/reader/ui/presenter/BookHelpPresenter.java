@@ -5,13 +5,15 @@ import com.justwayward.reader.base.RxPresenter;
 import com.justwayward.reader.bean.BookHelpList;
 import com.justwayward.reader.ui.contract.BookHelpContract;
 import com.justwayward.reader.utils.LogUtils;
+import com.justwayward.reader.utils.RxUtil;
+import com.justwayward.reader.utils.StringUtils;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * @author lfh.
@@ -28,13 +30,17 @@ public class BookHelpPresenter extends RxPresenter<BookHelpContract.View> implem
 
     @Override
     public void getBookHelpList(String sort, String distillate, final int start, int limit) {
-        Subscription rxSubscription = bookApi.getBookHelpList("all", sort, start + "", limit + "", distillate)
-                .subscribeOn(Schedulers.io())
+        String key = StringUtils.creatAcacheKey("book-help-list", "all", sort, start + "", limit + "", distillate);
+        Observable<BookHelpList> fromNetWork = bookApi.getBookHelpList("all", sort, start + "", limit + "", distillate)
+                .compose(RxUtil.<BookHelpList>rxCacheHelper(key));
+
+        //依次检查disk、network
+        Subscription rxSubscription = Observable.concat(RxUtil.rxCreateDiskObservable(key, BookHelpList.class), fromNetWork)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BookHelpList>() {
                     @Override
                     public void onCompleted() {
-
+                        mView.complete();
                     }
 
                     @Override

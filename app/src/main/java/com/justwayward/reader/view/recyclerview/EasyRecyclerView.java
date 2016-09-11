@@ -378,7 +378,7 @@ public class EasyRecyclerView extends FrameLayout {
         mEmptyView.setVisibility(View.GONE);
         mProgressView.setVisibility(View.GONE);
         mErrorView.setVisibility(GONE);
-        mPtrLayout.setRefreshing(false);
+//        mPtrLayout.setRefreshing(false);
         mRecycler.setVisibility(View.INVISIBLE);
     }
 

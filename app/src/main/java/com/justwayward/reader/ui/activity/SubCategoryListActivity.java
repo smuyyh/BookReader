@@ -176,6 +176,11 @@ public class SubCategoryListActivity extends BaseActivity implements SubCategory
     }
 
     @Override
+    public void showError() {
+
+    }
+
+    @Override
     public void complete() {
         dismissDialog();
     }
@@ -223,4 +228,6 @@ public class SubCategoryListActivity extends BaseActivity implements SubCategory
             mListPopupWindow.show();
         }
     }
+
+
 }

@@ -11,8 +11,6 @@ public interface SubCategoryActivityContract {
 
     interface View extends BaseContract.BaseView {
         void showCategoryList(CategoryListLv2 data);
-
-        void complete();
     }
 
     interface Presenter<T> extends BaseContract.BasePresenter<T> {

@@ -91,6 +91,11 @@ public class SubCategoryFragment extends BaseRVFragment<SubCategoryFragmentPrese
         loaddingError();
     }
 
+    @Override
+    public void complete() {
+        mRecyclerView.setRefreshing(false);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void initCategoryList(SubEvent event) {
         minor = event.minor;

@@ -5,13 +5,15 @@ import com.justwayward.reader.base.RxPresenter;
 import com.justwayward.reader.bean.BooksByTag;
 import com.justwayward.reader.ui.contract.SearchByAuthorContract;
 import com.justwayward.reader.utils.LogUtils;
+import com.justwayward.reader.utils.RxUtil;
+import com.justwayward.reader.utils.StringUtils;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * @author yuyh.
@@ -28,7 +30,12 @@ public class SearchByAuthorPresenter extends RxPresenter<SearchByAuthorContract.
 
     @Override
     public void getSearchResultList(String author) {
-        Subscription rxSubscription = bookApi.searchBooksByAuthor(author).subscribeOn(Schedulers.io())
+        String key = StringUtils.creatAcacheKey("search-by-author", author);
+        Observable<BooksByTag> fromNetWork = bookApi.searchBooksByAuthor(author)
+                .compose(RxUtil.<BooksByTag>rxCacheHelper(key));
+
+        //依次检查disk、network
+        Subscription rxSubscription = Observable.concat(RxUtil.rxCreateDiskObservable(key, BooksByTag.class), fromNetWork)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BooksByTag>() {
                     @Override
@@ -40,6 +47,7 @@ public class SearchByAuthorPresenter extends RxPresenter<SearchByAuthorContract.
                     @Override
                     public void onCompleted() {
                         LogUtils.i("complete");
+                        mView.complete();
                     }
 
                     @Override

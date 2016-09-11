@@ -147,6 +147,11 @@ public class SubjectBookListDetailActivity extends BaseRVActivity<BookListDetail
     }
 
     @Override
+    public void showError() {
+
+    }
+
+    @Override
     public void complete() {
 
     }

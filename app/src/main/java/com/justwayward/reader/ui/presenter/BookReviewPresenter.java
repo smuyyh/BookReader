@@ -30,7 +30,6 @@ public class BookReviewPresenter extends RxPresenter<BookReviewContract.View> im
 
     @Override
     public void getBookReviewList(final String sort, final String type, final String distillate, final int start, final int limit) {
-
         String key = StringUtils.creatAcacheKey("book-review-list", sort, type, distillate, start, limit);
         Observable<BookReviewList> fromNetWork = bookApi.getBookReviewList("all", sort, type, start + "", limit + "", distillate)
                 .compose(RxUtil.<BookReviewList>rxCacheHelper(key));
@@ -41,13 +40,12 @@ public class BookReviewPresenter extends RxPresenter<BookReviewContract.View> im
                 .subscribe(new Observer<BookReviewList>() {
                     @Override
                     public void onCompleted() {
-
+                        mView.complete();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         LogUtils.e("getBookReviewList:" + e.toString());
-                        LogUtils.e("getBookReviewList:view==" + mView);
                         mView.showError();
                     }
 
@@ -55,7 +53,6 @@ public class BookReviewPresenter extends RxPresenter<BookReviewContract.View> im
                     public void onNext(BookReviewList list) {
                         LogUtils.d("getBookReviewList", "onNext:get data finish");
                         boolean isRefresh = start == 0 ? true : false;
-                        LogUtils.e("getBookReviewList:view==" + mView);
                         mView.showBookReviewList(list.reviews, isRefresh);
                     }
                 });

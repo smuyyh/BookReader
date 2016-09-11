@@ -104,4 +104,14 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter,Recomme
     public void onRefresh() {
         mPresenter.getRecommendList();
     }
+
+    @Override
+    public void showError() {
+        loaddingError();
+    }
+
+    @Override
+    public void complete() {
+        mRecyclerView.setRefreshing(false);
+    }
 }

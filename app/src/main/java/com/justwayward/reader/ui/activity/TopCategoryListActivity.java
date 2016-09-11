@@ -93,6 +93,11 @@ public class TopCategoryListActivity extends BaseActivity implements TopCategory
     }
 
     @Override
+    public void showError() {
+
+    }
+
+    @Override
     public void complete() {
         dismissDialog();
     }

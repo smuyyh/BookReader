@@ -58,18 +58,21 @@ public class BookHelpFragment extends BaseRVFragment<BookHelpPresenter,BookHelpL
         }
         mAdapter.addAll(list);
         start = start + list.size();
-        dismissDialog();
     }
 
     @Override
     public void showError() {
-        dismissDialog();
         loaddingError();
+    }
+
+    @Override
+    public void complete() {
+        mRecyclerView.setRefreshing(false);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void initCategoryList(SelectionEvent event) {
-        showDialog();
+        mRecyclerView.setRefreshing(true);
         sort = event.sort;
         distillate = event.distillate;
         start = 0;

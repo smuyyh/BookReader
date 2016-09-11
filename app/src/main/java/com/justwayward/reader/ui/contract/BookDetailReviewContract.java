@@ -13,8 +13,6 @@ public interface BookDetailReviewContract {
 
     interface View extends BaseContract.BaseView {
         void showBookDetailReviewList(List<HotReview.Reviews> list, boolean isRefresh);
-
-        void showError();
     }
 
     interface Presenter<T> extends BaseContract.BasePresenter<T> {

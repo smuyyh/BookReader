@@ -460,6 +460,16 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         }
     }
 
+    @Override
+    public void showError() {
+
+    }
+
+    @Override
+    public void complete() {
+
+    }
+
     /**
      * 读取章节内容，并进行分页处理
      */

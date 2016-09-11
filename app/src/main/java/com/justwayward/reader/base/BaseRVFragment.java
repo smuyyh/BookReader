@@ -97,4 +97,11 @@ public abstract class BaseRVFragment<T1 extends BaseContract.BasePresenter, T2> 
         mRecyclerView.setRefreshing(false);
         mRecyclerView.showTipView("似乎没有网络哦");
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mPresenter != null)
+            mPresenter.detachView();
+    }
 }

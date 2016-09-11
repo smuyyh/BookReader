@@ -5,15 +5,17 @@ import com.justwayward.reader.base.RxPresenter;
 import com.justwayward.reader.bean.BooksByTag;
 import com.justwayward.reader.ui.contract.BooksByTagContract;
 import com.justwayward.reader.utils.LogUtils;
+import com.justwayward.reader.utils.RxUtil;
+import com.justwayward.reader.utils.StringUtils;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * @author lfh.
@@ -34,7 +36,12 @@ public class BooksByTagPresenter extends RxPresenter<BooksByTagContract.View> im
     public void getBooksByTag(String tags, final String start, String limit) {
         if (!isLoading) {
             isLoading = true;
-            Subscription rxSubscription = bookApi.getBooksByTag(tags, start, limit).subscribeOn(Schedulers.io())
+            String key = StringUtils.creatAcacheKey("books-by-tag", tags, start, limit);
+            Observable<BooksByTag> fromNetWork = bookApi.getBooksByTag(tags, start, limit)
+                    .compose(RxUtil.<BooksByTag>rxCacheHelper(key));
+
+            //依次检查disk、network
+            Subscription rxSubscription = Observable.concat(RxUtil.rxCreateDiskObservable(key, BooksByTag.class), fromNetWork)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<BooksByTag>() {
                         @Override

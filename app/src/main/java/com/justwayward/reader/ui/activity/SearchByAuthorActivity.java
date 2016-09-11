@@ -87,4 +87,9 @@ public class SearchByAuthorActivity extends BaseRVActivity<SearchDetail.SearchBo
     public void showError() {
         loaddingError();
     }
+
+    @Override
+    public void complete() {
+        mRecyclerView.setRefreshing(false);
+    }
 }

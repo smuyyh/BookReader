@@ -75,19 +75,22 @@ public class BookDetailDiscussionFragment extends BaseRVFragment<BookDetailDiscu
         }
         mAdapter.addAll(list);
         start = start + list.size();
-        dismissDialog();
     }
 
     @Override
     public void showError() {
-        dismissDialog();
         loaddingError();
+    }
+
+    @Override
+    public void complete() {
+        mRecyclerView.setRefreshing(false);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void initCategoryList(SelectionEvent event) {
         if (getUserVisibleHint()) {
-            showDialog();
+            mRecyclerView.setRefreshing(true);
             sort = event.sort;
             start = 0;
             mPresenter.getBookDetailDiscussionList(bookId, sort, start, limit);

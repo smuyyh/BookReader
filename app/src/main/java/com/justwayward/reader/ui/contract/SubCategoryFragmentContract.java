@@ -11,8 +11,6 @@ public interface SubCategoryFragmentContract {
 
     interface View extends BaseContract.BaseView {
         void showCategoryList(BooksByCats data, boolean isRefresh);
-
-        void showError();
     }
 
     interface Presenter<T> extends BaseContract.BasePresenter<T> {

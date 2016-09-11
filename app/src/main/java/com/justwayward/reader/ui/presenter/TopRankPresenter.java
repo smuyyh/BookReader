@@ -5,13 +5,15 @@ import com.justwayward.reader.base.RxPresenter;
 import com.justwayward.reader.bean.RankingList;
 import com.justwayward.reader.ui.contract.TopRankContract;
 import com.justwayward.reader.utils.LogUtils;
+import com.justwayward.reader.utils.RxUtil;
+import com.justwayward.reader.utils.StringUtils;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * @author yuyh.
@@ -28,7 +30,12 @@ public class TopRankPresenter extends RxPresenter<TopRankContract.View> implemen
 
     @Override
     public void getRankList() {
-        Subscription rxSubscription = bookApi.getRanking().subscribeOn(Schedulers.io())
+        String key = StringUtils.creatAcacheKey("book-ranking-list");
+        Observable<RankingList> fromNetWork = bookApi.getRanking()
+                .compose(RxUtil.<RankingList>rxCacheHelper(key));
+
+        //依次检查disk、network
+        Subscription rxSubscription = Observable.concat(RxUtil.rxCreateDiskObservable(key, RankingList.class), fromNetWork)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<RankingList>() {
                     @Override

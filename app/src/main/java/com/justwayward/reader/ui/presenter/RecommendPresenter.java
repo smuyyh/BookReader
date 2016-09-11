@@ -5,15 +5,17 @@ import com.justwayward.reader.base.RxPresenter;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.ui.contract.RecommendContract;
 import com.justwayward.reader.utils.LogUtils;
+import com.justwayward.reader.utils.RxUtil;
+import com.justwayward.reader.utils.StringUtils;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * @author yuyh.
@@ -30,7 +32,12 @@ public class RecommendPresenter extends RxPresenter<RecommendContract.View> impl
 
     @Override
     public void getRecommendList() {
-        Subscription rxSubscription = bookApi.getRecommend("male").subscribeOn(Schedulers.io())
+        String key = StringUtils.creatAcacheKey("recommend-list", "male");
+        Observable<Recommend> fromNetWork = bookApi.getRecommend("male")
+                .compose(RxUtil.<Recommend>rxCacheHelper(key));
+
+        //依次检查disk、network
+        Subscription rxSubscription = Observable.concat(RxUtil.rxCreateDiskObservable(key, Recommend.class), fromNetWork)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Recommend>() {
                     @Override
@@ -45,11 +52,13 @@ public class RecommendPresenter extends RxPresenter<RecommendContract.View> impl
 
                     @Override
                     public void onCompleted() {
+                        mView.complete();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         LogUtils.e("getRecommendList", e.toString());
+                        mView.showError();
                     }
                 });
         addSubscrebe(rxSubscription);

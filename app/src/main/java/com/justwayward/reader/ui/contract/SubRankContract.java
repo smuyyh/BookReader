@@ -11,8 +11,6 @@ public interface SubRankContract {
 
     interface View extends BaseContract.BaseView {
         void showCategoryList(BooksByCats data);
-
-        void complete();
     }
 
     interface Presenter<T> extends BaseContract.BasePresenter<T> {

@@ -11,8 +11,6 @@ public interface TopRankContract {
 
     interface View extends BaseContract.BaseView {
         void showRankList(RankingList rankingList);
-
-        void complete();
     }
 
     interface Presenter<T> extends BaseContract.BasePresenter<T> {

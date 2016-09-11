@@ -13,8 +13,6 @@ public interface BookDetailDiscussionContract {
 
     interface View extends BaseContract.BaseView {
         void showBookDetailDiscussionList(List<DiscussionList.PostsBean> list, boolean isRefresh);
-
-        void showError();
     }
 
     interface Presenter<T> extends BaseContract.BasePresenter<T> {

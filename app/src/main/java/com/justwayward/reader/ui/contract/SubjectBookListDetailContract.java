@@ -11,8 +11,6 @@ public interface SubjectBookListDetailContract {
 
     interface View extends BaseContract.BaseView {
         void showBookListDetail(BookListDetail data);
-
-        void complete();
     }
 
     interface Presenter<T> extends BaseContract.BasePresenter<T> {

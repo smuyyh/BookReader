@@ -5,13 +5,15 @@ import com.justwayward.reader.base.RxPresenter;
 import com.justwayward.reader.bean.BooksByCats;
 import com.justwayward.reader.ui.contract.SubCategoryFragmentContract;
 import com.justwayward.reader.utils.LogUtils;
+import com.justwayward.reader.utils.RxUtil;
+import com.justwayward.reader.utils.StringUtils;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * @author yuyh.
@@ -28,13 +30,17 @@ public class SubCategoryFragmentPresenter extends RxPresenter<SubCategoryFragmen
 
     @Override
     public void getCategoryList(String gender, final String major, String minor, String type, final int start, int limit) {
-        Subscription rxSubscription = bookApi.getBooksByCats(gender, type, major, minor, start, limit)
-                .subscribeOn(Schedulers.io())
+        String key = StringUtils.creatAcacheKey("category-list", gender, type, major, minor, start, limit);
+        Observable<BooksByCats> fromNetWork = bookApi.getBooksByCats(gender, type, major, minor, start, limit)
+                .compose(RxUtil.<BooksByCats>rxCacheHelper(key));
+
+        //依次检查disk、network
+        Subscription rxSubscription = Observable.concat(RxUtil.rxCreateDiskObservable(key, BooksByCats.class), fromNetWork)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BooksByCats>() {
                     @Override
                     public void onCompleted() {
-
+                        mView.complete();
                     }
 
                     @Override

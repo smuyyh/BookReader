@@ -5,13 +5,15 @@ import com.justwayward.reader.base.RxPresenter;
 import com.justwayward.reader.bean.CategoryList;
 import com.justwayward.reader.ui.contract.TopCategoryListContract;
 import com.justwayward.reader.utils.LogUtils;
+import com.justwayward.reader.utils.RxUtil;
+import com.justwayward.reader.utils.StringUtils;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * @author lfh.
@@ -28,7 +30,12 @@ public class TopCategoryListPresenter extends RxPresenter<TopCategoryListContrac
 
     @Override
     public void getCategoryList() {
-        Subscription rxSubscription = bookApi.getCategoryList().subscribeOn(Schedulers.io())
+        String key = StringUtils.creatAcacheKey("book-category-list");
+        Observable<CategoryList> fromNetWork = bookApi.getCategoryList()
+                .compose(RxUtil.<CategoryList>rxCacheHelper(key));
+
+        //依次检查disk、network
+        Subscription rxSubscription = Observable.concat(RxUtil.rxCreateDiskObservable(key, CategoryList.class), fromNetWork)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<CategoryList>() {
                     @Override

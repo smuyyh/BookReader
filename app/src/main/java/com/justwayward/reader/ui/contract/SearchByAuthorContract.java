@@ -13,8 +13,6 @@ public interface SearchByAuthorContract {
 
     interface View extends BaseContract.BaseView {
         void showSearchResultList(List<BooksByTag.TagBook> list);
-
-        void showError();
     }
 
     interface Presenter extends BaseContract.BasePresenter<View> {

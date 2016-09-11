@@ -11,8 +11,6 @@ public interface TopCategoryListContract {
 
     interface View extends BaseContract.BaseView {
         void showCategoryList(CategoryList data);
-
-        void complete();
     }
 
     interface Presenter<T> extends BaseContract.BasePresenter<T> {

@@ -106,6 +106,16 @@ public class BooksByTagActivity extends BaseActivity implements BooksByTagContra
                 .putExtra("bookId", data._id));
     }
 
+    @Override
+    public void showError() {
+
+    }
+
+    @Override
+    public void complete() {
+        refreshLayout.setRefreshing(false);
+    }
+
     private class RefreshListener extends RecyclerView.OnScrollListener implements SwipeRefreshLayout.OnRefreshListener {
 
         @Override

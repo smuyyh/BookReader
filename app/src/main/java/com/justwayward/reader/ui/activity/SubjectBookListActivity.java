@@ -154,6 +154,11 @@ public class SubjectBookListActivity extends BaseActivity implements SubjectBook
     }
 
     @Override
+    public void showError() {
+
+    }
+
+    @Override
     public void complete() {
         dismissDialog();
     }

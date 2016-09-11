@@ -269,6 +269,16 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
         //4f45e920ff5d1a0e29d997986cd97181
     }
 
+    @Override
+    public void showError() {
+
+    }
+
+    @Override
+    public void complete() {
+
+    }
+
 
     public class BaseUIListener implements IUiListener {
 
