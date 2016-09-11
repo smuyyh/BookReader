@@ -16,9 +16,6 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-/**
- * Created by codeest on 2016/8/3.
- */
 public class RxUtil {
 
     private static final String TAG = "RxUtil";

@@ -10,7 +10,7 @@ import rx.subscriptions.CompositeSubscription;
  * 因为在 subscribe() 之后， Observable 会持有 Subscriber 的引用，
  * 这个引用如果不能及时被释放，将有内存泄露的风险。
  */
-public class RxPresenter<T extends BaseView> implements BaseContract.BasePresenter<T> {
+public class RxPresenter<T extends BaseContract.BaseView> implements BaseContract.BasePresenter<T> {
 
     protected T mView;
     protected CompositeSubscription mCompositeSubscription;

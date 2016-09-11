@@ -1,7 +1,6 @@
 package com.justwayward.reader.ui.contract;
 
 import com.justwayward.reader.base.BaseContract;
-import com.justwayward.reader.base.BaseView;
 
 /**
  * @author yuyh.
@@ -9,7 +8,7 @@ import com.justwayward.reader.base.BaseView;
  */
 public interface MainContract {
 
-    interface View extends BaseView {
+    interface View extends BaseContract.BaseView {
         void loginSuccess();
     }
 

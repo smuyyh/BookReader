@@ -1,7 +1,6 @@
 package com.justwayward.reader.ui.contract;
 
 import com.justwayward.reader.base.BaseContract;
-import com.justwayward.reader.base.BaseView;
 import com.justwayward.reader.bean.BookSource;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.ChapterRead;
@@ -14,7 +13,7 @@ import java.util.List;
  */
 public interface BookReadContract {
 
-    interface View extends BaseView {
+    interface View extends BaseContract.BaseView {
         void showBookToc(List<BookToc.mixToc.Chapters> list);
 
         void showChapterRead(ChapterRead.Chapter data, int chapter);

@@ -13,4 +13,7 @@ public interface BaseContract {
         void detachView();
     }
 
+    interface BaseView {
+
+    }
 }

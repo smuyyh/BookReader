@@ -1,7 +1,6 @@
 package com.justwayward.reader.ui.contract;
 
 import com.justwayward.reader.base.BaseContract;
-import com.justwayward.reader.base.BaseView;
 import com.justwayward.reader.bean.CommentList;
 import com.justwayward.reader.bean.Disscussion;
 
@@ -11,7 +10,7 @@ import com.justwayward.reader.bean.Disscussion;
  */
 public interface BookDiscussionDetailContract {
 
-    interface View extends BaseView {
+    interface View extends BaseContract.BaseView {
 
         void showBookDisscussionDetail(Disscussion disscussion);
 
