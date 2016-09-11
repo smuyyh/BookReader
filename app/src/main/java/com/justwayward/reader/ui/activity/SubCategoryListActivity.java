@@ -153,6 +153,7 @@ public class SubCategoryListActivity extends BaseActivity implements SubCategory
     @Override
     public void showCategoryList(CategoryListLv2 data) {
         mMinors.clear();
+        mMinors.add(cate);
         if (gender.equals(Constant.Gender.MALE)) {
             for (CategoryListLv2.MaleBean bean : data.male) {
                 if (cate.equals(bean.major)) {
@@ -168,13 +169,10 @@ public class SubCategoryListActivity extends BaseActivity implements SubCategory
                 }
             }
         }
-        if (minorAdapter == null && mMinors.size() > 0) {
-            minorAdapter = new MinorAdapter(this, mMinors);
-            currentMinor = mMinors.get(0);
-            EventBus.getDefault().post(new SubEvent(mMinors.get(0), Constant.CateType.NEW));
-        } else {
-            EventBus.getDefault().post(new SubEvent("", Constant.CateType.NEW));
-        }
+        minorAdapter = new MinorAdapter(this, mMinors);
+        minorAdapter.setChecked(0);
+        currentMinor = "";
+        EventBus.getDefault().post(new SubEvent(currentMinor, Constant.CateType.NEW));
     }
 
     @Override
@@ -218,7 +216,11 @@ public class SubCategoryListActivity extends BaseActivity implements SubCategory
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         minorAdapter.setChecked(position);
-                        currentMinor = mMinors.get(position);
+                        if (position > 0) {
+                            currentMinor = mMinors.get(position);
+                        } else {
+                            currentMinor = "";
+                        }
                         int current = mViewPager.getCurrentItem();
                         EventBus.getDefault().post(new SubEvent(mMinors.get(position), types[current]));
                         mListPopupWindow.dismiss();
