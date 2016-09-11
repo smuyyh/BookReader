@@ -90,9 +90,13 @@ public abstract class BaseRVFragment<T1 extends BaseContract.BasePresenter, T2> 
 
     @Override
     public void onRefresh() {
+        mRecyclerView.setRefreshing(true);
     }
 
     protected void loaddingError() {
+        if (mAdapter.getCount() < 1) { // 说明缓存也没有加载，那就显示errorview，如果有缓存，即使刷新失败也不显示error
+            mAdapter.clear();
+        }
         mAdapter.pauseMore();
         mRecyclerView.setRefreshing(false);
         mRecyclerView.showTipView("似乎没有网络哦");

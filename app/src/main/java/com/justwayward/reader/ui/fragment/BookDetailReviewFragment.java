@@ -26,7 +26,7 @@ import java.util.List;
  * @author lfh.
  * @date 16/9/7.
  */
-public class BookDetailReviewFragment extends BaseRVFragment<BookDetailReviewPresenter,HotReview.Reviews> implements BookDetailReviewContract.View {
+public class BookDetailReviewFragment extends BaseRVFragment<BookDetailReviewPresenter, HotReview.Reviews> implements BookDetailReviewContract.View {
 
     public final static String BUNDLE_ID = "bookId";
 
@@ -92,16 +92,14 @@ public class BookDetailReviewFragment extends BaseRVFragment<BookDetailReviewPre
         if (getUserVisibleHint()) {
             mRecyclerView.setRefreshing(true);
             sort = event.sort;
-            start = 0;
-            limit = 20;
-            mPresenter.getBookDetailReviewList(bookId, sort, start, limit);
+            onRefresh();
         }
     }
 
     @Override
     public void onRefresh() {
         super.onRefresh();
-        mPresenter.getBookDetailReviewList(bookId, sort, start, limit);
+        mPresenter.getBookDetailReviewList(bookId, sort, 0, limit);
     }
 
     @Override
@@ -118,6 +116,7 @@ public class BookDetailReviewFragment extends BaseRVFragment<BookDetailReviewPre
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mPresenter.detachView();
         EventBus.getDefault().unregister(this);
     }
 }

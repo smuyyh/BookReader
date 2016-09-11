@@ -24,7 +24,7 @@ import java.util.List;
  * @author yuyh.
  * @date 16/9/2.
  */
-public class BookDiscussionFragment extends BaseRVFragment<BookDiscussionPresenter,DiscussionList.PostsBean> implements BookDiscussionContract.View {
+public class BookDiscussionFragment extends BaseRVFragment<BookDiscussionPresenter, DiscussionList.PostsBean> implements BookDiscussionContract.View {
 
     private String sort = Constant.SortType.DEFAULT;
     private String distillate = Constant.Distillate.ALL;
@@ -78,8 +78,7 @@ public class BookDiscussionFragment extends BaseRVFragment<BookDiscussionPresent
         mRecyclerView.setRefreshing(true);
         sort = event.sort;
         distillate = event.distillate;
-        start = 0;
-        mPresenter.getBookDisscussionList(sort, distillate, start, limit);
+        onRefresh();
     }
 
     @Override
@@ -90,7 +89,6 @@ public class BookDiscussionFragment extends BaseRVFragment<BookDiscussionPresent
 
     @Override
     public void onLoadMore() {
-        super.onLoadMore();
         mPresenter.getBookDisscussionList(sort, distillate, start, limit);
     }
 

@@ -109,7 +109,6 @@ public class SubjectBookListActivity extends BaseActivity implements SubjectBook
 
     @Override
     public void configViews() {
-        showDialog();
         mIndicator.setTabItemTitles(mDatas);
         mViewPager.setAdapter(mAdapter);
         mIndicator.setViewPager(mViewPager, 0);
@@ -147,6 +146,15 @@ public class SubjectBookListActivity extends BaseActivity implements SubjectBook
     }
 
     @Override
+    public void onBackPressed() {
+        if(isVisible(rsvTags)){
+            hideTagGroup();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     public void showBookListTags(BookListTags data) {
         mTagList.clear();
         mTagList.addAll(data.data);
@@ -160,7 +168,6 @@ public class SubjectBookListActivity extends BaseActivity implements SubjectBook
 
     @Override
     public void complete() {
-        dismissDialog();
     }
 
     @Override

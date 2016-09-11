@@ -25,7 +25,7 @@ import org.greenrobot.eventbus.ThreadMode;
  * @author yuyh.
  * @date 16/9/1.
  */
-public class SubCategoryFragment extends BaseRVFragment<SubCategoryFragmentPresenter,BooksByCats.BooksBean> implements SubCategoryFragmentContract.View {
+public class SubCategoryFragment extends BaseRVFragment<SubCategoryFragmentPresenter, BooksByCats.BooksBean> implements SubCategoryFragmentContract.View {
 
     public final static String BUNDLE_MAJOR = "major";
     public final static String BUNDLE_MINOR = "minor";
@@ -101,13 +101,14 @@ public class SubCategoryFragment extends BaseRVFragment<SubCategoryFragmentPrese
         minor = event.minor;
         String type = event.type;
         if (this.type.equals(type)) {
-            mPresenter.getCategoryList(gender, major, minor, this.type, 0, limit);
+            onRefresh();
         }
     }
 
     @Override
     public void onDestroyView() {
         EventBus.getDefault().unregister(this);
+        mPresenter.detachView();
         super.onDestroyView();
     }
 
@@ -121,6 +122,7 @@ public class SubCategoryFragment extends BaseRVFragment<SubCategoryFragmentPrese
 
     @Override
     public void onRefresh() {
+        super.onRefresh();
         mPresenter.getCategoryList(gender, major, minor, this.type, 0, limit);
     }
 

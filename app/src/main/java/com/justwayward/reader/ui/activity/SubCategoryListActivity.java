@@ -103,7 +103,6 @@ public class SubCategoryListActivity extends BaseActivity implements SubCategory
     public void initDatas() {
         mDatas = Arrays.asList(getResources().getStringArray(R.array.sub_tabs));
 
-        showDialog();
         mPresenter.attachView(this);
         mPresenter.getCategoryListLv2();
 
@@ -182,7 +181,6 @@ public class SubCategoryListActivity extends BaseActivity implements SubCategory
 
     @Override
     public void complete() {
-        dismissDialog();
     }
 
     @Override

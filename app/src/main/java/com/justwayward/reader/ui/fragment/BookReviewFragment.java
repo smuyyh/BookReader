@@ -86,13 +86,12 @@ public class BookReviewFragment extends BaseRVFragment<BookReviewPresenter, Book
 
     @Override
     public void onRefresh() {
-        mRecyclerView.setRefreshing(true);
+        super.onRefresh();
         mPresenter.getBookReviewList(sort, type, distillate, start, limit);
     }
 
     @Override
     public void onLoadMore() {
-        super.onLoadMore();
         mPresenter.getBookReviewList(sort, type, distillate, start, limit);
     }
 
@@ -106,5 +105,6 @@ public class BookReviewFragment extends BaseRVFragment<BookReviewPresenter, Book
     public void onDestroyView() {
         super.onDestroyView();
         EventBus.getDefault().unregister(this);
+        mPresenter.detachView();
     }
 }

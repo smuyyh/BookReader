@@ -18,7 +18,7 @@ import com.justwayward.reader.ui.presenter.SubRankPresenter;
  * @author yuyh.
  * @date 16/9/1.
  */
-public class SubRankFragment extends BaseRVFragment<SubRankPresenter,BooksByCats.BooksBean> implements SubRankContract.View {
+public class SubRankFragment extends BaseRVFragment<SubRankPresenter, BooksByCats.BooksBean> implements SubRankContract.View {
 
     public final static String BUNDLE_ID = "_id";
 
@@ -46,8 +46,7 @@ public class SubRankFragment extends BaseRVFragment<SubRankPresenter,BooksByCats
     public void configViews() {
         initAdapter(SubCategoryAdapter.class, true, false);
 
-        mPresenter.attachView(this);
-        mPresenter.getRankList(id);
+        onRefresh();
     }
 
     @Override
@@ -81,6 +80,13 @@ public class SubRankFragment extends BaseRVFragment<SubRankPresenter,BooksByCats
 
     @Override
     public void onRefresh() {
+        super.onRefresh();
         mPresenter.getRankList(id);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mPresenter.detachView();
     }
 }

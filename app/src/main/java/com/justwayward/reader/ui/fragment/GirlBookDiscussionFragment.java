@@ -24,7 +24,7 @@ import java.util.List;
  * @author lfh.
  * @date 16/9/8.
  */
-public class GirlBookDiscussionFragment extends BaseRVFragment<GirlBookDiscussionPresenter,DiscussionList.PostsBean> implements GirlBookDiscussionContract.View {
+public class GirlBookDiscussionFragment extends BaseRVFragment<GirlBookDiscussionPresenter, DiscussionList.PostsBean> implements GirlBookDiscussionContract.View {
 
     private String sort = Constant.SortType.DEFAULT;
     private String distillate = Constant.Distillate.ALL;
@@ -78,8 +78,7 @@ public class GirlBookDiscussionFragment extends BaseRVFragment<GirlBookDiscussio
         mRecyclerView.setRefreshing(true);
         sort = event.sort;
         distillate = event.distillate;
-        start = 0;
-        mPresenter.getGirlBookDisscussionList(sort, distillate, start, limit);
+        onRefresh();
     }
 
     @Override
@@ -90,7 +89,6 @@ public class GirlBookDiscussionFragment extends BaseRVFragment<GirlBookDiscussio
 
     @Override
     public void onLoadMore() {
-        super.onLoadMore();
         mPresenter.getGirlBookDisscussionList(sort, distillate, start, limit);
     }
 
@@ -104,6 +102,7 @@ public class GirlBookDiscussionFragment extends BaseRVFragment<GirlBookDiscussio
     public void onDestroyView() {
         super.onDestroyView();
         EventBus.getDefault().unregister(this);
+        mPresenter.detachView();
     }
 
 }

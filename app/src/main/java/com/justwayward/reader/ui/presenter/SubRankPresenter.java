@@ -43,7 +43,7 @@ public class SubRankPresenter extends RxPresenter<SubRankContract.View> implemen
                     @Override
                     public void onError(Throwable e) {
                         LogUtils.e("getCategoryList:" + e.toString());
-                        mView.complete();
+                        mView.showError();
                     }
 
                     @Override

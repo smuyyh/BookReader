@@ -25,7 +25,7 @@ import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
 
 import java.util.List;
 
-public class RecommendFragment extends BaseRVFragment<RecommendPresenter,Recommend.RecommendBooks> implements RecommendContract.View{
+public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recommend.RecommendBooks> implements RecommendContract.View {
 
     private TableLayout shelf;
 
@@ -42,13 +42,13 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter,Recomme
     public void configViews() {
         initAdapter(RecommendAdapter.class, true, false);
         //initCollect();
-        mPresenter.getRecommendList();
+        onRefresh();
     }
 
     private void initCollect() {
 
         final List<Recommend.RecommendBooks> collect = SharedPreferencesUtil.getInstance().getObject("collect", List.class);
-        if(collect != null) {
+        if (collect != null) {
             mAdapter.addHeader(new RecyclerArrayAdapter.ItemView() {
                 @Override
                 public View onCreateView(ViewGroup parent) {
@@ -64,7 +64,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter,Recomme
                             ViewGroup.LayoutParams.WRAP_CONTENT));
                     tblRow.setBackgroundColor(Color.GRAY);
 
-                    for(Recommend.RecommendBooks books:collect){
+                    for (Recommend.RecommendBooks books : collect) {
                         ImageView iv = new ImageView(activity);
                         tblRow.addView(iv);
                         Glide.with(activity).load(Constant.IMG_BASE_URL + books.cover).into(iv);
@@ -102,6 +102,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter,Recomme
 
     @Override
     public void onRefresh() {
+        super.onRefresh();
         mPresenter.getRecommendList();
     }
 
@@ -113,5 +114,11 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter,Recomme
     @Override
     public void complete() {
         mRecyclerView.setRefreshing(false);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mPresenter.detachView();
     }
 }

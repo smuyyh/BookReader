@@ -26,7 +26,7 @@ import java.util.List;
  * @author lfj.
  * @date 16/9/7.
  */
-public class BookDetailDiscussionFragment extends BaseRVFragment<BookDetailDiscussionPresenter,DiscussionList.PostsBean> implements BookDetailDiscussionContract.View {
+public class BookDetailDiscussionFragment extends BaseRVFragment<BookDetailDiscussionPresenter, DiscussionList.PostsBean> implements BookDetailDiscussionContract.View {
 
     public final static String BUNDLE_ID = "bookId";
 
@@ -92,21 +92,19 @@ public class BookDetailDiscussionFragment extends BaseRVFragment<BookDetailDiscu
         if (getUserVisibleHint()) {
             mRecyclerView.setRefreshing(true);
             sort = event.sort;
-            start = 0;
-            mPresenter.getBookDetailDiscussionList(bookId, sort, start, limit);
+            onRefresh();
         }
     }
 
     @Override
     public void onRefresh() {
         super.onRefresh();
-        mPresenter.getBookDetailDiscussionList(bookId,sort, 0, limit);
+        mPresenter.getBookDetailDiscussionList(bookId, sort, 0, limit);
     }
 
     @Override
     public void onLoadMore() {
-        super.onLoadMore();
-        mPresenter.getBookDetailDiscussionList(bookId,sort, start, limit);
+        mPresenter.getBookDetailDiscussionList(bookId, sort, start, limit);
     }
 
     @Override
@@ -118,6 +116,7 @@ public class BookDetailDiscussionFragment extends BaseRVFragment<BookDetailDiscu
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mPresenter.detachView();
         EventBus.getDefault().unregister(this);
     }
 
