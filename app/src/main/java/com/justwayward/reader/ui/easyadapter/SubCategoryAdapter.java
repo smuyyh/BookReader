@@ -34,7 +34,7 @@ public class SubCategoryAdapter extends RecyclerArrayAdapter<BooksByCats.BooksBe
                         .setText(R.id.tvSubCateShort, item.shortIntro)
                         .setText(R.id.tvSubCateMsg, String.format(mContext.getResources().getString(R.string.category_book_msg),
                                 item.latelyFollower,
-                                TextUtils.isEmpty(item.retentionRatio)?"":item.retentionRatio));
+                                TextUtils.isEmpty(item.retentionRatio)?"0":item.retentionRatio));
             }
         };
     }
