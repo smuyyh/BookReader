@@ -168,12 +168,13 @@ public class SubCategoryListActivity extends BaseActivity implements SubCategory
                 }
             }
         }
-        minorAdapter = new MinorAdapter(this, mMinors);
-        if (mMinors.size() < 1) {
-            mMinors.add(cate);
+        if (minorAdapter == null && mMinors.size() > 0) {
+            minorAdapter = new MinorAdapter(this, mMinors);
+            currentMinor = mMinors.get(0);
+            EventBus.getDefault().post(new SubEvent(mMinors.get(0), Constant.CateType.NEW));
+        } else {
+            EventBus.getDefault().post(new SubEvent("", Constant.CateType.NEW));
         }
-        currentMinor = mMinors.get(0);
-        EventBus.getDefault().post(new SubEvent(mMinors.get(0), Constant.CateType.NEW));
     }
 
     @Override

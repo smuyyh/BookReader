@@ -1,6 +1,7 @@
 package com.justwayward.reader.ui.easyadapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.justwayward.reader.R;
@@ -31,7 +32,9 @@ public class SubCategoryAdapter extends RecyclerArrayAdapter<BooksByCats.BooksBe
                         .setText(R.id.tvSubCateTitle, item.title)
                         .setText(R.id.tvSubCateAuthor, (item.author == null ? "未知" : item.author) + " | " + (item.majorCate == null ? "未知" : item.majorCate))
                         .setText(R.id.tvSubCateShort, item.shortIntro)
-                        .setText(R.id.tvSubCateMsg, String.format(mContext.getResources().getString(R.string.category_book_msg), item.latelyFollower, item.retentionRatio));
+                        .setText(R.id.tvSubCateMsg, String.format(mContext.getResources().getString(R.string.category_book_msg),
+                                item.latelyFollower,
+                                TextUtils.isEmpty(item.retentionRatio)?"":item.retentionRatio));
             }
         };
     }
