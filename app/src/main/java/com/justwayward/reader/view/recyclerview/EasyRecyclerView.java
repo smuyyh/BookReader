@@ -314,7 +314,7 @@ public class EasyRecyclerView extends FrameLayout {
                 count = recyclerView.getAdapter().getItemCount();
             }
 
-            if (count == 0 && !NetworkUtils.isConnected(recyclerView.getContext())) {
+            if (count == 0 && !NetworkUtils.isAvailable(recyclerView.getContext())) {
                 recyclerView.showError();
                 return;
             }
