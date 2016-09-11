@@ -15,6 +15,8 @@ public interface BookReviewContract {
         void showBookReviewList(List<BookReviewList.ReviewsBean> list, boolean isRefresh);
 
         void showError();
+
+        void complete();
     }
 
     interface Presenter extends BaseContract.BasePresenter<View> {

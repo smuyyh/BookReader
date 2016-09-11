@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.justwayward.reader.R;
-import com.justwayward.reader.utils.NetworkUtils;
 import com.justwayward.reader.view.recyclerview.EasyRecyclerView;
 import com.justwayward.reader.view.recyclerview.adapter.OnLoadMoreListener;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
@@ -22,7 +21,7 @@ import butterknife.Bind;
  * @author lfh.
  * @date 16/9/3.
  */
-public abstract class BaseRVFragment<T1 extends BaseContract.BasePresenter,T2> extends BaseFragment implements OnLoadMoreListener, OnRefreshListener, RecyclerArrayAdapter.OnItemClickListener {
+public abstract class BaseRVFragment<T1 extends BaseContract.BasePresenter, T2> extends BaseFragment implements OnLoadMoreListener, OnRefreshListener, RecyclerArrayAdapter.OnItemClickListener {
 
     @Inject
     protected T1 mPresenter;
@@ -87,24 +86,15 @@ public abstract class BaseRVFragment<T1 extends BaseContract.BasePresenter,T2> e
 
     @Override
     public void onLoadMore() {
-        if (!NetworkUtils.isConnected(getApplicationContext())) {
-            mAdapter.pauseMore();
-            return;
-        }
     }
 
     @Override
     public void onRefresh() {
-        if (!NetworkUtils.isConnected(getApplicationContext())) {
-            mAdapter.clear();
-            mRecyclerView.setRefreshing(false);
-            return;
-        }
     }
 
-    protected void loaddingError(){
-        mAdapter.clear();
+    protected void loaddingError() {
         mAdapter.pauseMore();
         mRecyclerView.setRefreshing(false);
+        mRecyclerView.showTipView("似乎没有网络哦");
     }
 }

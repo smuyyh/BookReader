@@ -37,8 +37,7 @@ public class RxUtil {
     }
 
     public static <T> Observable rxCreateDiskObservable(final String key, final Class<T> clazz) {
-        return Observable.create(
-                new Observable.OnSubscribe<String>() {
+        return Observable.create(new Observable.OnSubscribe<String>() {
                     @Override
                     public void call(Subscriber<? super String> subscriber) {
                         LogUtils.d(TAG, "get data from disk: key==" + key);
