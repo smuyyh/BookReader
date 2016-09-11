@@ -105,6 +105,5 @@ public class BookReviewFragment extends BaseRVFragment<BookReviewPresenter, Book
     public void onDestroyView() {
         super.onDestroyView();
         EventBus.getDefault().unregister(this);
-        mPresenter.detachView();
     }
 }
