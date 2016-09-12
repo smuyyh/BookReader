@@ -45,13 +45,13 @@ public class BookReviewPresenter extends RxPresenter<BookReviewContract.View> im
 
                     @Override
                     public void onError(Throwable e) {
-                        LogUtils.e("getBookReviewList:" + e.toString());
+                        LogUtils.e("onError: "+e.toString());
                         mView.showError();
                     }
 
                     @Override
                     public void onNext(BookReviewList list) {
-                        LogUtils.d("getBookReviewList", "onNext:get data finish");
+                        LogUtils.d("onNext: get data finish");
                         boolean isRefresh = start == 0 ? true : false;
                         mView.showBookReviewList(list.reviews, isRefresh);
                     }

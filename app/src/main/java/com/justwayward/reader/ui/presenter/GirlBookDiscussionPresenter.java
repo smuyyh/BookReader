@@ -45,7 +45,7 @@ public class GirlBookDiscussionPresenter extends RxPresenter<GirlBookDiscussionC
 
                     @Override
                     public void onError(Throwable e) {
-                        LogUtils.e("getGirlBookDisscussionList:" + e.toString());
+                        LogUtils.e("onError: " + e.toString());
                         mView.showError();
                     }
 

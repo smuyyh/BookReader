@@ -23,7 +23,7 @@ import java.util.Date;
 public class LogUtils {
     private static Boolean LOG_SWITCH = true; // 日志文件总开关
     private static Boolean LOG_TO_FILE = false; // 日志写入文件开关
-    private static String LOG_TAG = "TAG"; // 默认的tag
+    private static String LOG_TAG = "BookReader"; // 默认的tag
     private static char LOG_TYPE = 'v';// 输入日志类型，v代表输出所有信息,w则只输出警告...
     private static int LOG_SAVE_DAYS = 7;// sd卡中日志文件的最多保存天数
 
@@ -37,7 +37,9 @@ public class LogUtils {
         LOG_FILE_NAME = "Log";
     }
 
-    /**************************** Warn *********************************/
+    /****************************
+     * Warn
+     *********************************/
     public static void w(Object msg) {
         w(LOG_TAG, msg);
     }
@@ -50,7 +52,9 @@ public class LogUtils {
         log(tag, msg.toString(), tr, 'w');
     }
 
-    /*************************** Error ********************************/
+    /***************************
+     * Error
+     ********************************/
     public static void e(Object msg) {
         e(LOG_TAG, msg);
     }
@@ -63,7 +67,9 @@ public class LogUtils {
         log(tag, msg.toString(), tr, 'e');
     }
 
-    /*************************** Debug ********************************/
+    /***************************
+     * Debug
+     ********************************/
     public static void d(Object msg) {
         d(LOG_TAG, msg);
     }
@@ -76,7 +82,9 @@ public class LogUtils {
         log(tag, msg.toString(), tr, 'd');
     }
 
-    /**************************** Info *********************************/
+    /****************************
+     * Info
+     *********************************/
     public static void i(Object msg) {
         i(LOG_TAG, msg);
     }
@@ -89,7 +97,9 @@ public class LogUtils {
         log(tag, msg.toString(), tr, 'i');
     }
 
-    /************************** Verbose ********************************/
+    /**************************
+     * Verbose
+     ********************************/
     public static void v(Object msg) {
         v(LOG_TAG, msg);
     }
@@ -112,19 +122,48 @@ public class LogUtils {
     private static void log(String tag, String msg, Throwable tr, char level) {
         if (LOG_SWITCH) {
             if ('e' == level && ('e' == LOG_TYPE || 'v' == LOG_TYPE)) { // 输出错误信息
-                Log.e(tag, msg, tr);
+                Log.e(tag, createMessage(msg), tr);
             } else if ('w' == level && ('w' == LOG_TYPE || 'v' == LOG_TYPE)) {
-                Log.w(tag, msg, tr);
+                Log.w(tag, createMessage(msg), tr);
             } else if ('d' == level && ('d' == LOG_TYPE || 'v' == LOG_TYPE)) {
-                Log.d(tag, msg, tr);
+                Log.d(tag, createMessage(msg), tr);
             } else if ('i' == level && ('d' == LOG_TYPE || 'v' == LOG_TYPE)) {
-                Log.i(tag, msg, tr);
+                Log.i(tag, createMessage(msg), tr);
             } else {
-                Log.v(tag, msg, tr);
+                Log.v(tag, createMessage(msg), tr);
             }
             if (LOG_TO_FILE)
                 log2File(String.valueOf(level), tag, msg + tr == null ? "" : "\n" + Log.getStackTraceString(tr));
         }
+    }
+
+    private static String getFunctionName() {
+        StackTraceElement[] sts = Thread.currentThread().getStackTrace();
+        if (sts == null) {
+            return null;
+        }
+        for (StackTraceElement st : sts) {
+            if (st.isNativeMethod()) {
+                continue;
+            }
+            if (st.getClassName().equals(Thread.class.getName())) {
+                continue;
+            }
+            if (st.getFileName().equals("LogUtils.java")) {
+                continue;
+            }
+            return "[" + Thread.currentThread().getName() + "("
+                    + Thread.currentThread().getId() + "): " + st.getFileName()
+                    + ":" + st.getLineNumber() + "]";
+        }
+        return null;
+    }
+
+    private static String createMessage(String msg) {
+        String functionName = getFunctionName();
+        String message = (functionName == null ? msg
+                : (functionName + " - " + msg));
+        return message;
     }
 
     /**

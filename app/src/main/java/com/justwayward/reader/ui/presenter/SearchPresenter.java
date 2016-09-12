@@ -1,7 +1,5 @@
 package com.justwayward.reader.ui.presenter;
 
-import android.util.Log;
-
 import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.base.RxPresenter;
 import com.justwayward.reader.bean.AutoComplete;
@@ -27,8 +25,6 @@ public class SearchPresenter extends RxPresenter<SearchContract.View> implements
 
     private BookApi bookApi;
 
-    private static final String TAG = "SearchPresenter";
-
     @Inject
     public SearchPresenter(BookApi bookApi) {
         this.bookApi = bookApi;
@@ -52,7 +48,7 @@ public class SearchPresenter extends RxPresenter<SearchContract.View> implements
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e(TAG, "onError: " + e);
+                        LogUtils.e("onError: " + e);
                     }
                 });
         addSubscrebe(rxSubscription);
@@ -65,7 +61,7 @@ public class SearchPresenter extends RxPresenter<SearchContract.View> implements
                 .subscribe(new Observer<AutoComplete>() {
                     @Override
                     public void onNext(AutoComplete autoComplete) {
-                        Log.e(TAG, "getAutoCompleteList" + autoComplete.keywords);
+                        LogUtils.e("getAutoCompleteList" + autoComplete.keywords);
                         List<String> list = autoComplete.keywords;
                         if (list != null && !list.isEmpty() && mView != null) {
                             mView.showAutoCompleteList(list);

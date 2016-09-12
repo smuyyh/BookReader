@@ -1,7 +1,6 @@
 package com.justwayward.reader.ui.presenter;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.base.RxPresenter;
@@ -30,8 +29,6 @@ public class BookReadPresenter extends RxPresenter<BookReadContract.View> implem
 
     private AsyncTask<Integer, Integer, Integer> downloadTask;
 
-    private static final String TAG = "BookReadPresenter";
-
     public boolean interrupted = true;
 
     @Inject
@@ -58,7 +55,7 @@ public class BookReadPresenter extends RxPresenter<BookReadContract.View> implem
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e(TAG, "onError: " + e);
+                        LogUtils.e("onError: " + e);
                         mView.netError();
                     }
                 });
@@ -83,7 +80,7 @@ public class BookReadPresenter extends RxPresenter<BookReadContract.View> implem
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e(TAG, "onError: " + e);
+                        LogUtils.e("onError: " + e);
                     }
                 });
         addSubscrebe(rxSubscription);
@@ -107,7 +104,7 @@ public class BookReadPresenter extends RxPresenter<BookReadContract.View> implem
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e(TAG, "onError: " + e);
+                        LogUtils.e("onError: " + e);
                     }
                 });
         addSubscrebe(rxSubscription);
@@ -177,7 +174,7 @@ public class BookReadPresenter extends RxPresenter<BookReadContract.View> implem
                     @Override
                     public void onError(Throwable e) {
                         result[0] = 0;
-                        Log.e(TAG, "onError: " + e);
+                        LogUtils.e("onError: " + e);
                     }
                 });
         addSubscrebe(rxSubscription);

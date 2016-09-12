@@ -18,8 +18,6 @@ import rx.schedulers.Schedulers;
 
 public class RxUtil {
 
-    private static final String TAG = "RxUtil";
-
     /**
      * 统一线程处理
      *
@@ -40,9 +38,9 @@ public class RxUtil {
         return Observable.create(new Observable.OnSubscribe<String>() {
                     @Override
                     public void call(Subscriber<? super String> subscriber) {
-                        LogUtils.d(TAG, "get data from disk: key==" + key);
+                        LogUtils.d("get data from disk: key==" + key);
                         String json = ACache.get(ReaderApplication.getsInstance()).getAsString(key);
-                        LogUtils.d(TAG, "get data from disk finish , json==" + json);
+                        LogUtils.d("get data from disk finish , json==" + json);
                         if (!TextUtils.isEmpty(json)) {
                             subscriber.onNext(json);
                         }
@@ -70,7 +68,7 @@ public class RxUtil {
                                 Schedulers.io().createWorker().schedule(new Action0() {
                                     @Override
                                     public void call() {
-                                        LogUtils.d(TAG, "get data from network finish ,start cache...");
+                                        LogUtils.d("get data from network finish ,start cache...");
                                         //通过反射获取List,再判空决定是否缓存
                                         Class clazz = data.getClass();
                                         Field[] fields = clazz.getFields();
@@ -80,11 +78,11 @@ public class RxUtil {
                                             if (className.equalsIgnoreCase("List")) {
                                                 try {
                                                     List list = (List) field.get(data);
-                                                    LogUtils.d(TAG, "list==" + list);
+                                                    LogUtils.d("list==" + list);
                                                     if (!list.isEmpty()) {
                                                         ACache.get(ReaderApplication.getsInstance())
                                                                 .put(key, new Gson().toJson(data, clazz));
-                                                        LogUtils.d(TAG, "cache finish");
+                                                        LogUtils.d("cache finish");
                                                     }
                                                 } catch (IllegalAccessException e) {
                                                     e.printStackTrace();
