@@ -1,5 +1,6 @@
 package com.justwayward.reader.ui.contract;
 
+import com.justwayward.reader.base.BaseContract;
 import com.justwayward.reader.bean.BooksByCats;
 
 /**
@@ -8,10 +9,8 @@ import com.justwayward.reader.bean.BooksByCats;
  */
 public interface SubCategoryFragmentContract {
 
-    interface View {
+    interface View extends BaseContract.BaseView {
         void showCategoryList(BooksByCats data, boolean isRefresh);
-
-        void showError();
     }
 
     interface Presenter<T> extends BaseContract.BasePresenter<T> {

@@ -1,5 +1,6 @@
 package com.justwayward.reader.ui.contract;
 
+import com.justwayward.reader.base.BaseContract;
 import com.justwayward.reader.bean.DiscussionList;
 
 import java.util.List;
@@ -10,10 +11,8 @@ import java.util.List;
  */
 public interface GirlBookDiscussionContract {
 
-    interface View {
+    interface View extends BaseContract.BaseView {
         void showGirlBookDisscussionList(List<DiscussionList.PostsBean> list, boolean isRefresh);
-
-        void showError();
     }
 
     interface Presenter extends BaseContract.BasePresenter<View> {

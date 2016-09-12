@@ -28,4 +28,15 @@
         android:layout_height="match_parent"
         android:clickable="true" />
 
+    <TextView
+        android:id="@+id/tvTip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/tip"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="似乎没有网络哦"
+        android:textColor="@color/white"
+        android:visibility="gone"/>
+
 </com.justwayward.reader.view.recyclerview.swipe.SwipeRefreshLayout>

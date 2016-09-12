@@ -167,6 +167,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -220,6 +221,8 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
             } else {
                 finish(); // 退出
             }
+        }else if(event.getKeyCode() == KeyEvent.KEYCODE_MENU){
+            return true;
         }
         return super.dispatchKeyEvent(event);
     }
@@ -267,6 +270,16 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
             }
         }
         //4f45e920ff5d1a0e29d997986cd97181
+    }
+
+    @Override
+    public void showError() {
+
+    }
+
+    @Override
+    public void complete() {
+
     }
 
 

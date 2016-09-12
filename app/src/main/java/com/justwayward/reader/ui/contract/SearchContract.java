@@ -1,5 +1,6 @@
 package com.justwayward.reader.ui.contract;
 
+import com.justwayward.reader.base.BaseContract;
 import com.justwayward.reader.bean.SearchDetail;
 
 import java.util.List;
@@ -10,15 +11,19 @@ import java.util.List;
  */
 public interface SearchContract {
 
-    interface View {
+    interface View extends BaseContract.BaseView {
         void showHotWordList(List<String> list);
+
         void showAutoCompleteList(List<String> list);
+
         void showSearchResultList(List<SearchDetail.SearchBooks> list);
     }
 
-    interface Presenter<T> extends BaseContract.BasePresenter<T>{
+    interface Presenter<T> extends BaseContract.BasePresenter<T> {
         void getHotWordList();
+
         void getAutoCompleteList(String query);
+
         void getSearchResultList(String query);
     }
 

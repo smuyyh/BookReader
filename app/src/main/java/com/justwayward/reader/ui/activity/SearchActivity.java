@@ -341,4 +341,14 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
         SharedPreferencesUtil.getInstance().putObject("searchHistory", null);
         initSearchHistory();
     }
+
+    @Override
+    public void showError() {
+        loaddingError();
+    }
+
+    @Override
+    public void complete() {
+        mRecyclerView.setRefreshing(false);
+    }
 }

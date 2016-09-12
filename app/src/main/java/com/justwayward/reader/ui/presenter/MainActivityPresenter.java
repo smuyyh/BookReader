@@ -1,8 +1,7 @@
 package com.justwayward.reader.ui.presenter;
 
-import android.content.Context;
-
 import com.justwayward.reader.api.BookApi;
+import com.justwayward.reader.base.RxPresenter;
 import com.justwayward.reader.bean.user.Login;
 import com.justwayward.reader.ui.contract.MainContract;
 import com.justwayward.reader.utils.LogUtils;
@@ -10,6 +9,7 @@ import com.justwayward.reader.utils.LogUtils;
 import javax.inject.Inject;
 
 import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -17,34 +17,24 @@ import rx.schedulers.Schedulers;
  * @author yuyh.
  * @date 2016/8/3.
  */
-public class MainActivityPresenter implements MainContract.Presenter<MainContract.View> {
+public class MainActivityPresenter extends RxPresenter<MainContract.View> implements MainContract.Presenter<MainContract.View> {
 
-    private Context context;
     private BookApi bookApi;
 
-    private MainContract.View view;
-
     @Inject
-    public MainActivityPresenter(Context context, BookApi bookApi) {
-        this.context = context;
+    public MainActivityPresenter(BookApi bookApi) {
         this.bookApi = bookApi;
     }
 
     @Override
-    public void attachView(MainContract.View view) {
-        this.view = view;
-    }
-
-
-    @Override
     public void login(String uid, String token, String platform) {
-        bookApi.login(uid, token, platform).subscribeOn(Schedulers.io())
+        Subscription rxSubscription =  bookApi.login(uid, token, platform).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Login>() {
                     @Override
                     public void onNext(Login data) {
-                        if (data != null && view != null && data.ok) {
-                            view.loginSuccess();
+                        if (data != null && mView != null && data.ok) {
+                            mView.loginSuccess();
                             LogUtils.e(data.user.toString());
                         }
                     }
@@ -58,5 +48,6 @@ public class MainActivityPresenter implements MainContract.Presenter<MainContrac
                         LogUtils.e("login" + e.toString());
                     }
                 });
+        addSubscrebe(rxSubscription);
     }
 }

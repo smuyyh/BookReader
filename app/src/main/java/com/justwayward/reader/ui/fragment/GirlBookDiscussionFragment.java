@@ -18,18 +18,13 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 /**
  * 女生区Fragment
  *
  * @author lfh.
  * @date 16/9/8.
  */
-public class GirlBookDiscussionFragment extends BaseRVFragment<DiscussionList.PostsBean> implements GirlBookDiscussionContract.View {
-
-    @Inject
-    GirlBookDiscussionPresenter mPresenter;
+public class GirlBookDiscussionFragment extends BaseRVFragment<GirlBookDiscussionPresenter, DiscussionList.PostsBean> implements GirlBookDiscussionContract.View {
 
     private String sort = Constant.SortType.DEFAULT;
     private String distillate = Constant.Distillate.ALL;
@@ -55,8 +50,6 @@ public class GirlBookDiscussionFragment extends BaseRVFragment<DiscussionList.Po
     @Override
     public void configViews() {
         initAdapter(BookDiscussionAdapter.class, true, true);
-
-        mPresenter.attachView(this);
         onRefresh();
     }
 
@@ -68,22 +61,24 @@ public class GirlBookDiscussionFragment extends BaseRVFragment<DiscussionList.Po
         }
         mAdapter.addAll(list);
         start = start + list.size();
-        dismissDialog();
     }
 
     @Override
     public void showError() {
-        dismissDialog();
         loaddingError();
+    }
+
+    @Override
+    public void complete() {
+        mRecyclerView.setRefreshing(false);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void initCategoryList(SelectionEvent event) {
-        showDialog();
+        mRecyclerView.setRefreshing(true);
         sort = event.sort;
         distillate = event.distillate;
-        start = 0;
-        mPresenter.getGirlBookDisscussionList(sort, distillate, start, limit);
+        onRefresh();
     }
 
     @Override
@@ -94,7 +89,6 @@ public class GirlBookDiscussionFragment extends BaseRVFragment<DiscussionList.Po
 
     @Override
     public void onLoadMore() {
-        super.onLoadMore();
         mPresenter.getGirlBookDisscussionList(sort, distillate, start, limit);
     }
 
@@ -108,6 +102,7 @@ public class GirlBookDiscussionFragment extends BaseRVFragment<DiscussionList.Po
     public void onDestroyView() {
         super.onDestroyView();
         EventBus.getDefault().unregister(this);
+        mPresenter.detachView();
     }
 
 }

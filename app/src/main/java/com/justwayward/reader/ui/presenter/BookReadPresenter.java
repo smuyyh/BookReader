@@ -1,10 +1,10 @@
 package com.justwayward.reader.ui.presenter;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.justwayward.reader.api.BookApi;
+import com.justwayward.reader.base.RxPresenter;
 import com.justwayward.reader.bean.BookSource;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.ChapterRead;
@@ -17,6 +17,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -24,11 +25,9 @@ import rx.schedulers.Schedulers;
  * @author lfh.
  * @date 2016/8/7.
  */
-public class BookReadPresenter implements BookReadContract.Presenter<BookReadContract.View> {
-    private Context context;
+public class BookReadPresenter extends RxPresenter<BookReadContract.View> implements BookReadContract.Presenter<BookReadContract.View> {
     private BookApi bookApi;
 
-    private BookReadContract.View view;
     private AsyncTask<Integer, Integer, Integer> downloadTask;
 
     private static final String TAG = "BookReadPresenter";
@@ -36,26 +35,20 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
     public boolean interrupted = true;
 
     @Inject
-    public BookReadPresenter(Context context, BookApi bookApi) {
-        this.context = context;
+    public BookReadPresenter(BookApi bookApi) {
         this.bookApi = bookApi;
     }
 
     @Override
-    public void attachView(BookReadContract.View view) {
-        this.view = view;
-    }
-
-    @Override
     public void getBookToc(String bookId, String viewChapters) {
-        bookApi.getBookToc(bookId, viewChapters).subscribeOn(Schedulers.io())
+        Subscription rxSubscription = bookApi.getBookToc(bookId, viewChapters).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BookToc>() {
                     @Override
                     public void onNext(BookToc data) {
                         List<BookToc.mixToc.Chapters> list = data.mixToc.chapters;
-                        if (list != null && !list.isEmpty() && view != null) {
-                            view.showBookToc(list);
+                        if (list != null && !list.isEmpty() && mView != null) {
+                            mView.showBookToc(list);
                         }
                     }
 
@@ -66,20 +59,21 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
                     @Override
                     public void onError(Throwable e) {
                         Log.e(TAG, "onError: " + e);
-                        view.netError();
+                        mView.netError();
                     }
                 });
+        addSubscrebe(rxSubscription);
     }
 
     @Override
     public void getChapterRead(String url, final int chapter) {
-        bookApi.getChapterRead(url).subscribeOn(Schedulers.io())
+        Subscription rxSubscription = bookApi.getChapterRead(url).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ChapterRead>() {
                     @Override
                     public void onNext(ChapterRead data) {
-                        if (data.chapter != null && view != null) {
-                            view.showChapterRead(data.chapter, chapter);
+                        if (data.chapter != null && mView != null) {
+                            mView.showChapterRead(data.chapter, chapter);
                         }
                     }
 
@@ -92,17 +86,18 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
                         Log.e(TAG, "onError: " + e);
                     }
                 });
+        addSubscrebe(rxSubscription);
     }
 
     @Override
     public void getBookSource(String viewSummary, String book) {
-        bookApi.getBookSource(viewSummary, book).subscribeOn(Schedulers.io())
+        Subscription rxSubscription = bookApi.getBookSource(viewSummary, book).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<BookSource>>() {
                     @Override
                     public void onNext(List<BookSource> data) {
-                        if (data != null && view != null) {
-                            view.showBookSource(data);
+                        if (data != null && mView != null) {
+                            mView.showBookSource(data);
                         }
                     }
 
@@ -115,6 +110,7 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
                         Log.e(TAG, "onError: " + e);
                     }
                 });
+        addSubscrebe(rxSubscription);
     }
 
     public synchronized void downloadBook(final String bookId, final List<BookToc.mixToc.Chapters> list, final int start, final int end) {
@@ -127,7 +123,7 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
             @Override
             protected Integer doInBackground(Integer... params) {
                 for (int i = start; i < end && i <= list.size(); i++) {
-                    if(!interrupted) {
+                    if (!interrupted) {
                         if (factory.getBookFile(i).length() < 50) { // 认为章节文件不存在,则下载
                             BookToc.mixToc.Chapters chapters = list.get(i - 1);
                             String url = chapters.link;
@@ -149,7 +145,7 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
                 super.onPostExecute(integer);
                 interrupted = true;
                 //if(view!=null)
-                    //view.downloadComplete();
+                //view.downloadComplete();
                 LogUtils.i("缓存完成，失败" + failureCount + "章");
             }
         };
@@ -160,12 +156,12 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
 
         final int[] result = {-1};
 
-        bookApi.getChapterRead(url).subscribeOn(Schedulers.io())
+        Subscription rxSubscription = bookApi.getChapterRead(url).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ChapterRead>() {
                     @Override
                     public void onNext(ChapterRead data) {
-                        if (data.chapter != null && view != null) {
+                        if (data.chapter != null && mView != null) {
                             //view.showDownloadProgress(data.chapter, chapter);
                             result[0] = 1;
                         } else {
@@ -184,6 +180,7 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
                         Log.e(TAG, "onError: " + e);
                     }
                 });
+        addSubscrebe(rxSubscription);
 
         while (result[0] == -1) {
             try {
@@ -195,7 +192,7 @@ public class BookReadPresenter implements BookReadContract.Presenter<BookReadCon
         return result[0];
     }
 
-    public void cancelDownload(){
+    public void cancelDownload() {
         interrupted = true;
     }
 

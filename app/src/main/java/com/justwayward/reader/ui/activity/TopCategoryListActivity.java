@@ -86,10 +86,17 @@ public class TopCategoryListActivity extends BaseActivity implements TopCategory
 
     @Override
     public void showCategoryList(CategoryList data) {
+        mMaleCategoryList.clear();
+        mFemaleCategoryList.clear();
         mMaleCategoryList.addAll(data.male);
         mFemaleCategoryList.addAll(data.female);
         mMaleCategoryListAdapter.notifyDataSetChanged();
         mFemaleCategoryListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showError() {
+
     }
 
     @Override

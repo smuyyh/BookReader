@@ -1,7 +1,8 @@
 package com.justwayward.reader.ui.contract;
 
-import com.justwayward.reader.bean.CommentList;
+import com.justwayward.reader.base.BaseContract;
 import com.justwayward.reader.bean.BookHelp;
+import com.justwayward.reader.bean.CommentList;
 
 /**
  * @author lfh.
@@ -9,7 +10,7 @@ import com.justwayward.reader.bean.BookHelp;
  */
 public interface BookHelpDetailContract {
 
-    interface View {
+    interface View extends BaseContract.BaseView {
 
         void showBookHelpDetail(BookHelp data);
 

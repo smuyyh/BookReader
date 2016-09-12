@@ -20,15 +20,13 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 /**
  * 书籍详情 书评列表Fragment
  *
  * @author lfh.
  * @date 16/9/7.
  */
-public class BookDetailReviewFragment extends BaseRVFragment<HotReview.Reviews> implements BookDetailReviewContract.View {
+public class BookDetailReviewFragment extends BaseRVFragment<BookDetailReviewPresenter, HotReview.Reviews> implements BookDetailReviewContract.View {
 
     public final static String BUNDLE_ID = "bookId";
 
@@ -41,9 +39,6 @@ public class BookDetailReviewFragment extends BaseRVFragment<HotReview.Reviews> 
     }
 
     private String bookId;
-
-    @Inject
-    BookDetailReviewPresenter mPresenter;
 
     private String sort = Constant.SortType.DEFAULT;
     private String type = Constant.BookType.ALL;
@@ -70,8 +65,6 @@ public class BookDetailReviewFragment extends BaseRVFragment<HotReview.Reviews> 
     @Override
     public void configViews() {
         initAdapter(BookDetailReviewAdapter.class, true, true);
-
-        mPresenter.attachView(this);
         onRefresh();
     }
 
@@ -82,30 +75,31 @@ public class BookDetailReviewFragment extends BaseRVFragment<HotReview.Reviews> 
         }
         mAdapter.addAll(list);
         start = start + list.size();
-        dismissDialog();
     }
 
     @Override
     public void showError() {
         loaddingError();
-        dismissDialog();
+    }
+
+    @Override
+    public void complete() {
+        mRecyclerView.setRefreshing(false);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void initCategoryList(SelectionEvent event) {
         if (getUserVisibleHint()) {
-            showDialog();
+            mRecyclerView.setRefreshing(true);
             sort = event.sort;
-            start = 0;
-            limit = 20;
-            mPresenter.getBookDetailReviewList(bookId, sort, start, limit);
+            onRefresh();
         }
     }
 
     @Override
     public void onRefresh() {
         super.onRefresh();
-        mPresenter.getBookDetailReviewList(bookId, sort, start, limit);
+        mPresenter.getBookDetailReviewList(bookId, sort, 0, limit);
     }
 
     @Override
@@ -122,6 +116,7 @@ public class BookDetailReviewFragment extends BaseRVFragment<HotReview.Reviews> 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mPresenter.detachView();
         EventBus.getDefault().unregister(this);
     }
 }

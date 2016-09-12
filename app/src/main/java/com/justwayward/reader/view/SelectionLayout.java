@@ -138,6 +138,7 @@ public class SelectionLayout extends LinearLayout {
             mListPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
             mListPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
             mListPopupWindow.setAnchorView(parent.getChildAt(0));
+            mListPopupWindow.setForceIgnoreOutsideTouch(false);
             mListPopupWindow.setOnItemClickListener(this);
             mListPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                 @Override

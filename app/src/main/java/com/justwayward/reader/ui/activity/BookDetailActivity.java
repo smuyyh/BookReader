@@ -263,4 +263,13 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
         BookDetailCommunityActivity.startActivity(this, bookId, mTvBookTitle.getText().toString(), 0);
     }
 
+    @Override
+    public void showError() {
+
+    }
+
+    @Override
+    public void complete() {
+
+    }
 }

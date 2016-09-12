@@ -1,63 +1,62 @@
 package com.justwayward.reader.ui.presenter;
 
-import android.content.Context;
-
 import com.justwayward.reader.api.BookApi;
+import com.justwayward.reader.base.RxPresenter;
 import com.justwayward.reader.bean.CategoryList;
 import com.justwayward.reader.ui.contract.TopCategoryListContract;
 import com.justwayward.reader.utils.LogUtils;
+import com.justwayward.reader.utils.RxUtil;
+import com.justwayward.reader.utils.StringUtils;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * @author lfh.
  * @date 2016/8/30.
  */
-public class TopCategoryListPresenter implements TopCategoryListContract.Presenter<TopCategoryListContract.View> {
+public class TopCategoryListPresenter extends RxPresenter<TopCategoryListContract.View> implements TopCategoryListContract.Presenter<TopCategoryListContract.View> {
 
-    private Context context;
     private BookApi bookApi;
 
-    private TopCategoryListContract.View view;
-
     @Inject
-    public TopCategoryListPresenter(Context context, BookApi bookApi) {
-        this.context = context;
+    public TopCategoryListPresenter(BookApi bookApi) {
         this.bookApi = bookApi;
     }
 
     @Override
-    public void attachView(TopCategoryListContract.View view) {
-        this.view = view;
-    }
-
-    @Override
     public void getCategoryList() {
-        bookApi.getCategoryList().subscribeOn(Schedulers.io())
+        String key = StringUtils.creatAcacheKey("book-category-list");
+        Observable<CategoryList> fromNetWork = bookApi.getCategoryList()
+                .compose(RxUtil.<CategoryList>rxCacheHelper(key));
+
+        //依次检查disk、network
+        Subscription rxSubscription = Observable.concat(RxUtil.rxCreateDiskObservable(key, CategoryList.class), fromNetWork)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<CategoryList>() {
                     @Override
                     public void onNext(CategoryList data) {
-                        if (data != null && view != null) {
-                            view.showCategoryList(data);
+                        if (data != null && mView != null) {
+                            mView.showCategoryList(data);
                         }
                     }
 
                     @Override
                     public void onCompleted() {
                         LogUtils.i("complete");
-                        view.complete();
+                        mView.complete();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         LogUtils.e(e.toString());
-                        view.complete();
+                        mView.complete();
                     }
                 });
+        addSubscrebe(rxSubscription);
     }
 }

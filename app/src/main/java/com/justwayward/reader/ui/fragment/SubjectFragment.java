@@ -19,15 +19,13 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 /**
  * 主题书单
  *
  * @author yuyh.
  * @date 16/9/1.
  */
-public class SubjectFragment extends BaseRVFragment<BookLists.BookListsBean> implements SubjectFragmentContract.View {
+public class SubjectFragment extends BaseRVFragment<SubjectFragmentPresenter, BookLists.BookListsBean> implements SubjectFragmentContract.View {
 
     public final static String BUNDLE_TAG = "tag";
     public final static String BUNDLE_TAB = "tab";
@@ -46,9 +44,6 @@ public class SubjectFragment extends BaseRVFragment<BookLists.BookListsBean> imp
         fragment.setArguments(bundle);
         return fragment;
     }
-
-    @Inject
-    SubjectFragmentPresenter mPresenter;
 
     @Override
     public int getLayoutResId() {
@@ -80,9 +75,7 @@ public class SubjectFragment extends BaseRVFragment<BookLists.BookListsBean> imp
     @Override
     public void configViews() {
         initAdapter(SubjectBookListAdapter.class, true, true);
-
-        mPresenter.attachView(this);
-        mPresenter.getBookLists(duration, sort, 0, 20, currendTag, "male");
+        onRefresh();
     }
 
     @Override
@@ -108,6 +101,11 @@ public class SubjectFragment extends BaseRVFragment<BookLists.BookListsBean> imp
         loaddingError();
     }
 
+    @Override
+    public void complete() {
+        mRecyclerView.setRefreshing(false);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void initCategoryList(TagEvent event) {
         currendTag = event.tag;
@@ -119,6 +117,7 @@ public class SubjectFragment extends BaseRVFragment<BookLists.BookListsBean> imp
     @Override
     public void onDestroyView() {
         EventBus.getDefault().unregister(this);
+        mPresenter.detachView();
         super.onDestroyView();
     }
 
@@ -129,6 +128,7 @@ public class SubjectFragment extends BaseRVFragment<BookLists.BookListsBean> imp
 
     @Override
     public void onRefresh() {
+        super.onRefresh();
         mPresenter.getBookLists(duration, sort, 0, limit, currendTag, "male");
     }
 

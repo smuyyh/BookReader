@@ -1,4 +1,4 @@
-package com.justwayward.reader.ui.contract;
+package com.justwayward.reader.base;
 
 /**
  * @author yuyh.
@@ -7,7 +7,17 @@ package com.justwayward.reader.ui.contract;
 public interface BaseContract {
 
     interface BasePresenter<T> {
+
         void attachView(T view);
+
+        void detachView();
     }
 
+    interface BaseView {
+
+        void showError();
+
+        void complete();
+
+    }
 }

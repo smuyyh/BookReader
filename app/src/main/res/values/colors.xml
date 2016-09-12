@@ -7,6 +7,8 @@
     <!--控件的选中颜色，即checked或selected状态的颜色。-->
     <color name="colorAccent">#3F51B5</color>
 
+    <color name="tip">#88303F9F</color>
+
     <color name="white">#ffffffff</color>
     <color name="black">#ff000000</color>
     <color name="red">#FF0000</color>

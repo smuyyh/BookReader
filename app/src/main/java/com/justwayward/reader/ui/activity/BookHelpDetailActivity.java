@@ -60,6 +60,16 @@ public class BookHelpDetailActivity extends BaseRVActivity<CommentList.CommentsB
 
     private HeaderViewHolder headerViewHolder;
 
+    @Override
+    public void showError() {
+
+    }
+
+    @Override
+    public void complete() {
+
+    }
+
     static class HeaderViewHolder {
         @Bind(R.id.ivBookCover)
         ImageView ivAvatar;

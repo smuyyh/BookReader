@@ -11,9 +11,13 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.justwayward.reader.R;
+import com.justwayward.reader.utils.NetworkUtils;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
 import com.justwayward.reader.view.recyclerview.decoration.DividerDecoration;
 import com.justwayward.reader.view.recyclerview.swipe.OnRefreshListener;
@@ -24,9 +28,12 @@ import java.util.List;
 
 
 public class EasyRecyclerView extends FrameLayout {
+    private Context mContext;
+
     public static final String TAG = "EasyRecyclerView";
     public static boolean DEBUG = false;
     protected RecyclerView mRecycler;
+    protected TextView tipView;
     protected ViewGroup mProgressView;
     protected ViewGroup mEmptyView;
     protected ViewGroup mErrorView;
@@ -61,19 +68,18 @@ public class EasyRecyclerView extends FrameLayout {
     }
 
     public EasyRecyclerView(Context context) {
-        super(context);
-        initView();
+        this(context, null);
     }
 
     public EasyRecyclerView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        initAttrs(attrs);
-        initView();
+        this(context, attrs, 0);
     }
 
     public EasyRecyclerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        initAttrs(attrs);
+        mContext = context;
+        if (attrs != null)
+            initAttrs(attrs);
         initView();
     }
 
@@ -91,7 +97,7 @@ public class EasyRecyclerView extends FrameLayout {
 
             mEmptyId = a.getResourceId(R.styleable.superrecyclerview_layout_empty, 0);
             mProgressId = a.getResourceId(R.styleable.superrecyclerview_layout_progress, 0);
-            mErrorId = a.getResourceId(R.styleable.superrecyclerview_layout_error, 0);
+            mErrorId = a.getResourceId(R.styleable.superrecyclerview_layout_error, R.layout.common_net_error_view);
         } finally {
             a.recycle();
         }
@@ -178,6 +184,7 @@ public class EasyRecyclerView extends FrameLayout {
      */
     protected void initRecyclerView(View view) {
         mRecycler = (RecyclerView) view.findViewById(android.R.id.list);
+        tipView = (TextView) view.findViewById(R.id.tvTip);
         setItemAnimator(null);
         if (mRecycler != null) {
             mRecycler.setHasFixedSize(true);
@@ -306,6 +313,12 @@ public class EasyRecyclerView extends FrameLayout {
             } else {
                 count = recyclerView.getAdapter().getItemCount();
             }
+
+            if (count == 0 && !NetworkUtils.isAvailable(recyclerView.getContext())) {
+                recyclerView.showError();
+                return;
+            }
+
             if (count == 0 && ((RecyclerArrayAdapter) recyclerView.getAdapter()).getHeaderCount() == 0) {
                 log("no data:" + "show empty");
                 recyclerView.showEmpty();
@@ -365,7 +378,7 @@ public class EasyRecyclerView extends FrameLayout {
         mEmptyView.setVisibility(View.GONE);
         mProgressView.setVisibility(View.GONE);
         mErrorView.setVisibility(GONE);
-        mPtrLayout.setRefreshing(false);
+//        mPtrLayout.setRefreshing(false);
         mRecycler.setVisibility(View.INVISIBLE);
     }
 
@@ -407,6 +420,28 @@ public class EasyRecyclerView extends FrameLayout {
         log("showRecycler");
         hideAll();
         mRecycler.setVisibility(View.VISIBLE);
+    }
+
+    public void showTipView(String tip) {
+        Animation mShowAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
+                -1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+        mShowAction.setDuration(500);
+        tipView.startAnimation(mShowAction);
+        tipView.setVisibility(View.VISIBLE);
+
+        tipView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Animation mHiddenAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
+                        0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+                        Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
+                        -1.0f);
+                mHiddenAction.setDuration(500);
+                tipView.startAnimation(mHiddenAction);
+                tipView.setVisibility(View.GONE);
+            }
+        }, 2200);
     }
 
 

@@ -1,8 +1,11 @@
 package com.justwayward.reader.ui.adapter;
 
 import android.content.Context;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.justwayward.reader.R;
+import com.justwayward.reader.utils.ScreenUtils;
 import com.yuyh.easyadapter.abslistview.EasyLVAdapter;
 import com.yuyh.easyadapter.abslistview.EasyLVHolder;
 
@@ -28,6 +31,13 @@ public class MinorAdapter extends EasyLVAdapter<String> {
             holder.setVisible(R.id.ivMinorChecked, true);
         } else {
             holder.setVisible(R.id.ivMinorChecked, false);
+        }
+
+        if (position != 0) { // 子项右移
+            TextView textView = holder.getView(R.id.tvMinorItem);
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) textView.getLayoutParams();
+            params.leftMargin = ScreenUtils.dpToPxInt(25);
+            textView.setLayoutParams(params);
         }
     }
 

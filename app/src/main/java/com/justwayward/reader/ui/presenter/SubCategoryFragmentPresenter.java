@@ -1,62 +1,60 @@
 package com.justwayward.reader.ui.presenter;
 
-import android.content.Context;
-
 import com.justwayward.reader.api.BookApi;
+import com.justwayward.reader.base.RxPresenter;
 import com.justwayward.reader.bean.BooksByCats;
 import com.justwayward.reader.ui.contract.SubCategoryFragmentContract;
 import com.justwayward.reader.utils.LogUtils;
+import com.justwayward.reader.utils.RxUtil;
+import com.justwayward.reader.utils.StringUtils;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * @author yuyh.
  * @date 2016/8/31.
  */
-public class SubCategoryFragmentPresenter implements SubCategoryFragmentContract.Presenter<SubCategoryFragmentContract.View> {
+public class SubCategoryFragmentPresenter extends RxPresenter<SubCategoryFragmentContract.View> implements SubCategoryFragmentContract.Presenter<SubCategoryFragmentContract.View> {
 
-    private SubCategoryFragmentContract.View view;
-
-    private Context context;
     private BookApi bookApi;
 
     @Inject
-    public SubCategoryFragmentPresenter(Context context, BookApi bookApi) {
-        this.context = context;
+    public SubCategoryFragmentPresenter(BookApi bookApi) {
         this.bookApi = bookApi;
     }
 
     @Override
-    public void attachView(SubCategoryFragmentContract.View view) {
-        this.view = view;
-    }
+    public void getCategoryList(String gender, final String major, String minor, String type, final int start, int limit) {
+        String key = StringUtils.creatAcacheKey("category-list", gender, type, major, minor, start, limit);
+        Observable<BooksByCats> fromNetWork = bookApi.getBooksByCats(gender, type, major, minor, start, limit)
+                .compose(RxUtil.<BooksByCats>rxCacheHelper(key));
 
-    @Override
-    public void getCategoryList(String gender, String major, String minor, String type, final int start, int limit) {
-        bookApi.getBooksByCats(gender, type, major, minor, start, limit)
-                .subscribeOn(Schedulers.io())
+        //依次检查disk、network
+        Subscription rxSubscription = Observable.concat(RxUtil.rxCreateDiskObservable(key, BooksByCats.class), fromNetWork)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BooksByCats>() {
                     @Override
                     public void onCompleted() {
-
+                        mView.complete();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         LogUtils.e("getCategoryList:" + e.toString());
-                        view.showError();
+                        mView.showError();
                     }
 
                     @Override
                     public void onNext(BooksByCats booksByCats) {
-                        view.showCategoryList(booksByCats, start == 0 ? true : false);
+                        mView.showCategoryList(booksByCats, start == 0 ? true : false);
                     }
                 });
+        addSubscrebe(rxSubscription);
     }
 
 

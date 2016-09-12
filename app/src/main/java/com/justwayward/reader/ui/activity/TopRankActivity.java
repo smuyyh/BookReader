@@ -126,6 +126,11 @@ public class TopRankActivity extends BaseActivity implements TopRankContract.Vie
     }
 
     @Override
+    public void showError() {
+
+    }
+
+    @Override
     public void complete() {
         dismissDialog();
     }

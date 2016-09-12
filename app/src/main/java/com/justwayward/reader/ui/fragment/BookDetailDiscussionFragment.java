@@ -20,15 +20,13 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 /**
  * 书籍详情 讨论列表Fragment
  *
  * @author lfj.
  * @date 16/9/7.
  */
-public class BookDetailDiscussionFragment extends BaseRVFragment<DiscussionList.PostsBean> implements BookDetailDiscussionContract.View {
+public class BookDetailDiscussionFragment extends BaseRVFragment<BookDetailDiscussionPresenter, DiscussionList.PostsBean> implements BookDetailDiscussionContract.View {
 
     public final static String BUNDLE_ID = "bookId";
 
@@ -41,9 +39,6 @@ public class BookDetailDiscussionFragment extends BaseRVFragment<DiscussionList.
     }
 
     private String bookId;
-
-    @Inject
-    BookDetailDiscussionPresenter mPresenter;
 
     private String sort = Constant.SortType.DEFAULT;
 
@@ -69,8 +64,6 @@ public class BookDetailDiscussionFragment extends BaseRVFragment<DiscussionList.
     @Override
     public void configViews() {
         initAdapter(BookDiscussionAdapter.class, true, true);
-
-        mPresenter.attachView(this);
         onRefresh();
     }
 
@@ -82,35 +75,36 @@ public class BookDetailDiscussionFragment extends BaseRVFragment<DiscussionList.
         }
         mAdapter.addAll(list);
         start = start + list.size();
-        dismissDialog();
     }
 
     @Override
     public void showError() {
-        dismissDialog();
         loaddingError();
+    }
+
+    @Override
+    public void complete() {
+        mRecyclerView.setRefreshing(false);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void initCategoryList(SelectionEvent event) {
         if (getUserVisibleHint()) {
-            showDialog();
+            mRecyclerView.setRefreshing(true);
             sort = event.sort;
-            start = 0;
-            mPresenter.getBookDetailDiscussionList(bookId, sort, start, limit);
+            onRefresh();
         }
     }
 
     @Override
     public void onRefresh() {
         super.onRefresh();
-        mPresenter.getBookDetailDiscussionList(bookId,sort, 0, limit);
+        mPresenter.getBookDetailDiscussionList(bookId, sort, 0, limit);
     }
 
     @Override
     public void onLoadMore() {
-        super.onLoadMore();
-        mPresenter.getBookDetailDiscussionList(bookId,sort, start, limit);
+        mPresenter.getBookDetailDiscussionList(bookId, sort, start, limit);
     }
 
     @Override
@@ -122,6 +116,7 @@ public class BookDetailDiscussionFragment extends BaseRVFragment<DiscussionList.
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mPresenter.detachView();
         EventBus.getDefault().unregister(this);
     }
 

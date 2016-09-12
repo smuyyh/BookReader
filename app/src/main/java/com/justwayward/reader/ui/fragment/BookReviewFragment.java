@@ -18,17 +18,13 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 /**
  * 书评区Fragment
+ *
  * @author lfh.
  * @date 16/9/3.
  */
-public class BookReviewFragment extends BaseRVFragment<BookReviewList.ReviewsBean> implements BookReviewContract.View {
-
-    @Inject
-    BookReviewPresenter mPresenter;
+public class BookReviewFragment extends BaseRVFragment<BookReviewPresenter, BookReviewList.ReviewsBean> implements BookReviewContract.View {
 
     private String sort = Constant.SortType.DEFAULT;
     private String type = Constant.BookType.ALL;
@@ -55,8 +51,6 @@ public class BookReviewFragment extends BaseRVFragment<BookReviewList.ReviewsBea
     @Override
     public void configViews() {
         initAdapter(BookReviewAdapter.class, true, true);
-
-        mPresenter.attachView(this);
         onRefresh();
     }
 
@@ -67,36 +61,38 @@ public class BookReviewFragment extends BaseRVFragment<BookReviewList.ReviewsBea
         }
         mAdapter.addAll(list);
         start = start + list.size();
-        dismissDialog();
     }
 
     @Override
     public void showError() {
         loaddingError();
-        dismissDialog();
+    }
+
+    @Override
+    public void complete() {
+        mRecyclerView.setRefreshing(false);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void initCategoryList(SelectionEvent event) {
-        showDialog();
+        mRecyclerView.setRefreshing(true);
         sort = event.sort;
         type = event.type;
         distillate = event.distillate;
         start = 0;
         limit = 20;
-        mPresenter.getBookReviewList(sort,type, distillate, start, limit);
+        mPresenter.getBookReviewList(sort, type, distillate, start, limit);
     }
 
     @Override
     public void onRefresh() {
         super.onRefresh();
-        mPresenter.getBookReviewList(sort,type, distillate, start, limit);
+        mPresenter.getBookReviewList(sort, type, distillate, start, limit);
     }
 
     @Override
     public void onLoadMore() {
-        super.onLoadMore();
-        mPresenter.getBookReviewList(sort,type, distillate, start, limit);
+        mPresenter.getBookReviewList(sort, type, distillate, start, limit);
     }
 
     @Override
