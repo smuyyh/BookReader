@@ -57,7 +57,6 @@ public class BooksByTagPresenter extends RxPresenter<BooksByTagContract.View> im
 
                         @Override
                         public void onCompleted() {
-                            LogUtils.i("complete");
                             isLoading = false;
                             mView.onLoadComplete(true, "");
                         }
