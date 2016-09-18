@@ -3,6 +3,7 @@ package com.justwayward.reader.component;
 import com.justwayward.reader.ui.activity.BookDetailActivity;
 import com.justwayward.reader.ui.activity.BookReadActivity;
 import com.justwayward.reader.ui.activity.BooksByTagActivity;
+import com.justwayward.reader.ui.activity.ReadActivity;
 import com.justwayward.reader.ui.activity.SearchActivity;
 import com.justwayward.reader.ui.activity.SearchByAuthorActivity;
 import com.justwayward.reader.ui.fragment.BookDetailDiscussionFragment;
@@ -15,6 +16,8 @@ public interface BookComponent {
     BookDetailActivity inject(BookDetailActivity activity);
 
     BookReadActivity inject(BookReadActivity activity);
+
+    ReadActivity inject(ReadActivity activity);
 
     BooksByTagActivity inject(BooksByTagActivity activity);
 

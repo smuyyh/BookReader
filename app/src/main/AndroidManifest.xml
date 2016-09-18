@@ -32,6 +32,9 @@
         <activity
             android:name=".ui.activity.BookReadActivity"
             android:theme="@style/AppTheme.NoActionBar.FullScreen" />
+        <activity
+            android:name=".ui.activity.ReadActivity"
+            android:theme="@style/AppTheme.NoActionBar.FullScreen" />
         <activity android:name=".ui.activity.TopCategoryListActivity" />
         <activity android:name=".ui.activity.SubCategoryListActivity" />
         <activity android:name=".ui.activity.SubjectBookListActivity" />
