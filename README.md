@@ -6,6 +6,8 @@
 有任何疑问或建议可提[issue](https://github.com/JustWayward/BookReader/issues/new)。
 
 ## TODO
+* [ ] 新版阅读页，提高分页速度以及分页准确性。目前正进行中~
+
 * [ ] 登录模块（由于openid的限制，可能无法实现，后续再研究）
 
 * [ ] 阅读界面优化，提高分页准确性以及分页速度
