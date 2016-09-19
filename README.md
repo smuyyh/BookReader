@@ -24,7 +24,7 @@
 
 - **阅读**
 
-<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/read_page_1.png?raw=true" width="280"/>
+<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/read_page_3.png?raw=true" width="280"/>
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/read_page.png?raw=true" width="280"/>
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/read_page_2.png?raw=true" width="280"/>
 
