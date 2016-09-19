@@ -95,6 +95,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
 
     @Override
     public void onItemClick(int position) {
+        // TODO 新版阅读页 跳转至ReadActivity 待完善
         startActivity(new Intent(activity, BookReadActivity.class)
                 .putExtra("bookId", mAdapter.getItem(position)._id)
                 .putExtra("bookName", mAdapter.getItem(position).title));

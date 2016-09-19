@@ -31,9 +31,11 @@
         <activity android:name=".ui.activity.BooksByTagActivity" />
         <activity
             android:name=".ui.activity.BookReadActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.FullScreen" />
         <activity
             android:name=".ui.activity.ReadActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.FullScreen" />
         <activity android:name=".ui.activity.TopCategoryListActivity" />
         <activity android:name=".ui.activity.SubCategoryListActivity" />
