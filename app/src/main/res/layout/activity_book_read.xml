@@ -133,7 +133,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableTop="@drawable/vote_edit_tips_icon"
+            android:drawableTop="@drawable/ic_menu_read_report"
             android:gravity="center"
             android:text="@string/book_read_feedback"
             android:textColor="@color/white" />
