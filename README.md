@@ -6,7 +6,7 @@
 有任何疑问或建议可提[issue](https://github.com/JustWayward/BookReader/issues/new)。
 
 ## TODO
-* [ ] [新版阅读页](## 新版阅读页)，提高分页速度以及分页准确性。目前正进行中~
+* [ ] [新版阅读页](#新版阅读页)，提高分页速度以及分页准确性。目前正进行中~
 
 * [ ] 登录模块（由于openid的限制，可能无法实现，后续再研究）
 
@@ -63,9 +63,13 @@
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/category.png?raw=true" width="280"/>
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/category_list.png?raw=true" width="280"/>
 
-## 新版阅读页
+##新版阅读页
+
+友情提示：新版阅读界面目前尚未完全写完，阅读暂时还是先跳转到旧版阅读页。新版阅读页目前实现的效果图如下：
 
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/bezier_read_page.png?raw=true" width="280"/>
+
+正在拼命完善中~~
 
 ## LICENSE
 
