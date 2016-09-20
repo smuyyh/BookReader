@@ -18,6 +18,7 @@ import android.widget.Scroller;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.utils.ScreenUtils;
+import com.justwayward.reader.utils.SharedPreferencesUtil;
 
 public class PageWidget extends View {
 
@@ -72,7 +73,7 @@ public class PageWidget extends View {
 
     private float actiondownX, actiondownY;
 
-    public PageWidget(Context context, String path) {
+    public PageWidget(Context context, String bookId, String path) {
         super(context);
         mPath0 = new Path();
         mPath1 = new Path();
@@ -98,11 +99,14 @@ public class PageWidget extends View {
         mNextPageBitmap = Bitmap.createBitmap(mScreenWidth, mScreenHeight, Bitmap.Config.ARGB_8888);
         mCurrentPageCanvas = new Canvas(mCurPageBitmap);
         mNextPageCanvas = new Canvas(mNextPageBitmap);
-        pagefactory = new PageFactory(context, mScreenWidth, mScreenHeight, 25);
+        pagefactory = new PageFactory(context);
         try {
             pagefactory.setBgBitmap(BitmapFactory.decodeResource(context.getResources(),
                     R.drawable.reader_background_brown_big_img));
-            pagefactory.openBook(path, new int[]{0, 0});
+            // 获取上次阅读位置
+            int startPos = SharedPreferencesUtil.getInstance().getInt(bookId + "-startPos", 0);
+            int endPos = SharedPreferencesUtil.getInstance().getInt(bookId + "-endPos", 0);
+            pagefactory.openBook(path, new int[]{startPos, endPos});
             pagefactory.onDraw(mCurrentPageCanvas);
         } catch (Exception e) {
         }
@@ -521,6 +525,11 @@ public class PageWidget extends View {
 
     }
 
+    /**
+     * 开启翻页动画
+     *
+     * @param delayMillis
+     */
     private void startAnimation(int delayMillis) {
         int dx, dy;
         if (mCornerX > 0) {

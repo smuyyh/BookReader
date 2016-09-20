@@ -249,7 +249,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             Display display = manage.getDefaultDisplay();
             Point displaysize = new Point();
             display.getSize(displaysize);
-            mPageWidget = new PageWidget(this, dir.getPath());// 页面
+            mPageWidget = new PageWidget(this, bookId, dir.getPath());// 页面
         }
         mRlBookReadRoot.removeAllViews();
         mRlBookReadRoot.addView(mPageWidget);
