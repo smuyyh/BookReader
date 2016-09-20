@@ -1,7 +1,8 @@
-package com.justwayward.reader.view;
+package com.justwayward.reader.view.ReadView;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
@@ -15,11 +16,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Scroller;
 
+import com.justwayward.reader.R;
 import com.justwayward.reader.utils.ScreenUtils;
 
-/**
- * Created by Administrator on 2016/1/3.
- */
 public class PageWidget extends View {
 
     private int mScreenWidth; // 屏幕宽
@@ -31,6 +30,8 @@ public class PageWidget extends View {
 
     Bitmap mCurPageBitmap = null; // 当前页
     Bitmap mNextPageBitmap = null;
+    private Canvas mCurrentPageCanvas, mNextPageCanvas;
+    PageFactory pagefactory = null;
 
     PointF mTouch = new PointF(); // 拖拽点
     PointF mBezierStart1 = new PointF(); // 贝塞尔曲线起始点
@@ -71,7 +72,7 @@ public class PageWidget extends View {
 
     private float actiondownX, actiondownY;
 
-    public PageWidget(Context context) {
+    public PageWidget(Context context, String path) {
         super(context);
         mPath0 = new Path();
         mPath1 = new Path();
@@ -92,6 +93,19 @@ public class PageWidget extends View {
 
         mTouch.x = 0.01f; // 不让x,y为0,否则在点计算时会有问题
         mTouch.y = 0.01f;
+
+        mCurPageBitmap = Bitmap.createBitmap(mScreenWidth, mScreenHeight, Bitmap.Config.ARGB_8888);
+        mNextPageBitmap = Bitmap.createBitmap(mScreenWidth, mScreenHeight, Bitmap.Config.ARGB_8888);
+        mCurrentPageCanvas = new Canvas(mCurPageBitmap);
+        mNextPageCanvas = new Canvas(mNextPageBitmap);
+        pagefactory = new PageFactory(context, mScreenWidth, mScreenHeight, 25);
+        try {
+            pagefactory.setBgBitmap(BitmapFactory.decodeResource(context.getResources(),
+                    R.drawable.reader_background_brown_big_img));
+            pagefactory.openBook(path, new int[]{0, 0});
+            pagefactory.onDraw(mCurrentPageCanvas);
+        } catch (Exception e) {
+        }
     }
 
     /**
@@ -560,5 +574,31 @@ public class PageWidget extends View {
         if (mCornerX > -4)
             return false;
         return true;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent e) {
+        if (e.getAction() == MotionEvent.ACTION_DOWN) {
+            abortAnimation();
+            calcCornerXY(e.getX(), e.getY());
+            pagefactory.onDraw(mCurrentPageCanvas);
+            int x = (int) e.getX();
+            int y = (int) e.getY();
+            //Action_Down时在中间位置显示菜单
+            if (x > mScreenWidth / 3 && x < mScreenWidth * 2 / 3
+                    && y > mScreenHeight / 3 && y < mScreenHeight * 2 / 3) {
+                return false;//停止向下分发事件
+            }
+            if (x < mScreenWidth / 2) {// 从左翻
+                pagefactory.prePage();
+                pagefactory.onDraw(mNextPageCanvas);
+            } else if (x >= mScreenWidth / 2) {// 从右翻
+                pagefactory.nextPage();
+                pagefactory.onDraw(mNextPageCanvas);
+            }
+            setBitmaps(mCurPageBitmap, mNextPageBitmap);
+        }
+        boolean ret = doTouchEvent(e);
+        return ret;
     }
 }

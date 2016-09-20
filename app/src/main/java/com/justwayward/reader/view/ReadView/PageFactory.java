@@ -37,7 +37,7 @@ public class PageFactory {
     private int marginWeight = 30;
     // 字号
     private int mFontSize = 30;
-    private int mNumFontSize = 45;
+    private int mNumFontSize = 10;
 
     private Bitmap m_book_bg;
     private Vector<String> m_lines = new Vector<String>();

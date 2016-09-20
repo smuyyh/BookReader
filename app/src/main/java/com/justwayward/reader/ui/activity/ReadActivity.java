@@ -3,9 +3,12 @@ package com.justwayward.reader.ui.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.ListPopupWindow;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +41,7 @@ import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
 import com.justwayward.reader.utils.TTSPlayerUtils;
 import com.justwayward.reader.utils.ToastUtils;
-import com.justwayward.reader.view.ReadView.ReadView;
+import com.justwayward.reader.view.ReadView.PageWidget;
 import com.sinovoice.hcicloudsdk.android.tts.player.TTSPlayer;
 import com.sinovoice.hcicloudsdk.common.tts.TtsConfig;
 import com.sinovoice.hcicloudsdk.player.TTSCommonPlayer;
@@ -133,16 +136,17 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     private TtsConfig ttsConfig;
 
     private IntentFilter intentFilter = new IntentFilter();
-//    private BatteryReceiver batteryReceiver = new BatteryReceiver();
+    //    private BatteryReceiver batteryReceiver = new BatteryReceiver();
     private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 
-    private ReadView readView;
+    private PageWidget mPageWidget;
+    private static Bitmap mCurPageBitmap, mNextPageBitmap;
 
     @Override
     public int getLayoutId() {
         statusBarColor = -1;
-        getWindow().setFlags(WindowManager.LayoutParams. FLAG_FULLSCREEN ,
-                WindowManager.LayoutParams. FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         return R.layout.activity_read;
     }
 
@@ -174,12 +178,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @Override
     public void configViews() {
-        File dir = getBookFile(1);
-        readView = null;
-        if (dir != null) {
-            readView = new ReadView(this,dir.getPath());
-        }
-        mRlBookReadRoot.addView(readView);
 
         mTocListAdapter = new TocListAdapter(this, mChapterList);
         mTocListPopupWindow = new ListPopupWindow(this);
@@ -233,11 +231,11 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @Override
     public synchronized void showChapterRead(ChapterRead.Chapter data, int chapter) { // 加载章节内容
-        if (data != null){
+        if (data != null) {
             File file = getBookFile(chapter);
             FileUtils.writeFile(file.getAbsolutePath(), data.body, false);
         }
-       //     factory.append(data, chapter); // 缓存章节保存到文件
+        //     factory.append(data, chapter); // 缓存章节保存到文件
 
         // 阅读currentChapter章节
      /*   if (getBookFile(currentChapter).length() > 50 && !startRead && currentChapter < mChapterList.size()) {
@@ -247,23 +245,14 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
         File dir = getBookFile(chapter);
         if (dir != null) {
-            readView = new ReadView(this,dir.getPath());
+            WindowManager manage = getWindowManager();
+            Display display = manage.getDefaultDisplay();
+            Point displaysize = new Point();
+            display.getSize(displaysize);
+            mPageWidget = new PageWidget(this, dir.getPath());// 页面
         }
         mRlBookReadRoot.removeAllViews();
-        mRlBookReadRoot.addView(readView);
-        /*if (chapter == currentChapter) {
-            // 每次都往后继续缓存三个章节
-            for (int j = currentChapter + 1; j <= currentChapter + 3 && j <= mChapterList.size(); j++) {
-                if (factory.getBookFile(j).length() < 50) { // 认为章节文件不存在
-                    // 获取对应章节
-                    mPresenter.getChapterRead(mChapterList.get(j - 1).link, j);
-                } else {
-                    new ChapterCacheTask().execute(j); // 文章存在，则读取，放到LRUMap中
-                }
-            }
-        } else if (factory.getBookFile(chapter).length() > 50 && !factory.hasCache(chapter)) { // 新获取的章节，还未缓存在LruMap
-            new ChapterCacheTask().execute(chapter);
-        }*/
+        mRlBookReadRoot.addView(mPageWidget);
     }
 
     @Override
@@ -436,7 +425,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 //            readPageAdapter.notifyDataSetChanged();
 //        }
 //    }
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -457,13 +445,13 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     @Override
     protected void onResume() {
         super.onResume();
-      //  flipView.onResume();
+        //  flipView.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-      //  flipView.onPause();
+        //  flipView.onPause();
     }
 
     @Override
