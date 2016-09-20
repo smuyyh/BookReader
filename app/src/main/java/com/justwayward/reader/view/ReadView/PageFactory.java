@@ -71,10 +71,10 @@ public class PageFactory {
         mHeight = height;
         mFontSize = fontSize;
         mNumFontSize = fontSize / 2;
-        mVisibleHeight = mHeight - marginHeight * 2 - mFontSize;
-        mVisibleWidth = mWidth - marginWidth * 2;
         marginWidth = ScreenUtils.dpToPxInt(15);
         marginHeight = ScreenUtils.dpToPxInt(15);
+        mVisibleHeight = mHeight - marginHeight * 2 - mFontSize;
+        mVisibleWidth = mWidth - marginWidth * 2;
         mPageLineCount = mVisibleHeight / (mFontSize + 2);
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
