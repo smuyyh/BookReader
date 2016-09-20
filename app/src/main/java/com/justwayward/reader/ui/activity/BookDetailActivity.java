@@ -15,6 +15,7 @@ import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.BookDetail;
 import com.justwayward.reader.bean.HotReview;
+import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.RecommendBookList;
 import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
@@ -23,12 +24,14 @@ import com.justwayward.reader.ui.adapter.HotReviewAdapter;
 import com.justwayward.reader.ui.adapter.RecommendBookListAdapter;
 import com.justwayward.reader.ui.contract.BookDetailContract;
 import com.justwayward.reader.ui.presenter.BookDetailPresenter;
+import com.justwayward.reader.utils.ACache;
 import com.justwayward.reader.utils.FormatUtils;
 import com.justwayward.reader.view.DrawableCenterButton;
 import com.justwayward.reader.view.TagColor;
 import com.justwayward.reader.view.TagGroup;
 import com.yuyh.easyadapter.glide.GlideRoundTransform;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +41,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
- * Created by Administrator on 2016/8/6.
+ * Created by lfh on 2016/8/6.
  */
 public class BookDetailActivity extends BaseActivity implements BookDetailContract.View, OnRvItemClickListener<Object> {
 
@@ -63,6 +66,8 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     TextView mTvLatelyUpdate;
     @Bind(R.id.btnRead)
     DrawableCenterButton mBtnRead;
+    @Bind(R.id.btnJoinCollection)
+    DrawableCenterButton mBtnJoinCollection;
     @Bind(R.id.tvLatelyFollower)
     TextView mTvLatelyFollower;
     @Bind(R.id.tvRetentionRatio)
@@ -102,6 +107,8 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     private String bookId;
 
     private boolean collapseLongIntro = true;
+    private Recommend.RecommendBooks recommendBooks;
+    private boolean isJoinedCollections = false;
 
     @Override
     public int getLayoutId() {
@@ -178,6 +185,26 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
         mTvCommunity.setText(String.format(getString(R.string.book_detail_community), data.title));
         mTvPostCount.setText(String.format(getString(R.string.book_detail_post_count), data
                 .postCount));
+
+
+        Recommend recommend = new Recommend();
+        recommendBooks = recommend.new RecommendBooks();
+
+        recommendBooks.title = data.title;
+        recommendBooks._id = data._id;
+        recommendBooks.cover = data.cover;
+        recommendBooks.lastChapter = data.lastChapter;
+
+        List<Recommend.RecommendBooks> list = (ArrayList<Recommend.RecommendBooks>) ACache.get(this).getAsObject("collection");
+        for (Recommend.RecommendBooks bean :
+                list) {
+            if (bean._id.equals(recommendBooks._id)) {
+                mBtnJoinCollection.setText(R.string.book_detail_remove_collection);
+                mBtnJoinCollection.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_join_collection_pressed));
+                isJoinedCollections=true;
+                break;
+            }
+        }
     }
 
     /**
@@ -228,6 +255,32 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
             String id = ((RecommendBookList.RecommendBook) data).id;
             SubjectBookListDetailActivity.startActivity(this, id);
         }
+    }
+
+    @OnClick(R.id.btnJoinCollection)
+    public void onClickJoinCollection() {
+        List<Recommend.RecommendBooks> list = (ArrayList<Recommend.RecommendBooks>) ACache.get(this).getAsObject("collection");
+        if (list == null) {
+            list = new ArrayList<>();
+        }
+
+        if (!isJoinedCollections) {
+            list.add(recommendBooks);
+            mBtnJoinCollection.setText(R.string.book_detail_remove_collection);
+            mBtnJoinCollection.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_join_collection_pressed));
+        } else {
+            for (Recommend.RecommendBooks bean :
+                    list) {
+                if (bean._id.equals(recommendBooks._id)) {
+                    list.remove(bean);
+                    break;
+                }
+            }
+            mBtnJoinCollection.setText(R.string.book_detail_join_collection);
+            mBtnJoinCollection.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_common_btn_solid_normal));
+        }
+        isJoinedCollections=!isJoinedCollections;
+        ACache.get(this).put("collection", (Serializable) list);
     }
 
     @OnClick(R.id.btnRead)

@@ -101,6 +101,7 @@
                     android:layout_marginTop="10dp">
 
                     <com.justwayward.reader.view.DrawableCenterButton
+                        android:id="@+id/btnJoinCollection"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
@@ -110,7 +111,7 @@
                         android:drawableLeft="@drawable/book_detail_info_add_img"
                         android:drawablePadding="5dp"
                         android:padding="10dp"
-                        android:text="追更新"
+                        android:text="@string/book_detail_join_collection"
                         android:textColor="@color/white" />
 
                     <com.justwayward.reader.view.DrawableCenterButton
