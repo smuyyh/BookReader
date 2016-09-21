@@ -36,17 +36,17 @@ public class RxUtil {
 
     public static <T> Observable rxCreateDiskObservable(final String key, final Class<T> clazz) {
         return Observable.create(new Observable.OnSubscribe<String>() {
-                    @Override
-                    public void call(Subscriber<? super String> subscriber) {
-                        LogUtils.d("get data from disk: key==" + key);
-                        String json = ACache.get(ReaderApplication.getsInstance()).getAsString(key);
-                        LogUtils.d("get data from disk finish , json==" + json);
-                        if (!TextUtils.isEmpty(json)) {
-                            subscriber.onNext(json);
-                        }
-                        subscriber.onCompleted();
-                    }
-                })
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                LogUtils.d("get data from disk: key==" + key);
+                String json = ACache.get(ReaderApplication.getsInstance()).getAsString(key);
+                LogUtils.d("get data from disk finish , json==" + json);
+                if (!TextUtils.isEmpty(json)) {
+                    subscriber.onNext(json);
+                }
+                subscriber.onCompleted();
+            }
+        })
                 .map(new Func1<String, T>() {
                     @Override
                     public T call(String s) {
@@ -56,7 +56,7 @@ public class RxUtil {
                 .subscribeOn(Schedulers.io());
     }
 
-    public static <T> Observable.Transformer<T, T> rxCacheHelper(final String key) {
+    public static <T> Observable.Transformer<T, T> rxCacheListHelper(final String key) {
         return new Observable.Transformer<T, T>() {
             @Override
             public Observable<T> call(Observable<T> observable) {
@@ -89,6 +89,31 @@ public class RxUtil {
                                                 }
                                             }
                                         }
+                                    }
+                                });
+                            }
+                        })
+                        .observeOn(AndroidSchedulers.mainThread());
+            }
+        };
+    }
+
+    public static <T> Observable.Transformer<T, T> rxCacheBeanHelper(final String key) {
+        return new Observable.Transformer<T, T>() {
+            @Override
+            public Observable<T> call(Observable<T> observable) {
+                return observable
+                        .subscribeOn(Schedulers.io())//指定doOnNext执行线程是新线程
+                        .doOnNext(new Action1<T>() {
+                            @Override
+                            public void call(final T data) {
+                                Schedulers.io().createWorker().schedule(new Action0() {
+                                    @Override
+                                    public void call() {
+                                        LogUtils.d("get data from network finish ,start cache...");
+                                        ACache.get(ReaderApplication.getsInstance())
+                                                .put(key, new Gson().toJson(data, data.getClass()));
+                                        LogUtils.d("cache finish");
                                     }
                                 });
                             }

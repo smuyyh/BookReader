@@ -32,7 +32,7 @@ public class TopRankPresenter extends RxPresenter<TopRankContract.View> implemen
     public void getRankList() {
         String key = StringUtils.creatAcacheKey("book-ranking-list");
         Observable<RankingList> fromNetWork = bookApi.getRanking()
-                .compose(RxUtil.<RankingList>rxCacheHelper(key));
+                .compose(RxUtil.<RankingList>rxCacheBeanHelper(key));
 
         //依次检查disk、network
         Subscription rxSubscription = Observable.concat(RxUtil.rxCreateDiskObservable(key, RankingList.class), fromNetWork)

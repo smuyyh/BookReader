@@ -33,7 +33,7 @@ public class SubjectFragmentPresenter extends RxPresenter<SubjectFragmentContrac
     public void getBookLists(String duration, String sort, final int start, int limit, String tag, String gender) {
         String key = StringUtils.creatAcacheKey("book-lists", duration, sort, start + "", limit + "", tag, gender);
         Observable<BookLists> fromNetWork = bookApi.getBookLists(duration, sort, start + "", limit + "", tag, gender)
-                .compose(RxUtil.<BookLists>rxCacheHelper(key));
+                .compose(RxUtil.<BookLists>rxCacheListHelper(key));
 
         //依次检查disk、network
         Subscription rxSubscription = Observable.concat(RxUtil.rxCreateDiskObservable(key, BookLists.class), fromNetWork)

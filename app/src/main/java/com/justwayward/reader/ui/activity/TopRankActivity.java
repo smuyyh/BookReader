@@ -85,6 +85,8 @@ public class TopRankActivity extends BaseActivity implements TopRankContract.Vie
 
     @Override
     public void showRankList(RankingList rankingList) {
+        maleGroups.clear();
+        femaleGroups.clear();
         updateMale(rankingList);
         updateFemale(rankingList);
     }

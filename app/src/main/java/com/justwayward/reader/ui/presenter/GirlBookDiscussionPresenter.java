@@ -32,7 +32,7 @@ public class GirlBookDiscussionPresenter extends RxPresenter<GirlBookDiscussionC
     public void getGirlBookDisscussionList(String sort, String distillate, final int start, int limit) {
         String key = StringUtils.creatAcacheKey("girl-book-discussion-list", "girl", "all", sort, "all", start + "", limit + "", distillate);
         Observable<DiscussionList> fromNetWork = bookApi.getGirlBookDisscussionList("girl", "all", sort, "all", start + "", limit + "", distillate)
-                .compose(RxUtil.<DiscussionList>rxCacheHelper(key));
+                .compose(RxUtil.<DiscussionList>rxCacheListHelper(key));
 
         //依次检查disk、network
         Subscription rxSubscription = Observable.concat(RxUtil.rxCreateDiskObservable(key, DiscussionList.class), fromNetWork)

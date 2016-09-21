@@ -20,9 +20,11 @@ import com.justwayward.reader.ui.activity.ReadActivity;
 import com.justwayward.reader.ui.contract.RecommendContract;
 import com.justwayward.reader.ui.easyadapter.RecommendAdapter;
 import com.justwayward.reader.ui.presenter.RecommendPresenter;
+import com.justwayward.reader.utils.ACache;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recommend.RecommendBooks> implements RecommendContract.View {
@@ -88,6 +90,11 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
     @Override
     public void showRecommendList(List<Recommend.RecommendBooks> list) {
         mAdapter.clear();
+        List<Recommend.RecommendBooks> data = (ArrayList<Recommend.RecommendBooks>) ACache.get(
+                getSupportActivity()).getAsObject("collection");
+        if (data != null && !data.isEmpty()) {
+            list.addAll(0,data);
+        }
         mAdapter.addAll(list);
 
         //SharedPreferencesUtil.getInstance().putObject("collect", list);

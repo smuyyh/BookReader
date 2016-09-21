@@ -32,7 +32,7 @@ public class SearchByAuthorPresenter extends RxPresenter<SearchByAuthorContract.
     public void getSearchResultList(String author) {
         String key = StringUtils.creatAcacheKey("search-by-author", author);
         Observable<BooksByTag> fromNetWork = bookApi.searchBooksByAuthor(author)
-                .compose(RxUtil.<BooksByTag>rxCacheHelper(key));
+                .compose(RxUtil.<BooksByTag>rxCacheListHelper(key));
 
         //依次检查disk、network
         Subscription rxSubscription = Observable.concat(RxUtil.rxCreateDiskObservable(key, BooksByTag.class), fromNetWork)

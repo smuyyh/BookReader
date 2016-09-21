@@ -32,7 +32,7 @@ public class SubCategoryFragmentPresenter extends RxPresenter<SubCategoryFragmen
     public void getCategoryList(String gender, final String major, String minor, String type, final int start, int limit) {
         String key = StringUtils.creatAcacheKey("category-list", gender, type, major, minor, start, limit);
         Observable<BooksByCats> fromNetWork = bookApi.getBooksByCats(gender, type, major, minor, start, limit)
-                .compose(RxUtil.<BooksByCats>rxCacheHelper(key));
+                .compose(RxUtil.<BooksByCats>rxCacheListHelper(key));
 
         //依次检查disk、network
         Subscription rxSubscription = Observable.concat(RxUtil.rxCreateDiskObservable(key, BooksByCats.class), fromNetWork)

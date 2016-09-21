@@ -32,7 +32,7 @@ public class SubjectBookListPresenter extends RxPresenter<SubjectBookListContrac
     public void getBookListTags() {
         String key = StringUtils.creatAcacheKey("book-list-tags");
         Observable<BookListTags> fromNetWork = bookApi.getBookListTags()
-                .compose(RxUtil.<BookListTags>rxCacheHelper(key));
+                .compose(RxUtil.<BookListTags>rxCacheListHelper(key));
 
         //依次检查disk、network
         Subscription rxSubscription = Observable.concat(RxUtil.rxCreateDiskObservable(key, BookListTags.class), fromNetWork)

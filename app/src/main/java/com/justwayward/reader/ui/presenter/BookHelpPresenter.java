@@ -32,7 +32,7 @@ public class BookHelpPresenter extends RxPresenter<BookHelpContract.View> implem
     public void getBookHelpList(String sort, String distillate, final int start, int limit) {
         String key = StringUtils.creatAcacheKey("book-help-list", "all", sort, start + "", limit + "", distillate);
         Observable<BookHelpList> fromNetWork = bookApi.getBookHelpList("all", sort, start + "", limit + "", distillate)
-                .compose(RxUtil.<BookHelpList>rxCacheHelper(key));
+                .compose(RxUtil.<BookHelpList>rxCacheListHelper(key));
 
         //依次检查disk、network
         Subscription rxSubscription = Observable.concat(RxUtil.rxCreateDiskObservable(key, BookHelpList.class), fromNetWork)

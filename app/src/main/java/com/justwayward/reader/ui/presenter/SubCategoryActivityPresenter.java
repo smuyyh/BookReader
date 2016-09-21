@@ -32,7 +32,7 @@ public class SubCategoryActivityPresenter extends RxPresenter<SubCategoryActivit
     public void getCategoryListLv2() {
         String key = StringUtils.creatAcacheKey("category-list2");
         Observable<CategoryListLv2> fromNetWork = bookApi.getCategoryListLv2()
-                .compose(RxUtil.<CategoryListLv2>rxCacheHelper(key));
+                .compose(RxUtil.<CategoryListLv2>rxCacheListHelper(key));
 
         //依次检查disk、network
         Subscription rxSubscription = Observable.concat(RxUtil.rxCreateDiskObservable(key, CategoryListLv2.class), fromNetWork)

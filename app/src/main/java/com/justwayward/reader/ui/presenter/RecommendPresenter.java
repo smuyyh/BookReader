@@ -34,7 +34,7 @@ public class RecommendPresenter extends RxPresenter<RecommendContract.View> impl
     public void getRecommendList() {
         String key = StringUtils.creatAcacheKey("recommend-list", "male");
         Observable<Recommend> fromNetWork = bookApi.getRecommend("male")
-                .compose(RxUtil.<Recommend>rxCacheHelper(key));
+                .compose(RxUtil.<Recommend>rxCacheListHelper(key));
 
         //依次检查disk、network
         Subscription rxSubscription = Observable.concat(RxUtil.rxCreateDiskObservable(key, Recommend.class), fromNetWork)

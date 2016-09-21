@@ -38,7 +38,7 @@ public class BooksByTagPresenter extends RxPresenter<BooksByTagContract.View> im
             isLoading = true;
             String key = StringUtils.creatAcacheKey("books-by-tag", tags, start, limit);
             Observable<BooksByTag> fromNetWork = bookApi.getBooksByTag(tags, start, limit)
-                    .compose(RxUtil.<BooksByTag>rxCacheHelper(key));
+                    .compose(RxUtil.<BooksByTag>rxCacheListHelper(key));
 
             //依次检查disk、network
             Subscription rxSubscription = Observable.concat(RxUtil.rxCreateDiskObservable(key, BooksByTag.class), fromNetWork)
