@@ -84,9 +84,4 @@ public class SubRankFragment extends BaseRVFragment<SubRankPresenter, BooksByCat
         mPresenter.getRankList(id);
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mPresenter.detachView();
-    }
 }

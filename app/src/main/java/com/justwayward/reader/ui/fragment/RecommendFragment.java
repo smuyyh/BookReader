@@ -124,9 +124,4 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
         mRecyclerView.setRefreshing(false);
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mPresenter.detachView();
-    }
 }

@@ -117,7 +117,6 @@ public class SubjectFragment extends BaseRVFragment<SubjectFragmentPresenter, Bo
     @Override
     public void onDestroyView() {
         EventBus.getDefault().unregister(this);
-        mPresenter.detachView();
         super.onDestroyView();
     }
 

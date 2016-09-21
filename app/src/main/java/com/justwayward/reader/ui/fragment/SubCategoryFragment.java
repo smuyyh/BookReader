@@ -108,7 +108,6 @@ public class SubCategoryFragment extends BaseRVFragment<SubCategoryFragmentPrese
     @Override
     public void onDestroyView() {
         EventBus.getDefault().unregister(this);
-        mPresenter.detachView();
         super.onDestroyView();
     }
 

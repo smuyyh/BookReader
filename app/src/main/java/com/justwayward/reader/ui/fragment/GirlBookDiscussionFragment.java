@@ -102,7 +102,6 @@ public class GirlBookDiscussionFragment extends BaseRVFragment<GirlBookDiscussio
     public void onDestroyView() {
         super.onDestroyView();
         EventBus.getDefault().unregister(this);
-        mPresenter.detachView();
     }
 
 }

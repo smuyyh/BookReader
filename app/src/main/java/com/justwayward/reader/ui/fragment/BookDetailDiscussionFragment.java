@@ -116,7 +116,6 @@ public class BookDetailDiscussionFragment extends BaseRVFragment<BookDetailDiscu
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mPresenter.detachView();
         EventBus.getDefault().unregister(this);
     }
 

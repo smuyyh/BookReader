@@ -99,7 +99,6 @@ public class BookHelpFragment extends BaseRVFragment<BookHelpPresenter, BookHelp
     public void onDestroyView() {
         super.onDestroyView();
         EventBus.getDefault().unregister(this);
-        mPresenter.detachView();
     }
 
 }

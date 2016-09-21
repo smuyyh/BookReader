@@ -32,7 +32,7 @@ public class TopCategoryListPresenter extends RxPresenter<TopCategoryListContrac
     public void getCategoryList() {
         String key = StringUtils.creatAcacheKey("book-category-list");
         Observable<CategoryList> fromNetWork = bookApi.getCategoryList()
-                .compose(RxUtil.<CategoryList>rxCacheListHelper(key));
+                .compose(RxUtil.<CategoryList>rxCacheBeanHelper(key));
 
         //依次检查disk、network
         Subscription rxSubscription = Observable.concat(RxUtil.rxCreateDiskObservable(key, CategoryList.class), fromNetWork)
