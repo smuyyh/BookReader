@@ -21,7 +21,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.text.DecimalFormat;
-import java.util.GregorianCalendar;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Vector;
 
@@ -195,8 +195,8 @@ public class PageFactory {
             float percent = (float) currentChapter * 100 / chapterSize;
             DecimalFormat format = new DecimalFormat("#0.00");
             canvas.drawText(format.format(percent) + "%", marginWidth + 2, mHeight - marginHeight, mTitlePaint);
-            GregorianCalendar calendar = new GregorianCalendar();
-            String mTime = calendar.HOUR_OF_DAY + ":" + calendar.MINUTE;
+            Calendar cal = Calendar.getInstance();
+            String mTime = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
             int strLen = (int) mTitlePaint.measureText(mTime);
             canvas.drawText(mTime, mWidth - marginWidth - strLen, mHeight - marginHeight, mTitlePaint);
         }

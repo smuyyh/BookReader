@@ -147,6 +147,7 @@ public class SelectionLayout extends LinearLayout {
                     isOpen = false;
                 }
             });
+            mListPopupWindow.setModal(true);
         }
 
         public void closePopWindow() {
