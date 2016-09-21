@@ -4,11 +4,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.graphics.Point;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.ListPopupWindow;
-import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +39,7 @@ import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
 import com.justwayward.reader.utils.TTSPlayerUtils;
 import com.justwayward.reader.utils.ToastUtils;
+import com.justwayward.reader.view.ReadView.OnReadStateChangeListener;
 import com.justwayward.reader.view.ReadView.PageWidget;
 import com.sinovoice.hcicloudsdk.android.tts.player.TTSPlayer;
 import com.sinovoice.hcicloudsdk.common.tts.TtsConfig;
@@ -234,25 +233,17 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         if (data != null) {
             File file = getBookFile(chapter);
             FileUtils.writeFile(file.getAbsolutePath(), data.body, false);
+            LogUtils.i("save chapter:" + chapter);
         }
-        //     factory.append(data, chapter); // 缓存章节保存到文件
 
-        // 阅读currentChapter章节
-     /*   if (getBookFile(currentChapter).length() > 50 && !startRead && currentChapter < mChapterList.size()) {
+        if (!startRead) {
             startRead = true;
-            new BookPageTask().execute();
-        }*/
-
-        File dir = getBookFile(chapter);
-        if (dir != null) {
-            WindowManager manage = getWindowManager();
-            Display display = manage.getDefaultDisplay();
-            Point displaysize = new Point();
-            display.getSize(displaysize);
-            mPageWidget = new PageWidget(this, bookId, dir.getPath());// 页面
+            File dir = getBookFile(chapter);
+            if (dir != null) {
+                mPageWidget = new PageWidget(this, bookId, chapter, mChapterList, new ReadListener());// 页面
+            }
+            mRlBookReadRoot.addView(mPageWidget, 0);
         }
-        mRlBookReadRoot.removeAllViews();
-        mRlBookReadRoot.addView(mPageWidget);
     }
 
     @Override
@@ -397,34 +388,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     }
 
-    /**
-     * 缓存章节分页结果（预处理）
-     */
-   /* class ChapterCacheTask extends AsyncTask<Integer, Integer, List<String>> {
-
-        @Override
-        protected List<String> doInBackground(Integer... params) {
-            int chapter = params[0];
-            factory.readPage(chapter);
-            LogUtils.i("缓存章节分页结果:" + chapter);
-            return null;
-        }
-    }*/
-
-//    class BatteryReceiver extends BroadcastReceiver {
-//
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            if (Intent.ACTION_BATTERY_CHANGED.equals(intent.getAction())) {
-//                int level = intent.getIntExtra("level", 0);
-//                int scale = intent.getIntExtra("scale", 100);
-//                readPageAdapter.setBattery(((level * 100) / scale) + "%");
-//            } else if(Intent.ACTION_TIME_TICK.equals(intent.getAction())){
-//                readPageAdapter.setTime(sdf.format(new Date()));
-//            }
-//            readPageAdapter.notifyDataSetChanged();
-//        }
-//    }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -443,24 +406,42 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        //  flipView.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //  flipView.onPause();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (mTtsPlayer.getPlayerState() == TTSCommonPlayer.PLAYER_STATE_PLAYING)
             mTtsPlayer.stop();
         EventBus.getDefault().unregister(this);
         mPresenter.cancelDownload();
-//        unregisterReceiver(batteryReceiver);
+    }
+
+    class ReadListener implements OnReadStateChangeListener {
+        @Override
+        public void onChapterChanged(int chapter) {
+            LogUtils.i("onChapterChanged:" + chapter);
+            // 加载前一节 与 后三节
+            for (int i = chapter - 1; i <= chapter + 3 && i <= mChapterList.size(); i++) {
+                if (i > 0 && i != chapter && getBookFile(i).length() < 50) {
+                    mPresenter.getChapterRead(mChapterList.get(i - 1).link, i);
+                }
+            }
+        }
+
+        @Override
+        public void onPageChanged(int chapter, int page) {
+            LogUtils.i("onPageChanged:" + chapter + "-" + page);
+        }
+
+        @Override
+        public void onLoadChapterFailure(int chapter) {
+            LogUtils.i("onLoadChapterFailure:" + chapter);
+            if (getBookFile(chapter).length() < 50)
+                mPresenter.getChapterRead(mChapterList.get(chapter - 1).link, chapter);
+        }
+
+        @Override
+        public void onCenterClick() {
+            LogUtils.i("onCenterClick");
+            toggleReadBar();
+        }
     }
 }

@@ -1,12 +1,16 @@
 package com.justwayward.reader.view.ReadView;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.support.v4.content.ContextCompat;
 
+import com.justwayward.reader.R;
+import com.justwayward.reader.bean.BookToc;
+import com.justwayward.reader.utils.AppUtils;
+import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.utils.ScreenUtils;
 
 import java.io.File;
@@ -17,6 +21,7 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.text.DecimalFormat;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Vector;
 
 public class PageFactory {
@@ -44,7 +49,7 @@ public class PageFactory {
     /**
      * 行间距
      **/
-    private int mLineSpace = 2;
+    private int mLineSpace;
     /**
      * 字节长度
      */
@@ -56,52 +61,86 @@ public class PageFactory {
     // 页首页尾的位置
     private int m_mbBufEndPos = 0;
     private int m_mbBufBeginPos = 0;
-    private Paint mNumPaint;
     private Paint mPaint;
+    private Paint mTitlePaint;
 
     private Bitmap m_book_bg;
     private Vector<String> m_lines = new Vector<>();
 
-    public PageFactory(Context context) {
-        this(context, ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight(), ScreenUtils.dpToPxInt(16));
+    private String basePath = FileUtils.createRootPath(AppUtils.getAppContext()) + "/book/";
+    private String bookId;
+    private int currentChapter;
+    private List<BookToc.mixToc.Chapters> chaptersList;
+    private int chapterSize = 0;
+    private int currentPage = 1;
+
+    private OnReadStateChangeListener listener;
+
+    public PageFactory(String bookId, int chapter, List<BookToc.mixToc.Chapters> chaptersList) {
+        this(ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight(), ScreenUtils.dpToPxInt(18),
+                bookId, chapter, chaptersList);
     }
 
-    public PageFactory(Context context, int width, int height, int fontSize) {
+    public PageFactory(int width, int height, int fontSize, String bookId, int chapter,
+                       List<BookToc.mixToc.Chapters> chaptersList) {
         mWidth = width;
         mHeight = height;
         mFontSize = fontSize;
-        mNumFontSize = fontSize / 2;
+        mNumFontSize = fontSize / 3 * 2;
         marginWidth = ScreenUtils.dpToPxInt(15);
         marginHeight = ScreenUtils.dpToPxInt(15);
-        mVisibleHeight = mHeight - marginHeight * 2 - mFontSize;
+        mVisibleHeight = mHeight - marginHeight * 2 - mFontSize * 3;
         mVisibleWidth = mWidth - marginWidth * 2;
-        mPageLineCount = mVisibleHeight / (mFontSize + 2);
+        mLineSpace = mFontSize / 3;
+        mPageLineCount = mVisibleHeight / (mFontSize + mLineSpace);
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setTextSize(mFontSize);
         mPaint.setColor(Color.BLACK);
-        mNumPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mNumPaint.setTextSize(mNumFontSize);
-        mNumPaint.setColor(Color.GRAY);
+        mTitlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mTitlePaint.setTextSize(mNumFontSize);
+        mTitlePaint.setColor(ContextCompat.getColor(AppUtils.getAppContext(), R.color.light_coffee));
         // Typeface typeface = Typeface.createFromAsset(context.getAssets(),"fonts/FZBYSK.TTF");
         // mPaint.setTypeface(typeface);
         // mNumPaint.setTypeface(typeface);
+
+        this.bookId = bookId;
+        this.currentChapter = chapter;
+        this.chaptersList = chaptersList;
+        chapterSize = chaptersList.size();
     }
 
-    public void openBook(String path) {
-        openBook(path, new int[]{0, 0});
+    public File getBookFile(int chapter) {
+        File file = new File(basePath + bookId + "/" + chapter + ".txt");
+        if (!file.exists())
+            FileUtils.createFile(file);
+        return file;
+    }
+
+    public void openBook() {
+        openBook(new int[]{0, 0});
+    }
+
+    public void openBook(int[] position) {
+        openBook(1, position);
     }
 
     /**
      * 打开书籍文件
      *
-     * @param path
+     * @param chapter  阅读章节
      * @param position 阅读位置
+     * @return 0：文件不存在或打开失败  1：打开成功
      */
-    public void openBook(String path, int[] position) {
+    public int openBook(int chapter, int[] position) {
+        this.currentChapter = chapter;
+        String path = getBookFile(currentChapter).getPath();
         try {
             File file = new File(path);
             long length = file.length();
+            if (length < 50) {
+                return 0;
+            }
             m_mpBufferLen = (int) length;
             // 创建文件通道，映射为MappedByteBuffer
             m_mpBuff = new RandomAccessFile(file, "r")
@@ -109,9 +148,11 @@ public class PageFactory {
                     .map(FileChannel.MapMode.READ_ONLY, 0, length);
             m_mbBufEndPos = position[1];
             m_mbBufBeginPos = position[0];
+            return 1;
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return 0;
     }
 
     /**
@@ -125,7 +166,7 @@ public class PageFactory {
             m_lines = pageDown();
         }
         if (m_lines.size() > 0) {
-            int y = marginHeight;
+            int y = marginHeight + (mLineSpace << 1);
             // 绘制背景
             if (m_book_bg != null) {
                 Rect rectF = new Rect(0, 0, mWidth, mHeight);
@@ -133,19 +174,28 @@ public class PageFactory {
             } else {
                 canvas.drawColor(Color.WHITE);
             }
+            // 绘制标题
+            canvas.drawText(chaptersList.get(currentChapter - 1).title, marginWidth, y, mPaint);
+            y += mLineSpace << 1;
             // 绘制阅读页面文字
             for (String line : m_lines) {
                 y += mFontSize + mLineSpace;
-                canvas.drawText(line, marginWidth, y, mPaint);
+                if (line.endsWith("@")) {
+                    canvas.drawText(line.substring(0, line.length() - 1), marginWidth, y, mPaint);
+                    y += mLineSpace;
+                    canvas.drawText(" ", marginWidth, y, mPaint);
+                } else {
+                    canvas.drawText(line, marginWidth, y, mPaint);
+                }
             }
             // 绘制提示内容
-            float percent = (float) m_mbBufBeginPos * 100 / m_mpBufferLen;
-            DecimalFormat sirPercent = new DecimalFormat("#0.00");
-            canvas.drawText(sirPercent.format(percent) + "%", marginWidth + 2, mHeight - marginHeight, mNumPaint);
+            float percent = (float) currentChapter * 100 / chapterSize;
+            DecimalFormat format = new DecimalFormat("#0.00");
+            canvas.drawText(format.format(percent) + "%", marginWidth + 2, mHeight - marginHeight, mTitlePaint);
             GregorianCalendar calendar = new GregorianCalendar();
             String mTime = calendar.HOUR_OF_DAY + "时" + calendar.MINUTE + "分 ";
-            int strLen = (int) mNumPaint.measureText(mTime);
-            canvas.drawText(mTime, mWidth - marginWidth - strLen, mHeight - marginHeight, mNumPaint);
+            int strLen = (int) mTitlePaint.measureText(mTime);
+            canvas.drawText(mTime, mWidth - marginWidth - strLen, mHeight - marginHeight, mTitlePaint);
         }
     }
 
@@ -155,6 +205,8 @@ public class PageFactory {
     private void pageUp() {
         String strParagraph = "";
         Vector<String> lines = new Vector<>(); // 页面行
+        int paraSpace = 0;
+        mPageLineCount = mVisibleHeight / (mFontSize + mLineSpace);
         while ((lines.size() < mPageLineCount) && (m_mbBufBeginPos > 0)) {
             Vector<String> paraLines = new Vector<>(); // 段落行
             byte[] parabuffer = readParagraphBack(m_mbBufBeginPos); // 1.读取上一个段落
@@ -183,7 +235,9 @@ public class PageFactory {
                     e.printStackTrace();
                 }
             }
-            m_mbBufEndPos = m_mbBufBeginPos; // 6.最后结束指针指向下一页的开始处
+            m_mbBufEndPos = m_mbBufBeginPos; // 6.最后结束指针指向下一段的开始处
+            paraSpace += mLineSpace;
+            mPageLineCount = (mVisibleHeight - paraSpace) / (mFontSize + mLineSpace); // 添加段落间距，实时更新行数
         }
     }
 
@@ -194,7 +248,9 @@ public class PageFactory {
      */
     private Vector<String> pageDown() {
         String strParagraph = "";
-        Vector<String> lines = new Vector<String>();
+        Vector<String> lines = new Vector<>();
+        int paraSpace = 0;
+        mPageLineCount = mVisibleHeight / (mFontSize + mLineSpace);
         while ((lines.size() < mPageLineCount) && (m_mbBufEndPos < m_mpBufferLen)) {
             byte[] parabuffer = readParagraphForward(m_mbBufEndPos);
             m_mbBufEndPos += parabuffer.length;
@@ -214,6 +270,7 @@ public class PageFactory {
                     break;
                 }
             }
+            lines.set(lines.size() - 1, lines.get(lines.size() - 1) + "@");
             if (strParagraph.length() != 0) {
                 try {
                     m_mbBufEndPos -= (strParagraph).getBytes("UTF-8").length;
@@ -221,6 +278,60 @@ public class PageFactory {
                     e.printStackTrace();
                 }
             }
+            paraSpace += mLineSpace;
+            mPageLineCount = (mVisibleHeight - paraSpace) / (mFontSize + mLineSpace);
+        }
+        return lines;
+    }
+
+    /**
+     * 获取最后一页的内容。比较繁琐，待优化
+     *
+     * @return
+     */
+    public Vector<String> pageLast() {
+        String strParagraph = "";
+        Vector<String> lines = new Vector<String>();
+        currentPage = 0;
+        while (m_mbBufEndPos < m_mpBufferLen) {
+            int paraSpace = 0;
+            mPageLineCount = mVisibleHeight / (mFontSize + mLineSpace);
+            m_mbBufBeginPos = m_mbBufEndPos;
+            while ((lines.size() < mPageLineCount) && (m_mbBufEndPos < m_mpBufferLen)) {
+                byte[] parabuffer = readParagraphForward(m_mbBufEndPos);
+                m_mbBufEndPos += parabuffer.length;
+                try {
+                    strParagraph = new String(parabuffer, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                strParagraph = strParagraph.replaceAll("\r\n", "  ");
+                strParagraph = strParagraph.replaceAll("\n", " "); // 段落中的换行符去掉，绘制的时候再换行
+
+                while (strParagraph.length() > 0) {
+                    int paintSize = mPaint.breakText(strParagraph, true, mVisibleWidth, null);
+                    lines.add(strParagraph.substring(0, paintSize));
+                    strParagraph = strParagraph.substring(paintSize);
+                    if (lines.size() >= mPageLineCount) {
+                        break;
+                    }
+                }
+                lines.set(lines.size() - 1, lines.get(lines.size() - 1) + "@");
+
+                if (strParagraph.length() != 0) {
+                    try {
+                        m_mbBufEndPos -= (strParagraph).getBytes("UTF-8").length;
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                }
+                paraSpace += mLineSpace;
+                mPageLineCount = (mVisibleHeight - paraSpace) / (mFontSize + mLineSpace);
+            }
+            if (m_mbBufEndPos < m_mpBufferLen) {
+                lines.clear();
+            }
+            currentPage++;
         }
         return lines;
     }
@@ -273,29 +384,67 @@ public class PageFactory {
         return buf;
     }
 
+    public boolean hasNextPage() {
+        return currentChapter < chaptersList.size() || m_mbBufEndPos < m_mpBufferLen;
+    }
+
+    public boolean hasPrePage() {
+        return currentChapter > 1 || (currentChapter == 1 && m_mbBufBeginPos > 0);
+    }
+
     /**
      * 跳转下一页
      */
-    public void nextPage() {
-        if (m_mbBufEndPos >= m_mpBufferLen) {
-            return;
+    public boolean nextPage() {
+        if (!hasNextPage()) { // 最后一章的结束页
+            return false;
         } else {
+            if (m_mbBufEndPos >= m_mpBufferLen) { // 中间章节结束页
+                currentChapter++;
+                int ret = openBook(currentChapter, new int[]{0, 0}); // 打开下一章
+                if (ret == 0) {
+                    onLoadChapterFailure(currentChapter);
+                    return false;
+                } else {
+                    currentPage = 0;
+                    onChapterChanged(currentChapter);
+                }
+            }
             m_lines.clear();
             m_mbBufBeginPos = m_mbBufEndPos; // 起始指针移到结束位置
             m_lines = pageDown(); // 读取一页内容
+            onPageChanged(currentChapter, ++currentPage);
         }
+        return true;
     }
 
     /**
      * 跳转上一页
      */
-    public void prePage() {
-        if (m_mbBufBeginPos <= 0) {
-            return;
+    public boolean prePage() {
+        if (!hasPrePage()) { // 第一章第一页
+            return false;
+        } else {
+            if (m_mbBufBeginPos <= 0) {
+                currentChapter--;
+                int ret = openBook(currentChapter, new int[]{0, 0});
+                if (ret == 0) {
+                    onLoadChapterFailure(currentChapter);
+                    return false;
+                } else { // 跳转到上一章的最后一页
+                    m_lines.clear();
+                    m_lines = pageLast();
+                    onChapterChanged(currentChapter);
+                    onPageChanged(currentChapter, currentPage);
+                    return true;
+                }
+            }
+            m_lines.clear();
+            pageUp(); // 起始指针移到上一页开始处
+            m_lines = pageDown(); // 读取一页内容
+            onPageChanged(currentChapter, --currentPage);
         }
-        m_lines.clear();
-        pageUp(); // 起始指针移到上一页开始处
-        m_lines = pageDown(); // 读取一页内容
+        return true;
     }
 
     /**
@@ -343,5 +492,24 @@ public class PageFactory {
 
     public void setBgBitmap(Bitmap BG) {
         m_book_bg = BG;
+    }
+
+    public void setOnReadStateChangeListener(OnReadStateChangeListener listener) {
+        this.listener = listener;
+    }
+
+    void onChapterChanged(int chapter) {
+        if (listener != null)
+            listener.onChapterChanged(chapter);
+    }
+
+    void onPageChanged(int chapter, int page) {
+        if (listener != null)
+            listener.onPageChanged(chapter, page);
+    }
+
+    void onLoadChapterFailure(int chapter) {
+        if (listener != null)
+            listener.onLoadChapterFailure(chapter);
     }
 }

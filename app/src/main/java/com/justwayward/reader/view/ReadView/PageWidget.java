@@ -17,8 +17,12 @@ import android.view.View;
 import android.widget.Scroller;
 
 import com.justwayward.reader.R;
+import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.utils.ScreenUtils;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
+import com.justwayward.reader.utils.ToastUtils;
+
+import java.util.List;
 
 public class PageWidget extends View {
 
@@ -73,8 +77,12 @@ public class PageWidget extends View {
 
     private float actiondownX, actiondownY;
 
-    public PageWidget(Context context, String bookId, String path) {
+    private OnReadStateChangeListener listener;
+
+    public PageWidget(Context context, String bookId, int chapter, List<BookToc.mixToc.Chapters> chaptersList,
+                      OnReadStateChangeListener listener) {
         super(context);
+        this.listener = listener;
         mPath0 = new Path();
         mPath1 = new Path();
         mScreenWidth = ScreenUtils.getScreenWidth();
@@ -99,14 +107,16 @@ public class PageWidget extends View {
         mNextPageBitmap = Bitmap.createBitmap(mScreenWidth, mScreenHeight, Bitmap.Config.ARGB_8888);
         mCurrentPageCanvas = new Canvas(mCurPageBitmap);
         mNextPageCanvas = new Canvas(mNextPageBitmap);
-        pagefactory = new PageFactory(context);
+        pagefactory = new PageFactory(bookId, chapter, chaptersList);
+        pagefactory.setOnReadStateChangeListener(listener);
         try {
             pagefactory.setBgBitmap(BitmapFactory.decodeResource(context.getResources(),
                     R.drawable.reader_background_brown_big_img));
-            // 获取上次阅读位置
+            // 获取上次阅读章节及位置
+            int lastChapter = SharedPreferencesUtil.getInstance().getInt(bookId + "-chapter", 1);
             int startPos = SharedPreferencesUtil.getInstance().getInt(bookId + "-startPos", 0);
             int endPos = SharedPreferencesUtil.getInstance().getInt(bookId + "-endPos", 0);
-            pagefactory.openBook(path, new int[]{startPos, endPos});
+            pagefactory.openBook(new int[]{startPos, endPos});
             pagefactory.onDraw(mCurrentPageCanvas);
         } catch (Exception e) {
         }
@@ -149,14 +159,14 @@ public class PageWidget extends View {
             actiondownY = event.getY();
         }
         if (event.getAction() == MotionEvent.ACTION_UP) {
-            startAnimation(1200);
+            startAnimation(1000);
             this.postInvalidate();
         }
         if (event.getAction() == MotionEvent.ACTION_MOVE
                 && event.getMetaState() == 1) {
             mTouch.x = event.getX();
             mTouch.y = event.getY();
-            startAnimation(1200);
+            startAnimation(1000);
             this.postInvalidate();
         }
         return true;
@@ -596,13 +606,20 @@ public class PageWidget extends View {
             //Action_Down时在中间位置显示菜单
             if (x > mScreenWidth / 3 && x < mScreenWidth * 2 / 3
                     && y > mScreenHeight / 3 && y < mScreenHeight * 2 / 3) {
+                listener.onCenterClick();
                 return false;//停止向下分发事件
             }
             if (x < mScreenWidth / 2) {// 从左翻
-                pagefactory.prePage();
+                if (!pagefactory.prePage()) {
+                    ToastUtils.showSingleToast("没有上一页啦");
+                    return false;
+                }
                 pagefactory.onDraw(mNextPageCanvas);
             } else if (x >= mScreenWidth / 2) {// 从右翻
-                pagefactory.nextPage();
+                if (!pagefactory.nextPage()) {
+                    ToastUtils.showSingleToast("没有下一页啦");
+                    return false;
+                }
                 pagefactory.onDraw(mNextPageCanvas);
             }
             setBitmaps(mCurPageBitmap, mNextPageBitmap);

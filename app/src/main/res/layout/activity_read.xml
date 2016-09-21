@@ -16,8 +16,7 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="15dp"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/ivBack"
@@ -89,10 +88,10 @@
         android:paddingBottom="10dp"
         android:paddingLeft="25dp"
         android:paddingTop="10dp"
-        android:visibility="gone"
-        android:textColor="@color/white"
         android:singleLine="true"
-        android:text="@string/book_read_download_progress" />
+        android:text="@string/book_read_download_progress"
+        android:textColor="@color/white"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/llBookReadBottom"
@@ -102,8 +101,7 @@
         android:background="@color/colorPrimary"
         android:orientation="horizontal"
         android:padding="10dp"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tvBookReadMode"

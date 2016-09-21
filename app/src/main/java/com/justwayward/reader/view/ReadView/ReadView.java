@@ -33,14 +33,14 @@ public class ReadView extends View {
         Log.e(width + ":宽", height + "：高");
         mCurrentPageBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         mCurrentPageCanvas = new Canvas(mCurrentPageBitmap);
-        pagefactory = new PageFactory(context, width, height, font_size);
+        //pagefactory = new PageFactory(context, width, height, font_size);
         try {
             position[0] = sp.getInt("begin", 0);
             position[1] = sp.getInt("end", 0);
             Log.e("start" + position[0], "end" + position[1]);
             pagefactory.setBgBitmap(BitmapFactory.decodeResource(context.getResources(),
                     R.drawable.reader_background_brown_big_img));
-            pagefactory.openBook(path, position);
+            //pagefactory.openBook(path, position);
             pagefactory.onDraw(mCurrentPageCanvas);
         } catch (Exception e) {
         }
