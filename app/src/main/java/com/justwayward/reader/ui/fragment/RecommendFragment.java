@@ -16,7 +16,7 @@ import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerMainComponent;
-import com.justwayward.reader.ui.activity.BookReadActivity;
+import com.justwayward.reader.ui.activity.ReadActivity;
 import com.justwayward.reader.ui.contract.RecommendContract;
 import com.justwayward.reader.ui.easyadapter.RecommendAdapter;
 import com.justwayward.reader.ui.presenter.RecommendPresenter;
@@ -96,7 +96,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
     @Override
     public void onItemClick(int position) {
         // TODO 新版阅读页 跳转至ReadActivity 待完善
-        startActivity(new Intent(activity, BookReadActivity.class)
+        startActivity(new Intent(activity, ReadActivity.class)
                 .putExtra("bookId", mAdapter.getItem(position)._id)
                 .putExtra("bookName", mAdapter.getItem(position).title));
     }

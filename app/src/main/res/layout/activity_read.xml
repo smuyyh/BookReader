@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/book_read_bg"
+    android:clickable="true"
     android:orientation="vertical">
 
     <LinearLayout
@@ -13,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:background="@color/colorPrimary"
+        android:clickable="true"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="15dp"
@@ -101,6 +103,7 @@
         android:background="@color/colorPrimary"
         android:orientation="horizontal"
         android:padding="10dp"
+        android:clickable="true"
         android:visibility="gone">
 
         <TextView
@@ -118,7 +121,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableTop="@drawable/vote_edit_tips_icon"
+            android:drawableTop="@drawable/ic_menu_read_report"
             android:gravity="center"
             android:text="@string/book_read_feedback"
             android:textColor="@color/white" />

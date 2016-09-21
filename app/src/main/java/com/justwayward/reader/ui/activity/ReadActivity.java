@@ -161,6 +161,11 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                 currentChapter = position + 1;
                 startRead = false;
                 readCurrentChapter();
+            }
+        });
+        mTocListPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
                 hideReadBar();
             }
         });
@@ -313,6 +318,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             if (isVisible(mLlBookReadBottom)) { // 如果工具栏显示，则进度条也显示
                 visible(mTvDownloadProgress);
                 mTvDownloadProgress.setText(String.format(getString(R.string.book_read_download_progress), mChapterList.get(progress.progress - 1).title, progress.progress, mChapterList.size()));
+            } else {
+                gone(mTvDownloadProgress);
             }
         }
     }
@@ -336,7 +343,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     }
 
     private void hideReadBar() { // 隐藏工具栏
-        gone(mLlBookReadBottom, mLlBookReadTop, mTvDownloadProgress);
+        gone(mTvDownloadProgress, mLlBookReadBottom, mLlBookReadTop);
     }
 
     private void showReadBar() { // 显示工具栏
@@ -344,7 +351,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     }
 
     private void toggleReadBar() { // 切换工具栏 隐藏/显示 状态
-        if (isVisible(mLlBookReadBottom)) {
+        if (isVisible(mLlBookReadTop)) {
             hideReadBar();
         } else {
             showReadBar();
@@ -403,6 +410,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         @Override
         public void onPageChanged(int chapter, int page) {
             LogUtils.i("onPageChanged:" + chapter + "-" + page);
+            hideReadBar();
         }
 
         @Override

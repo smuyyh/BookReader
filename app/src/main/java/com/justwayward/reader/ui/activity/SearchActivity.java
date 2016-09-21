@@ -112,6 +112,12 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
 
         mHisAdapter = new SearchHistoryAdapter(this, mHisList);
         lvSearchHistory.setAdapter(mHisAdapter);
+        lvSearchHistory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                search(mHisList.get(position));
+            }
+        });
         initSearchHistory();
     }
 
