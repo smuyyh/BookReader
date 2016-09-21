@@ -1,9 +1,6 @@
 package com.justwayward.reader.ui.activity;
 
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.ListPopupWindow;
@@ -50,7 +47,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,13 +91,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     @Bind(R.id.tvDownloadProgress)
     TextView mTvDownloadProgress;
 
-    int lineHeight = 0;
-
     @Inject
     BookReadPresenter mPresenter;
-
-    private List<String> mContentList = new ArrayList<>();
-//    private BookReadPageAdapter readPageAdapter;
 
     private List<BookToc.mixToc.Chapters> mChapterList = new ArrayList<>();
     private ListPopupWindow mTocListPopupWindow;
@@ -109,24 +100,11 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     private String bookId;
     private int currentChapter = 1;
-//    private BookPageFactory factory;
 
     /**
      * 是否开始阅读章节
      **/
     boolean startRead = false;
-    /**
-     * 当前是否处于最后一页
-     **/
-    boolean endPage = false;
-    /**
-     * 当前是否处于第一页
-     **/
-    boolean startPage = false;
-    /**
-     * 是否是跳转到上一章
-     **/
-    private boolean isPre = false;
 
     /**
      * 朗读 播放器
@@ -134,12 +112,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     private TTSPlayer mTtsPlayer;
     private TtsConfig ttsConfig;
 
-    private IntentFilter intentFilter = new IntentFilter();
-    //    private BatteryReceiver batteryReceiver = new BatteryReceiver();
-    private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-
     private PageWidget mPageWidget;
-    private static Bitmap mCurPageBitmap, mNextPageBitmap;
 
     @Override
     public int getLayoutId() {
@@ -170,9 +143,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
         mTtsPlayer = TTSPlayerUtils.getTTSPlayer();
         ttsConfig = TTSPlayerUtils.getTtsConfig();
-
-        intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
-        intentFilter.addAction(Intent.ACTION_TIME_TICK);
     }
 
     @Override
@@ -190,7 +160,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                 mTocListPopupWindow.dismiss();
                 currentChapter = position + 1;
                 startRead = false;
-                isPre = false;
                 readCurrentChapter();
                 hideReadBar();
             }
@@ -240,9 +209,13 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             startRead = true;
             File dir = getBookFile(chapter);
             if (dir != null) {
-                mPageWidget = new PageWidget(this, bookId, chapter, mChapterList, new ReadListener());// 页面
+                if (mPageWidget == null) {
+                    mPageWidget = new PageWidget(this, bookId, chapter, mChapterList, new ReadListener());// 页面
+                    mRlBookReadRoot.addView(mPageWidget, 0);
+                } else {
+                    mPageWidget.jumpToChapter(currentChapter);
+                }
             }
-            mRlBookReadRoot.addView(mPageWidget, 0);
         }
     }
 
@@ -418,6 +391,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         @Override
         public void onChapterChanged(int chapter) {
             LogUtils.i("onChapterChanged:" + chapter);
+            currentChapter = chapter;
             // 加载前一节 与 后三节
             for (int i = chapter - 1; i <= chapter + 3 && i <= mChapterList.size(); i++) {
                 if (i > 0 && i != chapter && getBookFile(i).length() < 50) {

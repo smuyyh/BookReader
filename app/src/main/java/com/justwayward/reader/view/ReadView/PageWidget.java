@@ -116,7 +116,7 @@ public class PageWidget extends View {
             int lastChapter = SharedPreferencesUtil.getInstance().getInt(bookId + "-chapter", 1);
             int startPos = SharedPreferencesUtil.getInstance().getInt(bookId + "-startPos", 0);
             int endPos = SharedPreferencesUtil.getInstance().getInt(bookId + "-endPos", 0);
-            pagefactory.openBook(new int[]{startPos, endPos});
+            pagefactory.openBook(lastChapter, new int[]{startPos, endPos});
             pagefactory.onDraw(mCurrentPageCanvas);
         } catch (Exception e) {
         }
@@ -626,5 +626,14 @@ public class PageWidget extends View {
         }
         boolean ret = doTouchEvent(e);
         return ret;
+    }
+
+    public void jumpToChapter(int chapter) {
+        abortAnimation();
+        pagefactory.openBook(chapter, new int[]{0, 0});
+        pagefactory.onDraw(mNextPageCanvas);
+        startAnimation(1000);
+        postInvalidate();
+
     }
 }

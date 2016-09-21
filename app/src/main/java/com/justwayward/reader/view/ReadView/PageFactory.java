@@ -12,6 +12,7 @@ import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.utils.ScreenUtils;
+import com.justwayward.reader.utils.SharedPreferencesUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -86,7 +87,7 @@ public class PageFactory {
         mWidth = width;
         mHeight = height;
         mFontSize = fontSize;
-        mNumFontSize = fontSize / 3 * 2;
+        mNumFontSize = fontSize;
         marginWidth = ScreenUtils.dpToPxInt(15);
         marginHeight = ScreenUtils.dpToPxInt(15);
         mVisibleHeight = mHeight - marginHeight * 2 - mFontSize * 3;
@@ -146,8 +147,10 @@ public class PageFactory {
             m_mpBuff = new RandomAccessFile(file, "r")
                     .getChannel()
                     .map(FileChannel.MapMode.READ_ONLY, 0, length);
-            m_mbBufEndPos = position[1];
             m_mbBufBeginPos = position[0];
+            m_mbBufEndPos = position[1];
+            onChapterChanged(chapter);
+            m_lines.clear();
             return 1;
         } catch (IOException e) {
             e.printStackTrace();
@@ -175,7 +178,7 @@ public class PageFactory {
                 canvas.drawColor(Color.WHITE);
             }
             // 绘制标题
-            canvas.drawText(chaptersList.get(currentChapter - 1).title, marginWidth, y, mPaint);
+            canvas.drawText(chaptersList.get(currentChapter - 1).title, marginWidth, y, mTitlePaint);
             y += mLineSpace << 1;
             // 绘制阅读页面文字
             for (String line : m_lines) {
@@ -193,7 +196,7 @@ public class PageFactory {
             DecimalFormat format = new DecimalFormat("#0.00");
             canvas.drawText(format.format(percent) + "%", marginWidth + 2, mHeight - marginHeight, mTitlePaint);
             GregorianCalendar calendar = new GregorianCalendar();
-            String mTime = calendar.HOUR_OF_DAY + "时" + calendar.MINUTE + "分 ";
+            String mTime = calendar.HOUR_OF_DAY + ":" + calendar.MINUTE;
             int strLen = (int) mTitlePaint.measureText(mTime);
             canvas.drawText(mTime, mWidth - marginWidth - strLen, mHeight - marginHeight, mTitlePaint);
         }
@@ -281,6 +284,9 @@ public class PageFactory {
             paraSpace += mLineSpace;
             mPageLineCount = (mVisibleHeight - paraSpace) / (mFontSize + mLineSpace);
         }
+        SharedPreferencesUtil.getInstance().putInt(bookId + "-chapter", currentChapter);
+        SharedPreferencesUtil.getInstance().putInt(bookId + "-startPos", m_mbBufBeginPos);
+        SharedPreferencesUtil.getInstance().putInt(bookId + "-endPos", m_mbBufEndPos);
         return lines;
     }
 
@@ -333,6 +339,9 @@ public class PageFactory {
             }
             currentPage++;
         }
+        SharedPreferencesUtil.getInstance().putInt(bookId + "-chapter", currentChapter);
+        SharedPreferencesUtil.getInstance().putInt(bookId + "-startPos", m_mbBufBeginPos);
+        SharedPreferencesUtil.getInstance().putInt(bookId + "-endPos", m_mbBufEndPos);
         return lines;
     }
 
