@@ -67,7 +67,8 @@
 
 友情提示：新版阅读界面目前尚未完全写完，阅读暂时还是先跳转到旧版阅读页。新版阅读页目前已实现的效果图如下：
 
-<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/bezier_read_page_1.png?raw=true" width="280"/>
+<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/bezier_read_page_2.png?raw=true" width="320"/>
+<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/bezier_read_page_3.png?raw=true" width="320"/>
 
 正在拼命完善中~~
 
