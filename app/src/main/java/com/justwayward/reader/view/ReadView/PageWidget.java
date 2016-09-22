@@ -599,16 +599,15 @@ public class PageWidget extends View {
     public boolean onTouchEvent(MotionEvent e) {
         if (e.getAction() == MotionEvent.ACTION_DOWN) {
             abortAnimation();
-            calcCornerXY(e.getX(), e.getY());
-            pagefactory.onDraw(mCurrentPageCanvas);
             int x = (int) e.getX();
             int y = (int) e.getY();
-            //Action_Down时在中间位置显示菜单
-            if (x > mScreenWidth / 3 && x < mScreenWidth * 2 / 3
-                    && y > mScreenHeight / 3 && y < mScreenHeight * 2 / 3) {
+            if (x >= mScreenWidth / 3 && x <= mScreenWidth * 2 / 3
+                    && y >= mScreenHeight / 3 && y <= mScreenHeight * 2 / 3) {
                 listener.onCenterClick();
                 return false;//停止向下分发事件
             }
+            calcCornerXY(e.getX(), e.getY());
+            pagefactory.onDraw(mCurrentPageCanvas);
             if (x < mScreenWidth / 2) {// 从左翻
                 if (!pagefactory.prePage()) {
                     ToastUtils.showSingleToast("没有上一页啦");
