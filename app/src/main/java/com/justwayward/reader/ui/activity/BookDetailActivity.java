@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -23,18 +22,17 @@ import com.justwayward.reader.bean.RecommendBookList;
 import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerBookComponent;
+import com.justwayward.reader.manager.CollectionsManager;
 import com.justwayward.reader.ui.adapter.HotReviewAdapter;
 import com.justwayward.reader.ui.adapter.RecommendBookListAdapter;
 import com.justwayward.reader.ui.contract.BookDetailContract;
 import com.justwayward.reader.ui.presenter.BookDetailPresenter;
-import com.justwayward.reader.utils.ACache;
 import com.justwayward.reader.utils.FormatUtils;
 import com.justwayward.reader.view.DrawableCenterButton;
 import com.justwayward.reader.view.TagColor;
 import com.justwayward.reader.view.TagGroup;
 import com.yuyh.easyadapter.glide.GlideRoundTransform;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -198,7 +196,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
         recommendBooks.cover = data.cover;
         recommendBooks.lastChapter = data.lastChapter;
 
-        List<Recommend.RecommendBooks> list = (ArrayList<Recommend.RecommendBooks>) ACache.get(this).getAsObject("collection");
+        List<Recommend.RecommendBooks> list = CollectionsManager.getInstance().getCollectionList();
         for (Recommend.RecommendBooks bean : list) {
             if (bean._id.equals(recommendBooks._id)) {
                 initCollection(false);
@@ -259,30 +257,15 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
 
     @OnClick(R.id.btnJoinCollection)
     public void onClickJoinCollection() {
-        List<Recommend.RecommendBooks> list = (ArrayList<Recommend.RecommendBooks>) ACache.get(this).getAsObject("collection");
-        if (list == null) {
-            list = new ArrayList<>();
-        }
-
         if (!isJoinedCollections) {
             if (recommendBooks != null) {
-                list.add(recommendBooks);
+                CollectionsManager.getInstance().add(recommendBooks);
                 initCollection(false);
             }
         } else {
-            for (Recommend.RecommendBooks bean : list) {
-                if (bean != null) {
-                    if (TextUtils.equals(bean._id, recommendBooks._id)) {
-                        list.remove(bean);
-                        break;
-                    }
-                } else {
-                    list.remove(null);
-                }
-            }
+            CollectionsManager.getInstance().remove(recommendBooks._id);
             initCollection(true);
         }
-        ACache.get(this).put("collection", (Serializable) list);
     }
 
     private void initCollection(boolean coll) {
