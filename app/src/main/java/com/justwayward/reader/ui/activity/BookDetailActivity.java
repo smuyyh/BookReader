@@ -2,8 +2,11 @@ package com.justwayward.reader.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -196,12 +199,9 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
         recommendBooks.lastChapter = data.lastChapter;
 
         List<Recommend.RecommendBooks> list = (ArrayList<Recommend.RecommendBooks>) ACache.get(this).getAsObject("collection");
-        for (Recommend.RecommendBooks bean :
-                list) {
+        for (Recommend.RecommendBooks bean : list) {
             if (bean._id.equals(recommendBooks._id)) {
-                mBtnJoinCollection.setText(R.string.book_detail_remove_collection);
-                mBtnJoinCollection.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_join_collection_pressed));
-                isJoinedCollections=true;
+                initCollection(false);
                 break;
             }
         }
@@ -265,22 +265,44 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
         }
 
         if (!isJoinedCollections) {
-            list.add(recommendBooks);
-            mBtnJoinCollection.setText(R.string.book_detail_remove_collection);
-            mBtnJoinCollection.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_join_collection_pressed));
+            if (recommendBooks != null) {
+                list.add(recommendBooks);
+                initCollection(false);
+            }
         } else {
-            for (Recommend.RecommendBooks bean :
-                    list) {
-                if (bean._id.equals(recommendBooks._id)) {
-                    list.remove(bean);
-                    break;
+            for (Recommend.RecommendBooks bean : list) {
+                if (bean != null) {
+                    if (TextUtils.equals(bean._id, recommendBooks._id)) {
+                        list.remove(bean);
+                        break;
+                    }
+                } else {
+                    list.remove(null);
                 }
             }
-            mBtnJoinCollection.setText(R.string.book_detail_join_collection);
-            mBtnJoinCollection.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_common_btn_solid_normal));
+            initCollection(true);
         }
-        isJoinedCollections=!isJoinedCollections;
         ACache.get(this).put("collection", (Serializable) list);
+    }
+
+    private void initCollection(boolean coll) {
+        if (coll) {
+            mBtnJoinCollection.setText(R.string.book_detail_join_collection);
+            Drawable drawable = ContextCompat.getDrawable(this, R.drawable.book_detail_info_add_img);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            mBtnJoinCollection.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.shape_common_btn_solid_normal));
+            mBtnJoinCollection.setCompoundDrawables(drawable, null, null, null);
+            mBtnJoinCollection.postInvalidate();
+            isJoinedCollections = false;
+        } else {
+            mBtnJoinCollection.setText(R.string.book_detail_remove_collection);
+            Drawable drawable = ContextCompat.getDrawable(this, R.drawable.book_detail_info_del_img);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            mBtnJoinCollection.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.btn_join_collection_pressed));
+            mBtnJoinCollection.setCompoundDrawables(drawable, null, null, null);
+            mBtnJoinCollection.postInvalidate();
+            isJoinedCollections = true;
+        }
     }
 
     @OnClick(R.id.btnRead)

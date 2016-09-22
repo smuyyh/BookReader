@@ -21,7 +21,8 @@ import java.io.UnsupportedEncodingException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.text.DecimalFormat;
-import java.util.Calendar;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
@@ -75,6 +76,11 @@ public class PageFactory {
     private int chapterSize = 0;
     private int currentPage = 1;
 
+    private DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+    private int timeLen = 0;
+    private Rect rectF;
+
     private OnReadStateChangeListener listener;
 
     public PageFactory(String bookId, int chapter, List<BookToc.mixToc.Chapters> chaptersList) {
@@ -94,6 +100,7 @@ public class PageFactory {
         mVisibleWidth = mWidth - marginWidth * 2;
         mLineSpace = mFontSize / 3;
         mPageLineCount = mVisibleHeight / (mFontSize + mLineSpace);
+        rectF = new Rect(0, 0, mWidth, mHeight);
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setTextSize(mFontSize);
@@ -101,6 +108,7 @@ public class PageFactory {
         mTitlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTitlePaint.setTextSize(mNumFontSize);
         mTitlePaint.setColor(ContextCompat.getColor(AppUtils.getAppContext(), R.color.light_coffee));
+        timeLen = (int) mTitlePaint.measureText("00:00");
         // Typeface typeface = Typeface.createFromAsset(context.getAssets(),"fonts/FZBYSK.TTF");
         // mPaint.setTypeface(typeface);
         // mNumPaint.setTypeface(typeface);
@@ -172,7 +180,6 @@ public class PageFactory {
             int y = marginHeight + (mLineSpace << 1);
             // 绘制背景
             if (m_book_bg != null) {
-                Rect rectF = new Rect(0, 0, mWidth, mHeight);
                 canvas.drawBitmap(m_book_bg, null, rectF, null);
             } else {
                 canvas.drawColor(Color.WHITE);
@@ -193,12 +200,10 @@ public class PageFactory {
             }
             // 绘制提示内容
             float percent = (float) currentChapter * 100 / chapterSize;
-            DecimalFormat format = new DecimalFormat("#0.00");
-            canvas.drawText(format.format(percent) + "%", marginWidth + 2, mHeight - marginHeight, mTitlePaint);
-            Calendar cal = Calendar.getInstance();
-            String mTime = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
-            int strLen = (int) mTitlePaint.measureText(mTime);
-            canvas.drawText(mTime, mWidth - marginWidth - strLen, mHeight - marginHeight, mTitlePaint);
+            canvas.drawText(decimalFormat.format(percent) + "%", marginWidth + 2, mHeight - marginHeight, mTitlePaint);
+
+            String mTime = dateFormat.format(new Date());
+            canvas.drawText(mTime, mWidth - marginWidth - timeLen, mHeight - marginHeight, mTitlePaint);
         }
     }
 

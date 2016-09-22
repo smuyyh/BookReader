@@ -598,7 +598,6 @@ public class PageWidget extends View {
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         if (e.getAction() == MotionEvent.ACTION_DOWN) {
-            abortAnimation();
             int x = (int) e.getX();
             int y = (int) e.getY();
             if (x >= mScreenWidth / 3 && x <= mScreenWidth * 2 / 3
@@ -606,6 +605,7 @@ public class PageWidget extends View {
                 listener.onCenterClick();
                 return false;//停止向下分发事件
             }
+            abortAnimation();
             calcCornerXY(e.getX(), e.getY());
             pagefactory.onDraw(mCurrentPageCanvas);
             if (x < mScreenWidth / 2) {// 从左翻
