@@ -22,6 +22,7 @@ import com.justwayward.reader.bean.BookSource;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.bean.support.DownloadComplete;
+import com.justwayward.reader.bean.support.DownloadError;
 import com.justwayward.reader.bean.support.DownloadProgress;
 import com.justwayward.reader.bean.support.DownloadQueue;
 import com.justwayward.reader.component.AppComponent;
@@ -331,6 +332,24 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                 @Override
                 public void run() {
                     mTvDownloadProgress.setText("缓存完成");
+                }
+            }, 500);
+            mTvDownloadProgress.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    gone(mTvDownloadProgress);
+                }
+            }, 2500);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void downloadError(DownloadError error) {
+        if (bookId.equals(error.bookId)) {
+            mTvDownloadProgress.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mTvDownloadProgress.setText("网络异常，已取消下载");
                 }
             }, 500);
             mTvDownloadProgress.postDelayed(new Runnable() {

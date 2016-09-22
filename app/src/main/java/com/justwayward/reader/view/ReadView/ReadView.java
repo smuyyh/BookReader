@@ -106,5 +106,4 @@ public class ReadView extends View {
         }
         return false;
     }
-
 }
