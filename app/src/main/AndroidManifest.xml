@@ -17,7 +17,6 @@
         android:icon="@mipmap/icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:hardwareAccelerated="false"
         android:theme="@style/AppTheme.NoActionBar">
         <activity android:name=".ui.activity.MainActivity">
             <intent-filter>
@@ -37,6 +36,7 @@
         <activity
             android:name=".ui.activity.ReadActivity"
             android:screenOrientation="portrait"
+            android:hardwareAccelerated="false"
             android:theme="@style/AppTheme.NoActionBar.FullScreen" />
         <activity android:name=".ui.activity.TopCategoryListActivity" />
         <activity android:name=".ui.activity.SubCategoryListActivity" />

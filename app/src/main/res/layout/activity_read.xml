@@ -4,16 +4,23 @@
     android:id="@+id/rlBookReadRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/book_read_bg"
-    android:clickable="true"
+    android:background="@drawable/reader_background_brown_big_img"
     android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/flReadWidget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layerType="hardware"
+        android:clickable="false"
+        android:focusable="false" />
 
     <LinearLayout
         android:id="@+id/llBookReadTop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="@color/colorPrimary"
+        android:background="@color/reader_menu_bg_color"
         android:clickable="true"
         android:gravity="center"
         android:orientation="horizontal"
@@ -95,15 +102,17 @@
         android:textColor="@color/white"
         android:visibility="gone" />
 
+    <include layout="@layout/layout_read_aa_set" />
+
     <LinearLayout
         android:id="@+id/llBookReadBottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimary"
+        android:background="@color/reader_menu_bg_color"
+        android:clickable="true"
         android:orientation="horizontal"
         android:padding="10dp"
-        android:clickable="true"
         android:visibility="gone">
 
         <TextView

@@ -18,8 +18,8 @@ import android.widget.Scroller;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.bean.BookToc;
+import com.justwayward.reader.manager.SettingManager;
 import com.justwayward.reader.utils.ScreenUtils;
-import com.justwayward.reader.utils.SharedPreferencesUtil;
 import com.justwayward.reader.utils.ToastUtils;
 
 import java.util.List;
@@ -112,11 +112,9 @@ public class PageWidget extends View {
         try {
             pagefactory.setBgBitmap(BitmapFactory.decodeResource(context.getResources(),
                     R.drawable.reader_background_brown_big_img));
-            // 获取上次阅读章节及位置
-            int lastChapter = SharedPreferencesUtil.getInstance().getInt(bookId + "-chapter", 1);
-            int startPos = SharedPreferencesUtil.getInstance().getInt(bookId + "-startPos", 0);
-            int endPos = SharedPreferencesUtil.getInstance().getInt(bookId + "-endPos", 0);
-            pagefactory.openBook(lastChapter, new int[]{startPos, endPos});
+            // 自动跳转到上次阅读位置
+            int pos[] = SettingManager.getInstance().getReadProgress(bookId);
+            pagefactory.openBook(pos[0], new int[]{pos[1], pos[2]});
             pagefactory.onDraw(mCurrentPageCanvas);
         } catch (Exception e) {
         }
@@ -321,7 +319,7 @@ public class PageWidget extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawColor(0xFFAAAAAA);
+        //canvas.drawColor(0xFFAAAAAA);
         calcPoints();
         drawCurrentPageArea(canvas, mCurPageBitmap, mPath0);
         drawNextPageAreaAndShadow(canvas, mNextPageBitmap);
@@ -634,5 +632,14 @@ public class PageWidget extends View {
         startAnimation(1000);
         postInvalidate();
 
+    }
+
+    public synchronized void setFontSize(final int fontSizePx) {
+        abortAnimation();
+        pagefactory.setTextFont(fontSizePx);
+        pagefactory.onDraw(mCurrentPageCanvas);
+        pagefactory.onDraw(mNextPageCanvas);
+        SettingManager.getInstance().saveFontSize(fontSizePx);
+        postInvalidate();
     }
 }

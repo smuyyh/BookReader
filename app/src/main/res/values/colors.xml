@@ -48,4 +48,6 @@
     <color name="chapter_content">#3B3220</color>
     <color name="chapter_page_number">#7D735A</color>
 
+    <color name="reader_menu_bg_color">#303030</color>
+
 </resources>

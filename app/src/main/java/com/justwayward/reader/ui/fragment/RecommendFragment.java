@@ -99,13 +99,10 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
             list.addAll(0, data);
         }
         mAdapter.addAll(list);
-
-        //SharedPreferencesUtil.getInstance().putObject("collect", list);
     }
 
     @Override
     public void onItemClick(int position) {
-        // TODO 新版阅读页 跳转至ReadActivity 待完善
         startActivity(new Intent(activity, ReadActivity.class)
                 .putExtra("bookId", mAdapter.getItem(position)._id)
                 .putExtra("bookName", mAdapter.getItem(position).title));

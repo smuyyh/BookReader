@@ -9,8 +9,10 @@ import android.support.v4.content.ContextCompat;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.bean.BookToc;
+import com.justwayward.reader.manager.SettingManager;
 import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.FileUtils;
+import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.ScreenUtils;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
 
@@ -84,7 +86,8 @@ public class PageFactory {
     private OnReadStateChangeListener listener;
 
     public PageFactory(String bookId, int chapter, List<BookToc.mixToc.Chapters> chaptersList) {
-        this(ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight(), ScreenUtils.dpToPxInt(18),
+        this(ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight(),
+                SettingManager.getInstance().getReadFontSize(),
                 bookId, chapter, chaptersList);
     }
 
@@ -93,12 +96,12 @@ public class PageFactory {
         mWidth = width;
         mHeight = height;
         mFontSize = fontSize;
-        mNumFontSize = fontSize;
+        mLineSpace = mFontSize / 5 * 2;
+        mNumFontSize = ScreenUtils.dpToPxInt(16);
         marginWidth = ScreenUtils.dpToPxInt(15);
         marginHeight = ScreenUtils.dpToPxInt(15);
-        mVisibleHeight = mHeight - marginHeight * 2 - mFontSize * 3;
+        mVisibleHeight = mHeight - marginHeight * 2 - mNumFontSize * 2 - mLineSpace * 2;
         mVisibleWidth = mWidth - marginWidth * 2;
-        mLineSpace = mFontSize / 3;
         mPageLineCount = mVisibleHeight / (mFontSize + mLineSpace);
         rectF = new Rect(0, 0, mWidth, mHeight);
 
@@ -186,10 +189,10 @@ public class PageFactory {
             }
             // 绘制标题
             canvas.drawText(chaptersList.get(currentChapter - 1).title, marginWidth, y, mTitlePaint);
-            y += mLineSpace << 1;
+            y += mLineSpace + mNumFontSize;
             // 绘制阅读页面文字
             for (String line : m_lines) {
-                y += mFontSize + mLineSpace;
+                y += mLineSpace;
                 if (line.endsWith("@")) {
                     canvas.drawText(line.substring(0, line.length() - 1), marginWidth, y, mPaint);
                     y += mLineSpace;
@@ -197,6 +200,7 @@ public class PageFactory {
                 } else {
                     canvas.drawText(line, marginWidth, y, mPaint);
                 }
+                y += mFontSize;
             }
             // 绘制提示内容
             float percent = (float) currentChapter * 100 / chapterSize;
@@ -204,6 +208,9 @@ public class PageFactory {
 
             String mTime = dateFormat.format(new Date());
             canvas.drawText(mTime, mWidth - marginWidth - timeLen, mHeight - marginHeight, mTitlePaint);
+
+            // 保存阅读进度
+            SettingManager.getInstance().saveReadProgress(bookId, currentChapter, m_mbBufBeginPos, m_mbBufEndPos);
         }
     }
 
@@ -289,9 +296,6 @@ public class PageFactory {
             paraSpace += mLineSpace;
             mPageLineCount = (mVisibleHeight - paraSpace) / (mFontSize + mLineSpace);
         }
-        SharedPreferencesUtil.getInstance().putInt(bookId + "-chapter", currentChapter);
-        SharedPreferencesUtil.getInstance().putInt(bookId + "-startPos", m_mbBufBeginPos);
-        SharedPreferencesUtil.getInstance().putInt(bookId + "-endPos", m_mbBufEndPos);
         return lines;
     }
 
@@ -476,7 +480,9 @@ public class PageFactory {
      * @param fontsize 单位：px
      */
     public void setTextFont(int fontsize) {
+        LogUtils.i("fontSize=" + fontsize);
         mFontSize = fontsize;
+        mLineSpace = mFontSize / 5 * 2;
         mPaint.setTextSize(mFontSize);
         mPageLineCount = mVisibleHeight / (mFontSize + mLineSpace);
         m_mbBufEndPos = m_mbBufBeginPos;

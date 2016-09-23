@@ -9,10 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.justwayward.reader.R;
@@ -27,6 +29,7 @@ import com.justwayward.reader.bean.support.DownloadProgress;
 import com.justwayward.reader.bean.support.DownloadQueue;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerBookComponent;
+import com.justwayward.reader.manager.SettingManager;
 import com.justwayward.reader.service.DownloadBookService;
 import com.justwayward.reader.ui.adapter.TocListAdapter;
 import com.justwayward.reader.ui.contract.BookReadContract;
@@ -34,6 +37,7 @@ import com.justwayward.reader.ui.presenter.BookReadPresenter;
 import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.utils.LogUtils;
+import com.justwayward.reader.utils.ScreenUtils;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
 import com.justwayward.reader.utils.TTSPlayerUtils;
 import com.justwayward.reader.utils.ToastUtils;
@@ -71,6 +75,10 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     TextView mTvBookReadChangeSource;
     @Bind(R.id.ivBookReadMore)
     ImageView mIvBookReadMore;
+
+    @Bind(R.id.flReadWidget)
+    FrameLayout flReadWidget;
+
     @Bind(R.id.llBookReadTop)
     LinearLayout mLlBookReadTop;
     @Bind(R.id.tvBookReadTocTitle)
@@ -91,6 +99,12 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     RelativeLayout mRlBookReadRoot;
     @Bind(R.id.tvDownloadProgress)
     TextView mTvDownloadProgress;
+    @Bind(R.id.rlReadAaSet)
+    RelativeLayout rlReadAaSet;
+    @Bind(R.id.seekbarLightness)
+    SeekBar seekbarLightness;
+    @Bind(R.id.seekbarFontSize)
+    SeekBar seekbarFontSize;
 
     @Inject
     BookReadPresenter mPresenter;
@@ -171,6 +185,25 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             }
         });
 
+        seekbarFontSize.setMax(40);
+        seekbarFontSize.setProgress(ScreenUtils.pxToDpInt(SettingManager.getInstance().getReadFontSize()));
+        seekbarFontSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                mPageWidget.setFontSize(ScreenUtils.dpToPxInt(progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
         mPresenter.attachView(this);
         mPresenter.getBookToc(bookId, "chapters");
 
@@ -217,7 +250,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             if (dir != null) {
                 if (mPageWidget == null) {
                     mPageWidget = new PageWidget(this, bookId, chapter, mChapterList, new ReadListener());// 页面
-                    mRlBookReadRoot.addView(mPageWidget, 0);
+                    flReadWidget.removeAllViews();
+                    flReadWidget.addView(mPageWidget);
                 } else {
                     mPageWidget.jumpToChapter(currentChapter);
                 }
@@ -247,15 +281,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @OnClick(R.id.tvBookReadReading)
     public void readBook() {
-       /* if (mTtsPlayer.getPlayerState() == TTSCommonPlayer.PLAYER_STATE_PLAYING) {
-            mTtsPlayer.pause();
-        } else if (mTtsPlayer.getPlayerState() == TTSCommonPlayer.PLAYER_STATE_PAUSE) {
-            mTtsPlayer.resume();
-        } else if (mTtsPlayer.getPlayerState() == TTSCommonPlayer.PLAYER_STATE_IDLE) {
-            mTtsPlayer.play(mContentList.get(flipView.getSelectedItemPosition()), ttsConfig.getStringConfig());
-        } else {
-            ToastUtils.showSingleToast("播放器内部错误");
-        }*/
     }
 
     @OnClick(R.id.tvBookReadChangeSource)
@@ -273,6 +298,17 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
         recreate();
+    }
+
+    @OnClick(R.id.tvBookReadSettings)
+    public void setting() {
+        if (isVisible(mLlBookReadBottom)) {
+            if (isVisible(rlReadAaSet)) {
+                gone(rlReadAaSet);
+            } else {
+                visible(rlReadAaSet);
+            }
+        }
     }
 
     @OnClick(R.id.tvBookReadToc)
@@ -361,8 +397,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         }
     }
 
-    private void hideReadBar() { // 隐藏工具栏
-        gone(mTvDownloadProgress, mLlBookReadBottom, mLlBookReadTop);
+    private void hideReadBar() {
+        gone(mTvDownloadProgress, mLlBookReadBottom, mLlBookReadTop, rlReadAaSet);
     }
 
     private void showReadBar() { // 显示工具栏
@@ -429,7 +465,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         @Override
         public void onPageChanged(int chapter, int page) {
             LogUtils.i("onPageChanged:" + chapter + "-" + page);
-            hideReadBar();
         }
 
         @Override
