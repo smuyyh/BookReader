@@ -84,7 +84,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/abc_ic_menu_moreoverflow_mtrl_alpha" />
+            android:src="@drawable/ic_moreoverflow_mtrl_alpha" />
 
     </LinearLayout>
 
