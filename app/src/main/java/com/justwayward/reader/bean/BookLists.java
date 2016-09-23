@@ -1,11 +1,14 @@
 package com.justwayward.reader.bean;
 
+import com.justwayward.reader.bean.base.Base;
+
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by lfh on 2016/8/15.
  */
-public class BookLists {
+public class BookLists extends Base {
 
     /**
      * _id : 57a83783c9b799011623ecff
@@ -26,7 +29,7 @@ public class BookLists {
 
     public List<BookListsBean> bookLists;
 
-    public static class BookListsBean {
+    public class BookListsBean implements Serializable {
         public String _id;
         public String title;
         public String author;

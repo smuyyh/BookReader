@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,8 +15,10 @@ import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseRVActivity;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.BookListDetail;
+import com.justwayward.reader.bean.BookLists;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerFindComponent;
+import com.justwayward.reader.manager.MyBookListsManager;
 import com.justwayward.reader.ui.contract.SubjectBookListDetailContract;
 import com.justwayward.reader.ui.easyadapter.SubjectBookListDetailBooksAdapter;
 import com.justwayward.reader.ui.presenter.SubjectBookListDetailPresenter;
@@ -62,11 +65,13 @@ public class SubjectBookListDetailActivity extends BaseRVActivity<BookListDetail
     @Inject
     SubjectBookListDetailPresenter mPresenter;
 
-    public static final String INTENT_ID = "bookListId";
+    public static final String INTENT_BEAN = "bookListsBean";
 
-    public static void startActivity(Context context, String bookListId) {
+    private BookLists.BookListsBean bookListsBean;
+
+    public static void startActivity(Context context, BookLists.BookListsBean bookListsBean) {
         context.startActivity(new Intent(context, SubjectBookListDetailActivity.class)
-                .putExtra(INTENT_ID, bookListId));
+                .putExtra(INTENT_BEAN, bookListsBean));
     }
 
     @Override
@@ -90,7 +95,7 @@ public class SubjectBookListDetailActivity extends BaseRVActivity<BookListDetail
 
     @Override
     public void initDatas() {
-
+        bookListsBean = (BookLists.BookListsBean) getIntent().getSerializableExtra(INTENT_BEAN);
     }
 
     @Override
@@ -111,7 +116,7 @@ public class SubjectBookListDetailActivity extends BaseRVActivity<BookListDetail
         });
 
         mPresenter.attachView(this);
-        mPresenter.getBookListDetail(getIntent().getStringExtra("bookListId"));
+        mPresenter.getBookListDetail(bookListsBean._id);
     }
 
     @Override
@@ -163,7 +168,7 @@ public class SubjectBookListDetailActivity extends BaseRVActivity<BookListDetail
 
     @Override
     public void onRefresh() {
-        mPresenter.getBookListDetail(getIntent().getStringExtra("bookListId"));
+        mPresenter.getBookListDetail(bookListsBean._id);
     }
 
     @Override
@@ -181,6 +186,15 @@ public class SubjectBookListDetailActivity extends BaseRVActivity<BookListDetail
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_subject_detail, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_collect) {
+            MyBookListsManager.getInstance().add(bookListsBean);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

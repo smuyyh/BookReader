@@ -122,7 +122,7 @@ public class SubjectFragment extends BaseRVFragment<SubjectFragmentPresenter, Bo
 
     @Override
     public void onItemClick(int position) {
-        SubjectBookListDetailActivity.startActivity(activity, mAdapter.getItem(position)._id);
+        SubjectBookListDetailActivity.startActivity(activity, mAdapter.getItem(position));
     }
 
     @Override

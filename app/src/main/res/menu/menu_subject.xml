@@ -1,11 +1,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools"
-      tools:context=".MainActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
     <item
         android:id="@+id/menu_tags"
         android:orderInCategory="80"
         android:title="筛选"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
 
+    <item
+        android:id="@+id/menu_my_book_list"
+        android:orderInCategory="80"
+        android:title="我的书单"
+        app:showAsAction="always" />
 </menu>

@@ -16,6 +16,7 @@ import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.BookDetail;
+import com.justwayward.reader.bean.BookLists;
 import com.justwayward.reader.bean.HotReview;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.RecommendBookList;
@@ -253,8 +254,20 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
         if (data instanceof HotReview.Reviews) {
             BookDiscussionDetailActivity.startActivity(this, ((HotReview.Reviews) data)._id);
         } else if (data instanceof RecommendBookList.RecommendBook) {
-            String id = ((RecommendBookList.RecommendBook) data).id;
-            SubjectBookListDetailActivity.startActivity(this, id);
+            //为了实现书单收藏，此处要构造一个BookLists.BookListsBean传入书单详情页
+            BookLists bookLists = new BookLists();
+            BookLists.BookListsBean bookListsBean = bookLists.new BookListsBean();
+
+            RecommendBookList.RecommendBook recommendBook = (RecommendBookList.RecommendBook) data;
+            bookListsBean._id = recommendBook.id;
+            bookListsBean.author = recommendBook.author;
+            bookListsBean.bookCount = recommendBook.bookCount;
+            bookListsBean.collectorCount = recommendBook.collectorCount;
+            bookListsBean.cover = recommendBook.cover;
+            bookListsBean.desc = recommendBook.desc;
+            bookListsBean.title = recommendBook.title;
+
+            SubjectBookListDetailActivity.startActivity(this, bookListsBean);
         }
     }
 

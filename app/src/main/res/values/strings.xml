@@ -1,14 +1,16 @@
 <resources>
     <string name="app_name">任阅</string>
-    <string name="search_hot_search">大家都在搜</string>
-    <string name="search_change_a_lot">换一批</string>c
 
     <string name="add_tag">Add Tag</string>
 
+    <!--搜索相关-->
+    <string name="search_hot_search">大家都在搜</string>
+    <string name="search_change_a_lot">换一批</string>
     <string name="search_result_lately_follower">"%1$d人在追 |&#160;"</string>
     <string name="search_result_retention_ratio">"%1$s%%读者留存 |&#160;"</string>
     <string name="search_result_author">%1$s著</string>
 
+    <!--书籍详情相关-->
     <string name="book_detail">书籍详情</string>
     <string name="book_detail_author">%1$s</string>
     <string name="book_detail_category"> &#160;|&#160;%1$s |&#160;</string>
@@ -21,6 +23,8 @@
     <string name="book_detail_recommend_book_list">推荐书单</string>
     <string name="book_detail_recommend_book_list_book_count">共%1$d本书 |&#160;</string>
     <string name="book_detail_recommend_book_list_collector_count">%1$d人收藏</string>
+
+    <!--阅读页面相关-->
     <string name="book_read_reading">朗读</string>
     <string name="book_read_community">社区</string>
     <string name="book_read_change_source">换源</string>
@@ -29,7 +33,6 @@
     <string name="book_read_settings">设置</string>
     <string name="book_read_download">缓存</string>
     <string name="book_read_toc">目录</string>
-
     <string name="book_read_download_progress">正在缓存:%1$s(%2$d/%3$d)...</string>
     <string name="net_error">网络异常</string>
 
@@ -43,6 +46,8 @@
     <string name="subject_book_msg">共%1$d本书 |&#160; %2$d人收藏</string>
 
     <!--主题书单相关-->
+    <string name="subject_book_list">主题书单</string>
+    <string name="subject_book_list_my_book_list">我的书单</string>
     <string name="subject_book_list_detail">书单详情</string>
     <string name="subject_book_list_detail_book_lately_follower">%1$d&#160;人在追</string>
     <string name="subject_book_list_detail_book_word_count">|&#160;%1$d&#160;万字</string>
@@ -73,6 +78,7 @@
     <string name="menu_main_settings">设置</string>
     <string name="menu_main_scan_local_book">扫描本地书籍</string>
 
+    <!--主页追书-->
     <string name="exit_tips">再按一次退出程序</string>
     <string name="remove_selected_book">移除所选书籍</string>
     <string name="delete_local_cache">同时删除本地缓存</string>

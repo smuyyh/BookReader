@@ -81,7 +81,7 @@ public class SubjectBookListActivity extends BaseActivity implements SubjectBook
 
     @Override
     public void initToolBar() {
-        mCommonToolbar.setTitle("主题书单");
+        mCommonToolbar.setTitle(R.string.subject_book_list);
         mCommonToolbar.setNavigationIcon(R.drawable.ab_back);
     }
 
@@ -139,6 +139,8 @@ public class SubjectBookListActivity extends BaseActivity implements SubjectBook
                 showTagGroup();
             }
             return true;
+        }else if(item.getItemId() == R.id.menu_my_book_list){
+            startActivity(new Intent(this, MyBookListActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
