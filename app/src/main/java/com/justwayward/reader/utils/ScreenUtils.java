@@ -20,7 +20,6 @@ import java.lang.reflect.Field;
  */
 public class ScreenUtils {
 
-
     public enum EScreenDensity {
         XXHDPI,    //超高分辨率    1080×1920
         XHDPI,    //超高分辨率    720×1280

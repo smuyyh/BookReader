@@ -2,7 +2,6 @@ package com.justwayward.reader.view.ReadView;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
@@ -16,9 +15,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Scroller;
 
-import com.justwayward.reader.R;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.manager.SettingManager;
+import com.justwayward.reader.manager.ThemeManager;
 import com.justwayward.reader.utils.ScreenUtils;
 import com.justwayward.reader.utils.ToastUtils;
 
@@ -79,8 +78,9 @@ public class PageWidget extends View {
 
     private OnReadStateChangeListener listener;
 
-    public PageWidget(Context context, String bookId, int chapter, List<BookToc.mixToc.Chapters> chaptersList,
-                      OnReadStateChangeListener listener) {
+    public PageWidget(Context context, String bookId,
+                      int chapter, List<BookToc.mixToc.Chapters> chaptersList,
+                      OnReadStateChangeListener listener, int theme) {
         super(context);
         this.listener = listener;
         mPath0 = new Path();
@@ -110,8 +110,7 @@ public class PageWidget extends View {
         pagefactory = new PageFactory(bookId, chapter, chaptersList);
         pagefactory.setOnReadStateChangeListener(listener);
         try {
-            pagefactory.setBgBitmap(BitmapFactory.decodeResource(context.getResources(),
-                    R.drawable.reader_background_brown_big_img));
+            pagefactory.setBgBitmap(ThemeManager.getThemeDrawable(theme));
             // 自动跳转到上次阅读位置
             int pos[] = SettingManager.getInstance().getReadProgress(bookId);
             pagefactory.openBook(pos[0], new int[]{pos[1], pos[2]});
@@ -641,5 +640,16 @@ public class PageWidget extends View {
         pagefactory.onDraw(mNextPageCanvas);
         SettingManager.getInstance().saveFontSize(fontSizePx);
         postInvalidate();
+    }
+
+    public synchronized void setTheme(int theme) {
+        Bitmap bg = ThemeManager.getThemeDrawable(theme);
+        if (bg != null) {
+            pagefactory.setBgBitmap(bg);
+            pagefactory.onDraw(mCurrentPageCanvas);
+            pagefactory.onDraw(mNextPageCanvas);
+            SettingManager.getInstance().saveReadTheme(theme);
+            postInvalidate();
+        }
     }
 }

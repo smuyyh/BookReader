@@ -49,5 +49,8 @@
     <color name="chapter_page_number">#7D735A</color>
 
     <color name="reader_menu_bg_color">#303030</color>
+    <color name="read_theme_white">#ffffff</color>
+    <color name="read_theme_green">#bed0bf</color>
+    <color name="read_theme_yellow">#e6dbbf</color>
 
 </resources>

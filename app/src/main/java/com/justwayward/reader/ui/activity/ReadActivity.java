@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -27,12 +28,15 @@ import com.justwayward.reader.bean.support.DownloadComplete;
 import com.justwayward.reader.bean.support.DownloadError;
 import com.justwayward.reader.bean.support.DownloadProgress;
 import com.justwayward.reader.bean.support.DownloadQueue;
+import com.justwayward.reader.bean.support.ReadTheme;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerBookComponent;
 import com.justwayward.reader.manager.SettingManager;
+import com.justwayward.reader.manager.ThemeManager;
 import com.justwayward.reader.service.DownloadBookService;
 import com.justwayward.reader.ui.adapter.TocListAdapter;
 import com.justwayward.reader.ui.contract.BookReadContract;
+import com.justwayward.reader.ui.easyadapter.ReadThemeAdapter;
 import com.justwayward.reader.ui.presenter.BookReadPresenter;
 import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.FileUtils;
@@ -105,6 +109,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     SeekBar seekbarLightness;
     @Bind(R.id.seekbarFontSize)
     SeekBar seekbarFontSize;
+    @Bind(R.id.gvTheme)
+    GridView gvTheme;
 
     @Inject
     BookReadPresenter mPresenter;
@@ -119,7 +125,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     /**
      * 是否开始阅读章节
      **/
-    boolean startRead = false;
+    private boolean startRead = false;
 
     /**
      * 朗读 播放器
@@ -128,6 +134,9 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     private TtsConfig ttsConfig;
 
     private PageWidget mPageWidget;
+    private int curTheme = -1;
+    private List<ReadTheme> themes;
+    private ReadThemeAdapter gvAdapter;
 
     @Override
     public int getLayoutId() {
@@ -187,20 +196,24 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
         seekbarFontSize.setMax(40);
         seekbarFontSize.setProgress(ScreenUtils.pxToDpInt(SettingManager.getInstance().getReadFontSize()));
-        seekbarFontSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        seekbarFontSize.setOnSeekBarChangeListener(new SeekBarChangeListener());
+        seekbarLightness.setMax(100);
+        seekbarLightness.setOnSeekBarChangeListener(new SeekBarChangeListener());
+        seekbarLightness.setProgress(SettingManager.getInstance().getReadBrightness());
+        curTheme = SettingManager.getInstance().getReadTheme();
+        themes = ThemeManager.getReaderThemeData(curTheme);
+        gvAdapter = new ReadThemeAdapter(this, themes);
+        gvTheme.setAdapter(gvAdapter);
+        gvTheme.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mPageWidget.setFontSize(ScreenUtils.dpToPxInt(progress));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                SettingManager.getInstance().saveReadTheme(position);
+                themes.get(curTheme).selected = false;
+                curTheme = position;
+                themes.get(position).selected = true;
+                gvAdapter.notifyDataSetChanged();
+                LogUtils.i("curtheme=" + curTheme);
+                mPageWidget.setTheme(curTheme);
             }
         });
 
@@ -249,7 +262,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             File dir = getBookFile(chapter);
             if (dir != null) {
                 if (mPageWidget == null) {
-                    mPageWidget = new PageWidget(this, bookId, chapter, mChapterList, new ReadListener());// 页面
+                    mPageWidget = new PageWidget(this, bookId, chapter, mChapterList,
+                            new ReadListener(), curTheme);// 页面
                     flReadWidget.removeAllViews();
                     flReadWidget.addView(mPageWidget);
                 } else {
@@ -478,6 +492,29 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         public void onCenterClick() {
             LogUtils.i("onCenterClick");
             toggleReadBar();
+        }
+    }
+
+    class SeekBarChangeListener implements SeekBar.OnSeekBarChangeListener {
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            if (seekBar.getId() == seekbarFontSize.getId()) {
+                mPageWidget.setFontSize(ScreenUtils.dpToPxInt(progress));
+            } else if (seekBar.getId() == seekbarLightness.getId()) {
+                ScreenUtils.setScreenBrightness(progress, ReadActivity.this);
+                SettingManager.getInstance().saveReadBrightness(progress);
+            }
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
         }
     }
 }

@@ -93,7 +93,7 @@
         </LinearLayout>
 
         <GridView
-            android:id="@+id/gv_theme"
+            android:id="@+id/gvTheme"
             android:layout_width="fill_parent"
             android:layout_height="45dp"
             android:layout_marginBottom="15dp"
