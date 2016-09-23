@@ -139,8 +139,6 @@ public class SubjectBookListActivity extends BaseActivity implements SubjectBook
                 showTagGroup();
             }
             return true;
-        } else if (item.getItemId() == R.id.menu_more) {
-            return true;
         }
         return super.onOptionsItemSelected(item);
     }
