@@ -18,7 +18,7 @@
         rvp:indicator_style="triangle"
         rvp:item_count="3"
         rvp:text_color_hightlight="@color/white"
-        rvp:text_color_normal="@color/light_pink" />
+        rvp:text_color_normal="@color/light_gray" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
