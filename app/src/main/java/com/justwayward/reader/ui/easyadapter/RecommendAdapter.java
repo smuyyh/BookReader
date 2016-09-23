@@ -27,6 +27,7 @@ public class RecommendAdapter extends RecyclerArrayAdapter<Recommend.RecommendBo
                 holder.setRoundImageUrl(R.id.ivRecommendCover, Constant.IMG_BASE_URL + item.cover, R.drawable.cover_default)
                         .setText(R.id.tvRecommendTitle, item.title)
                         .setText(R.id.tvRecommendShort, item.lastChapter);
+                holder.setVisible(R.id.ivTopLabel,item.isTop);
             }
         };
     }

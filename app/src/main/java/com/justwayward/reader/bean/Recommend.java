@@ -35,6 +35,7 @@ public class Recommend extends Base {
         public String shortIntro;
         public String title;
         public boolean hasCp;
+        public boolean isTop = false;
         public int latelyFollower;
         public double retentionRatio;
         public String updated;

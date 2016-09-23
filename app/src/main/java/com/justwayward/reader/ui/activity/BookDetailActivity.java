@@ -19,6 +19,7 @@ import com.justwayward.reader.bean.BookDetail;
 import com.justwayward.reader.bean.HotReview;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.RecommendBookList;
+import com.justwayward.reader.bean.support.RefreshCollectionsEvent;
 import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerBookComponent;
@@ -32,6 +33,8 @@ import com.justwayward.reader.view.DrawableCenterButton;
 import com.justwayward.reader.view.TagColor;
 import com.justwayward.reader.view.TagGroup;
 import com.yuyh.easyadapter.glide.GlideRoundTransform;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -266,6 +269,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
             CollectionsManager.getInstance().remove(recommendBooks._id);
             initCollection(true);
         }
+        EventBus.getDefault().post(new RefreshCollectionsEvent());
     }
 
     private void initCollection(boolean coll) {

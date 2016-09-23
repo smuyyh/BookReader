@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/touch_bg"
-    android:padding="10dp">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/touch_bg">
 
     <ImageView
         android:id="@+id/ivRecommendCover"
@@ -11,13 +10,16 @@
         android:layout_height="60dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:scaleType="centerCrop" />
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:scaleType="centerCrop"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
+        android:layout_margin="10dp"
         android:layout_toRightOf="@+id/ivRecommendCover"
         android:orientation="vertical">
 
@@ -29,7 +31,7 @@
             android:singleLine="true"
             android:text="宦官哈哈"
             android:textColor="@color/common_h1"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/tvRecommendShort"
@@ -39,9 +41,15 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:text="xxxxxxxxxxxxxxxx"
-            android:textColor="@color/common_h2" />
-
-
+            android:textColor="@color/common_h2"/>
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ivTopLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/label_book_top"
+        android:visibility="gone"/>
 
 </RelativeLayout>

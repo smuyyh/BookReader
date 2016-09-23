@@ -16,6 +16,7 @@ import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseRVFragment;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.Recommend;
+import com.justwayward.reader.bean.support.RefreshCollectionsEvent;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerMainComponent;
 import com.justwayward.reader.manager.CollectionsManager;
@@ -28,11 +29,16 @@ import com.justwayward.reader.utils.SharedPreferencesUtil;
 import com.justwayward.reader.utils.ToastUtils;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 
 public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recommend.RecommendBooks> implements RecommendContract.View, RecyclerArrayAdapter.OnItemLongClickListener {
 
     private TableLayout shelf;
+    private boolean isHasCollections = false;
 
     @Override
     public int getLayoutResId() {
@@ -41,6 +47,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
 
     @Override
     public void initDatas() {
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -94,10 +101,6 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
     @Override
     public void showRecommendList(List<Recommend.RecommendBooks> list) {
         mAdapter.clear();
-        List<Recommend.RecommendBooks> data = CollectionsManager.getInstance().getCollectionList();
-        if (data != null && !data.isEmpty()) {
-            list.addAll(0, data);
-        }
         mAdapter.addAll(list);
     }
 
@@ -110,12 +113,16 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
 
     @Override
     public boolean onItemLongClick(int position) {
-        showLongClickDialog(position);
+        //没有收藏时屏蔽长按，因为置顶和删除等功能不好实现
+        if (isHasCollections) {
+            showLongClickDialog(position);
+        }
         return false;
     }
 
     /**
      * 显示长按对话框
+     *
      * @param position
      */
     private void showLongClickDialog(final int position) {
@@ -128,7 +135,8 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
                                 switch (which) {
                                     case 0:
                                         //置顶
-                                        ToastUtils.showToast("正在拼命开发中...");
+                                        CollectionsManager.getInstance().top(mAdapter.getItem(position)._id);
+                                        onRefresh();
                                         break;
                                     case 1:
                                         //书籍详情
@@ -164,6 +172,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
 
     /**
      * 显示删除本地缓存对话框
+     *
      * @param position
      */
     private void showDeleteCacheDialog(final int position) {
@@ -186,17 +195,36 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
                         }
                         CollectionsManager.getInstance().remove(mAdapter.getItem(position)._id);
                         mAdapter.remove(position);
+                        if (mAdapter.getCount() == 0) {
+                            onRefresh();
+                        }
                     }
                 })
                 .setNegativeButton(activity.getString(R.string.cancel), null)
                 .create().show();
     }
 
-
     @Override
     public void onRefresh() {
         super.onRefresh();
-        mPresenter.getRecommendList();
+        List<Recommend.RecommendBooks> data = CollectionsManager.getInstance().getCollectionList();
+        if (data != null && !data.isEmpty()) {
+            //有收藏时，只显示收藏
+            isHasCollections = true;
+            mAdapter.clear();
+            mAdapter.addAll(data);
+            mRecyclerView.setRefreshing(false);
+        } else {
+            //没有收藏时，显示推荐
+            isHasCollections = false;
+            mPresenter.getRecommendList();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void RefreshList(RefreshCollectionsEvent event) {
+        mRecyclerView.setRefreshing(true);
+        onRefresh();
     }
 
     @Override
@@ -209,4 +237,9 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
         mRecyclerView.setRefreshing(false);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
 }
