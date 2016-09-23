@@ -1,6 +1,10 @@
 package com.justwayward.reader.ui.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.ListPopupWindow;
@@ -56,7 +60,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -137,6 +143,9 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     private int curTheme = -1;
     private List<ReadTheme> themes;
     private ReadThemeAdapter gvAdapter;
+    private Receiver receiver = new Receiver();
+    private IntentFilter intentFilter = new IntentFilter();
+    private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 
     @Override
     public int getLayoutId() {
@@ -167,6 +176,9 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
         mTtsPlayer = TTSPlayerUtils.getTTSPlayer();
         ttsConfig = TTSPlayerUtils.getTtsConfig();
+
+        intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+        intentFilter.addAction(Intent.ACTION_TIME_TICK);
     }
 
     @Override
@@ -262,6 +274,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             File dir = getBookFile(chapter);
             if (dir != null) {
                 if (mPageWidget == null) {
+                    registerReceiver(receiver, intentFilter);
                     mPageWidget = new PageWidget(this, bookId, chapter, mChapterList,
                             new ReadListener(), curTheme);// 页面
                     flReadWidget.removeAllViews();
@@ -461,6 +474,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             mTtsPlayer.stop();
         EventBus.getDefault().unregister(this);
         mPresenter.cancelDownload();
+        unregisterReceiver(receiver);
     }
 
     class ReadListener implements OnReadStateChangeListener {
@@ -515,6 +529,21 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
 
+        }
+    }
+
+    class Receiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (mPageWidget != null) {
+                if (Intent.ACTION_BATTERY_CHANGED.equals(intent.getAction())) {
+                    int level = intent.getIntExtra("level", 0);
+                    mPageWidget.setBattery(100 - level);
+                } else if (Intent.ACTION_TIME_TICK.equals(intent.getAction())) {
+                    mPageWidget.setTime(sdf.format(new Date()));
+                }
+            }
         }
     }
 }

@@ -107,7 +107,7 @@ public class PageWidget extends View {
         mNextPageBitmap = Bitmap.createBitmap(mScreenWidth, mScreenHeight, Bitmap.Config.ARGB_8888);
         mCurrentPageCanvas = new Canvas(mCurPageBitmap);
         mNextPageCanvas = new Canvas(mNextPageBitmap);
-        pagefactory = new PageFactory(bookId, chapter, chaptersList);
+        pagefactory = new PageFactory(getContext(), bookId, chapter, chaptersList);
         pagefactory.setOnReadStateChangeListener(listener);
         try {
             pagefactory.setBgBitmap(ThemeManager.getThemeDrawable(theme));
@@ -651,5 +651,13 @@ public class PageWidget extends View {
             SettingManager.getInstance().saveReadTheme(theme);
             postInvalidate();
         }
+    }
+
+    public void setBattery(int battery) {
+        pagefactory.setBattery(battery);
+    }
+
+    public void setTime(String time) {
+        pagefactory.setTime(time);
     }
 }

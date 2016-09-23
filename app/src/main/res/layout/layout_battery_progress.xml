@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/progreebar_battery"
+    style="@android:style/Widget.ProgressBar.Horizontal"
+    android:layout_width="26dp"
+    android:layout_height="14dp"
+    android:background="@drawable/battery_bg9"
+    android:max="100"
+    android:progress="100"
+    android:progressDrawable="@drawable/seekbar_battery_bg" />
