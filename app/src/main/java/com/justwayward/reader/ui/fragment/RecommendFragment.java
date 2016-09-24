@@ -4,12 +4,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.justwayward.reader.R;
@@ -33,16 +36,28 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.Bind;
+import butterknife.OnClick;
 
 public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recommend.RecommendBooks> implements RecommendContract.View, RecyclerArrayAdapter.OnItemLongClickListener {
 
     private TableLayout shelf;
     private boolean isHasCollections = false;
+    private boolean isSelectAll = false;
+
+    @Bind(R.id.llBatchManagement)
+    LinearLayout llBatchManagement;
+    @Bind(R.id.tvSelectAll)
+    TextView tvSelectAll;
+    @Bind(R.id.tvDelete)
+    TextView tvDelete;
 
     @Override
     public int getLayoutResId() {
-        return R.layout.common_easy_recyclerview;
+        return R.layout.fragment_recommend;
     }
 
     @Override
@@ -106,17 +121,20 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
 
     @Override
     public void onItemClick(int position) {
+        //批量管理时，屏蔽点击事件
+        if (isVisible(llBatchManagement)) return;
         startActivity(new Intent(activity, ReadActivity.class)
                 .putExtra("bookId", mAdapter.getItem(position)._id)
                 .putExtra("bookName", mAdapter.getItem(position).title));
+
     }
 
     @Override
     public boolean onItemLongClick(int position) {
-        //没有收藏时屏蔽长按，因为置顶和删除等功能不好实现
-        if (isHasCollections) {
-            showLongClickDialog(position);
-        }
+        //没有收藏时，屏蔽长按事件，因为置顶和删除等功能不好实现
+        //批量管理时，屏蔽长按事件
+        if (!isHasCollections || isVisible(llBatchManagement)) return false;
+        showLongClickDialog(position);
         return false;
     }
 
@@ -126,7 +144,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
      * @param position
      */
     private void showLongClickDialog(final int position) {
-        new AlertDialog.Builder(getSupportActivity())
+        new AlertDialog.Builder(activity)
                 .setTitle(mAdapter.getItem(position).title)
                 .setItems(getResources().getStringArray(R.array.recommend_item_long_click_choice),
                         new DialogInterface.OnClickListener() {
@@ -140,7 +158,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
                                         break;
                                     case 1:
                                         //书籍详情
-                                        BookDetailActivity.startActivity(getSupportActivity(),
+                                        BookDetailActivity.startActivity(activity,
                                                 mAdapter.getItem(position)._id);
                                         break;
                                     case 2:
@@ -154,11 +172,13 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
                                         break;
                                     case 4:
                                         //删除
-                                        showDeleteCacheDialog(position);
+                                        List<Recommend.RecommendBooks> removeList = new ArrayList<>();
+                                        removeList.add(mAdapter.getItem(position));
+                                        showDeleteCacheDialog(removeList);
                                         break;
                                     case 5:
                                         //批量管理
-                                        ToastUtils.showToast("正在拼命开发中...");
+                                        showBatchManagementLayout();
                                         break;
                                     default:
                                         break;
@@ -173,11 +193,11 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
     /**
      * 显示删除本地缓存对话框
      *
-     * @param position
+     * @param removeList
      */
-    private void showDeleteCacheDialog(final int position) {
+    private void showDeleteCacheDialog(final List<Recommend.RecommendBooks> removeList) {
         final boolean selected[] = {true};
-        new AlertDialog.Builder(getSupportActivity())
+        new AlertDialog.Builder(activity)
                 .setTitle(activity.getString(R.string.remove_selected_book))
                 .setMultiChoiceItems(new String[]{activity.getString(R.string.delete_local_cache)}, selected,
                         new DialogInterface.OnMultiChoiceClickListener() {
@@ -193,10 +213,18 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
                         if (selected[0]) {
                             //TODO 删除本地缓存
                         }
-                        CollectionsManager.getInstance().remove(mAdapter.getItem(position)._id);
-                        mAdapter.remove(position);
+                        CollectionsManager.getInstance().removeSome(removeList);
+                        for (Recommend.RecommendBooks bean :
+                                removeList) {
+                            mAdapter.remove(bean);
+                        }
                         if (mAdapter.getCount() == 0) {
+                            //没有收藏时，刷新页面
                             onRefresh();
+                        }
+                        if (isVisible(llBatchManagement)) {
+                            //批量管理完成后，隐藏批量管理布局并刷新页面
+                            goneBatchManagementAndRefreshUI();
                         }
                     }
                 })
@@ -204,9 +232,64 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
                 .create().show();
     }
 
+    /**
+     * 隐藏批量管理布局并刷新页面
+     */
+    public void goneBatchManagementAndRefreshUI() {
+        if (mAdapter == null) return;
+        gone(llBatchManagement);
+        for (Recommend.RecommendBooks bean :
+                mAdapter.getAllData()) {
+            bean.showCheckBox = false;
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 显示批量管理布局
+     */
+    private void showBatchManagementLayout() {
+        visible(llBatchManagement);
+        for (Recommend.RecommendBooks bean :
+                mAdapter.getAllData()) {
+            bean.showCheckBox = true;
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+
+    @OnClick(R.id.tvSelectAll)
+    public void selectAll() {
+        isSelectAll = !isSelectAll;
+        tvSelectAll.setText(isSelectAll ? activity.getString(R.string.cancel_selected_all) :
+                activity.getString(R.string.selected_all));
+        for (Recommend.RecommendBooks bean :
+                mAdapter.getAllData()) {
+            bean.isSeleted = isSelectAll;
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @OnClick(R.id.tvDelete)
+    public void delete() {
+        List<Recommend.RecommendBooks> removeList = new ArrayList<>();
+        for (Recommend.RecommendBooks bean :
+                mAdapter.getAllData()) {
+            if (bean.isSeleted) {
+                removeList.add(bean);
+            }
+        }
+        if (removeList.isEmpty()) {
+            ToastUtils.showToast(activity.getString(R.string.has_not_selected_delete_book));
+        } else {
+            showDeleteCacheDialog(removeList);
+        }
+    }
+
     @Override
     public void onRefresh() {
         super.onRefresh();
+        gone(llBatchManagement);
         List<Recommend.RecommendBooks> data = CollectionsManager.getInstance().getCollectionList();
         if (data != null && !data.isEmpty()) {
             //有收藏时，只显示收藏
@@ -238,8 +321,37 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (!getUserVisibleHint()) {
+            goneBatchManagementAndRefreshUI();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //这样监听返回键有个缺点就是没有拦截Activity的返回监听，如果有更优方案可以改掉
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+                    if (isVisible(llBatchManagement)) {
+                        goneBatchManagementAndRefreshUI();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         EventBus.getDefault().unregister(this);
     }
+
 }

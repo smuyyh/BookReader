@@ -5,7 +5,7 @@
     <!--状态栏的颜色-->
     <color name="colorPrimaryDark">#3B90DF</color>
     <!--控件的选中颜色，即checked或selected状态的颜色。-->
-    <color name="colorAccent">#39cedc</color>
+    <color name="colorAccent">#3B99DF</color>
 
     <color name="tip">#88303F9F</color>
 
@@ -23,6 +23,7 @@
     <color name="light_gray">#B1B1B1</color>
     <color name="light_red">#EC4A48</color>
     <color name="light_blue">#039BE5</color>
+    <color name="dark_blue">#B52715</color>
 
     <!--通用背景色-->
     <color name="common_bg">@color/white</color>

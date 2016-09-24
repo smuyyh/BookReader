@@ -36,10 +36,26 @@ public class Recommend extends Base {
         public String title;
         public boolean hasCp;
         public boolean isTop = false;
+        public boolean isSeleted = false;
+        public boolean showCheckBox = false;
         public int latelyFollower;
         public double retentionRatio;
         public String updated;
         public int chaptersCount;
         public String lastChapter;
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof RecommendBooks) {
+                RecommendBooks bean = (RecommendBooks) obj;
+                return this._id.equals(bean._id);
+            }
+            return super.equals(obj);
+        }
+
+        @Override
+        public int hashCode() {
+            return this._id.hashCode();
+        }
     }
 }

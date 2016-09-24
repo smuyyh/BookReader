@@ -1,18 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/swiperefreshlayout"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/common_bg"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:background="@color/common_bg">
 
-    <android.support.v7.widget.RecyclerView
+    <com.justwayward.reader.view.recyclerview.EasyRecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:foregroundGravity="center"
-        android:layerType="software"/>
+        android:layout_height="match_parent"
+        app:layout_empty="@layout/common_empty_view"
+        app:layout_progress="@layout/common_progress_view"
+        app:scrollbarStyle="insideOverlay"/>
 
-</android.support.v4.widget.SwipeRefreshLayout>
+    <LinearLayout
+        android:id="@+id/llBatchManagement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/gray_rect"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/tvSelectAll"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="全选"
+            android:textColor="@color/common_h1"/>
+
+        <TextView
+            android:id="@+id/tvDelete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="删除"
+            android:textColor="@color/dark_blue"/>
+    </LinearLayout>
+
+</RelativeLayout>

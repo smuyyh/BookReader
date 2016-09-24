@@ -45,7 +45,7 @@ public class CollectionsManager {
     }
 
     /**
-     * 移除收藏
+     * 移除单个收藏
      *
      * @param bookId
      */
@@ -63,6 +63,20 @@ public class CollectionsManager {
                 }
             }
         }
+    }
+
+    /**
+     * 移除多个收藏
+     *
+     * @param removeList
+     */
+    public void removeSome(List<Recommend.RecommendBooks> removeList) {
+        List<Recommend.RecommendBooks> list = getCollectionList();
+        if (list == null) {
+            return;
+        }
+        list.removeAll(removeList);
+        ACache.get(ReaderApplication.getsInstance()).put("collection", (Serializable) list);
     }
 
     /**
@@ -94,7 +108,7 @@ public class CollectionsManager {
                 if (TextUtils.equals(bean._id, bookId)) {
                     bean.isTop = true;
                     list.remove(bean);
-                    list.add(0,bean);
+                    list.add(0, bean);
                     ACache.get(ReaderApplication.getsInstance()).put("collection", (Serializable) list);
                     break;
                 }

@@ -84,5 +84,8 @@
     <string name="delete_local_cache">同时删除本地缓存</string>
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
+    <string name="cancel_selected_all">取消全选</string>
+    <string name="selected_all">全选</string>
+    <string name="has_not_selected_delete_book">你没有选择要删的书哦</string>
 
 </resources>
