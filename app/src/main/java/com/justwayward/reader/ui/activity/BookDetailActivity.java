@@ -307,8 +307,12 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
 
     @OnClick(R.id.btnRead)
     public void onClickRead() {
-        startActivity(new Intent(this, BookReadActivity.class)
-                .putExtra("bookId", bookId));
+//        startActivity(new Intent(this, BookReadActivity.class)
+//                .putExtra("bookId", bookId));
+        //跳转新版阅读页
+        startActivity(new Intent(this, ReadActivity.class)
+                .putExtra("bookId", bookId)
+                .putExtra("bookName", recommendBooks.title));
     }
 
     @OnClick(R.id.tvBookListAuthor)

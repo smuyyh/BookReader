@@ -1,6 +1,5 @@
 package com.justwayward.reader.ui.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.justwayward.reader.R;
@@ -10,7 +9,7 @@ import com.justwayward.reader.bean.BooksByCats;
 import com.justwayward.reader.bean.support.SubEvent;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerFindComponent;
-import com.justwayward.reader.ui.activity.BookReadActivity;
+import com.justwayward.reader.ui.activity.BookDetailActivity;
 import com.justwayward.reader.ui.contract.SubCategoryFragmentContract;
 import com.justwayward.reader.ui.easyadapter.SubCategoryAdapter;
 import com.justwayward.reader.ui.presenter.SubCategoryFragmentPresenter;
@@ -114,9 +113,7 @@ public class SubCategoryFragment extends BaseRVFragment<SubCategoryFragmentPrese
     @Override
     public void onItemClick(int position) {
         BooksByCats.BooksBean data = mAdapter.getItem(position);
-        startActivity(new Intent(activity, BookReadActivity.class)
-                .putExtra("bookId", data._id)
-                .putExtra("bookName", data.title));
+        BookDetailActivity.startActivity(activity, data._id);
     }
 
     @Override
