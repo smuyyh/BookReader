@@ -8,11 +8,13 @@ import android.content.IntentFilter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.ListPopupWindow;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -146,6 +148,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     private Receiver receiver = new Receiver();
     private IntentFilter intentFilter = new IntentFilter();
     private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+
+    private ListPopupWindow mListPopupWindow;
 
     @Override
     public int getLayoutId() {
@@ -297,6 +301,9 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         ToastUtils.showToast(R.string.net_error);
     }
 
+    /**
+     * 返回按钮监听
+     */
     @OnClick(R.id.ivBack)
     public void onClickBack() {
         if (mTocListPopupWindow.isShowing()) {
@@ -306,15 +313,77 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         }
     }
 
+    /**
+     * 朗读按钮监听
+     */
     @OnClick(R.id.tvBookReadReading)
     public void readBook() {
+        ToastUtils.showToast("正在拼命开发中...");
     }
 
+    /**
+     * 社区按钮监听
+     */
+    @OnClick(R.id.tvBookReadCommunity)
+    public void onClickCommunity() {
+        BookDetailCommunityActivity.startActivity(this, bookId, mTvBookReadTocTitle.getText().toString(), 0);
+    }
+
+    /**
+     * 换源按钮监听
+     */
     @OnClick(R.id.tvBookReadChangeSource)
     public void onClickChangeSource() {
-
+        ToastUtils.showToast("正在拼命开发中...");
     }
 
+    /**
+     * 更多按钮监听
+     */
+    @OnClick(R.id.ivBookReadMore)
+    public void onClickMore() {
+        showMorePopupWindow();
+    }
+
+    /**
+     * 显示更多对话框
+     */
+    private void showMorePopupWindow() {
+        if (mListPopupWindow == null) {
+            mListPopupWindow = new ListPopupWindow(this);
+            mListPopupWindow.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1,
+                    getResources().getStringArray(R.array.book_read_more_menu)));
+            mListPopupWindow.setWidth(ScreenUtils.dpToPxInt(150));
+            mListPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+            mListPopupWindow.setAnchorView(mLlBookReadTop);
+            mListPopupWindow.setDropDownGravity(Gravity.RIGHT);
+            mListPopupWindow.setModal(true);
+            mListPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    switch (position) {
+                        case 0:
+                            ToastUtils.showToast("正在拼命开发中...");
+                            break;
+                        case 1:
+                            BookDetailActivity.startActivity(mContext, bookId);
+                            break;
+                        case 2:
+                            ToastUtils.showToast("正在拼命开发中...");
+                            break;
+                        default:
+                            break;
+                    }
+                    mListPopupWindow.dismiss();
+                }
+            });
+        }
+        mListPopupWindow.show();
+    }
+
+    /**
+     * 夜间模式按钮监听
+     */
     @OnClick(R.id.tvBookReadMode)
     public void onClickChangeMode() {
         if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)) {
@@ -327,6 +396,17 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         recreate();
     }
 
+    /**
+     * 反馈按钮监听
+     */
+    @OnClick(R.id.tvBookReadFeedBack)
+    public void onClickFeedBack() {
+        ToastUtils.showToast("正在拼命开发中...");
+    }
+
+    /**
+     * 设置按钮监听
+     */
     @OnClick(R.id.tvBookReadSettings)
     public void setting() {
         if (isVisible(mLlBookReadBottom)) {
@@ -338,18 +418,9 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         }
     }
 
-    @OnClick(R.id.tvBookReadToc)
-    public void onClickToc() {
-        if (!mTocListPopupWindow.isShowing()) {
-            visible(mTvBookReadTocTitle);
-            gone(mTvBookReadReading, mTvBookReadCommunity, mTvBookReadChangeSource, mIvBookReadMore);
-            mTocListPopupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
-            mTocListPopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-            mTocListPopupWindow.show();
-        }
-        mTocListAdapter.notifyDataSetChanged();
-    }
-
+    /**
+     * 缓存按钮监听
+     */
     @OnClick(R.id.tvBookReadDownload)
     public void downloadBook() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -373,6 +444,21 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                     }
                 });
         builder.show();
+    }
+
+    /**
+     * 目录按钮监听
+     */
+    @OnClick(R.id.tvBookReadToc)
+    public void onClickToc() {
+        if (!mTocListPopupWindow.isShowing()) {
+            visible(mTvBookReadTocTitle);
+            gone(mTvBookReadReading, mTvBookReadCommunity, mTvBookReadChangeSource, mIvBookReadMore);
+            mTocListPopupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
+            mTocListPopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            mTocListPopupWindow.show();
+        }
+        mTocListAdapter.notifyDataSetChanged();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

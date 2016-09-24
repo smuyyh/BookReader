@@ -210,6 +210,7 @@ public class SubCategoryListActivity extends BaseActivity implements SubCategory
                 mListPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
                 mListPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
                 mListPopupWindow.setAnchorView(mCommonToolbar);
+                mListPopupWindow.setModal(true);
                 mListPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -230,6 +231,5 @@ public class SubCategoryListActivity extends BaseActivity implements SubCategory
             mListPopupWindow.show();
         }
     }
-
 
 }
