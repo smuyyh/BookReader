@@ -66,6 +66,21 @@ public class CollectionsManager {
     }
 
     /**
+     * 是否已收藏
+     * @param bookId
+     * @return
+     */
+    public boolean isCollected(String bookId){
+        List<Recommend.RecommendBooks> list = getCollectionList();
+        for (Recommend.RecommendBooks bean : list) {
+            if (bean._id.equals(bookId)) {
+              return true;
+            }
+        }
+        return  false;
+    }
+
+    /**
      * 移除多个收藏
      *
      * @param removeList

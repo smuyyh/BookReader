@@ -32,13 +32,17 @@ import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.BookSource;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.ChapterRead;
+import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.support.DownloadComplete;
 import com.justwayward.reader.bean.support.DownloadError;
 import com.justwayward.reader.bean.support.DownloadProgress;
 import com.justwayward.reader.bean.support.DownloadQueue;
 import com.justwayward.reader.bean.support.ReadTheme;
+import com.justwayward.reader.bean.support.RefreshCollectionIconEvent;
+import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerBookComponent;
+import com.justwayward.reader.manager.CollectionsManager;
 import com.justwayward.reader.manager.SettingManager;
 import com.justwayward.reader.manager.ThemeManager;
 import com.justwayward.reader.service.DownloadBookService;
@@ -131,7 +135,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     private ListPopupWindow mTocListPopupWindow;
     private TocListAdapter mTocListAdapter;
 
-    private String bookId;
     private int currentChapter = 1;
 
     /**
@@ -154,6 +157,15 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 
     private ListPopupWindow mListPopupWindow;
+
+    public static final String INTENT_BEAN = "recommendBooksBean";
+
+    private Recommend.RecommendBooks recommendBooks;
+    //添加收藏需要，所以跳转的时候传递整个实体类
+    public static void startActivity(Context context, Recommend.RecommendBooks recommendBooks) {
+        context.startActivity(new Intent(context, ReadActivity.class)
+                .putExtra(INTENT_BEAN, recommendBooks));
+    }
 
     @Override
     public int getLayoutId() {
@@ -178,11 +190,11 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @Override
     public void initDatas() {
+        recommendBooks = (Recommend.RecommendBooks) getIntent().getSerializableExtra(INTENT_BEAN);
         ThemeManager.setReaderTheme(SettingManager.getInstance().getReadTheme(), mRlBookReadRoot);
         showDialog();
         EventBus.getDefault().register(this);
-        bookId = getIntent().getStringExtra("bookId");
-        mTvBookReadTocTitle.setText(getIntent().getStringExtra("bookName"));
+        mTvBookReadTocTitle.setText(recommendBooks.title);
 
         mTtsPlayer = TTSPlayerUtils.getTTSPlayer();
         ttsConfig = TTSPlayerUtils.getTtsConfig();
@@ -193,7 +205,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @Override
     public void configViews() {
-
         mTocListAdapter = new TocListAdapter(this, mChapterList, currentChapter);
         mTocListPopupWindow = new ListPopupWindow(this);
         mTocListPopupWindow.setAdapter(mTocListAdapter);
@@ -213,7 +224,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         });
 
         seekbarFontSize.setMax(40);
-        seekbarFontSize.setProgress(ScreenUtils.pxToDpInt(SettingManager.getInstance().getReadFontSize(bookId)));
+        seekbarFontSize.setProgress(ScreenUtils.pxToDpInt(SettingManager.getInstance().getReadFontSize(recommendBooks._id)));
         seekbarFontSize.setOnSeekBarChangeListener(new SeekBarChangeListener());
         seekbarLightness.setMax(100);
         seekbarLightness.setOnSeekBarChangeListener(new SeekBarChangeListener());
@@ -243,8 +254,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         });
 
         mPresenter.attachView(this);
-        mPresenter.getBookToc(bookId, "chapters");
-
+        mPresenter.getBookToc(recommendBooks._id, "chapters");
     }
 
     /**
@@ -268,7 +278,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     private String basePath = FileUtils.createRootPath(AppUtils.getAppContext()) + "/book/";
 
     public File getBookFile(int chapter) {
-        File file = new File(basePath + bookId + "/" + chapter + ".txt");
+        File file = new File(basePath + recommendBooks._id + "/" + chapter + ".txt");
         if (!file.exists())
             FileUtils.createFile(file);
         return file;
@@ -288,7 +298,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             if (dir != null) {
                 if (mPageWidget == null) {
                     registerReceiver(receiver, intentFilter);
-                    mPageWidget = new PageWidget(this, bookId, chapter, mChapterList,
+                    mPageWidget = new PageWidget(this, recommendBooks._id, chapter, mChapterList,
                             new ReadListener(), curTheme);// 页面
                     flReadWidget.removeAllViews();
                     flReadWidget.addView(mPageWidget);
@@ -336,7 +346,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
      */
     @OnClick(R.id.tvBookReadCommunity)
     public void onClickCommunity() {
-        BookDetailCommunityActivity.startActivity(this, bookId, mTvBookReadTocTitle.getText().toString(), 0);
+        BookDetailCommunityActivity.startActivity(this, recommendBooks._id, mTvBookReadTocTitle.getText().toString(), 0);
     }
 
     /**
@@ -376,7 +386,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                             ToastUtils.showToast("正在拼命开发中...");
                             break;
                         case 1:
-                            BookDetailActivity.startActivity(mContext, bookId);
+                            BookDetailActivity.startActivity(mContext, recommendBooks._id);
                             break;
                         case 2:
                             ToastUtils.showToast("正在拼命开发中...");
@@ -440,13 +450,13 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
-                                DownloadBookService.post(new DownloadQueue(bookId, mChapterList, currentChapter + 1, currentChapter + 50));
+                                DownloadBookService.post(new DownloadQueue(recommendBooks._id, mChapterList, currentChapter + 1, currentChapter + 50));
                                 break;
                             case 1:
-                                DownloadBookService.post(new DownloadQueue(bookId, mChapterList, currentChapter + 1, mChapterList.size()));
+                                DownloadBookService.post(new DownloadQueue(recommendBooks._id, mChapterList, currentChapter + 1, mChapterList.size()));
                                 break;
                             case 2:
-                                DownloadBookService.post(new DownloadQueue(bookId, mChapterList, 1, mChapterList.size()));
+                                DownloadBookService.post(new DownloadQueue(recommendBooks._id, mChapterList, 1, mChapterList.size()));
                                 break;
                             default:
                                 break;
@@ -473,7 +483,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void showDownProgress(DownloadProgress progress) {
-        if (bookId.equals(progress.bookId)) {
+        if (recommendBooks._id.equals(progress.bookId)) {
             LogUtils.e(progress.bookId + " " + progress.progress + "/" + mChapterList.size());
             if (isVisible(mLlBookReadBottom)) { // 如果工具栏显示，则进度条也显示
                 visible(mTvDownloadProgress);
@@ -486,7 +496,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void downloadComplete(DownloadComplete complete) {
-        if (bookId.equals(complete.bookId)) {
+        if (recommendBooks._id.equals(complete.bookId)) {
             mTvDownloadProgress.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -504,7 +514,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void downloadError(DownloadError error) {
-        if (bookId.equals(error.bookId)) {
+        if (recommendBooks._id.equals(error.bookId)) {
             mTvDownloadProgress.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -564,6 +574,9 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             } else if (isVisible(mLlBookReadBottom)) {
                 hideReadBar();
                 return true;
+            }else if(!CollectionsManager.getInstance().isCollected(recommendBooks._id)){
+                showJoinBookShelfDialog(recommendBooks);
+                return true;
             }
         } else if (keyCode == KeyEvent.KEYCODE_MENU) {
             toggleReadBar();
@@ -579,6 +592,39 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * 显示加入书架对话框
+     *
+     * @param bean
+     */
+    private void showJoinBookShelfDialog(final Recommend.RecommendBooks bean) {
+        new AlertDialog.Builder(mContext)
+                .setTitle(getString(R.string.book_read_add_book))
+                .setMessage(getString(R.string.book_read_would_you_like_to_add_this_to_the_book_shelf))
+                .setPositiveButton(getString(R.string.book_read_join_the_book_shelf),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                CollectionsManager.getInstance().add(bean);
+                                ToastUtils.showToast(String.format(getString(
+                                        R.string.book_detail_has_joined_the_book_shelf), bean.title));
+                                EventBus.getDefault().post(new RefreshCollectionIconEvent());
+                                EventBus.getDefault().post(new RefreshCollectionListEvent());
+                                finish();
+                            }
+                        })
+                .setNegativeButton(getString(R.string.book_read_not),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                finish();
+                            }
+                        })
+                .create().show();
     }
 
     @Override
@@ -675,4 +721,5 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             }
         }
     }
+
 }

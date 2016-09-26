@@ -23,6 +23,8 @@
     <string name="book_detail_recommend_book_list">推荐书单</string>
     <string name="book_detail_recommend_book_list_book_count">共%1$d本书 |&#160;</string>
     <string name="book_detail_recommend_book_list_collector_count">%1$d人收藏</string>
+    <string name="book_detail_has_joined_the_book_shelf">已添加《%1$s》</string>
+    <string name="book_detail_has_remove_the_book_shelf">已移除《%1$s》</string>
 
     <!--阅读页面相关-->
     <string name="book_read_reading">朗读</string>
@@ -35,6 +37,10 @@
     <string name="book_read_toc">目录</string>
     <string name="book_read_download_progress">正在缓存:%1$s(%2$d/%3$d)...</string>
     <string name="net_error">网络异常</string>
+    <string name="book_read_add_book">添书</string>
+    <string name="book_read_would_you_like_to_add_this_to_the_book_shelf">是否将本书加入书架？</string>
+    <string name="book_read_join_the_book_shelf">加入书架</string>
+    <string name="book_read_not">不了</string>
 
     <!--分类相关-->
     <string name="category">分类</string>

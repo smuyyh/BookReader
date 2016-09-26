@@ -20,7 +20,8 @@ import com.justwayward.reader.bean.BookLists;
 import com.justwayward.reader.bean.HotReview;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.RecommendBookList;
-import com.justwayward.reader.bean.support.RefreshCollectionsEvent;
+import com.justwayward.reader.bean.support.RefreshCollectionIconEvent;
+import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
 import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerBookComponent;
@@ -30,12 +31,15 @@ import com.justwayward.reader.ui.adapter.RecommendBookListAdapter;
 import com.justwayward.reader.ui.contract.BookDetailContract;
 import com.justwayward.reader.ui.presenter.BookDetailPresenter;
 import com.justwayward.reader.utils.FormatUtils;
+import com.justwayward.reader.utils.ToastUtils;
 import com.justwayward.reader.view.DrawableCenterButton;
 import com.justwayward.reader.view.TagColor;
 import com.justwayward.reader.view.TagGroup;
 import com.yuyh.easyadapter.glide.GlideRoundTransform;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,6 +142,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     @Override
     public void initDatas() {
         bookId = getIntent().getStringExtra(INTENT_BOOK_ID);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -200,13 +205,23 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
         recommendBooks.cover = data.cover;
         recommendBooks.lastChapter = data.lastChapter;
 
-        List<Recommend.RecommendBooks> list = CollectionsManager.getInstance().getCollectionList();
-        for (Recommend.RecommendBooks bean : list) {
-            if (bean._id.equals(recommendBooks._id)) {
-                initCollection(false);
-                break;
-            }
+        refreshCollectionIcon();
+    }
+
+    /**
+     * 刷新收藏图标
+     */
+    private void refreshCollectionIcon(){
+        if (CollectionsManager.getInstance().isCollected(recommendBooks._id)){
+            initCollection(false);
+        }else{
+            initCollection(true);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void RefreshCollectionIcon(RefreshCollectionIconEvent event) {
+        refreshCollectionIcon();
     }
 
     /**
@@ -276,13 +291,17 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
         if (!isJoinedCollections) {
             if (recommendBooks != null) {
                 CollectionsManager.getInstance().add(recommendBooks);
+                ToastUtils.showToast(String.format(getString(
+                        R.string.book_detail_has_joined_the_book_shelf), recommendBooks.title));
                 initCollection(false);
             }
         } else {
             CollectionsManager.getInstance().remove(recommendBooks._id);
+            ToastUtils.showToast(String.format(getString(
+                    R.string.book_detail_has_remove_the_book_shelf), recommendBooks.title));
             initCollection(true);
         }
-        EventBus.getDefault().post(new RefreshCollectionsEvent());
+        EventBus.getDefault().post(new RefreshCollectionListEvent());
     }
 
     private void initCollection(boolean coll) {
@@ -310,9 +329,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
 //        startActivity(new Intent(this, BookReadActivity.class)
 //                .putExtra("bookId", bookId));
         //跳转新版阅读页
-        startActivity(new Intent(this, ReadActivity.class)
-                .putExtra("bookId", bookId)
-                .putExtra("bookName", recommendBooks.title));
+        ReadActivity.startActivity(this, recommendBooks);
     }
 
     @OnClick(R.id.tvBookListAuthor)
@@ -350,5 +367,11 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     @Override
     public void complete() {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

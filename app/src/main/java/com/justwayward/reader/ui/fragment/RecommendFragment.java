@@ -4,7 +4,6 @@ import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -26,7 +25,7 @@ import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.support.DownloadComplete;
 import com.justwayward.reader.bean.support.DownloadQueue;
-import com.justwayward.reader.bean.support.RefreshCollectionsEvent;
+import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerMainComponent;
 import com.justwayward.reader.manager.CollectionsManager;
@@ -145,10 +144,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
     public void onItemClick(int position) {
         //批量管理时，屏蔽点击事件
         if (isVisible(llBatchManagement)) return;
-        startActivity(new Intent(activity, ReadActivity.class)
-                .putExtra("bookId", mAdapter.getItem(position)._id)
-                .putExtra("bookName", mAdapter.getItem(position).title));
-
+        ReadActivity.startActivity(activity, mAdapter.getItem(position));
     }
 
     @Override
@@ -327,7 +323,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void RefreshList(RefreshCollectionsEvent event) {
+    public void RefreshCollectionList(RefreshCollectionListEvent event) {
         mRecyclerView.setRefreshing(true);
         onRefresh();
     }
