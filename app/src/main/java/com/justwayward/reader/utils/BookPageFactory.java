@@ -43,6 +43,10 @@ public class BookPageFactory {
 
     private static LRUMap<String, ArrayList<String>> cache = new LRUMap<>(10);
 
+    public BookPageFactory(String bookId){
+        this.bookId = bookId;
+    }
+
     public BookPageFactory(String bookId, int lineHeight) {
         this.bookId = bookId;
         mWidth = ScreenUtils.getScreenWidth();

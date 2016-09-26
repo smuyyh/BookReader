@@ -1,9 +1,13 @@
 package com.justwayward.reader.ui.fragment;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +22,17 @@ import com.bumptech.glide.Glide;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseRVFragment;
 import com.justwayward.reader.base.Constant;
+import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.Recommend;
+import com.justwayward.reader.bean.support.DownloadComplete;
+import com.justwayward.reader.bean.support.DownloadQueue;
 import com.justwayward.reader.bean.support.RefreshCollectionsEvent;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerMainComponent;
 import com.justwayward.reader.manager.CollectionsManager;
+import com.justwayward.reader.service.DownloadBookService;
 import com.justwayward.reader.ui.activity.BookDetailActivity;
+import com.justwayward.reader.ui.activity.MainActivity;
 import com.justwayward.reader.ui.activity.ReadActivity;
 import com.justwayward.reader.ui.contract.RecommendContract;
 import com.justwayward.reader.ui.easyadapter.RecommendAdapter;
@@ -120,6 +129,19 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
     }
 
     @Override
+    public void showBookToc(String bookId, List<BookToc.mixToc.Chapters> list) {
+        DownloadBookService.post(new DownloadQueue(bookId, list, 1, list.size()));
+        dismissDialog();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void downloadComplete(DownloadComplete complete) {
+        if (isForeground(getActivity().getClass().getName())) {
+            ToastUtils.showSingleToast("缓存完成");
+        }
+    }
+
+    @Override
     public void onItemClick(int position) {
         //批量管理时，屏蔽点击事件
         if (isVisible(llBatchManagement)) return;
@@ -167,8 +189,8 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
                                         break;
                                     case 3:
                                         //缓存全本
-                                        //TODO 缓存全本
-                                        ToastUtils.showToast("正在拼命开发中...");
+                                        showDialog();
+                                        mPresenter.getTocList(mAdapter.getItem(position)._id);
                                         break;
                                     case 4:
                                         //删除
@@ -313,6 +335,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
     @Override
     public void showError() {
         loaddingError();
+        dismissDialog();
     }
 
     @Override
@@ -353,5 +376,23 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
         super.onDestroyView();
         EventBus.getDefault().unregister(this);
     }
+
+    private boolean isForeground(String className) {
+        if (TextUtils.isEmpty(className)) {
+            return false;
+        }
+
+        ActivityManager am = (ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(1);
+        if (list != null && list.size() > 0) {
+            ComponentName cpn = list.get(0).topActivity;
+            if (MainActivity.class.getName().contains(cpn.getClassName())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
 }

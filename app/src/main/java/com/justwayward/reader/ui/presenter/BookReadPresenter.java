@@ -84,6 +84,8 @@ public class BookReadPresenter extends RxPresenter<BookReadContract.View>
                     public void onNext(ChapterRead data) {
                         if (data.chapter != null && mView != null) {
                             mView.showChapterRead(data.chapter, chapter);
+                        } else {
+                            mView.showError();
                         }
                     }
 
@@ -94,6 +96,7 @@ public class BookReadPresenter extends RxPresenter<BookReadContract.View>
                     @Override
                     public void onError(Throwable e) {
                         LogUtils.e("onError: " + e);
+                        mView.showError();
                     }
                 });
         addSubscrebe(rxSubscription);

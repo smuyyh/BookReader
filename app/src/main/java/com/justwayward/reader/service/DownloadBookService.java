@@ -119,7 +119,7 @@ public class DownloadBookService extends Service {
             // 添加到下载队列
             downloadQueues.add(downloadQueue);
             // 当前队列里有其他任务，才提示
-            if (downloadQueues.size() > 1)
+            if (downloadQueues.size() >= 1)
                 ToastUtils.showSingleToast("成功加入缓存队列");
         }
         // 从队列顺序取出第一条下载
@@ -190,6 +190,7 @@ public class DownloadBookService extends Service {
     private int download(String url, final String bookId, final int chapter) {
 
         final int[] result = {-1};
+        final BookPageFactory factory = new BookPageFactory(bookId);
 
         bookApi.getChapterRead(url).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -198,6 +199,7 @@ public class DownloadBookService extends Service {
                     public void onNext(ChapterRead data) {
                         if (data.chapter != null) {
                             post(new DownloadProgress(bookId, chapter));
+                            factory.append(data.chapter, chapter);
                             result[0] = 1;
                         } else {
                             result[0] = 0;
