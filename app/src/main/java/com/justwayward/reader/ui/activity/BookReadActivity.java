@@ -580,7 +580,6 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         if (mTtsPlayer.getPlayerState() == TTSCommonPlayer.PLAYER_STATE_PLAYING)
             mTtsPlayer.stop();
         EventBus.getDefault().unregister(this);
-        mPresenter.cancelDownload();
         unregisterReceiver(batteryReceiver);
     }
 }

@@ -169,11 +169,12 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @Override
     public void initToolBar() {
-        showDialog();
+
     }
 
     @Override
     public void initDatas() {
+        showDialog();
         EventBus.getDefault().register(this);
         bookId = getIntent().getStringExtra("bookId");
         mTvBookReadTocTitle.setText(getIntent().getStringExtra("bookName"));
@@ -200,6 +201,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                 mTocListPopupWindow.dismiss();
                 currentChapter = position + 1;
                 startRead = false;
+                showDialog();
                 readCurrentChapter();
             }
         });
@@ -211,7 +213,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         });
 
         seekbarFontSize.setMax(40);
-        seekbarFontSize.setProgress(ScreenUtils.pxToDpInt(SettingManager.getInstance().getReadFontSize()));
+        seekbarFontSize.setProgress(ScreenUtils.pxToDpInt(SettingManager.getInstance().getReadFontSize(bookId)));
         seekbarFontSize.setOnSeekBarChangeListener(new SeekBarChangeListener());
         seekbarLightness.setMax(100);
         seekbarLightness.setOnSeekBarChangeListener(new SeekBarChangeListener());
@@ -287,6 +289,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                     mPageWidget.jumpToChapter(currentChapter);
                 }
             }
+            hideDialog();
         }
     }
 
@@ -559,8 +562,11 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         if (mTtsPlayer.getPlayerState() == TTSCommonPlayer.PLAYER_STATE_PLAYING)
             mTtsPlayer.stop();
         EventBus.getDefault().unregister(this);
-        mPresenter.cancelDownload();
-        unregisterReceiver(receiver);
+        try {
+            unregisterReceiver(receiver);
+        } catch (Exception e) {
+            LogUtils.e("Receiver not registered");
+        }
     }
 
     class ReadListener implements OnReadStateChangeListener {

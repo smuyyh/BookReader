@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.justwayward.reader.ReaderApplication;
 import com.justwayward.reader.component.AppComponent;
-import com.progresslibrary.CustomDialog;
+import com.justwayward.reader.view.loadding.CustomDialog;
 
 import butterknife.ButterKnife;
 

@@ -49,7 +49,7 @@
     <color name="chapter_content">#3B3220</color>
     <color name="chapter_page_number">#7D735A</color>
 
-    <color name="reader_menu_bg_color">#404040</color>
+    <color name="reader_menu_bg_color">#464646</color>
     <color name="read_theme_white">#ffffff</color>
     <color name="read_theme_green">#bed0bf</color>
     <color name="read_theme_yellow">#e6dbbf</color>

@@ -77,12 +77,14 @@ public class PageWidget extends View {
     private float actiondownX, actiondownY;
 
     private OnReadStateChangeListener listener;
+    private String bookId;
 
     public PageWidget(Context context, String bookId,
                       int chapter, List<BookToc.mixToc.Chapters> chaptersList,
                       OnReadStateChangeListener listener, int theme) {
         super(context);
         this.listener = listener;
+        this.bookId = bookId;
         mPath0 = new Path();
         mPath1 = new Path();
         mScreenWidth = ScreenUtils.getScreenWidth();
@@ -638,7 +640,7 @@ public class PageWidget extends View {
         pagefactory.setTextFont(fontSizePx);
         pagefactory.onDraw(mCurrentPageCanvas);
         pagefactory.onDraw(mNextPageCanvas);
-        SettingManager.getInstance().saveFontSize(fontSizePx);
+        SettingManager.getInstance().saveFontSize(bookId, fontSizePx);
         postInvalidate();
     }
 

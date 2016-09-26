@@ -15,7 +15,7 @@ import com.justwayward.reader.ReaderApplication;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
 import com.justwayward.reader.utils.StatusBarCompat;
-import com.progresslibrary.CustomDialog;
+import com.justwayward.reader.view.loadding.CustomDialog;
 
 import butterknife.ButterKnife;
 
@@ -34,7 +34,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(getLayoutId());
         if (statusBarColor > 0) {
             StatusBarCompat.compat(this, statusBarColor);
-        } else if(statusBarColor == 0){
+        } else if (statusBarColor == 0) {
             StatusBarCompat.compat(this);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
@@ -113,26 +113,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         return view.getVisibility() == View.VISIBLE;
     }
 
-    protected void showStatusBar() {
-        WindowManager.LayoutParams attr = getWindow().getAttributes();
-        attr.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getWindow().setAttributes(attr);
-        //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-    }
-
-    protected void hideStatusBar() {
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
-        getWindow().setAttributes(lp);
-        //getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-    }
-
-
     // dialog
     public CustomDialog getDialog() {
         if (dialog == null) {
             dialog = CustomDialog.instance(this);
-            dialog.setCancelable(false);
+            dialog.setCancelable(true);
         }
         return dialog;
     }

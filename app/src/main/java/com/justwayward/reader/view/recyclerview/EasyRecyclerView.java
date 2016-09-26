@@ -460,6 +460,9 @@ public class EasyRecyclerView extends FrameLayout {
         mPtrLayout.post(new Runnable() {
             @Override
             public void run() {
+                if (isRefreshing) { // 避免刷新的loadding和progressview 同时显示
+                    mProgressView.setVisibility(View.GONE);
+                }
                 mPtrLayout.setRefreshing(isRefreshing);
             }
         });

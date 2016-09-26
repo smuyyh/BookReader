@@ -16,12 +16,20 @@ public class SettingManager {
         return manager != null ? manager : (manager = new SettingManager());
     }
 
-    public int getReadFontSize() {
-        return SharedPreferencesUtil.getInstance().getInt("readFontSize", ScreenUtils.dpToPxInt(16));
+
+    /**
+     * 保存字体大小
+     *
+     * @param bookId     需根据bookId对应，避免由于字体大小引起的分页不准确
+     * @param fontSizePx
+     * @return
+     */
+    public void saveFontSize(String bookId, int fontSizePx) {
+        SharedPreferencesUtil.getInstance().putInt(bookId + "-readFontSize", fontSizePx);
     }
 
-    public void saveFontSize(int fontSizePx) {
-        SharedPreferencesUtil.getInstance().putInt("readFontSize", fontSizePx);
+    public int getReadFontSize(String bookId) {
+        return SharedPreferencesUtil.getInstance().getInt(bookId + "-readFontSize", ScreenUtils.dpToPxInt(16));
     }
 
     public int getReadBrightness() {

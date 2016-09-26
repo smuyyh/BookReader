@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
+<com.justwayward.reader.view.loadding.LoadingView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:loadingView="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:indeterminate="false"
-    android:indeterminateDrawable="@drawable/bg_progressbar"/>
+    loadingView:progress_style="material" />
