@@ -23,6 +23,7 @@ public class ThemeManager {
     public static final int YELLOW = 1;
     public static final int GREEN = 2;
     public static final int LEATHER = 3;
+    public static final int GRAY = 4;
 
     public static void setReaderTheme(int theme, View view) {
         switch (theme) {
@@ -37,6 +38,9 @@ public class ThemeManager {
                 break;
             case LEATHER:
                 view.setBackgroundResource(R.drawable.theme_leather_bg);
+                break;
+            case GRAY:
+                view.setBackgroundResource(R.drawable.theme_gray_bg);
                 break;
             default:
                 break;
@@ -58,6 +62,9 @@ public class ThemeManager {
             case LEATHER:
                 bmp = BitmapFactory.decodeResource(AppUtils.getAppContext().getResources(), R.drawable.theme_leather_bg);
                 break;
+            case GRAY:
+                bmp.eraseColor(ContextCompat.getColor(AppUtils.getAppContext(), R.color.read_theme_gray));
+                break;
             default:
                 break;
         }
@@ -65,7 +72,7 @@ public class ThemeManager {
     }
 
     public static List<ReadTheme> getReaderThemeData(int curTheme) {
-        int[] themes = {NORMAL, YELLOW, GREEN, LEATHER};
+        int[] themes = {NORMAL, YELLOW, GREEN, LEATHER, GRAY};
         List<ReadTheme> list = new ArrayList<>();
         ReadTheme theme;
         for (int i = 0; i < themes.length; i++) {

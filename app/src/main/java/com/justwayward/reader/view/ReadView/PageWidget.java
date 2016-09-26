@@ -632,7 +632,24 @@ public class PageWidget extends View {
         pagefactory.onDraw(mNextPageCanvas);
         startAnimation(1000);
         postInvalidate();
+    }
 
+    public void nextPage() {
+        if (!pagefactory.nextPage()) {
+            ToastUtils.showSingleToast("没有下一页啦");
+            return;
+        }
+        pagefactory.onDraw(mCurrentPageCanvas);
+        postInvalidate();
+    }
+
+    public void prePage() {
+        if (!pagefactory.prePage()) {
+            ToastUtils.showSingleToast("没有上一页啦");
+            return;
+        }
+        pagefactory.onDraw(mCurrentPageCanvas);
+        postInvalidate();
     }
 
     public synchronized void setFontSize(final int fontSizePx) {

@@ -73,4 +73,17 @@ public class SettingManager {
     public int getReadTheme() {
         return SharedPreferencesUtil.getInstance().getInt("readTheme", 0);
     }
+
+    /**
+     * 是否可以使用音量键翻页
+     *
+     * @param enable
+     */
+    public void saveVolumeFlipEnable(boolean enable) {
+        SharedPreferencesUtil.getInstance().putBoolean("volumeFlip", enable);
+    }
+
+    public boolean isVolumeFlipEnable() {
+        return SharedPreferencesUtil.getInstance().getBoolean("volumeFlip", true);
+    }
 }

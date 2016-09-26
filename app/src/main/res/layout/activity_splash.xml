@@ -4,4 +4,15 @@
     android:layout_height="match_parent"
     android:background="@mipmap/bg_splash">
 
+    <TextView
+        android:id="@+id/tvSkip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/touch_bg"
+        android:padding="5dp"
+        android:text="跳过" />
+
 </FrameLayout>

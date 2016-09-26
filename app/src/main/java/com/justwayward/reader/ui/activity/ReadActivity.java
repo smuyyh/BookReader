@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -112,11 +114,13 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     @Bind(R.id.tvDownloadProgress)
     TextView mTvDownloadProgress;
     @Bind(R.id.rlReadAaSet)
-    RelativeLayout rlReadAaSet;
+    LinearLayout rlReadAaSet;
     @Bind(R.id.seekbarLightness)
     SeekBar seekbarLightness;
     @Bind(R.id.seekbarFontSize)
     SeekBar seekbarFontSize;
+    @Bind(R.id.cbVolume)
+    CheckBox cbVolume;
     @Bind(R.id.gvTheme)
     GridView gvTheme;
 
@@ -174,6 +178,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @Override
     public void initDatas() {
+        ThemeManager.setReaderTheme(SettingManager.getInstance().getReadTheme(), mRlBookReadRoot);
         showDialog();
         EventBus.getDefault().register(this);
         bookId = getIntent().getStringExtra("bookId");
@@ -218,6 +223,13 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         seekbarLightness.setMax(100);
         seekbarLightness.setOnSeekBarChangeListener(new SeekBarChangeListener());
         seekbarLightness.setProgress(SettingManager.getInstance().getReadBrightness());
+        cbVolume.setChecked(SettingManager.getInstance().isVolumeFlipEnable());
+        cbVolume.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SettingManager.getInstance().saveVolumeFlipEnable(isChecked);
+            }
+        });
         curTheme = SettingManager.getInstance().getReadTheme();
         themes = ThemeManager.getReaderThemeData(curTheme);
         gvAdapter = new ReadThemeAdapter(this, themes);
@@ -549,11 +561,36 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                 mTvBookReadCommunity.setVisibility(View.VISIBLE);
                 mTvBookReadChangeSource.setVisibility(View.VISIBLE);
                 mIvBookReadMore.setVisibility(View.VISIBLE);
-            } else {
-                finish();
+                return true;
+            } else if (isVisible(rlReadAaSet)) {
+                gone(rlReadAaSet);
+                return true;
+            }
+        } else if (keyCode == KeyEvent.KEYCODE_MENU) {
+            toggleReadBar();
+        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            if (SettingManager.getInstance().isVolumeFlipEnable()) {
+                mPageWidget.nextPage();
+                return true;
+            }
+        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            if (SettingManager.getInstance().isVolumeFlipEnable()) {
+                mPageWidget.prePage();
+                return true;
             }
         }
-        return false;
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            // 防止翻页有声音
+            if (SettingManager.getInstance().isVolumeFlipEnable()) {
+                return true;
+            }
+        }
+        return super.onKeyUp(keyCode, event);
     }
 
     @Override

@@ -1,109 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rlReadAaSet"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="170dp"
     android:layout_above="@+id/llBookReadBottom"
     android:background="@color/reader_menu_bg_color"
     android:clickable="true"
+    android:orientation="vertical"
     android:visibility="gone">
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="170dp"
-        android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
-
-            <ImageView
-                android:id="@+id/iv_brightness_minus"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:scaleType="center"
-                android:src="@drawable/ic_brightness_minus" />
-
-            <SeekBar
-                android:id="@+id/seekbarLightness"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:max="150"
-                android:maxHeight="2dp"
-                android:minHeight="2dp"
-                android:progressDrawable="@drawable/seekbar_bg"
-                android:thumb="@drawable/seekbar_thumb"
-                android:thumbOffset="10dp" />
-
-            <ImageView
-                android:id="@+id/iv_brightness_plus"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:scaleType="center"
-                android:src="@drawable/ic_brightness_add" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
-
-            <TextView
-                android:id="@+id/tv_fontsize_minus"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:gravity="center"
-                android:text="Aa-"
-                android:textColor="@color/common_h2"
-                android:textSize="14dp" />
-
-            <SeekBar
-                android:id="@+id/seekbarFontSize"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:max="100"
-                android:maxHeight="2dp"
-                android:minHeight="2dp"
-                android:progressDrawable="@drawable/seekbar_bg"
-                android:thumb="@drawable/seekbar_thumb"
-                android:thumbOffset="10dp" />
-
-            <TextView
-                android:id="@+id/tv_fontsize_plus"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:gravity="center"
-                android:text="Aa+"
-                android:textColor="@color/common_h2"
-                android:textSize="14dp" />
-        </LinearLayout>
-
-        <GridView
-            android:id="@+id/gvTheme"
-            android:layout_width="fill_parent"
+        <ImageView
+            android:id="@+id/iv_brightness_minus"
+            android:layout_width="45dp"
             android:layout_height="45dp"
-            android:layout_marginBottom="15dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_brightness_minus" />
+
+        <SeekBar
+            android:id="@+id/seekbarLightness"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginTop="10dp"
-            android:listSelector="@android:color/transparent"
-            android:numColumns="4"
-            android:scrollbars="none"></GridView>
+            android:layout_weight="1"
+            android:max="100"
+            android:maxHeight="3dp"
+            android:minHeight="3dp"
+            android:progressDrawable="@drawable/seekbar_bg"
+            android:thumb="@drawable/seekbar_thumb"
+            android:thumbOffset="10dp" />
+
+        <ImageView
+            android:id="@+id/iv_brightness_plus"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_brightness_add" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/tv_fontsize_minus"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:gravity="center"
+            android:text="Aa-"
+            android:textColor="@color/common_h2"
+            android:textSize="14dp" />
+
+        <SeekBar
+            android:id="@+id/seekbarFontSize"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:max="100"
+            android:maxHeight="3dp"
+            android:minHeight="3dp"
+            android:progressDrawable="@drawable/seekbar_bg"
+            android:thumb="@drawable/seekbar_thumb"
+            android:thumbOffset="10dp" />
+
+        <TextView
+            android:id="@+id/tv_fontsize_plus"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:gravity="center"
+            android:text="Aa+"
+            android:textColor="@color/common_h2"
+            android:textSize="14dp" />
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/cbVolume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:button="@drawable/volume_checkbox_selector"
+        android:text="音量键翻页"
+        android:textColor="@color/common_h3"
+        android:textSize="14dp" />
+
+    <GridView
+        android:id="@+id/gvTheme"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
+        android:listSelector="@android:color/transparent"
+        android:numColumns="5"
+        android:scrollbars="none" />
+</LinearLayout>
