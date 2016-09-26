@@ -43,7 +43,7 @@
             android:gravity="center"
             android:padding="15dp"
             android:text="删除"
-            android:textColor="@color/dark_blue"/>
+            android:textColor="@color/dark_red"/>
     </LinearLayout>
 
 </RelativeLayout>

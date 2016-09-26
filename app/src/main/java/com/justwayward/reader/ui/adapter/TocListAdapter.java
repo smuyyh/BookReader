@@ -2,6 +2,7 @@ package com.justwayward.reader.ui.adapter;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.widget.TextView;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.bean.BookToc;
@@ -25,11 +26,14 @@ public class TocListAdapter extends EasyLVAdapter<BookToc.mixToc.Chapters> {
 
     @Override
     public void convert(EasyLVHolder holder, int position, BookToc.mixToc.Chapters chapters) {
-        holder.setText(R.id.tvTocItem, chapters.title);
+        TextView tvTocItem = holder.getView(R.id.tvTocItem);
+        tvTocItem.setText(chapters.title);
         if (currentChapter == position + 1) {
-            holder.setTextColor(R.id.tvTocItem, ContextCompat.getColor(mContext, R.color.orange));
+            tvTocItem.setSelected(true);
+            tvTocItem.setTextColor(ContextCompat.getColor(mContext, R.color.light_red));
         } else {
-            holder.setTextColor(R.id.tvTocItem, ContextCompat.getColor(mContext, R.color.light_black));
+            tvTocItem.setSelected(false);
+            tvTocItem.setTextColor(ContextCompat.getColor(mContext, R.color.light_black));
         }
     }
 
