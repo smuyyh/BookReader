@@ -194,7 +194,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     @Override
     public void configViews() {
 
-        mTocListAdapter = new TocListAdapter(this, mChapterList);
+        mTocListAdapter = new TocListAdapter(this, mChapterList, currentChapter);
         mTocListPopupWindow = new ListPopupWindow(this);
         mTocListPopupWindow.setAdapter(mTocListAdapter);
         mTocListPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
@@ -205,15 +205,10 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mTocListPopupWindow.dismiss();
                 currentChapter = position + 1;
+                mTocListAdapter.setCurrentChapter(currentChapter);
                 startRead = false;
                 showDialog();
                 readCurrentChapter();
-            }
-        });
-        mTocListPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                hideReadBar();
             }
         });
 
@@ -565,6 +560,9 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             } else if (isVisible(rlReadAaSet)) {
                 gone(rlReadAaSet);
                 return true;
+            } else if (isVisible(mLlBookReadBottom)) {
+                hideReadBar();
+                return true;
             }
         } else if (keyCode == KeyEvent.KEYCODE_MENU) {
             toggleReadBar();
@@ -611,6 +609,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         public void onChapterChanged(int chapter) {
             LogUtils.i("onChapterChanged:" + chapter);
             currentChapter = chapter;
+            mTocListAdapter.setCurrentChapter(currentChapter);
             // 加载前一节 与 后三节
             for (int i = chapter - 1; i <= chapter + 3 && i <= mChapterList.size(); i++) {
                 if (i > 0 && i != chapter && getBookFile(i).length() < 50) {

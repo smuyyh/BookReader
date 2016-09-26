@@ -629,6 +629,7 @@ public class PageWidget extends View {
     public void jumpToChapter(int chapter) {
         abortAnimation();
         pagefactory.openBook(chapter, new int[]{0, 0});
+        pagefactory.onDraw(mCurrentPageCanvas);
         pagefactory.onDraw(mNextPageCanvas);
         startAnimation(1000);
         postInvalidate();

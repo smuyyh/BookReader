@@ -187,7 +187,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         LogUtils.i("line height:" + lineHeight + "  getLineHeight:");
         factory = new BookPageFactory(bookId, lineHeight);
 
-        mTocListAdapter = new TocListAdapter(this, mChapterList);
+        mTocListAdapter = new TocListAdapter(this, mChapterList, currentChapter);
         mTocListPopupWindow = new ListPopupWindow(this);
         mTocListPopupWindow.setAdapter(mTocListAdapter);
         mTocListPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);

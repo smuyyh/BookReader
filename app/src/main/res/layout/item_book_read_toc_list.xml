@@ -15,7 +15,7 @@
         android:drawablePadding="10dp"
         android:padding="10dp"
         android:text="1.第一章 八十大寿"
-        android:textColor="@drawable/toc_item_text_selector"
+        android:textColor="@color/light_black"
         android:textSize="16sp" />
 
 
