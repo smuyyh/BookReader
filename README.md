@@ -2,7 +2,7 @@
 #### 任阅小说阅读器。实现追书推荐、标签检索、3D仿真翻页效果、文章阅读、缓存章节、日夜间模式、文本朗读等功能。
 
 ## 项目
-本项目基于RxJava + Retrofit2 + Dagger2，结合MVP模式开发，项目结构清晰。本项目中的API均来自追书神器，纯属共享学习之用，不得用于商业用途。
+项目基于RxJava + Retrofit2 + Dagger2，结合MVP模式开发，代码结构清晰。项目中的API均来自追书神器，纯属共享学习之用，不得用于商业用途。
 有任何疑问或建议可提[issue](https://github.com/JustWayward/BookReader/issues/new)。
 
 ## TODO

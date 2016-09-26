@@ -467,8 +467,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             mTocListPopupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
             mTocListPopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             mTocListPopupWindow.show();
+            mTocListPopupWindow.setSelection(currentChapter - 1);
         }
-        mTocListAdapter.notifyDataSetChanged();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
