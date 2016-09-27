@@ -1,5 +1,5 @@
 # BookReader
-#### 任阅小说阅读器。实现追书推荐、标签检索、3D仿真翻页效果、文章阅读、缓存章节、日夜间模式、文本朗读等功能。
+#### “任阅”，开源小说阅读器。实现追书推荐、标签检索、模拟翻页效果、文章阅读、缓存章节、日夜间模式、文本朗读等功能。
 
 ## 项目
 项目基于RxJava + Retrofit2 + Dagger2，结合MVP模式开发，代码结构清晰。项目中的API均来自追书神器，纯属共享学习之用，不得用于商业用途。
@@ -8,7 +8,7 @@
 ## TODO
 * [ ] 新版阅读页优化模拟翻书效果，提高分页速度以及分页准确性
 
-* [ ] 登录模块（由于openid的限制，可能无法实现，考虑用sp代替）
+* [ ] 登录模块（由于openid的限制，可能无法实现）
 
 * [ ] 细节优化
 
@@ -66,17 +66,17 @@
 ## LICENSE
 
 ```
-   Copyright 2016 JustWayward Team
+Copyright 2016 JustWayward Team
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+    http://www.apache.org/licenses/LICENSE-2.0
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 ```
