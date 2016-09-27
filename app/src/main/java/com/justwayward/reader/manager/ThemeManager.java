@@ -24,6 +24,7 @@ public class ThemeManager {
     public static final int GREEN = 2;
     public static final int LEATHER = 3;
     public static final int GRAY = 4;
+    public static final int NIGHT = 5;
 
     public static void setReaderTheme(int theme, View view) {
         switch (theme) {
@@ -41,6 +42,8 @@ public class ThemeManager {
                 break;
             case GRAY:
                 view.setBackgroundResource(R.drawable.theme_gray_bg);
+            case NIGHT:
+                view.setBackgroundResource(R.drawable.theme_night_bg);
                 break;
             default:
                 break;
@@ -65,6 +68,9 @@ public class ThemeManager {
             case GRAY:
                 bmp.eraseColor(ContextCompat.getColor(AppUtils.getAppContext(), R.color.read_theme_gray));
                 break;
+            case NIGHT:
+                bmp.eraseColor(ContextCompat.getColor(AppUtils.getAppContext(), R.color.read_theme_night));
+                break;
             default:
                 break;
         }
@@ -72,7 +78,7 @@ public class ThemeManager {
     }
 
     public static List<ReadTheme> getReaderThemeData(int curTheme) {
-        int[] themes = {NORMAL, YELLOW, GREEN, LEATHER, GRAY};
+        int[] themes = {NORMAL, YELLOW, GREEN, LEATHER, GRAY,NIGHT};
         List<ReadTheme> list = new ArrayList<>();
         ReadTheme theme;
         for (int i = 0; i < themes.length; i++) {

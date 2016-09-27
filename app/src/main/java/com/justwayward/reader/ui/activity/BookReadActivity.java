@@ -73,7 +73,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
     TextView mTvBookReadReading;
     @Bind(R.id.tvBookReadCommunity)
     TextView mTvBookReadCommunity;
-    @Bind(R.id.tvBookReadChangeSource)
+    @Bind(R.id.tvBookReadIntroduce)
     TextView mTvBookReadChangeSource;
     @Bind(R.id.ivBookReadMore)
     ImageView mIvBookReadMore;
@@ -290,7 +290,7 @@ public class BookReadActivity extends BaseActivity implements BookReadContract.V
         }
     }
 
-    @OnClick(R.id.tvBookReadChangeSource)
+    @OnClick(R.id.tvBookReadIntroduce)
     public void onClickChangeSource() {
 
     }

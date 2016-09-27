@@ -669,13 +669,23 @@ public class PageWidget extends View {
         postInvalidate();
     }
 
+    public synchronized void setTextColor(final int color) {
+        abortAnimation();
+        pagefactory.setTextColor(color);
+        pagefactory.onDraw(mCurrentPageCanvas);
+        pagefactory.onDraw(mNextPageCanvas);
+        postInvalidate();
+    }
+
     public synchronized void setTheme(int theme) {
         Bitmap bg = ThemeManager.getThemeDrawable(theme);
         if (bg != null) {
             pagefactory.setBgBitmap(bg);
             pagefactory.onDraw(mCurrentPageCanvas);
             pagefactory.onDraw(mNextPageCanvas);
-            SettingManager.getInstance().saveReadTheme(theme);
+            if (theme < 5) {
+                SettingManager.getInstance().saveReadTheme(theme);
+            }
             postInvalidate();
         }
     }

@@ -1,5 +1,6 @@
 package com.justwayward.reader.manager;
 
+import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.ScreenUtils;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
@@ -79,6 +80,9 @@ public class SettingManager {
     }
 
     public int getReadTheme() {
+        if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)) {
+            return ThemeManager.NIGHT;
+        }
         return SharedPreferencesUtil.getInstance().getInt("readTheme", 0);
     }
 

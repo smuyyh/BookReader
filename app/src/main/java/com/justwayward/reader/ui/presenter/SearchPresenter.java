@@ -7,11 +7,14 @@ import com.justwayward.reader.bean.HotWord;
 import com.justwayward.reader.bean.SearchDetail;
 import com.justwayward.reader.ui.contract.SearchContract;
 import com.justwayward.reader.utils.LogUtils;
+import com.justwayward.reader.utils.RxUtil;
+import com.justwayward.reader.utils.StringUtils;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -31,7 +34,12 @@ public class SearchPresenter extends RxPresenter<SearchContract.View> implements
     }
 
     public void getHotWordList() {
-        Subscription rxSubscription = bookApi.getHotWord().subscribeOn(Schedulers.io())
+        String key = StringUtils.creatAcacheKey("hot-word-list");
+        Observable<HotWord> fromNetWork = bookApi.getHotWord()
+                .compose(RxUtil.<HotWord>rxCacheListHelper(key));
+
+        //依次检查disk、network
+        Subscription rxSubscription = Observable.concat(RxUtil.rxCreateDiskObservable(key, HotWord.class), fromNetWork)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<HotWord>() {
                     @Override

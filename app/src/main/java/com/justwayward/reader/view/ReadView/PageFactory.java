@@ -115,6 +115,7 @@ public class PageFactory {
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setTextSize(mFontSize);
+        mPaint.setTextSize(ContextCompat.getColor(context, R.color.read_theme_text));
         mPaint.setColor(Color.BLACK);
         mTitlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTitlePaint.setTextSize(mNumFontSize);
@@ -503,6 +504,15 @@ public class PageFactory {
         mPageLineCount = mVisibleHeight / (mFontSize + mLineSpace);
         m_mbBufEndPos = m_mbBufBeginPos;
         nextPage();
+    }
+
+    /**
+     * 设置字体颜色
+     *
+     * @param color
+     */
+    public void setTextColor(int color) {
+        mPaint.setColor(color);
     }
 
     public int getTextFont() {

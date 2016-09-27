@@ -161,6 +161,7 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
 
     @Override
     public synchronized void showHotWordList(List<String> list) {
+        visible(mTvChangeWords);
         tagList.clear();
         tagList.addAll(list);
         times = 0;

@@ -5,16 +5,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.ListPopupWindow;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
@@ -89,10 +88,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     TextView mTvBookReadReading;
     @Bind(R.id.tvBookReadCommunity)
     TextView mTvBookReadCommunity;
-    @Bind(R.id.tvBookReadChangeSource)
+    @Bind(R.id.tvBookReadIntroduce)
     TextView mTvBookReadChangeSource;
-    @Bind(R.id.ivBookReadMore)
-    ImageView mIvBookReadMore;
 
     @Bind(R.id.flReadWidget)
     FrameLayout flReadWidget;
@@ -103,8 +100,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     TextView mTvBookReadTocTitle;
     @Bind(R.id.tvBookReadMode)
     TextView mTvBookReadMode;
-    @Bind(R.id.tvBookReadFeedBack)
-    TextView mTvBookReadFeedBack;
     @Bind(R.id.tvBookReadSettings)
     TextView mTvBookReadSettings;
     @Bind(R.id.tvBookReadDownload)
@@ -155,8 +150,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     private Receiver receiver = new Receiver();
     private IntentFilter intentFilter = new IntentFilter();
     private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-
-    private ListPopupWindow mListPopupWindow;
 
     public static final String INTENT_BEAN = "recommendBooksBean";
 
@@ -252,6 +245,13 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                 gvAdapter.notifyDataSetChanged();
                 LogUtils.i("curtheme=" + curTheme);
                 mPageWidget.setTheme(curTheme);
+                mTvBookReadMode.setText(getString(R.string.book_read_mode_night_manual_setting));
+                mPageWidget.setTextColor(ContextCompat.getColor(mContext, R.color.black));
+
+                if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)) {
+                    SharedPreferencesUtil.getInstance().putBoolean(Constant.ISNIGHT, false);
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                }
             }
         });
 
@@ -352,55 +352,11 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     }
 
     /**
-     * 换源按钮监听
+     * 简介按钮监听
      */
-    @OnClick(R.id.tvBookReadChangeSource)
-    public void onClickChangeSource() {
-        ToastUtils.showToast("正在拼命开发中...");
-    }
-
-    /**
-     * 更多按钮监听
-     */
-    @OnClick(R.id.ivBookReadMore)
-    public void onClickMore() {
-        showMorePopupWindow();
-    }
-
-    /**
-     * 显示更多对话框
-     */
-    private void showMorePopupWindow() {
-        if (mListPopupWindow == null) {
-            mListPopupWindow = new ListPopupWindow(this);
-            mListPopupWindow.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1,
-                    getResources().getStringArray(R.array.book_read_more_menu)));
-            mListPopupWindow.setWidth(ScreenUtils.dpToPxInt(150));
-            mListPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-            mListPopupWindow.setAnchorView(mLlBookReadTop);
-            mListPopupWindow.setDropDownGravity(Gravity.RIGHT);
-            mListPopupWindow.setModal(true);
-            mListPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    switch (position) {
-                        case 0:
-                            ToastUtils.showToast("正在拼命开发中...");
-                            break;
-                        case 1:
-                            BookDetailActivity.startActivity(mContext, recommendBooks._id);
-                            break;
-                        case 2:
-                            ToastUtils.showToast("正在拼命开发中...");
-                            break;
-                        default:
-                            break;
-                    }
-                    mListPopupWindow.dismiss();
-                }
-            });
-        }
-        mListPopupWindow.show();
+    @OnClick(R.id.tvBookReadIntroduce)
+    public void onClickIntroduce() {
+        BookDetailActivity.startActivity(mContext, recommendBooks._id);
     }
 
     /**
@@ -411,19 +367,22 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)) {
             SharedPreferencesUtil.getInstance().putBoolean(Constant.ISNIGHT, false);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+            curTheme = SettingManager.getInstance().getReadTheme();
+            themes.get(curTheme).selected = true;
+            gvAdapter.notifyDataSetChanged();
+            mPageWidget.setTheme(curTheme);
+            mTvBookReadMode.setText(getString(R.string.book_read_mode_night_manual_setting));
+            mPageWidget.setTextColor(ContextCompat.getColor(mContext, R.color.black));
         } else {
             SharedPreferencesUtil.getInstance().putBoolean(Constant.ISNIGHT, true);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }
-        recreate();
-    }
 
-    /**
-     * 反馈按钮监听
-     */
-    @OnClick(R.id.tvBookReadFeedBack)
-    public void onClickFeedBack() {
-        ToastUtils.showToast("正在拼命开发中...");
+            mPageWidget.setTheme(ThemeManager.NIGHT);
+            mTvBookReadMode.setText(getString(R.string.book_read_mode_day_manual_setting));
+            mPageWidget.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+        }
+        // recreate();
     }
 
     /**
@@ -475,7 +434,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     public void onClickToc() {
         if (!mTocListPopupWindow.isShowing()) {
             visible(mTvBookReadTocTitle);
-            gone(mTvBookReadReading, mTvBookReadCommunity, mTvBookReadChangeSource, mIvBookReadMore);
+            gone(mTvBookReadReading, mTvBookReadCommunity, mTvBookReadChangeSource);
             mTocListPopupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
             mTocListPopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             mTocListPopupWindow.show();
@@ -569,7 +528,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                 mTvBookReadReading.setVisibility(View.VISIBLE);
                 mTvBookReadCommunity.setVisibility(View.VISIBLE);
                 mTvBookReadChangeSource.setVisibility(View.VISIBLE);
-                mIvBookReadMore.setVisibility(View.VISIBLE);
                 return true;
             } else if (isVisible(rlReadAaSet)) {
                 gone(rlReadAaSet);

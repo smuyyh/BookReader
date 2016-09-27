@@ -28,6 +28,7 @@
             android:layout_alignParentRight="true"
             android:drawableLeft="@drawable/refresh"
             android:drawablePadding="5dp"
+            android:visibility="gone"
             android:text="@string/search_change_a_lot" />
     </RelativeLayout>
 

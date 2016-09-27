@@ -43,9 +43,4 @@
         <item>删除</item>
     </string-array>
 
-    <string-array name="book_read_more_menu">
-        <item>更多模式</item>
-        <item>书籍简介</item>
-        <item>分享本书</item>
-    </string-array>
 </resources>

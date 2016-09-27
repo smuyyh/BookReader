@@ -31,4 +31,6 @@
     <color name="chapter_content">#444444</color>
     <color name="chapter_page_number">#292929</color>
 
+    <color name="read_theme_text">@color/white</color>
+
 </resources>

@@ -71,20 +71,13 @@
             android:textColor="@color/white" />
 
         <TextView
-            android:id="@+id/tvBookReadChangeSource"
+            android:id="@+id/tvBookReadIntroduce"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/book_read_change_source"
+            android:text="@string/book_read_introduce"
             android:textColor="@color/white" />
-
-        <ImageView
-            android:id="@+id/ivBookReadMore"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_moreoverflow_mtrl_alpha" />
 
     </LinearLayout>
 
@@ -123,16 +116,6 @@
             android:drawableTop="@drawable/ic_menu_mode_night_normal"
             android:gravity="center"
             android:text="@string/book_read_mode_day"
-            android:textColor="@color/white" />
-
-        <TextView
-            android:id="@+id/tvBookReadFeedBack"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/ic_menu_read_report"
-            android:gravity="center"
-            android:text="@string/book_read_feedback"
             android:textColor="@color/white" />
 
         <TextView
