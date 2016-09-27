@@ -47,9 +47,10 @@ public class SettingManager {
     }
 
     public synchronized void saveReadProgress(String bookId, int currentChapter, int m_mbBufBeginPos, int m_mbBufEndPos) {
-        SharedPreferencesUtil.getInstance().putInt(bookId + "-chapter", currentChapter);
-        SharedPreferencesUtil.getInstance().putInt(bookId + "-startPos", m_mbBufBeginPos);
-        SharedPreferencesUtil.getInstance().putInt(bookId + "-endPos", m_mbBufEndPos);
+        SharedPreferencesUtil.getInstance()
+                .putInt(bookId + "-chapter", currentChapter)
+                .putInt(bookId + "-startPos", m_mbBufBeginPos)
+                .putInt(bookId + "-endPos", m_mbBufEndPos);
     }
 
     /**
@@ -64,6 +65,13 @@ public class SettingManager {
         int endPos = SharedPreferencesUtil.getInstance().getInt(bookId + "-endPos", 0);
 
         return new int[]{lastChapter, startPos, endPos};
+    }
+
+    public void removeReadProgress(String bookId) {
+        SharedPreferencesUtil.getInstance()
+                .remove(bookId + "-chapter")
+                .remove(bookId + "-startPos")
+                .remove(bookId + "-endPos");
     }
 
     public void saveReadTheme(int theme) {

@@ -104,6 +104,7 @@ public class CollectionsManager {
                 } catch (IOException e) {
                     LogUtils.e(e.toString());
                 }
+                SettingManager.getInstance().removeReadProgress(book._id);
             }
         }
         list.removeAll(removeList);

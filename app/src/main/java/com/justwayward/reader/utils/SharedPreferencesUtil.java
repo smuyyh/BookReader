@@ -194,4 +194,10 @@ public class SharedPreferencesUtil {
         }
         return null;
     }
+
+    public SharedPreferencesUtil remove(String key) {
+        editor.remove(key);
+        editor.commit();
+        return this;
+    }
 }

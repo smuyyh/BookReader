@@ -18,6 +18,7 @@ import android.widget.Scroller;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.manager.SettingManager;
 import com.justwayward.reader.manager.ThemeManager;
+import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.ScreenUtils;
 import com.justwayward.reader.utils.ToastUtils;
 
@@ -115,7 +116,12 @@ public class PageWidget extends View {
             pagefactory.setBgBitmap(ThemeManager.getThemeDrawable(theme));
             // 自动跳转到上次阅读位置
             int pos[] = SettingManager.getInstance().getReadProgress(bookId);
-            pagefactory.openBook(pos[0], new int[]{pos[1], pos[2]});
+            int ret = pagefactory.openBook(pos[0], new int[]{pos[1], pos[2]});
+            LogUtils.i("上次阅读位置：chapter=" + pos[0] + " startPos=" + pos[1] + " endPos=" + pos[2]);
+            if (ret == 0) {
+                listener.onLoadChapterFailure(pos[0]);
+                return;
+            }
             pagefactory.onDraw(mCurrentPageCanvas);
         } catch (Exception e) {
         }
@@ -676,6 +682,8 @@ public class PageWidget extends View {
 
     public void setBattery(int battery) {
         pagefactory.setBattery(battery);
+        pagefactory.onDraw(mCurrentPageCanvas);
+        postInvalidate();
     }
 
     public void setTime(String time) {

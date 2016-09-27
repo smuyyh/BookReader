@@ -676,6 +676,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         @Override
         public void onLoadChapterFailure(int chapter) {
             LogUtils.i("onLoadChapterFailure:" + chapter);
+            startRead = false;
             if (getBookFile(chapter).length() < 50)
                 mPresenter.getChapterRead(mChapterList.get(chapter - 1).link, chapter);
         }

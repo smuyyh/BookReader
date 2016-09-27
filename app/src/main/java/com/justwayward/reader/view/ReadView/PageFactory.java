@@ -18,7 +18,6 @@ import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.ScreenUtils;
-import com.justwayward.reader.utils.SharedPreferencesUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -133,7 +132,6 @@ public class PageFactory {
 
         time = dateFormat.format(new Date());
         batteryView = (ProgressBar) LayoutInflater.from(context).inflate(R.layout.layout_battery_progress, null);
-        setBattery(0);
     }
 
     public File getBookFile(int chapter) {
@@ -188,7 +186,7 @@ public class PageFactory {
      *
      * @param canvas
      */
-    public void onDraw(Canvas canvas) {
+    public synchronized void onDraw(Canvas canvas) {
         if (m_lines.size() == 0) {
             m_mbBufEndPos = m_mbBufBeginPos;
             m_lines = pageDown();
@@ -368,9 +366,7 @@ public class PageFactory {
             }
             currentPage++;
         }
-        SharedPreferencesUtil.getInstance().putInt(bookId + "-chapter", currentChapter);
-        SharedPreferencesUtil.getInstance().putInt(bookId + "-startPos", m_mbBufBeginPos);
-        SharedPreferencesUtil.getInstance().putInt(bookId + "-endPos", m_mbBufEndPos);
+        SettingManager.getInstance().saveReadProgress(bookId, currentChapter, m_mbBufBeginPos, m_mbBufEndPos);
         return lines;
     }
 
