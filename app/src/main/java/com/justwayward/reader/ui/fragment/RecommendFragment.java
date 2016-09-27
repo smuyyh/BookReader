@@ -5,8 +5,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -135,7 +135,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void downloadComplete(DownloadComplete complete) {
-        if (isForeground(getActivity().getClass().getName())) {
+        if (isForeground()) {
             ToastUtils.showSingleToast("缓存完成");
         }
     }
@@ -221,29 +221,45 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
                         new DialogInterface.OnMultiChoiceClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-
+                                selected[0] = isChecked;
                             }
                         })
                 .setPositiveButton(activity.getString(R.string.confirm), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        if (selected[0]) {
-                            //TODO 删除本地缓存
-                        }
-                        CollectionsManager.getInstance().removeSome(removeList);
-                        for (Recommend.RecommendBooks bean :
-                                removeList) {
-                            mAdapter.remove(bean);
-                        }
-                        if (mAdapter.getCount() == 0) {
-                            //没有收藏时，刷新页面
-                            onRefresh();
-                        }
-                        if (isVisible(llBatchManagement)) {
-                            //批量管理完成后，隐藏批量管理布局并刷新页面
-                            goneBatchManagementAndRefreshUI();
-                        }
+                        new AsyncTask<String, String, String>() {
+                            @Override
+                            protected void onPreExecute() {
+                                super.onPreExecute();
+                                showDialog();
+                            }
+
+                            @Override
+                            protected String doInBackground(String... params) {
+                                CollectionsManager.getInstance().removeSome(removeList, selected[0]);
+                                return null;
+                            }
+
+                            @Override
+                            protected void onPostExecute(String s) {
+                                super.onPostExecute(s);
+                                ToastUtils.showSingleToast("成功移除书籍");
+                                for (Recommend.RecommendBooks bean : removeList) {
+                                    mAdapter.remove(bean);
+                                }
+                                if (mAdapter.getCount() == 0) {
+                                    //没有收藏时，刷新页面
+                                    onRefresh();
+                                }
+                                if (isVisible(llBatchManagement)) {
+                                    //批量管理完成后，隐藏批量管理布局并刷新页面
+                                    goneBatchManagementAndRefreshUI();
+                                }
+                                hideDialog();
+                            }
+                        }.execute();
+
                     }
                 })
                 .setNegativeButton(activity.getString(R.string.cancel), null)
@@ -268,8 +284,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
      */
     private void showBatchManagementLayout() {
         visible(llBatchManagement);
-        for (Recommend.RecommendBooks bean :
-                mAdapter.getAllData()) {
+        for (Recommend.RecommendBooks bean : mAdapter.getAllData()) {
             bean.showCheckBox = true;
         }
         mAdapter.notifyDataSetChanged();
@@ -373,11 +388,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
         EventBus.getDefault().unregister(this);
     }
 
-    private boolean isForeground(String className) {
-        if (TextUtils.isEmpty(className)) {
-            return false;
-        }
-
+    private boolean isForeground() {
         ActivityManager am = (ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(1);
         if (list != null && list.size() > 0) {

@@ -5,7 +5,12 @@ import android.text.TextUtils;
 import com.justwayward.reader.ReaderApplication;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.utils.ACache;
+import com.justwayward.reader.utils.AppUtils;
+import com.justwayward.reader.utils.FileUtils;
+import com.justwayward.reader.utils.LogUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,17 +72,18 @@ public class CollectionsManager {
 
     /**
      * 是否已收藏
+     *
      * @param bookId
      * @return
      */
-    public boolean isCollected(String bookId){
+    public boolean isCollected(String bookId) {
         List<Recommend.RecommendBooks> list = getCollectionList();
         for (Recommend.RecommendBooks bean : list) {
             if (bean._id.equals(bookId)) {
-              return true;
+                return true;
             }
         }
-        return  false;
+        return false;
     }
 
     /**
@@ -85,10 +91,20 @@ public class CollectionsManager {
      *
      * @param removeList
      */
-    public void removeSome(List<Recommend.RecommendBooks> removeList) {
+    public void removeSome(List<Recommend.RecommendBooks> removeList, boolean removeCache) {
         List<Recommend.RecommendBooks> list = getCollectionList();
         if (list == null) {
             return;
+        }
+        if (removeCache) {
+            for (Recommend.RecommendBooks book : removeList) {
+                String basePath = FileUtils.createRootPath(AppUtils.getAppContext()) + "/book/";
+                try {
+                    FileUtils.deleteFileOrDirectory(new File(basePath + book._id));
+                } catch (IOException e) {
+                    LogUtils.e(e.toString());
+                }
+            }
         }
         list.removeAll(removeList);
         ACache.get(ReaderApplication.getsInstance()).put("collection", (Serializable) list);
