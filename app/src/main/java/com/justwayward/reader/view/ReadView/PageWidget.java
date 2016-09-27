@@ -620,6 +620,7 @@ public class PageWidget extends View {
                 }
                 pagefactory.onDraw(mNextPageCanvas);
             }
+            listener.onFlip();
             setBitmaps(mCurPageBitmap, mNextPageBitmap);
         }
         boolean ret = doTouchEvent(e);

@@ -161,6 +161,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     public static final String INTENT_BEAN = "recommendBooksBean";
 
     private Recommend.RecommendBooks recommendBooks;
+
     //添加收藏需要，所以跳转的时候传递整个实体类
     public static void startActivity(Context context, Recommend.RecommendBooks recommendBooks) {
         context.startActivity(new Intent(context, ReadActivity.class)
@@ -218,6 +219,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                 currentChapter = position + 1;
                 mTocListAdapter.setCurrentChapter(currentChapter);
                 startRead = false;
+                hideReadBar();
                 showDialog();
                 readCurrentChapter();
             }
@@ -478,6 +480,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             mTocListPopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             mTocListPopupWindow.show();
             mTocListPopupWindow.setSelection(currentChapter - 1);
+            mTocListPopupWindow.getListView().setFastScrollEnabled(true);
         }
     }
 
@@ -574,7 +577,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             } else if (isVisible(mLlBookReadBottom)) {
                 hideReadBar();
                 return true;
-            }else if(!CollectionsManager.getInstance().isCollected(recommendBooks._id)){
+            } else if (!CollectionsManager.getInstance().isCollected(recommendBooks._id)) {
                 showJoinBookShelfDialog(recommendBooks);
                 return true;
             }
@@ -681,6 +684,11 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         public void onCenterClick() {
             LogUtils.i("onCenterClick");
             toggleReadBar();
+        }
+
+        @Override
+        public void onFlip() {
+            hideReadBar();
         }
     }
 

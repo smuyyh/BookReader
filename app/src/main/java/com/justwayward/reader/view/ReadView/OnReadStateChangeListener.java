@@ -13,4 +13,6 @@ public interface OnReadStateChangeListener {
     void onLoadChapterFailure(int chapter);
 
     void onCenterClick();
+
+    void onFlip();
 }
