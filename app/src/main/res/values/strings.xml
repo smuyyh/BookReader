@@ -96,5 +96,6 @@
     <string name="cancel_selected_all">取消全选</string>
     <string name="selected_all">全选</string>
     <string name="has_not_selected_delete_book">你没有选择要删的书哦</string>
+    <string name="add_the_book_you_like">添加你喜欢的小说</string>
 
 </resources>

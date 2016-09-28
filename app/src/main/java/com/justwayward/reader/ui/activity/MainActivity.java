@@ -161,6 +161,10 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
         mPresenter.attachView(this);
     }
 
+    public void setCurrentItem(int position){
+        mViewPager.setCurrentItem(position);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);

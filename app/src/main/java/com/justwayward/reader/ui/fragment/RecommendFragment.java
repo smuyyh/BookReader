@@ -4,23 +4,17 @@ import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseRVFragment;
-import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.support.DownloadComplete;
@@ -36,7 +30,6 @@ import com.justwayward.reader.ui.activity.ReadActivity;
 import com.justwayward.reader.ui.contract.RecommendContract;
 import com.justwayward.reader.ui.easyadapter.RecommendAdapter;
 import com.justwayward.reader.ui.presenter.RecommendPresenter;
-import com.justwayward.reader.utils.SharedPreferencesUtil;
 import com.justwayward.reader.utils.ToastUtils;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
 
@@ -52,16 +45,15 @@ import butterknife.OnClick;
 
 public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recommend.RecommendBooks> implements RecommendContract.View, RecyclerArrayAdapter.OnItemLongClickListener {
 
-    private TableLayout shelf;
-    private boolean isHasCollections = false;
-    private boolean isSelectAll = false;
-
     @Bind(R.id.llBatchManagement)
     LinearLayout llBatchManagement;
     @Bind(R.id.tvSelectAll)
     TextView tvSelectAll;
     @Bind(R.id.tvDelete)
     TextView tvDelete;
+
+    private boolean isHasCollections = false;
+    private boolean isSelectAll = false;
 
     @Override
     public int getLayoutResId() {
@@ -77,40 +69,24 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
     public void configViews() {
         initAdapter(RecommendAdapter.class, true, false);
         mAdapter.setOnItemLongClickListener(this);
-        //initCollect();
-        onRefresh();
-    }
+        mAdapter.addFooter(new RecyclerArrayAdapter.ItemView() {
+            @Override
+            public View onCreateView(ViewGroup parent) {
+                View headerView = LayoutInflater.from(activity).inflate(R.layout.foot_view_shelf, parent, false);
+                return headerView;
+            }
 
-    private void initCollect() {
-
-        final List<Recommend.RecommendBooks> collect = SharedPreferencesUtil.getInstance().getObject("collect", List.class);
-        if (collect != null) {
-            mAdapter.addHeader(new RecyclerArrayAdapter.ItemView() {
-                @Override
-                public View onCreateView(ViewGroup parent) {
-                    View headerView = LayoutInflater.from(activity).inflate(R.layout.header_view_shelf, parent, false);
-                    shelf = (TableLayout) headerView.findViewById(R.id.tblLayout);
-                    return headerView;
-                }
-
-                @Override
-                public void onBindView(View headerView) {
-                    TableRow tblRow = new TableRow(activity);
-                    tblRow.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT));
-                    tblRow.setBackgroundColor(Color.GRAY);
-
-                    for (Recommend.RecommendBooks books : collect) {
-                        ImageView iv = new ImageView(activity);
-                        tblRow.addView(iv);
-                        Glide.with(activity).load(Constant.IMG_BASE_URL + books.cover).into(iv);
+            @Override
+            public void onBindView(View headerView) {
+                headerView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((MainActivity) activity).setCurrentItem(2);
                     }
-
-                    shelf.addView(tblRow, 0);
-
-                }
-            });
-        }
+                });
+            }
+        });
+        onRefresh();
     }
 
     @Override
