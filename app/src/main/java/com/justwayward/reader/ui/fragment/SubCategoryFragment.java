@@ -65,6 +65,7 @@ public class SubCategoryFragment extends BaseRVFragment<SubCategoryFragmentPrese
     @Override
     public void configViews() {
         initAdapter(SubCategoryAdapter.class, true, true);
+        onRefresh();
     }
 
     @Override

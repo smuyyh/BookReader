@@ -97,5 +97,6 @@
     <string name="selected_all">全选</string>
     <string name="has_not_selected_delete_book">你没有选择要删的书哦</string>
     <string name="add_the_book_you_like">添加你喜欢的小说</string>
+    <string name="network_error_tips">加载失败，请检查网络或稍后再试</string>
 
 </resources>
