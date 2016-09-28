@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.bean.support.ReadTheme;
-import com.justwayward.reader.manager.SettingManager;
 import com.justwayward.reader.manager.ThemeManager;
 import com.justwayward.reader.utils.LogUtils;
 import com.yuyh.easyadapter.abslistview.EasyLVAdapter;
@@ -38,7 +37,6 @@ public class ReadThemeAdapter extends EasyLVAdapter<ReadTheme> {
     }
 
     public void select(int position) {
-        SettingManager.getInstance().saveReadTheme(position);
         selected = position;
         LogUtils.i("curtheme=" + selected);
         notifyDataSetChanged();

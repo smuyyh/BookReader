@@ -92,13 +92,13 @@ public class PageFactory {
 
     private OnReadStateChangeListener listener;
 
-    public PageFactory(Context context, String bookId, int chapter, List<BookToc.mixToc.Chapters> chaptersList) {
+    public PageFactory(Context context, String bookId, List<BookToc.mixToc.Chapters> chaptersList) {
         this(context, ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight(),
                 SettingManager.getInstance().getReadFontSize(bookId),
-                bookId, chapter, chaptersList);
+                bookId, chaptersList);
     }
 
-    public PageFactory(Context context, int width, int height, int fontSize, String bookId, int chapter,
+    public PageFactory(Context context, int width, int height, int fontSize, String bookId,
                        List<BookToc.mixToc.Chapters> chaptersList) {
         mWidth = width;
         mHeight = height;
@@ -126,9 +126,7 @@ public class PageFactory {
         // mNumPaint.setTypeface(typeface);
 
         this.bookId = bookId;
-        this.currentChapter = chapter;
         this.chaptersList = chaptersList;
-        chapterSize = chaptersList.size();
 
         time = dateFormat.format(new Date());
         batteryView = (ProgressBar) LayoutInflater.from(context).inflate(R.layout.layout_battery_progress, null);
@@ -155,6 +153,7 @@ public class PageFactory {
      */
     public int openBook(int chapter, int[] position) {
         this.currentChapter = chapter;
+        this.chapterSize = chaptersList.size();
         String path = getBookFile(currentChapter).getPath();
         try {
             File file = new File(path);

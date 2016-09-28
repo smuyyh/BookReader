@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
@@ -262,24 +263,24 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         gvTheme.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                gvAdapter.select(position);
-                mPageWidget.setTheme((curTheme = position));
-
-                mTvBookReadMode.setText(getString(R.string.book_read_mode_night_manual_setting));
-                mPageWidget.setTextColor(ContextCompat.getColor(mContext, R.color.black));
-                if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)) {
-                    SharedPreferencesUtil.getInstance().putBoolean(Constant.ISNIGHT, false);
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                curTheme = position;
+                if (position < themes.size() - 1) {
+                    changedMode(false);
+                } else {
+                    changedMode(true);
                 }
             }
         });
     }
 
     private void initPagerWidget() {
-        mPageWidget = new PageWidget(this, recommendBooks._id, new ReadListener());// 页面
+        mPageWidget = new PageWidget(this, recommendBooks._id, mChapterList, new ReadListener());// 页面
+        registerReceiver(receiver, intentFilter);
+        if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)) {
+            mPageWidget.setTextColor(ContextCompat.getColor(this, R.color.black));
+        }
         flReadWidget.removeAllViews();
         flReadWidget.addView(mPageWidget);
-        registerReceiver(receiver, intentFilter);
     }
 
     /**
@@ -315,7 +316,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         if (!startRead) {
             startRead = true;
             if (!mPageWidget.isPrepared) {
-                mPageWidget.init(chapter, mChapterList, curTheme);
+                mPageWidget.init(curTheme);
             } else {
                 mPageWidget.jumpToChapter(currentChapter);
             }
@@ -358,23 +359,28 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     }
 
     @OnClick(R.id.tvBookReadMode)
-    public void onClickChangeMode() {
-        if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)) {
-            SharedPreferencesUtil.getInstance().putBoolean(Constant.ISNIGHT, false);
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+    public void onClickChangeMode() { // 日/夜间模式切换
+        boolean isNight = !SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false);
+        curTheme = isNight ? themes.size() - 1 : SettingManager.getInstance().getReadTheme();
+        changedMode(isNight);
+    }
 
-            gvAdapter.select((curTheme = SettingManager.getInstance().getReadTheme()));
-            mPageWidget.setTheme(curTheme);
-            mTvBookReadMode.setText(getString(R.string.book_read_mode_night_manual_setting));
-            mPageWidget.setTextColor(ContextCompat.getColor(mContext, R.color.black));
-        } else {
-            SharedPreferencesUtil.getInstance().putBoolean(Constant.ISNIGHT, true);
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+    private void changedMode(boolean isNight) {
+        SharedPreferencesUtil.getInstance().putBoolean(Constant.ISNIGHT, isNight);
+        AppCompatDelegate.setDefaultNightMode(isNight ? AppCompatDelegate.MODE_NIGHT_NO
+                : AppCompatDelegate.MODE_NIGHT_YES);
 
-            mPageWidget.setTheme(ThemeManager.NIGHT);
-            mTvBookReadMode.setText(getString(R.string.book_read_mode_day_manual_setting));
-            mPageWidget.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-        }
+        gvAdapter.select(curTheme);
+
+        mPageWidget.setTheme(isNight ? ThemeManager.NIGHT : curTheme);
+        mPageWidget.setTextColor(ContextCompat.getColor(mContext, isNight ? R.color.white : R.color.black));
+
+        mTvBookReadMode.setText(getString(isNight ? R.string.book_read_mode_day_manual_setting
+                : R.string.book_read_mode_night_manual_setting));
+        Drawable drawable = ContextCompat.getDrawable(this, isNight ? R.drawable.ic_menu_mode_day_manual
+                : R.drawable.ic_menu_mode_night_manual);
+        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+        mTvBookReadMode.setCompoundDrawables(null, drawable, null, null);
     }
 
     @OnClick(R.id.tvBookReadSettings)
@@ -522,14 +528,13 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             }
         } else if (keyCode == KeyEvent.KEYCODE_MENU) {
             toggleReadBar();
+            return true;
         } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
             if (SettingManager.getInstance().isVolumeFlipEnable()) {
-                mPageWidget.nextPage();
                 return true;
             }
         } else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
             if (SettingManager.getInstance().isVolumeFlipEnable()) {
-                mPageWidget.prePage();
                 return true;
             }
         }
@@ -571,9 +576,15 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
             // 防止翻页有声音
             if (SettingManager.getInstance().isVolumeFlipEnable()) {
+                mPageWidget.nextPage();
+                return true;
+            }
+        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            if (SettingManager.getInstance().isVolumeFlipEnable()) {
+                mPageWidget.prePage();
                 return true;
             }
         }

@@ -81,7 +81,8 @@ public class PageWidget extends View {
     private String bookId;
     public boolean isPrepared = false;
 
-    public PageWidget(Context context, String bookId, OnReadStateChangeListener listener) {
+    public PageWidget(Context context, String bookId, List<BookToc.mixToc.Chapters> chaptersList,
+                      OnReadStateChangeListener listener) {
         super(context);
         this.listener = listener;
         this.bookId = bookId;
@@ -105,16 +106,16 @@ public class PageWidget extends View {
         mTouch.x = 0.01f; // 不让x,y为0,否则在点计算时会有问题
         mTouch.y = 0.01f;
 
-        //init(chapter, chaptersList, theme);
+        mCurPageBitmap = Bitmap.createBitmap(mScreenWidth, mScreenHeight, Bitmap.Config.ARGB_8888);
+        mNextPageBitmap = Bitmap.createBitmap(mScreenWidth, mScreenHeight, Bitmap.Config.ARGB_8888);
+        mCurrentPageCanvas = new Canvas(mCurPageBitmap);
+        mNextPageCanvas = new Canvas(mNextPageBitmap);
+        pagefactory = new PageFactory(getContext(), bookId, chaptersList);
     }
 
-    public synchronized void init(int chapter, List<BookToc.mixToc.Chapters> chaptersList, int theme) {
+    public synchronized void init(int theme) {
         if (!isPrepared) {
-            mCurPageBitmap = Bitmap.createBitmap(mScreenWidth, mScreenHeight, Bitmap.Config.ARGB_8888);
-            mNextPageBitmap = Bitmap.createBitmap(mScreenWidth, mScreenHeight, Bitmap.Config.ARGB_8888);
-            mCurrentPageCanvas = new Canvas(mCurPageBitmap);
-            mNextPageCanvas = new Canvas(mNextPageBitmap);
-            pagefactory = new PageFactory(getContext(), bookId, chapter, chaptersList);
+
             pagefactory.setOnReadStateChangeListener(listener);
             try {
                 pagefactory.setBgBitmap(ThemeManager.getThemeDrawable(theme));
@@ -653,8 +654,11 @@ public class PageWidget extends View {
             ToastUtils.showSingleToast("没有下一页啦");
             return;
         }
-        pagefactory.onDraw(mCurrentPageCanvas);
-        postInvalidate();
+        if (isPrepared) {
+            pagefactory.onDraw(mCurrentPageCanvas);
+            pagefactory.onDraw(mNextPageCanvas);
+            postInvalidate();
+        }
     }
 
     public void prePage() {
@@ -662,44 +666,55 @@ public class PageWidget extends View {
             ToastUtils.showSingleToast("没有上一页啦");
             return;
         }
-        pagefactory.onDraw(mCurrentPageCanvas);
-        postInvalidate();
+        if (isPrepared) {
+            pagefactory.onDraw(mCurrentPageCanvas);
+            pagefactory.onDraw(mNextPageCanvas);
+            postInvalidate();
+        }
     }
 
     public synchronized void setFontSize(final int fontSizePx) {
-        abortAnimation();
         pagefactory.setTextFont(fontSizePx);
-        pagefactory.onDraw(mCurrentPageCanvas);
-        pagefactory.onDraw(mNextPageCanvas);
-        SettingManager.getInstance().saveFontSize(bookId, fontSizePx);
-        postInvalidate();
+        if (isPrepared) {
+            abortAnimation();
+            pagefactory.onDraw(mCurrentPageCanvas);
+            pagefactory.onDraw(mNextPageCanvas);
+            SettingManager.getInstance().saveFontSize(bookId, fontSizePx);
+            postInvalidate();
+        }
     }
 
     public synchronized void setTextColor(final int color) {
-        abortAnimation();
         pagefactory.setTextColor(color);
-        pagefactory.onDraw(mCurrentPageCanvas);
-        pagefactory.onDraw(mNextPageCanvas);
-        postInvalidate();
+        if (isPrepared) {
+            abortAnimation();
+            pagefactory.onDraw(mCurrentPageCanvas);
+            pagefactory.onDraw(mNextPageCanvas);
+            postInvalidate();
+        }
     }
 
     public synchronized void setTheme(int theme) {
         Bitmap bg = ThemeManager.getThemeDrawable(theme);
         if (bg != null) {
             pagefactory.setBgBitmap(bg);
-            pagefactory.onDraw(mCurrentPageCanvas);
-            pagefactory.onDraw(mNextPageCanvas);
+            if (isPrepared) {
+                pagefactory.onDraw(mCurrentPageCanvas);
+                pagefactory.onDraw(mNextPageCanvas);
+                postInvalidate();
+            }
             if (theme < 5) {
                 SettingManager.getInstance().saveReadTheme(theme);
             }
-            postInvalidate();
         }
     }
 
     public void setBattery(int battery) {
         pagefactory.setBattery(battery);
-        pagefactory.onDraw(mCurrentPageCanvas);
-        postInvalidate();
+        if (isPrepared) {
+            pagefactory.onDraw(mCurrentPageCanvas);
+            postInvalidate();
+        }
     }
 
     public void setTime(String time) {
