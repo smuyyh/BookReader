@@ -107,6 +107,6 @@
         android:layout_marginRight="5dp"
         android:layout_marginTop="10dp"
         android:listSelector="@android:color/transparent"
-        android:numColumns="5"
+        android:numColumns="6"
         android:scrollbars="none" />
 </LinearLayout>

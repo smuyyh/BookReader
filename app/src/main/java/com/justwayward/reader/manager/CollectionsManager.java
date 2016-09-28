@@ -5,11 +5,9 @@ import android.text.TextUtils;
 import com.justwayward.reader.ReaderApplication;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.utils.ACache;
-import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.utils.LogUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -98,9 +96,8 @@ public class CollectionsManager {
         }
         if (removeCache) {
             for (Recommend.RecommendBooks book : removeList) {
-                String basePath = FileUtils.createRootPath(AppUtils.getAppContext()) + "/book/";
                 try {
-                    FileUtils.deleteFileOrDirectory(new File(basePath + book._id));
+                    FileUtils.deleteFileOrDirectory(FileUtils.getBookDir(book._id));
                 } catch (IOException e) {
                     LogUtils.e(e.toString());
                 }

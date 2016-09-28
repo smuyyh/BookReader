@@ -42,6 +42,7 @@ public class ThemeManager {
                 break;
             case GRAY:
                 view.setBackgroundResource(R.drawable.theme_gray_bg);
+                break;
             case NIGHT:
                 view.setBackgroundResource(R.drawable.theme_night_bg);
                 break;
@@ -78,15 +79,12 @@ public class ThemeManager {
     }
 
     public static List<ReadTheme> getReaderThemeData(int curTheme) {
-        int[] themes = {NORMAL, YELLOW, GREEN, LEATHER, GRAY,NIGHT};
+        int[] themes = {NORMAL, YELLOW, GREEN, LEATHER, GRAY, NIGHT};
         List<ReadTheme> list = new ArrayList<>();
         ReadTheme theme;
         for (int i = 0; i < themes.length; i++) {
             theme = new ReadTheme();
             theme.theme = themes[i];
-            if (curTheme == themes[i]) {
-                theme.selected = true;
-            }
             list.add(theme);
         }
         return list;

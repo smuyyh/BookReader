@@ -17,7 +17,6 @@ public class SettingManager {
         return manager != null ? manager : (manager = new SettingManager());
     }
 
-
     /**
      * 保存字体大小
      *

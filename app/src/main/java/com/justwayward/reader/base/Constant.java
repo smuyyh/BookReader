@@ -4,6 +4,8 @@ import android.graphics.Color;
 import android.support.annotation.StringDef;
 
 import com.justwayward.reader.ReaderApplication;
+import com.justwayward.reader.utils.AppUtils;
+import com.justwayward.reader.utils.FileUtils;
 
 import org.apache.commons.collections4.map.HashedMap;
 
@@ -25,6 +27,8 @@ public class Constant {
     public static final String API_BASE_URL = "http://api.zhuishushenqi.com";
 
     public static final String PATH_DATA = ReaderApplication.getsInstance().getCacheDir().getAbsolutePath() + File.separator + "data";
+
+    public static String BASE_PATH = FileUtils.createRootPath(AppUtils.getAppContext()) + "/book/";
 
     public static final String ISNIGHT = "isNight";
 

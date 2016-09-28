@@ -49,7 +49,6 @@ import com.justwayward.reader.ui.adapter.TocListAdapter;
 import com.justwayward.reader.ui.contract.BookReadContract;
 import com.justwayward.reader.ui.easyadapter.ReadThemeAdapter;
 import com.justwayward.reader.ui.presenter.BookReadPresenter;
-import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.ScreenUtils;
@@ -179,15 +178,15 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @Override
     public void initToolBar() {
-
     }
 
     @Override
     public void initDatas() {
-        recommendBooks = (Recommend.RecommendBooks) getIntent().getSerializableExtra(INTENT_BEAN);
-        ThemeManager.setReaderTheme(SettingManager.getInstance().getReadTheme(), mRlBookReadRoot);
-        showDialog();
         EventBus.getDefault().register(this);
+        showDialog();
+
+        recommendBooks = (Recommend.RecommendBooks) getIntent().getSerializableExtra(INTENT_BEAN);
+
         mTvBookReadTocTitle.setText(recommendBooks.title);
 
         mTtsPlayer = TTSPlayerUtils.getTTSPlayer();
@@ -199,6 +198,18 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @Override
     public void configViews() {
+        initTocList();
+
+        initAASet();
+
+        initPagerWidget();
+
+        mPresenter.attachView(this);
+        mPresenter.getBookToc(recommendBooks._id, "chapters");
+    }
+
+
+    private void initTocList() {
         mTocListAdapter = new TocListAdapter(this, mChapterList, currentChapter);
         mTocListPopupWindow = new ListPopupWindow(this);
         mTocListPopupWindow.setAdapter(mTocListAdapter);
@@ -217,13 +228,27 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                 readCurrentChapter();
             }
         });
+        mTocListPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                gone(mTvBookReadTocTitle);
+                visible(mTvBookReadReading, mTvBookReadCommunity, mTvBookReadChangeSource);
+            }
+        });
+    }
+
+    private void initAASet() {
+        curTheme = SettingManager.getInstance().getReadTheme();
+        ThemeManager.setReaderTheme(curTheme, mRlBookReadRoot);
 
         seekbarFontSize.setMax(40);
         seekbarFontSize.setProgress(ScreenUtils.pxToDpInt(SettingManager.getInstance().getReadFontSize(recommendBooks._id)));
         seekbarFontSize.setOnSeekBarChangeListener(new SeekBarChangeListener());
+
         seekbarLightness.setMax(100);
         seekbarLightness.setOnSeekBarChangeListener(new SeekBarChangeListener());
         seekbarLightness.setProgress(SettingManager.getInstance().getReadBrightness());
+
         cbVolume.setChecked(SettingManager.getInstance().isVolumeFlipEnable());
         cbVolume.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -231,42 +256,41 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                 SettingManager.getInstance().saveVolumeFlipEnable(isChecked);
             }
         });
-        curTheme = SettingManager.getInstance().getReadTheme();
-        themes = ThemeManager.getReaderThemeData(curTheme);
-        gvAdapter = new ReadThemeAdapter(this, themes);
+
+        gvAdapter = new ReadThemeAdapter(this, (themes = ThemeManager.getReaderThemeData(curTheme)), curTheme);
         gvTheme.setAdapter(gvAdapter);
         gvTheme.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                SettingManager.getInstance().saveReadTheme(position);
-                themes.get(curTheme).selected = false;
-                curTheme = position;
-                themes.get(position).selected = true;
-                gvAdapter.notifyDataSetChanged();
-                LogUtils.i("curtheme=" + curTheme);
-                mPageWidget.setTheme(curTheme);
+                gvAdapter.select(position);
+                mPageWidget.setTheme((curTheme = position));
+
                 mTvBookReadMode.setText(getString(R.string.book_read_mode_night_manual_setting));
                 mPageWidget.setTextColor(ContextCompat.getColor(mContext, R.color.black));
-
                 if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)) {
                     SharedPreferencesUtil.getInstance().putBoolean(Constant.ISNIGHT, false);
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 }
             }
         });
+    }
 
-        mPresenter.attachView(this);
-        mPresenter.getBookToc(recommendBooks._id, "chapters");
+    private void initPagerWidget() {
+        mPageWidget = new PageWidget(this, recommendBooks._id, new ReadListener());// 页面
+        flReadWidget.removeAllViews();
+        flReadWidget.addView(mPageWidget);
+        registerReceiver(receiver, intentFilter);
     }
 
     /**
-     * 读取currentChapter章节。章节文件存在则直接阅读，不存在就请求加载
+     * 读取currentChapter章节。章节文件存在则直接阅读，不存在则请求
      */
     public void readCurrentChapter() {
-        if (getBookFile(currentChapter).length() > 50)
+        if (getBookFile(currentChapter).length() > 50) {
             showChapterRead(null, currentChapter);
-        else
+        } else {
             mPresenter.getChapterRead(mChapterList.get(currentChapter - 1).link, currentChapter);
+        }
     }
 
     @Override
@@ -277,13 +301,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         readCurrentChapter();
     }
 
-    private String basePath = FileUtils.createRootPath(AppUtils.getAppContext()) + "/book/";
-
-    public File getBookFile(int chapter) {
-        File file = new File(basePath + recommendBooks._id + "/" + chapter + ".txt");
-        if (!file.exists())
-            FileUtils.createFile(file);
-        return file;
+    public File getBookFile(int chapter) { // 获取章节对应文件
+        return FileUtils.getChapterFile(recommendBooks._id, chapter);
     }
 
     @Override
@@ -291,22 +310,14 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         if (data != null) {
             File file = getBookFile(chapter);
             FileUtils.writeFile(file.getAbsolutePath(), data.body, false);
-            LogUtils.i("save chapter:" + chapter);
         }
 
         if (!startRead) {
             startRead = true;
-            File dir = getBookFile(chapter);
-            if (dir != null) {
-                if (mPageWidget == null) {
-                    registerReceiver(receiver, intentFilter);
-                    mPageWidget = new PageWidget(this, recommendBooks._id, chapter, mChapterList,
-                            new ReadListener(), curTheme);// 页面
-                    flReadWidget.removeAllViews();
-                    flReadWidget.addView(mPageWidget);
-                } else {
-                    mPageWidget.jumpToChapter(currentChapter);
-                }
+            if (!mPageWidget.isPrepared) {
+                mPageWidget.init(chapter, mChapterList, curTheme);
+            } else {
+                mPageWidget.jumpToChapter(currentChapter);
             }
             hideDialog();
         }
@@ -314,7 +325,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @Override
     public void showBookSource(List<BookSource> list) {
-
     }
 
     @Override
@@ -323,9 +333,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         ToastUtils.showToast(R.string.net_error);
     }
 
-    /**
-     * 返回按钮监听
-     */
     @OnClick(R.id.ivBack)
     public void onClickBack() {
         if (mTocListPopupWindow.isShowing()) {
@@ -335,42 +342,28 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         }
     }
 
-    /**
-     * 朗读按钮监听
-     */
     @OnClick(R.id.tvBookReadReading)
     public void readBook() {
         ToastUtils.showToast("正在拼命开发中...");
     }
 
-    /**
-     * 社区按钮监听
-     */
     @OnClick(R.id.tvBookReadCommunity)
     public void onClickCommunity() {
         BookDetailCommunityActivity.startActivity(this, recommendBooks._id, mTvBookReadTocTitle.getText().toString(), 0);
     }
 
-    /**
-     * 简介按钮监听
-     */
     @OnClick(R.id.tvBookReadIntroduce)
     public void onClickIntroduce() {
         BookDetailActivity.startActivity(mContext, recommendBooks._id);
     }
 
-    /**
-     * 夜间模式按钮监听
-     */
     @OnClick(R.id.tvBookReadMode)
     public void onClickChangeMode() {
         if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)) {
             SharedPreferencesUtil.getInstance().putBoolean(Constant.ISNIGHT, false);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
-            curTheme = SettingManager.getInstance().getReadTheme();
-            themes.get(curTheme).selected = true;
-            gvAdapter.notifyDataSetChanged();
+            gvAdapter.select((curTheme = SettingManager.getInstance().getReadTheme()));
             mPageWidget.setTheme(curTheme);
             mTvBookReadMode.setText(getString(R.string.book_read_mode_night_manual_setting));
             mPageWidget.setTextColor(ContextCompat.getColor(mContext, R.color.black));
@@ -382,12 +375,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             mTvBookReadMode.setText(getString(R.string.book_read_mode_day_manual_setting));
             mPageWidget.setTextColor(ContextCompat.getColor(mContext, R.color.white));
         }
-        // recreate();
     }
 
-    /**
-     * 设置按钮监听
-     */
     @OnClick(R.id.tvBookReadSettings)
     public void setting() {
         if (isVisible(mLlBookReadBottom)) {
@@ -399,9 +388,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         }
     }
 
-    /**
-     * 缓存按钮监听
-     */
     @OnClick(R.id.tvBookReadDownload)
     public void downloadBook() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -427,9 +413,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         builder.show();
     }
 
-    /**
-     * 目录按钮监听
-     */
     @OnClick(R.id.tvBookReadToc)
     public void onClickToc() {
         if (!mTocListPopupWindow.isShowing()) {
@@ -524,10 +507,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (mTocListPopupWindow.isShowing()) {
                 mTocListPopupWindow.dismiss();
-                mTvBookReadTocTitle.setVisibility(View.GONE);
-                mTvBookReadReading.setVisibility(View.VISIBLE);
-                mTvBookReadCommunity.setVisibility(View.VISIBLE);
-                mTvBookReadChangeSource.setVisibility(View.VISIBLE);
+                gone(mTvBookReadTocTitle);
+                visible(mTvBookReadReading, mTvBookReadCommunity, mTvBookReadChangeSource);
                 return true;
             } else if (isVisible(rlReadAaSet)) {
                 gone(rlReadAaSet);

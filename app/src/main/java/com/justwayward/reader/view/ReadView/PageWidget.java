@@ -79,10 +79,9 @@ public class PageWidget extends View {
 
     private OnReadStateChangeListener listener;
     private String bookId;
+    public boolean isPrepared = false;
 
-    public PageWidget(Context context, String bookId,
-                      int chapter, List<BookToc.mixToc.Chapters> chaptersList,
-                      OnReadStateChangeListener listener, int theme) {
+    public PageWidget(Context context, String bookId, OnReadStateChangeListener listener) {
         super(context);
         this.listener = listener;
         this.bookId = bookId;
@@ -106,24 +105,31 @@ public class PageWidget extends View {
         mTouch.x = 0.01f; // 不让x,y为0,否则在点计算时会有问题
         mTouch.y = 0.01f;
 
-        mCurPageBitmap = Bitmap.createBitmap(mScreenWidth, mScreenHeight, Bitmap.Config.ARGB_8888);
-        mNextPageBitmap = Bitmap.createBitmap(mScreenWidth, mScreenHeight, Bitmap.Config.ARGB_8888);
-        mCurrentPageCanvas = new Canvas(mCurPageBitmap);
-        mNextPageCanvas = new Canvas(mNextPageBitmap);
-        pagefactory = new PageFactory(getContext(), bookId, chapter, chaptersList);
-        pagefactory.setOnReadStateChangeListener(listener);
-        try {
-            pagefactory.setBgBitmap(ThemeManager.getThemeDrawable(theme));
-            // 自动跳转到上次阅读位置
-            int pos[] = SettingManager.getInstance().getReadProgress(bookId);
-            int ret = pagefactory.openBook(pos[0], new int[]{pos[1], pos[2]});
-            LogUtils.i("上次阅读位置：chapter=" + pos[0] + " startPos=" + pos[1] + " endPos=" + pos[2]);
-            if (ret == 0) {
-                listener.onLoadChapterFailure(pos[0]);
-                return;
+        //init(chapter, chaptersList, theme);
+    }
+
+    public synchronized void init(int chapter, List<BookToc.mixToc.Chapters> chaptersList, int theme) {
+        if (!isPrepared) {
+            mCurPageBitmap = Bitmap.createBitmap(mScreenWidth, mScreenHeight, Bitmap.Config.ARGB_8888);
+            mNextPageBitmap = Bitmap.createBitmap(mScreenWidth, mScreenHeight, Bitmap.Config.ARGB_8888);
+            mCurrentPageCanvas = new Canvas(mCurPageBitmap);
+            mNextPageCanvas = new Canvas(mNextPageBitmap);
+            pagefactory = new PageFactory(getContext(), bookId, chapter, chaptersList);
+            pagefactory.setOnReadStateChangeListener(listener);
+            try {
+                pagefactory.setBgBitmap(ThemeManager.getThemeDrawable(theme));
+                // 自动跳转到上次阅读位置
+                int pos[] = SettingManager.getInstance().getReadProgress(bookId);
+                int ret = pagefactory.openBook(pos[0], new int[]{pos[1], pos[2]});
+                LogUtils.i("上次阅读位置：chapter=" + pos[0] + " startPos=" + pos[1] + " endPos=" + pos[2]);
+                if (ret == 0) {
+                    listener.onLoadChapterFailure(pos[0]);
+                    return;
+                }
+                pagefactory.onDraw(mCurrentPageCanvas);
+            } catch (Exception e) {
             }
-            pagefactory.onDraw(mCurrentPageCanvas);
-        } catch (Exception e) {
+            isPrepared = true;
         }
     }
 

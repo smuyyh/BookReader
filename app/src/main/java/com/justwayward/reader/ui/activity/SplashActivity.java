@@ -16,6 +16,8 @@ public class SplashActivity extends AppCompatActivity {
     @Bind(R.id.tvSkip)
     TextView tvSkip;
 
+    private boolean flag = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,15 +36,17 @@ public class SplashActivity extends AppCompatActivity {
         tvSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (tvSkip.removeCallbacks(runnable))
-                    goHome();
+                goHome();
             }
         });
     }
 
-    private void goHome() {
-        startActivity(new Intent(SplashActivity.this, MainActivity.class));
-        finish();
+    private synchronized void goHome() {
+        if (!flag) {
+            flag = true;
+            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            finish();
+        }
     }
 
     @Override

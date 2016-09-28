@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Environment;
 
+import com.justwayward.reader.base.Constant;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,7 +25,20 @@ import java.text.DecimalFormat;
  */
 public class FileUtils {
 
-    private static final String TAG = FileUtils.class.getSimpleName();
+    public static String getChapterPath(String bookId, int chapter) {
+        return Constant.BASE_PATH + bookId + File.separator + chapter + ".txt";
+    }
+
+    public static File getChapterFile(String bookId, int chapter) {
+        File file = new File(getChapterPath(bookId, chapter));
+        if (!file.exists())
+            createFile(file);
+        return file;
+    }
+
+    public static File getBookDir(String bookId) {
+        return new File(Constant.BASE_PATH + bookId);
+    }
 
     /**
      * 创建根缓存目录
@@ -93,7 +108,7 @@ public class FileUtils {
         return "";
     }
 
-    public static String getImageCachePath(String path){
+    public static String getImageCachePath(String path) {
         return createDir(path);
     }
 
@@ -124,6 +139,7 @@ public class FileUtils {
      * @param content  内容
      */
     public static void writeFile(String filePath, String content, boolean isAppend) {
+        LogUtils.i("save:" + filePath);
         try {
             FileOutputStream fout = new FileOutputStream(filePath, isAppend);
             byte[] bytes = content.getBytes();

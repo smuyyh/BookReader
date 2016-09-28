@@ -39,11 +39,10 @@ public class BookPageFactory {
     private int mLineWordCount = 0; // 每行可以显示的字数
 
     private String bookId;
-    private String basePath = FileUtils.createRootPath(AppUtils.getAppContext()) + "/book/";
 
     private static LRUMap<String, ArrayList<String>> cache = new LRUMap<>(10);
 
-    public BookPageFactory(String bookId){
+    public BookPageFactory(String bookId) {
         this.bookId = bookId;
     }
 
@@ -72,10 +71,7 @@ public class BookPageFactory {
     }
 
     public File getBookFile(int chapter) {
-        File file = new File(basePath + bookId + "/" + chapter + ".txt");
-        if (!file.exists())
-            FileUtils.createFile(file);
-        return file;
+        return FileUtils.getChapterFile(bookId, chapter);
     }
 
     /**

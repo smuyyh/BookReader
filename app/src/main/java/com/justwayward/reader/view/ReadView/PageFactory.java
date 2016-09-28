@@ -74,7 +74,6 @@ public class PageFactory {
     private Bitmap m_book_bg;
     private Vector<String> m_lines = new Vector<>();
 
-    private String basePath = FileUtils.createRootPath(AppUtils.getAppContext()) + "/book/";
     private String bookId;
     private int currentChapter;
     private List<BookToc.mixToc.Chapters> chaptersList;
@@ -136,10 +135,7 @@ public class PageFactory {
     }
 
     public File getBookFile(int chapter) {
-        File file = new File(basePath + bookId + "/" + chapter + ".txt");
-        if (!file.exists())
-            FileUtils.createFile(file);
-        return file;
+        return FileUtils.getChapterFile(bookId, chapter);
     }
 
     public void openBook() {
