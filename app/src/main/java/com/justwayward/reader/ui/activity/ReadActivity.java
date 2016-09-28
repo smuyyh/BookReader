@@ -263,11 +263,10 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         gvTheme.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                curTheme = position;
                 if (position < themes.size() - 1) {
-                    changedMode(false);
+                    changedMode(false, position);
                 } else {
-                    changedMode(true);
+                    changedMode(true, position);
                 }
             }
         });
@@ -361,15 +360,20 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     @OnClick(R.id.tvBookReadMode)
     public void onClickChangeMode() { // 日/夜间模式切换
         boolean isNight = !SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false);
-        curTheme = isNight ? themes.size() - 1 : SettingManager.getInstance().getReadTheme();
-        changedMode(isNight);
+
+        changedMode(isNight, -1);
     }
 
-    private void changedMode(boolean isNight) {
+    private void changedMode(boolean isNight, int position) {
         SharedPreferencesUtil.getInstance().putBoolean(Constant.ISNIGHT, isNight);
-        AppCompatDelegate.setDefaultNightMode(isNight ? AppCompatDelegate.MODE_NIGHT_NO
-                : AppCompatDelegate.MODE_NIGHT_YES);
+        AppCompatDelegate.setDefaultNightMode(isNight ? AppCompatDelegate.MODE_NIGHT_YES
+                : AppCompatDelegate.MODE_NIGHT_NO);
 
+        if (position >= 0) {
+            curTheme = position;
+        } else {
+            curTheme = SettingManager.getInstance().getReadTheme();
+        }
         gvAdapter.select(curTheme);
 
         mPageWidget.setTheme(isNight ? ThemeManager.NIGHT : curTheme);

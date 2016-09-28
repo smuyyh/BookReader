@@ -703,9 +703,9 @@ public class PageWidget extends View {
                 pagefactory.onDraw(mNextPageCanvas);
                 postInvalidate();
             }
-            if (theme < 5) {
-                SettingManager.getInstance().saveReadTheme(theme);
-            }
+        }
+        if (theme < 5) {
+            SettingManager.getInstance().saveReadTheme(theme);
         }
     }
 
