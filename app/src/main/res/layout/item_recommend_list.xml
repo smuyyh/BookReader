@@ -29,10 +29,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
+            android:maxEms="15"
             android:singleLine="true"
-            android:text="宦官哈哈"
             android:textColor="@color/common_h1"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            tools:text="逆鳞"/>
 
         <TextView
             android:id="@+id/tvRecommendShort"
@@ -40,9 +41,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:ellipsize="end"
-            android:maxLines="2"
-            android:text="xxxxxxxxxxxxxxxx"
-            android:textColor="@color/common_h2"/>
+            android:maxEms="15"
+            android:singleLine="true"
+            android:textColor="@color/common_h2"
+            tools:text="第二卷、逆水行舟！第四百六十五章、打蛇七寸！"/>
     </LinearLayout>
 
     <ImageView
@@ -58,9 +60,9 @@
         android:id="@+id/ckBoxSelect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="15dp"
-        android:layout_alignParentRight="true"
         android:visibility="gone"
         tools:visibility="visible"/>
 
