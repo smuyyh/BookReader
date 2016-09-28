@@ -76,6 +76,9 @@ public class CollectionsManager {
      */
     public boolean isCollected(String bookId) {
         List<Recommend.RecommendBooks> list = getCollectionList();
+        if (list == null || list.isEmpty()) {
+            return false;
+        }
         for (Recommend.RecommendBooks bean : list) {
             if (bean._id.equals(bookId)) {
                 return true;
