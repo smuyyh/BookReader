@@ -128,6 +128,7 @@ public class PageWidget extends View {
                     return;
                 }
                 pagefactory.onDraw(mCurrentPageCanvas);
+                postInvalidate();
             } catch (Exception e) {
             }
             isPrepared = true;
@@ -645,7 +646,6 @@ public class PageWidget extends View {
         pagefactory.openBook(chapter, new int[]{0, 0});
         pagefactory.onDraw(mCurrentPageCanvas);
         pagefactory.onDraw(mNextPageCanvas);
-        startAnimation(1000);
         postInvalidate();
     }
 
