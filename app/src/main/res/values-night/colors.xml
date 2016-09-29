@@ -24,13 +24,4 @@
     <!--通用分割线粗-->
     <color name="common_divider_wide">#333333</color>
 
-    <!--阅读页面的背景色-->
-    <color name="book_read_bg">@color/black</color>
-
-    <color name="chapter_title">#292929</color>
-    <color name="chapter_content">#444444</color>
-    <color name="chapter_page_number">#292929</color>
-
-    <color name="read_theme_text">@color/white</color>
-
 </resources>

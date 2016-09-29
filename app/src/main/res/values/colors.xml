@@ -42,19 +42,24 @@
     <!--通用分割线粗-->
     <color name="common_divider_wide">@color/light_white</color>
 
-    <!--阅读页面的背景色-->
-    <color name="book_read_bg">@color/white</color>
-
-    <color name="chapter_title">#81765D</color>
-    <color name="chapter_content">#3B3220</color>
-    <color name="chapter_page_number">#7D735A</color>
-
-    <color name="reader_menu_bg_color">#464646</color>
+    <color name="reader_menu_bg_color">#191919</color>
     <color name="read_theme_white">#ffffff</color>
     <color name="read_theme_green">#bed0cf</color>
     <color name="read_theme_yellow">#e6dbbf</color>
     <color name="read_theme_gray">#AAAAAA</color>
-    <color name="read_theme_night">#666666</color>
-    <color name="read_theme_text">@color/black</color>
+    <color name="read_theme_night">#000000</color>
+
+    <!--章节标题夜间颜色-->
+    <color name="chapter_title_night">#292929</color>
+    <!--章节内容夜间颜色-->
+    <color name="chapter_content_night">#444444</color>
+    <!--章节标题日间颜色-->
+    <color name="chapter_title_day">#837B63</color>
+    <!--章节内容夜间颜色-->
+    <color name="chapter_content_day">#3B3220</color>
+    <!--阅读页顶部字体颜色-->
+    <color name="book_read_top_text">#D1D1D1</color>
+    <!--阅读页底部字体颜色-->
+    <color name="book_read_bottom_text">#888888</color>
 
 </resources>

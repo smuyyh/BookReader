@@ -54,6 +54,7 @@ import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.ScreenUtils;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
+import com.justwayward.reader.utils.StringUtils;
 import com.justwayward.reader.utils.TTSPlayerUtils;
 import com.justwayward.reader.utils.ToastUtils;
 import com.justwayward.reader.view.ReadView.OnReadStateChangeListener;
@@ -295,7 +296,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         mPageWidget = new PageWidget(this, recommendBooks._id, mChapterList, new ReadListener());// 页面
         registerReceiver(receiver, intentFilter);
         if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)) {
-            mPageWidget.setTextColor(ContextCompat.getColor(this, R.color.black));
+            mPageWidget.setTextColor(ContextCompat.getColor(this, R.color.chapter_content_night),
+                    ContextCompat.getColor(this, R.color.chapter_title_night));
         }
         flReadWidget.removeAllViews();
         flReadWidget.addView(mPageWidget);
@@ -328,7 +330,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     public synchronized void showChapterRead(ChapterRead.Chapter data, int chapter) { // 加载章节内容
         if (data != null) {
             File file = getBookFile(chapter);
-            FileUtils.writeFile(file.getAbsolutePath(), data.body, false);
+            FileUtils.writeFile(file.getAbsolutePath(), StringUtils.formatContent(data.body), false);
         }
 
         if (!startRead) {
@@ -396,7 +398,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         gvAdapter.select(curTheme);
 
         mPageWidget.setTheme(isNight ? ThemeManager.NIGHT : curTheme);
-        mPageWidget.setTextColor(ContextCompat.getColor(mContext, isNight ? R.color.white : R.color.black));
+        mPageWidget.setTextColor(ContextCompat.getColor(mContext, isNight ? R.color.chapter_content_night : R.color.chapter_content_day),
+                ContextCompat.getColor(mContext, isNight ? R.color.chapter_title_night : R.color.chapter_title_day));
 
         mTvBookReadMode.setText(getString(isNight ? R.string.book_read_mode_day_manual_setting
                 : R.string.book_read_mode_night_manual_setting));

@@ -114,11 +114,11 @@ public class PageFactory {
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setTextSize(mFontSize);
-        mPaint.setTextSize(ContextCompat.getColor(context, R.color.read_theme_text));
+        mPaint.setTextSize(ContextCompat.getColor(context, R.color.chapter_content_day));
         mPaint.setColor(Color.BLACK);
         mTitlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTitlePaint.setTextSize(mNumFontSize);
-        mTitlePaint.setColor(ContextCompat.getColor(AppUtils.getAppContext(), R.color.light_coffee));
+        mTitlePaint.setColor(ContextCompat.getColor(AppUtils.getAppContext(), R.color.chapter_title_day));
         timeLen = (int) mTitlePaint.measureText("00:00");
         percentLen = (int) mTitlePaint.measureText("00.00%");
         // Typeface typeface = Typeface.createFromAsset(context.getAssets(),"fonts/FZBYSK.TTF");
@@ -504,10 +504,12 @@ public class PageFactory {
     /**
      * 设置字体颜色
      *
-     * @param color
+     * @param textColor
+     * @param titleColor
      */
-    public void setTextColor(int color) {
-        mPaint.setColor(color);
+    public void setTextColor(int textColor,int titleColor) {
+        mPaint.setColor(textColor);
+        mTitlePaint.setColor(titleColor);
     }
 
     public int getTextFont() {

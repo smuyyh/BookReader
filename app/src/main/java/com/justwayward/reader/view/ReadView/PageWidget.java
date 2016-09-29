@@ -684,8 +684,8 @@ public class PageWidget extends View {
         }
     }
 
-    public synchronized void setTextColor(final int color) {
-        pagefactory.setTextColor(color);
+    public synchronized void setTextColor(int textColor,int titleColor) {
+        pagefactory.setTextColor(textColor,titleColor);
         if (isPrepared) {
             abortAnimation();
             pagefactory.onDraw(mCurrentPageCanvas);
