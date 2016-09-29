@@ -190,20 +190,44 @@ public class ScreenUtils {
     }
 
     /**
-     * 获得当前屏幕亮度的模式
+     * 判断是否开启了自动亮度调节
      *
-     * @param mContext
-     * @return SCREEN_BRIGHTNESS_MODE_AUTOMATIC 自动调节屏幕亮度
-     * *       SCREEN_BRIGHTNESS_MODE_MANUAL 手动调节屏幕亮度
+     * @param activity
+     * @return
      */
-    public static int getScreenMode(Context mContext) {
-        int screenMode = 0;
+    public static boolean isAutoBrightness(Activity activity) {
+        boolean isAutoAdjustBright = false;
         try {
-            screenMode = Settings.System.getInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE);
-        } catch (Exception localException) {
-
+            isAutoAdjustBright = Settings.System.getInt(
+                    activity.getContentResolver(),
+                    Settings.System.SCREEN_BRIGHTNESS_MODE) == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
         }
-        return screenMode;
+        return isAutoAdjustBright;
+    }
+
+    /**
+     * 关闭亮度自动调节
+     *
+     * @param activity
+     */
+    public static void stopAutoBrightness(Activity activity) {
+        Settings.System.putInt(activity.getContentResolver(),
+                Settings.System.SCREEN_BRIGHTNESS_MODE,
+                Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+    }
+
+    /**
+     * 开启亮度自动调节
+     *
+     * @param activity
+     */
+
+    public static void startAutoBrightness(Activity activity) {
+        Settings.System.putInt(activity.getContentResolver(),
+                Settings.System.SCREEN_BRIGHTNESS_MODE,
+                Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
     }
 
     /**
@@ -220,21 +244,6 @@ public class ScreenUtils {
             e.printStackTrace();
         }
         return screenBrightness / 255.0F * 100;
-    }
-
-    /**
-     * 设置当前屏幕亮度的模式
-     *
-     * @param paramInt SCREEN_BRIGHTNESS_MODE_AUTOMATIC 自动调节屏幕亮度
-     *                 SCREEN_BRIGHTNESS_MODE_MANUAL 手动调节屏幕亮度
-     * @param mContext
-     */
-    public static void setScreenMode(int paramInt, Context mContext) {
-        try {
-            Settings.System.putInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, paramInt);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     /**

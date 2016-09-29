@@ -19,7 +19,7 @@
         android:paddingRight="10dp">
 
         <ImageView
-            android:id="@+id/iv_brightness_minus"
+            android:id="@+id/ivBrightnessMinus"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:scaleType="center"
@@ -40,7 +40,7 @@
             android:thumbOffset="10dp" />
 
         <ImageView
-            android:id="@+id/iv_brightness_plus"
+            android:id="@+id/ivBrightnessPlus"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:scaleType="center"
@@ -56,7 +56,7 @@
         android:paddingRight="10dp">
 
         <TextView
-            android:id="@+id/tv_fontsize_minus"
+            android:id="@+id/tvFontsizeMinus"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:gravity="center"
@@ -79,7 +79,7 @@
             android:thumbOffset="10dp" />
 
         <TextView
-            android:id="@+id/tv_fontsize_plus"
+            android:id="@+id/tvFontsizePlus"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:gravity="center"
@@ -88,15 +88,33 @@
             android:textSize="14dp" />
     </LinearLayout>
 
-    <CheckBox
-        android:id="@+id/cbVolume"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:button="@drawable/volume_checkbox_selector"
-        android:text="音量键翻页"
-        android:textColor="@color/common_h3"
-        android:textSize="14dp" />
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/cbVolume"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:button="@drawable/volume_checkbox_selector"
+            android:text="音量键翻页"
+            android:textColor="@color/common_h3"
+            android:textSize="14dp" />
+
+        <CheckBox
+            android:id="@+id/cbAutoBrightness"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:button="@drawable/volume_checkbox_selector"
+            android:text="自动调整亮度"
+            android:textColor="@color/common_h3"
+            android:textSize="14dp" />
+
+    </LinearLayout>
 
     <GridView
         android:id="@+id/gvTheme"

@@ -112,14 +112,27 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     RelativeLayout mRlBookReadRoot;
     @Bind(R.id.tvDownloadProgress)
     TextView mTvDownloadProgress;
+
     @Bind(R.id.rlReadAaSet)
     LinearLayout rlReadAaSet;
+    @Bind(R.id.ivBrightnessMinus)
+    ImageView ivBrightnessMinus;
     @Bind(R.id.seekbarLightness)
     SeekBar seekbarLightness;
+    @Bind(R.id.ivBrightnessPlus)
+    ImageView ivBrightnessPlus;
+
+    @Bind(R.id.tvFontsizeMinus)
+    TextView tvFontsizeMinus;
     @Bind(R.id.seekbarFontSize)
     SeekBar seekbarFontSize;
+    @Bind(R.id.tvFontsizePlus)
+    TextView tvFontsizePlus;
+
     @Bind(R.id.cbVolume)
     CheckBox cbVolume;
+    @Bind(R.id.cbAutoBrightness)
+    CheckBox cbAutoBrightness;
     @Bind(R.id.gvTheme)
     GridView gvTheme;
 
@@ -154,6 +167,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     public static final String INTENT_BEAN = "recommendBooksBean";
 
     private Recommend.RecommendBooks recommendBooks;
+
+    private boolean isAutoLightness = false; // 记录其他页面是否自动调整亮度
 
     //添加收藏需要，所以跳转的时候传递整个实体类
     public static void startActivity(Context context, Recommend.RecommendBooks recommendBooks) {
@@ -249,14 +264,20 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         seekbarLightness.setMax(100);
         seekbarLightness.setOnSeekBarChangeListener(new SeekBarChangeListener());
         seekbarLightness.setProgress(SettingManager.getInstance().getReadBrightness());
+        isAutoLightness = ScreenUtils.isAutoBrightness(this);
+        seekbarLightness.setProgress(SettingManager.getInstance().getReadBrightness());
+        if (SettingManager.getInstance().isAutoBrightness()) {
+            seekbarLightness.setEnabled(false);
+        } else {
+            seekbarLightness.setEnabled(true);
+            ScreenUtils.setScreenBrightness(SettingManager.getInstance().getReadBrightness(), this);
+        }
 
         cbVolume.setChecked(SettingManager.getInstance().isVolumeFlipEnable());
-        cbVolume.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SettingManager.getInstance().saveVolumeFlipEnable(isChecked);
-            }
-        });
+        cbVolume.setOnCheckedChangeListener(new ChechBoxChangeListener());
+
+        cbAutoBrightness.setChecked(SettingManager.getInstance().isAutoBrightness());
+        cbAutoBrightness.setOnCheckedChangeListener(new ChechBoxChangeListener());
 
         gvAdapter = new ReadThemeAdapter(this, (themes = ThemeManager.getReaderThemeData(curTheme)), curTheme);
         gvTheme.setAdapter(gvAdapter);
@@ -436,6 +457,46 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         }
     }
 
+    @OnClick(R.id.ivBrightnessMinus)
+    public void brightnessMinus() {
+        int curBrightness = SettingManager.getInstance().getReadBrightness();
+        if (curBrightness > 2 && !SettingManager.getInstance().isAutoBrightness()) {
+            seekbarLightness.setProgress((curBrightness = curBrightness - 2));
+            ScreenUtils.setScreenBrightness(curBrightness, ReadActivity.this);
+            SettingManager.getInstance().saveReadBrightness(curBrightness);
+        }
+    }
+
+    @OnClick(R.id.ivBrightnessPlus)
+    public void brightnessPlus() {
+        int curBrightness = SettingManager.getInstance().getReadBrightness();
+        if (curBrightness < 99 && !SettingManager.getInstance().isAutoBrightness()) {
+            seekbarLightness.setProgress((curBrightness = curBrightness + 2));
+            ScreenUtils.setScreenBrightness(curBrightness, ReadActivity.this);
+            SettingManager.getInstance().saveReadBrightness(curBrightness);
+        }
+    }
+
+    @OnClick(R.id.tvFontsizeMinus)
+    public void fontsizeMinus() {
+        int curFontSize = SettingManager.getInstance().getReadFontSize(recommendBooks._id);
+        int curFontSizeDp = ScreenUtils.pxToDpInt(curFontSize);
+        if (curFontSizeDp > 5) {
+            seekbarFontSize.setProgress(--curFontSizeDp);
+            mPageWidget.setFontSize(ScreenUtils.dpToPxInt(curFontSizeDp));
+        }
+    }
+
+    @OnClick(R.id.tvFontsizePlus)
+    public void fontsizePlus() {
+        int curFontSize = SettingManager.getInstance().getReadFontSize(recommendBooks._id);
+        int curFontSizeDp = ScreenUtils.pxToDpInt(curFontSize);
+        if (curFontSizeDp < 40) {
+            seekbarFontSize.setProgress(++curFontSizeDp);
+            mPageWidget.setFontSize(ScreenUtils.dpToPxInt(curFontSizeDp));
+        }
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void showDownProgress(DownloadProgress progress) {
         if (recommendBooks._id.equals(progress.bookId)) {
@@ -512,39 +573,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (mTocListPopupWindow.isShowing()) {
-                mTocListPopupWindow.dismiss();
-                gone(mTvBookReadTocTitle);
-                visible(mTvBookReadReading, mTvBookReadCommunity, mTvBookReadChangeSource);
-                return true;
-            } else if (isVisible(rlReadAaSet)) {
-                gone(rlReadAaSet);
-                return true;
-            } else if (isVisible(mLlBookReadBottom)) {
-                hideReadBar();
-                return true;
-            } else if (!CollectionsManager.getInstance().isCollected(recommendBooks._id)) {
-                showJoinBookShelfDialog(recommendBooks);
-                return true;
-            }
-        } else if (keyCode == KeyEvent.KEYCODE_MENU) {
-            toggleReadBar();
-            return true;
-        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-            if (SettingManager.getInstance().isVolumeFlipEnable()) {
-                return true;
-            }
-        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
-            if (SettingManager.getInstance().isVolumeFlipEnable()) {
-                return true;
-            }
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
     /**
      * 显示加入书架对话框
      *
@@ -579,6 +607,39 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     }
 
     @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (mTocListPopupWindow.isShowing()) {
+                mTocListPopupWindow.dismiss();
+                gone(mTvBookReadTocTitle);
+                visible(mTvBookReadReading, mTvBookReadCommunity, mTvBookReadChangeSource);
+                return true;
+            } else if (isVisible(rlReadAaSet)) {
+                gone(rlReadAaSet);
+                return true;
+            } else if (isVisible(mLlBookReadBottom)) {
+                hideReadBar();
+                return true;
+            } else if (!CollectionsManager.getInstance().isCollected(recommendBooks._id)) {
+                showJoinBookShelfDialog(recommendBooks);
+                return true;
+            }
+        } else if (keyCode == KeyEvent.KEYCODE_MENU) {
+            toggleReadBar();
+            return true;
+        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            if (SettingManager.getInstance().isVolumeFlipEnable()) {
+                return true;
+            }
+        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            if (SettingManager.getInstance().isVolumeFlipEnable()) {
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
             // 防止翻页有声音
@@ -605,6 +666,11 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             unregisterReceiver(receiver);
         } catch (Exception e) {
             LogUtils.e("Receiver not registered");
+        }
+        if (isAutoLightness) {
+            ScreenUtils.startAutoBrightness(ReadActivity.this);
+        } else {
+            ScreenUtils.stopAutoBrightness(ReadActivity.this);
         }
     }
 
@@ -651,9 +717,10 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            if (seekBar.getId() == seekbarFontSize.getId()) {
+            if (seekBar.getId() == seekbarFontSize.getId() && fromUser) {
                 mPageWidget.setFontSize(ScreenUtils.dpToPxInt(progress));
-            } else if (seekBar.getId() == seekbarLightness.getId()) {
+            } else if (seekBar.getId() == seekbarLightness.getId() && fromUser
+                    && !SettingManager.getInstance().isAutoBrightness()) { // 非自动调节模式下 才可调整屏幕亮度
                 ScreenUtils.setScreenBrightness(progress, ReadActivity.this);
                 SettingManager.getInstance().saveReadBrightness(progress);
             }
@@ -670,6 +737,23 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         }
     }
 
+    class ChechBoxChangeListener implements CompoundButton.OnCheckedChangeListener {
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if (buttonView.getId() == cbVolume.getId()) {
+                SettingManager.getInstance().saveVolumeFlipEnable(isChecked);
+            } else if (buttonView.getId() == cbAutoBrightness.getId()) {
+                SettingManager.getInstance().saveAutoBrightness(isChecked);
+                if (isChecked) {
+                    startAutoLightness();
+                } else {
+                    stopAutoLightness();
+                }
+            }
+        }
+    }
+
     class Receiver extends BroadcastReceiver {
 
         @Override
@@ -683,6 +767,21 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                 }
             }
         }
+    }
+
+    private void startAutoLightness() {
+        SettingManager.getInstance().saveAutoBrightness(true);
+        ScreenUtils.startAutoBrightness(ReadActivity.this);
+        seekbarLightness.setEnabled(false);
+    }
+
+    private void stopAutoLightness() {
+        SettingManager.getInstance().saveAutoBrightness(false);
+        ScreenUtils.stopAutoBrightness(ReadActivity.this);
+        int value = SettingManager.getInstance().getReadBrightness();
+        seekbarLightness.setProgress(value);
+        ScreenUtils.setScreenBrightness(value, ReadActivity.this);
+        seekbarLightness.setEnabled(true);
     }
 
 }
