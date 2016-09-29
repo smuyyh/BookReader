@@ -17,6 +17,7 @@ public class SplashActivity extends AppCompatActivity {
     TextView tvSkip;
 
     private boolean flag = false;
+    private Runnable runnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
 
-        final Runnable runnable = new Runnable() {
+        runnable = new Runnable() {
             @Override
             public void run() {
                 goHome();
@@ -52,6 +53,8 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        flag = true;
+        tvSkip.removeCallbacks(runnable);
         ButterKnife.unbind(this);
     }
 }

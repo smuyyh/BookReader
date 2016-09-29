@@ -42,7 +42,7 @@ public class AppUtils {
 
     private static Handler sHandler = new Handler(Looper.getMainLooper());
 
-    public static void init(Context context) { //在Application中初始化
+    public static void init(Context context) {
         mContext = context;
         mUiThread = Thread.currentThread();
     }

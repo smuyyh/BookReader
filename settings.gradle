@@ -1,1 +1,1 @@
-include ':app', ':EasyAdapterLibrary', ':BookFlipLibrary'
+include ':app', ':EasyAdapterLibrary'

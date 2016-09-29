@@ -12,7 +12,7 @@ import android.telephony.TelephonyManager;
 public class NetworkUtils {
 
     private NetworkUtils() {
-        throw new UnsupportedOperationException("u can't fuck me...");
+        throw new UnsupportedOperationException("");
     }
 
     public static final int NETWORK_WIFI = 1;    // wifi network

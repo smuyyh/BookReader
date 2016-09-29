@@ -34,9 +34,6 @@ public class BookApiModule {
         return BookApi.getInstance(okHttpClient);
     }
 
-    /**
-     * 自定义日志输出
-     */
     public static class MyLog implements LoggingInterceptor.Logger {
         @Override
         public void log(String message) {

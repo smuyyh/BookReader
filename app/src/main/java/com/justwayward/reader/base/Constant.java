@@ -3,13 +3,11 @@ package com.justwayward.reader.base;
 import android.graphics.Color;
 import android.support.annotation.StringDef;
 
-import com.justwayward.reader.ReaderApplication;
 import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.FileUtils;
 
 import org.apache.commons.collections4.map.HashedMap;
 
-import java.io.File;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
@@ -26,7 +24,7 @@ public class Constant {
 
     public static final String API_BASE_URL = "http://api.zhuishushenqi.com";
 
-    public static final String PATH_DATA = ReaderApplication.getsInstance().getCacheDir().getAbsolutePath() + File.separator + "data";
+    public static String PATH_DATA = FileUtils.createRootPath(AppUtils.getAppContext()) + "/data";
 
     public static String BASE_PATH = FileUtils.createRootPath(AppUtils.getAppContext()) + "/book/";
 

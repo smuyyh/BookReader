@@ -8,7 +8,7 @@ public class StringUtils {
     public static String creatAcacheKey(Object... param) {
         String key = "";
         for (Object o : param) {
-            key = key + "-" + o;
+            key += "-" + o;
         }
         return key.replaceFirst("-","");
     }

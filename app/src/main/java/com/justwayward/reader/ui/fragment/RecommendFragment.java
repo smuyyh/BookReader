@@ -118,8 +118,8 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
 
     @Override
     public void onItemClick(int position) {
-        //批量管理时，屏蔽点击事件
-        if (isVisible(llBatchManagement)) return;
+        if (isVisible(llBatchManagement)) //批量管理时，屏蔽点击事件
+            return;
         ReadActivity.startActivity(activity, mAdapter.getItem(position));
     }
 

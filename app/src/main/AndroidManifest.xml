@@ -35,10 +35,6 @@
         <activity android:name=".ui.activity.BookDetailActivity" />
         <activity android:name=".ui.activity.BooksByTagActivity" />
         <activity
-            android:name=".ui.activity.BookReadActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar.FullScreen" />
-        <activity
             android:name=".ui.activity.ReadActivity"
             android:hardwareAccelerated="false"
             android:screenOrientation="portrait"
