@@ -265,12 +265,10 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         seekbarLightness.setOnSeekBarChangeListener(new SeekBarChangeListener());
         seekbarLightness.setProgress(SettingManager.getInstance().getReadBrightness());
         isAutoLightness = ScreenUtils.isAutoBrightness(this);
-        seekbarLightness.setProgress(SettingManager.getInstance().getReadBrightness());
         if (SettingManager.getInstance().isAutoBrightness()) {
-            seekbarLightness.setEnabled(false);
+            startAutoLightness();
         } else {
-            seekbarLightness.setEnabled(true);
-            ScreenUtils.setScreenBrightness(SettingManager.getInstance().getReadBrightness(), this);
+            stopAutoLightness();
         }
 
         cbVolume.setChecked(SettingManager.getInstance().isVolumeFlipEnable());
@@ -744,7 +742,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             if (buttonView.getId() == cbVolume.getId()) {
                 SettingManager.getInstance().saveVolumeFlipEnable(isChecked);
             } else if (buttonView.getId() == cbAutoBrightness.getId()) {
-                SettingManager.getInstance().saveAutoBrightness(isChecked);
                 if (isChecked) {
                     startAutoLightness();
                 } else {
