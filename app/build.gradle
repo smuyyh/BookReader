@@ -8,7 +8,7 @@ android {
     defaultConfig {
         applicationId "com.justwayward.reader"
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }
