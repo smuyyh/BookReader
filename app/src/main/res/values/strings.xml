@@ -39,7 +39,8 @@
     <string name="book_read_download">缓存</string>
     <string name="book_read_toc">目录</string>
     <string name="book_read_download_error">网络异常，已取消下载</string>
-    <string name="book_read_download_complete">缓存完成</string>
+    <string name="book_read_download_complete">缓存完成，失败%1$d章</string>
+    <string name="book_read_alreday_download">已缓存过:%1$s(%2$d/%3$d)...</string>
     <string name="book_read_download_progress">正在缓存:%1$s(%2$d/%3$d)...</string>
     <string name="net_error">网络异常</string>
     <string name="book_read_add_book">添书</string>

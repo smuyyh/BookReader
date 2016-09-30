@@ -10,8 +10,11 @@ public class DownloadProgress {
 
     public int progress;
 
-    public DownloadProgress(String bookId, int progress) {
+    public boolean isAlreadyDownload = false;
+
+    public DownloadProgress(String bookId, int progress, boolean isAlreadyDownload) {
         this.bookId = bookId;
         this.progress = progress;
+        this.isAlreadyDownload = isAlreadyDownload;
     }
 }

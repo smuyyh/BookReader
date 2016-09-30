@@ -33,8 +33,7 @@ import com.justwayward.reader.bean.BookSource;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.bean.Recommend;
-import com.justwayward.reader.bean.support.DownloadComplete;
-import com.justwayward.reader.bean.support.DownloadError;
+import com.justwayward.reader.bean.support.DownloadMessage;
 import com.justwayward.reader.bean.support.DownloadProgress;
 import com.justwayward.reader.bean.support.DownloadQueue;
 import com.justwayward.reader.bean.support.ReadTheme;
@@ -500,10 +499,14 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void showDownProgress(DownloadProgress progress) {
         if (recommendBooks._id.equals(progress.bookId)) {
-            LogUtils.e(progress.bookId + " " + progress.progress + "/" + mChapterList.size());
             if (isVisible(mLlBookReadBottom)) { // 如果工具栏显示，则进度条也显示
                 visible(mTvDownloadProgress);
-                mTvDownloadProgress.setText(String.format(getString(R.string.book_read_download_progress), mChapterList.get(progress.progress - 1).title, progress.progress, mChapterList.size()));
+                // 如果之前缓存过，就给提示
+                mTvDownloadProgress.setText(String.format(progress.isAlreadyDownload ?
+                                getString(R.string.book_read_alreday_download) :
+                                getString(R.string.book_read_download_progress),
+                        mChapterList.get(progress.progress - 1).title
+                        , progress.progress, mChapterList.size()));
             } else {
                 gone(mTvDownloadProgress);
             }
@@ -511,38 +514,20 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void downloadComplete(DownloadComplete complete) {
-        if (recommendBooks._id.equals(complete.bookId)) {
-            mTvDownloadProgress.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mTvDownloadProgress.setText(getString(R.string.book_read_download_complete));
+    public void downloadMessage(final DownloadMessage msg) {
+        if (isVisible(mLlBookReadBottom)) { // 如果工具栏显示，则进度条也显示
+            if (recommendBooks._id.equals(msg.bookId)) {
+                visible(mTvDownloadProgress);
+                mTvDownloadProgress.setText(msg.message);
+                if (msg.isComplete) {
+                    mTvDownloadProgress.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            gone(mTvDownloadProgress);
+                        }
+                    }, 2500);
                 }
-            }, 500);
-            mTvDownloadProgress.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    gone(mTvDownloadProgress);
-                }
-            }, 2500);
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void downloadError(DownloadError error) {
-        if (recommendBooks._id.equals(error.bookId)) {
-            mTvDownloadProgress.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mTvDownloadProgress.setText(getString(R.string.book_read_download_error));
-                }
-            }, 500);
-            mTvDownloadProgress.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    gone(mTvDownloadProgress);
-                }
-            }, 2500);
+            }
         }
     }
 

@@ -11,9 +11,9 @@
         android:id="@+id/flReadWidget"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layerType="hardware"
         android:clickable="false"
-        android:focusable="false" />
+        android:focusable="false"
+        android:layerType="hardware" />
 
     <LinearLayout
         android:id="@+id/llBookReadTop"
@@ -59,8 +59,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/book_read_reading"
-            android:textSize="@dimen/book_read_top_text"
-            android:textColor="@color/book_read_top_text" />
+            android:textColor="@color/book_read_top_text"
+            android:textSize="@dimen/book_read_top_text" />
 
         <TextView
             android:id="@+id/tvBookReadCommunity"
@@ -69,8 +69,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/book_read_community"
-            android:textSize="@dimen/book_read_top_text"
-            android:textColor="@color/book_read_top_text" />
+            android:textColor="@color/book_read_top_text"
+            android:textSize="@dimen/book_read_top_text" />
 
         <TextView
             android:id="@+id/tvBookReadIntroduce"
@@ -79,8 +79,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/book_read_introduce"
-            android:textSize="@dimen/book_read_top_text"
-            android:textColor="@color/book_read_top_text" />
+            android:textColor="@color/book_read_top_text"
+            android:textSize="@dimen/book_read_top_text" />
 
     </LinearLayout>
 
@@ -95,7 +95,7 @@
         android:paddingTop="10dp"
         android:singleLine="true"
         android:text="@string/book_read_download_progress"
-        android:textColor="@color/book_read_bottom_text"
+        android:textColor="@color/white"
         android:visibility="gone" />
 
     <include layout="@layout/layout_read_aa_set" />
@@ -119,8 +119,8 @@
             android:drawableTop="@drawable/ic_menu_mode_night_normal"
             android:gravity="center"
             android:text="@string/book_read_mode_day"
-            android:textSize="@dimen/book_read_bottom_text"
-            android:textColor="@color/book_read_bottom_text" />
+            android:textColor="@color/book_read_bottom_text"
+            android:textSize="@dimen/book_read_bottom_text" />
 
         <TextView
             android:id="@+id/tvBookReadSettings"
@@ -130,8 +130,8 @@
             android:drawableTop="@drawable/ic_menu_settings_normal"
             android:gravity="center"
             android:text="@string/book_read_settings"
-            android:textSize="@dimen/book_read_bottom_text"
-            android:textColor="@color/book_read_bottom_text" />
+            android:textColor="@color/book_read_bottom_text"
+            android:textSize="@dimen/book_read_bottom_text" />
 
         <TextView
             android:id="@+id/tvBookReadDownload"
@@ -141,8 +141,8 @@
             android:drawableTop="@drawable/ic_reader_ab_download"
             android:gravity="center"
             android:text="@string/book_read_download"
-            android:textSize="@dimen/book_read_bottom_text"
-            android:textColor="@color/book_read_bottom_text" />
+            android:textColor="@color/book_read_bottom_text"
+            android:textSize="@dimen/book_read_bottom_text" />
 
         <TextView
             android:id="@+id/tvBookReadToc"
@@ -152,8 +152,8 @@
             android:drawableTop="@drawable/ic_menu_toc_normal"
             android:gravity="center"
             android:text="@string/book_read_toc"
-            android:textSize="@dimen/book_read_bottom_text"
-            android:textColor="@color/book_read_bottom_text" />
+            android:textColor="@color/book_read_bottom_text"
+            android:textSize="@dimen/book_read_bottom_text" />
 
     </LinearLayout>
 

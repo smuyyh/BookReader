@@ -17,7 +17,8 @@ import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseRVFragment;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.Recommend;
-import com.justwayward.reader.bean.support.DownloadComplete;
+import com.justwayward.reader.bean.support.DownloadMessage;
+import com.justwayward.reader.bean.support.DownloadProgress;
 import com.justwayward.reader.bean.support.DownloadQueue;
 import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
 import com.justwayward.reader.component.AppComponent;
@@ -54,6 +55,8 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
 
     private boolean isHasCollections = false;
     private boolean isSelectAll = false;
+
+    private List<BookToc.mixToc.Chapters> chaptersList = new ArrayList<>();
 
     @Override
     public int getLayoutResId() {
@@ -105,15 +108,27 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
 
     @Override
     public void showBookToc(String bookId, List<BookToc.mixToc.Chapters> list) {
+        chaptersList.clear();
+        chaptersList.addAll(list);
         DownloadBookService.post(new DownloadQueue(bookId, list, 1, list.size()));
         dismissDialog();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void downloadComplete(DownloadComplete complete) {
-        if (isForeground()) {
-            ToastUtils.showSingleToast("缓存完成");
+    public void downloadMessage(final DownloadMessage msg) {
+        mRecyclerView.setTipViewText(msg.message);
+        if (msg.isComplete) {
+            mRecyclerView.hideTipView(2200);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void showDownProgress(DownloadProgress progress) {
+        mRecyclerView.setTipViewText(String.format(progress.isAlreadyDownload ?
+                        getString(R.string.book_read_alreday_download) :
+                        getString(R.string.book_read_download_progress),
+                chaptersList.get(progress.progress - 1).title
+                , progress.progress, chaptersList.size()));
     }
 
     @Override

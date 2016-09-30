@@ -102,7 +102,7 @@ public class SettingManager {
         if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)) {
             return ThemeManager.NIGHT;
         }
-        return SharedPreferencesUtil.getInstance().getInt("readTheme", 0);
+        return SharedPreferencesUtil.getInstance().getInt("readTheme", 3);
     }
 
     /**

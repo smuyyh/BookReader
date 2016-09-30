@@ -7,21 +7,20 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.justwayward.reader.R;
 import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.api.support.HeaderInterceptor;
 import com.justwayward.reader.api.support.LoggingInterceptor;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.ChapterRead;
-import com.justwayward.reader.bean.support.DownloadComplete;
-import com.justwayward.reader.bean.support.DownloadError;
+import com.justwayward.reader.bean.support.DownloadMessage;
 import com.justwayward.reader.bean.support.DownloadProgress;
 import com.justwayward.reader.bean.support.DownloadQueue;
+import com.justwayward.reader.manager.CacheManager;
 import com.justwayward.reader.module.BookApiModule;
 import com.justwayward.reader.utils.AppUtils;
-import com.justwayward.reader.utils.BookPageFactory;
 import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.NetworkUtils;
-import com.justwayward.reader.utils.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -90,37 +89,31 @@ public class DownloadBookService extends Service {
         EventBus.getDefault().post(progress);
     }
 
-    private void post(DownloadComplete complete) {
+    private void post(DownloadMessage complete) {
         EventBus.getDefault().post(complete);
     }
 
-    private void post(DownloadError error) {
-        EventBus.getDefault().post(error);
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public synchronized void addToDownloadQueue(DownloadQueue downloadQueue) {
-        if (!TextUtils.isEmpty(downloadQueue.bookId)) {
-            LogUtils.e("addToDownloadQueue:" + downloadQueue.bookId);
+    public synchronized void addToDownloadQueue(DownloadQueue queue) {
+        if (!TextUtils.isEmpty(queue.bookId)) {
             boolean exists = false;
             // 判断当前书籍缓存任务是否存在
             for (int i = 0; i < downloadQueues.size(); i++) {
-                if (downloadQueues.get(i).bookId.equals(downloadQueue.bookId)) {
+                if (downloadQueues.get(i).bookId.equals(queue.bookId)) {
                     LogUtils.e("addToDownloadQueue:exists");
                     exists = true;
                     break;
                 }
             }
             if (exists) {
-                ToastUtils.showSingleToast("当前缓存任务已存在");
+                post(new DownloadMessage(queue.bookId, "当前缓存任务已存在", false));
                 return;
             }
 
             // 添加到下载队列
-            downloadQueues.add(downloadQueue);
-            // 当前队列里有其他任务，才提示
-            if (downloadQueues.size() >= 1)
-                ToastUtils.showSingleToast("成功加入缓存队列");
+            downloadQueues.add(queue);
+            LogUtils.e("addToDownloadQueue:" + queue.bookId);
+            post(new DownloadMessage(queue.bookId, "成功加入缓存队列", false));
         }
         // 从队列顺序取出第一条下载
         if (downloadQueues.size() > 0 && !isBusy) {
@@ -136,22 +129,25 @@ public class DownloadBookService extends Service {
             String bookId = downloadQueue.bookId;
             int start = downloadQueue.start; // 起始章节
             int end = downloadQueue.end; // 结束章节
-            BookPageFactory factory = new BookPageFactory(bookId, 0);
 
             @Override
             protected Integer doInBackground(Integer... params) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                }
                 int failureCount = 0;
                 for (int i = start; i <= end && i <= list.size(); i++) {
                     // 网络异常，取消下载
                     if (!NetworkUtils.isAvailable(AppUtils.getAppContext())) {
                         downloadQueue.isCancel = true;
-                        post(new DownloadError(bookId));
+                        post(new DownloadMessage(bookId, getString(R.string.book_read_download_error), true));
                         failureCount = -1;
                         break;
                     }
                     if (!downloadQueue.isFinish && !downloadQueue.isCancel) {
                         // 章节文件不存在,则下载，否则跳过
-                        if (factory.getBookFile(i).length() < 50) {
+                        if (CacheManager.getInstance().getChapterFile(bookId, i) == null) {
                             BookToc.mixToc.Chapters chapters = list.get(i - 1);
                             String url = chapters.link;
                             int ret = download(url, bookId, i);
@@ -159,9 +155,13 @@ public class DownloadBookService extends Service {
                                 failureCount++;
                             }
                         } else {
-                            post(new DownloadProgress(bookId, i));
+                            post(new DownloadProgress(bookId, i, true));
                         }
                     }
+                }
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
                 }
                 return failureCount;
             }
@@ -172,8 +172,9 @@ public class DownloadBookService extends Service {
                 super.onPostExecute(failureCount);
                 downloadQueue.isFinish = true;
                 if (failureCount > -1) {
-                    // 通知
-                    post(new DownloadComplete(bookId));
+                    // 完成通知
+                    post(new DownloadMessage(bookId,
+                            String.format(getString(R.string.book_read_download_complete), failureCount), true));
                 }
                 // 下载完成，从队列里移除
                 downloadQueues.remove(downloadQueue);
@@ -190,7 +191,6 @@ public class DownloadBookService extends Service {
     private int download(String url, final String bookId, final int chapter) {
 
         final int[] result = {-1};
-        final BookPageFactory factory = new BookPageFactory(bookId);
 
         bookApi.getChapterRead(url).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -198,8 +198,8 @@ public class DownloadBookService extends Service {
                     @Override
                     public void onNext(ChapterRead data) {
                         if (data.chapter != null) {
-                            post(new DownloadProgress(bookId, chapter));
-                            factory.append(data.chapter, chapter);
+                            post(new DownloadProgress(bookId, chapter, false));
+                            CacheManager.getInstance().saveChapterFile(bookId, chapter, data.chapter);
                             result[0] = 1;
                         } else {
                             result[0] = 0;
