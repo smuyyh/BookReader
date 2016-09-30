@@ -7,6 +7,7 @@ import com.justwayward.reader.R;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.RecommendBookList;
 import com.justwayward.reader.common.OnRvItemClickListener;
+import com.justwayward.reader.utils.NoDoubleClickListener;
 import com.yuyh.easyadapter.recyclerview.EasyRVAdapter;
 import com.yuyh.easyadapter.recyclerview.EasyRVHolder;
 
@@ -37,9 +38,9 @@ public class RecommendBookListAdapter extends EasyRVAdapter<RecommendBookList.Re
                         .book_detail_recommend_book_list_book_count), item.bookCount))
                 .setText(R.id.tvCollectorCount, String.format(mContext.getString(R.string
                         .book_detail_recommend_book_list_collector_count), item.collectorCount));
-        holder.setOnItemViewClickListener(new View.OnClickListener() {
+        holder.setOnItemViewClickListener(new NoDoubleClickListener() {
             @Override
-            public void onClick(View v) {
+            protected void onNoDoubleClick(View view) {
                 itemClickListener.onItemClick(holder.getItemView(), position, item);
             }
         });

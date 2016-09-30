@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.justwayward.reader.ReaderApplication;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.utils.ACache;
+import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.utils.LogUtils;
 
@@ -100,11 +101,15 @@ public class CollectionsManager {
         if (removeCache) {
             for (Recommend.RecommendBooks book : removeList) {
                 try {
+                    // 移除章节文件
                     FileUtils.deleteFileOrDirectory(FileUtils.getBookDir(book._id));
+                    // 移除目录缓存
+                    CacheManager.getInstance().removeTocList(AppUtils.getAppContext(), book._id);
+                    // 移除阅读进度
+                    SettingManager.getInstance().removeReadProgress(book._id);
                 } catch (IOException e) {
                     LogUtils.e(e.toString());
                 }
-                SettingManager.getInstance().removeReadProgress(book._id);
             }
         }
         list.removeAll(removeList);

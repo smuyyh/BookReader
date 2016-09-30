@@ -42,6 +42,7 @@ import com.justwayward.reader.bean.support.RefreshCollectionIconEvent;
 import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerBookComponent;
+import com.justwayward.reader.manager.CacheManager;
 import com.justwayward.reader.manager.CollectionsManager;
 import com.justwayward.reader.manager.SettingManager;
 import com.justwayward.reader.manager.ThemeManager;
@@ -50,11 +51,9 @@ import com.justwayward.reader.ui.adapter.TocListAdapter;
 import com.justwayward.reader.ui.contract.BookReadContract;
 import com.justwayward.reader.ui.easyadapter.ReadThemeAdapter;
 import com.justwayward.reader.ui.presenter.BookReadPresenter;
-import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.ScreenUtils;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
-import com.justwayward.reader.utils.StringUtils;
 import com.justwayward.reader.utils.TTSPlayerUtils;
 import com.justwayward.reader.utils.ToastUtils;
 import com.justwayward.reader.view.ReadView.OnReadStateChangeListener;
@@ -67,7 +66,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -307,7 +305,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
      * 读取currentChapter章节。章节文件存在则直接阅读，不存在则请求
      */
     public void readCurrentChapter() {
-        if (getBookFile(currentChapter).length() > 50) {
+        if (CacheManager.getInstance().getChapterFile(recommendBooks._id, currentChapter) != null) {
             showChapterRead(null, currentChapter);
         } else {
             mPresenter.getChapterRead(mChapterList.get(currentChapter - 1).link, currentChapter);
@@ -322,15 +320,10 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         readCurrentChapter();
     }
 
-    public File getBookFile(int chapter) { // 获取章节对应文件
-        return FileUtils.getChapterFile(recommendBooks._id, chapter);
-    }
-
     @Override
     public synchronized void showChapterRead(ChapterRead.Chapter data, int chapter) { // 加载章节内容
         if (data != null) {
-            File file = getBookFile(chapter);
-            FileUtils.writeFile(file.getAbsolutePath(), StringUtils.formatContent(data.body), false);
+            CacheManager.getInstance().saveChapterFile(recommendBooks._id, chapter, data);
         }
 
         if (!startRead) {
@@ -365,23 +358,27 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @OnClick(R.id.tvBookReadReading)
     public void readBook() {
+        gone(rlReadAaSet);
         ToastUtils.showToast("正在拼命开发中...");
     }
 
     @OnClick(R.id.tvBookReadCommunity)
     public void onClickCommunity() {
+        gone(rlReadAaSet);
         BookDetailCommunityActivity.startActivity(this, recommendBooks._id, mTvBookReadTocTitle.getText().toString(), 0);
     }
 
     @OnClick(R.id.tvBookReadIntroduce)
     public void onClickIntroduce() {
+        gone(rlReadAaSet);
         BookDetailActivity.startActivity(mContext, recommendBooks._id);
     }
 
     @OnClick(R.id.tvBookReadMode)
     public void onClickChangeMode() { // 日/夜间模式切换
-        boolean isNight = !SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false);
+        gone(rlReadAaSet);
 
+        boolean isNight = !SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false);
         changedMode(isNight, -1);
     }
 
@@ -422,6 +419,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @OnClick(R.id.tvBookReadDownload)
     public void downloadBook() {
+        gone(rlReadAaSet);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("缓存多少章？")
                 .setItems(new String[]{"后面五十章", "后面全部", "全部"}, new DialogInterface.OnClickListener() {
@@ -447,6 +445,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @OnClick(R.id.tvBookReadToc)
     public void onClickToc() {
+        gone(rlReadAaSet);
         if (!mTocListPopupWindow.isShowing()) {
             visible(mTvBookReadTocTitle);
             gone(mTvBookReadReading, mTvBookReadCommunity, mTvBookReadChangeSource);
@@ -517,7 +516,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             mTvDownloadProgress.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    mTvDownloadProgress.setText("缓存完成");
+                    mTvDownloadProgress.setText(getString(R.string.book_read_download_complete));
                 }
             }, 500);
             mTvDownloadProgress.postDelayed(new Runnable() {
@@ -535,7 +534,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             mTvDownloadProgress.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    mTvDownloadProgress.setText("网络异常，已取消下载");
+                    mTvDownloadProgress.setText(getString(R.string.book_read_download_error));
                 }
             }, 500);
             mTvDownloadProgress.postDelayed(new Runnable() {
@@ -571,7 +570,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @Override
     public void complete() {
-
+        hideDialog();
     }
 
     /**
@@ -683,7 +682,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             mTocListAdapter.setCurrentChapter(currentChapter);
             // 加载前一节 与 后三节
             for (int i = chapter - 1; i <= chapter + 3 && i <= mChapterList.size(); i++) {
-                if (i > 0 && i != chapter && getBookFile(i).length() < 50) {
+                if (i > 0 && i != chapter
+                        && CacheManager.getInstance().getChapterFile(recommendBooks._id, i) == null) {
                     mPresenter.getChapterRead(mChapterList.get(i - 1).link, i);
                 }
             }
@@ -698,7 +698,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         public void onLoadChapterFailure(int chapter) {
             LogUtils.i("onLoadChapterFailure:" + chapter);
             startRead = false;
-            if (getBookFile(chapter).length() < 50)
+            if (CacheManager.getInstance().getChapterFile(recommendBooks._id, chapter) == null)
                 mPresenter.getChapterRead(mChapterList.get(chapter - 1).link, chapter);
         }
 

@@ -7,7 +7,7 @@ import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseRVActivity;
 import com.justwayward.reader.bean.BookLists;
 import com.justwayward.reader.component.AppComponent;
-import com.justwayward.reader.manager.MyBookListsManager;
+import com.justwayward.reader.manager.CacheManager;
 import com.justwayward.reader.ui.easyadapter.SubjectBookListAdapter;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
 
@@ -73,7 +73,7 @@ public class MyBookListActivity extends BaseRVActivity<BookLists.BookListsBean> 
                                 switch (which) {
                                     case 0:
                                         //删除
-                                        MyBookListsManager.getInstance().remove(mAdapter.getItem(position)._id);
+                                        CacheManager.getInstance().removeCollection(mAdapter.getItem(position)._id);
                                         mAdapter.remove(position);
                                         break;
                                     default:
@@ -89,11 +89,9 @@ public class MyBookListActivity extends BaseRVActivity<BookLists.BookListsBean> 
     @Override
     public void onRefresh() {
         super.onRefresh();
-        List<BookLists.BookListsBean> data = MyBookListsManager.getInstance().getCollectionList();
+        List<BookLists.BookListsBean> data = CacheManager.getInstance().getCollectionList();
         mAdapter.clear();
         mAdapter.addAll(data);
         mRecyclerView.setRefreshing(false);
     }
-
-
 }

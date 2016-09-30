@@ -24,7 +24,7 @@ import com.justwayward.reader.base.BaseRVActivity;
 import com.justwayward.reader.bean.SearchDetail;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerBookComponent;
-import com.justwayward.reader.manager.SPManager;
+import com.justwayward.reader.manager.CacheManager;
 import com.justwayward.reader.ui.adapter.AutoCompleteAdapter;
 import com.justwayward.reader.ui.adapter.SearchHistoryAdapter;
 import com.justwayward.reader.ui.contract.SearchContract;
@@ -268,7 +268,7 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
      * @param query
      */
     private void saveSearchHistory(String query) {
-        List<String> list = SPManager.getInstance().getSearchHistory();
+        List<String> list = CacheManager.getInstance().getSearchHistory();
         if (list == null) {
             list = new ArrayList<>();
             list.add(query);
@@ -288,12 +288,12 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
                 list.remove(i);
             }
         }
-        SPManager.getInstance().saveSearchHistory(list);
+        CacheManager.getInstance().saveSearchHistory(list);
         initSearchHistory();
     }
 
     private void initSearchHistory() {
-        List<String> list = SPManager.getInstance().getSearchHistory();
+        List<String> list = CacheManager.getInstance().getSearchHistory();
         mHisAdapter.clear();
         if (list != null && list.size() > 0) {
             tvClear.setEnabled(true);
@@ -339,7 +339,7 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
 
     @OnClick(R.id.tvClear)
     public void clearSearchHistory() {
-        SPManager.getInstance().saveSearchHistory(null);
+        CacheManager.getInstance().saveSearchHistory(null);
         initSearchHistory();
     }
 

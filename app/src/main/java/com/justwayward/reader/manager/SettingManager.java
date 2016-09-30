@@ -25,15 +25,19 @@ public class SettingManager {
      * @return
      */
     public void saveFontSize(String bookId, int fontSizePx) {
-        SharedPreferencesUtil.getInstance().putInt(bookId + "-readFontSize", fontSizePx);
+        SharedPreferencesUtil.getInstance().putInt(getFontSizeKey(bookId), fontSizePx);
     }
 
     public int getReadFontSize(String bookId) {
-        return SharedPreferencesUtil.getInstance().getInt(bookId + "-readFontSize", ScreenUtils.dpToPxInt(16));
+        return SharedPreferencesUtil.getInstance().getInt(getFontSizeKey(bookId), ScreenUtils.dpToPxInt(16));
+    }
+
+    private String getFontSizeKey(String bookId) {
+        return bookId + "-readFontSize";
     }
 
     public int getReadBrightness() {
-        return SharedPreferencesUtil.getInstance().getInt("readLightness",
+        return SharedPreferencesUtil.getInstance().getInt(getLightnessKey(),
                 (int) ScreenUtils.getScreenBrightness(AppUtils.getAppContext()));
     }
 
@@ -43,14 +47,18 @@ public class SettingManager {
      * @param percent 亮度比例 0~100
      */
     public void saveReadBrightness(int percent) {
-        SharedPreferencesUtil.getInstance().putInt("readLightness", percent);
+        SharedPreferencesUtil.getInstance().putInt(getLightnessKey(), percent);
+    }
+
+    private String getLightnessKey() {
+        return "readLightness";
     }
 
     public synchronized void saveReadProgress(String bookId, int currentChapter, int m_mbBufBeginPos, int m_mbBufEndPos) {
         SharedPreferencesUtil.getInstance()
-                .putInt(bookId + "-chapter", currentChapter)
-                .putInt(bookId + "-startPos", m_mbBufBeginPos)
-                .putInt(bookId + "-endPos", m_mbBufEndPos);
+                .putInt(getChapterKey(bookId), currentChapter)
+                .putInt(getStartPosKey(bookId), m_mbBufBeginPos)
+                .putInt(getEndPosKey(bookId), m_mbBufEndPos);
     }
 
     /**
@@ -60,18 +68,30 @@ public class SettingManager {
      * @return
      */
     public int[] getReadProgress(String bookId) {
-        int lastChapter = SharedPreferencesUtil.getInstance().getInt(bookId + "-chapter", 1);
-        int startPos = SharedPreferencesUtil.getInstance().getInt(bookId + "-startPos", 0);
-        int endPos = SharedPreferencesUtil.getInstance().getInt(bookId + "-endPos", 0);
+        int lastChapter = SharedPreferencesUtil.getInstance().getInt(getChapterKey(bookId), 1);
+        int startPos = SharedPreferencesUtil.getInstance().getInt(getStartPosKey(bookId), 0);
+        int endPos = SharedPreferencesUtil.getInstance().getInt(getEndPosKey(bookId), 0);
 
         return new int[]{lastChapter, startPos, endPos};
     }
 
     public void removeReadProgress(String bookId) {
         SharedPreferencesUtil.getInstance()
-                .remove(bookId + "-chapter")
-                .remove(bookId + "-startPos")
-                .remove(bookId + "-endPos");
+                .remove(getChapterKey(bookId))
+                .remove(getStartPosKey(bookId))
+                .remove(getEndPosKey(bookId));
+    }
+
+    private String getChapterKey(String bookId) {
+        return bookId + "-chapter";
+    }
+
+    private String getStartPosKey(String bookId) {
+        return bookId + "-startPos";
+    }
+
+    private String getEndPosKey(String bookId) {
+        return bookId + "-endPos";
     }
 
     public void saveReadTheme(int theme) {

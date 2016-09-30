@@ -7,8 +7,8 @@ import com.justwayward.reader.base.RxPresenter;
 import com.justwayward.reader.bean.BookSource;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.ChapterRead;
+import com.justwayward.reader.manager.CacheManager;
 import com.justwayward.reader.ui.contract.BookReadContract;
-import com.justwayward.reader.utils.ACache;
 import com.justwayward.reader.utils.LogUtils;
 
 import java.util.List;
@@ -32,30 +32,24 @@ public class BookReadPresenter extends RxPresenter<BookReadContract.View>
 
     @Inject
     public BookReadPresenter(Context mContext, BookApi bookApi) {
+        this.mContext = mContext;
         this.bookApi = bookApi;
     }
 
     @Override
     public void getBookToc(final String bookId, String viewChapters) {
-        Object obj = ACache.get(mContext).getAsObject(bookId + "bookToc");
-        if (obj != null) {
-            try {
-                BookToc data = (BookToc) obj;
-                List<BookToc.mixToc.Chapters> list = data.mixToc.chapters;
-                if (list != null && !list.isEmpty() && mView != null) {
-                    mView.showBookToc(list);
-                }
-                return;
-            } catch (Exception e) {
-                ACache.get(mContext).remove(bookId + "bookToc");
-            }
+        List<BookToc.mixToc.Chapters> list = CacheManager.getInstance().getTocList(mContext, bookId);
+        if (list != null && !list.isEmpty()) {
+            mView.showBookToc(list);
+            return;
         }
+
         Subscription rxSubscription = bookApi.getBookToc(bookId, viewChapters).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BookToc>() {
                     @Override
                     public void onNext(BookToc data) {
-                        ACache.get(mContext).put(bookId + "bookToc", data);
+                        CacheManager.getInstance().saveTocList(mContext, bookId, data);
                         List<BookToc.mixToc.Chapters> list = data.mixToc.chapters;
                         if (list != null && !list.isEmpty() && mView != null) {
                             mView.showBookToc(list);
@@ -64,6 +58,7 @@ public class BookReadPresenter extends RxPresenter<BookReadContract.View>
 
                     @Override
                     public void onCompleted() {
+                        mView.complete();
                     }
 
                     @Override

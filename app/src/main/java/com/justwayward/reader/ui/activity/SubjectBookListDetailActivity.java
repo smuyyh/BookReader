@@ -18,7 +18,7 @@ import com.justwayward.reader.bean.BookListDetail;
 import com.justwayward.reader.bean.BookLists;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerFindComponent;
-import com.justwayward.reader.manager.MyBookListsManager;
+import com.justwayward.reader.manager.CacheManager;
 import com.justwayward.reader.ui.contract.SubjectBookListDetailContract;
 import com.justwayward.reader.ui.easyadapter.SubjectBookListDetailBooksAdapter;
 import com.justwayward.reader.ui.presenter.SubjectBookListDetailPresenter;
@@ -191,7 +191,7 @@ public class SubjectBookListDetailActivity extends BaseRVActivity<BookListDetail
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_collect) {
-            MyBookListsManager.getInstance().add(bookListsBean);
+            CacheManager.getInstance().addCollection(bookListsBean);
             return true;
         }
         return super.onOptionsItemSelected(item);
