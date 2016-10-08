@@ -207,6 +207,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
                 recreate();
                 break;
             case R.id.action_settings:
+                startActivity(new Intent(this,SettingActivity.class));
                 break;
             default:
                 break;
