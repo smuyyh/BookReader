@@ -8,7 +8,9 @@ import com.justwayward.reader.bean.BookLists;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.utils.ACache;
+import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.FileUtils;
+import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
 import com.justwayward.reader.utils.StringUtils;
 import com.justwayward.reader.utils.ToastUtils;
@@ -136,6 +138,44 @@ public class CacheManager {
     public void saveChapterFile(String bookId, int chapter, ChapterRead.Chapter data) {
         File file = FileUtils.getChapterFile(bookId, chapter);
         FileUtils.writeFile(file.getAbsolutePath(), StringUtils.formatContent(data.body), false);
+    }
+
+    /**
+     * 获取缓存大小
+     *
+     * @return
+     */
+    public synchronized String getCacheSize() {
+        long cacheSize = 0;
+
+        try {
+            String cacheDir = AppUtils.getAppContext().getCacheDir().getPath();
+            cacheSize += FileUtils.getFolderSize(cacheDir);
+            if (FileUtils.isSdCardAvailable()) {
+                String extCacheDir = AppUtils.getAppContext().getExternalCacheDir().getPath();
+                cacheSize += FileUtils.getFolderSize(extCacheDir);
+            }
+        } catch (Exception e) {
+            LogUtils.e(e.toString());
+        }
+
+        return FileUtils.formatFileSizeToString(cacheSize);
+    }
+
+    /**
+     * 清除缓存
+     */
+    public synchronized void clearCache() {
+        try {
+            String cacheDir = AppUtils.getAppContext().getCacheDir().getPath();
+            FileUtils.deleteFileOrDirectory(new File(cacheDir));
+            if (FileUtils.isSdCardAvailable()) {
+                String extCacheDir = AppUtils.getAppContext().getExternalCacheDir().getPath();
+                FileUtils.deleteFileOrDirectory(new File(extCacheDir));
+            }
+        } catch (Exception e) {
+            LogUtils.e(e.toString());
+        }
     }
 
 }
