@@ -49,7 +49,6 @@
         <activity android:name=".ui.activity.BookDiscussionActivity" />
         <activity android:name=".ui.activity.BookReviewActivity" />
         <activity android:name=".ui.activity.BookHelpActivity" />
-        <activity android:name=".ui.activity.BookMaleActivity" />
         <activity android:name=".ui.activity.BookDiscussionDetailActivity" />
         <activity android:name=".ui.activity.BookReviewDetailActivity" />
         <activity android:name=".ui.activity.BookHelpDetailActivity" />

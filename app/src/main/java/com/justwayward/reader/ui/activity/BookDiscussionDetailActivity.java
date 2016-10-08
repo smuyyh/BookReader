@@ -40,7 +40,8 @@ import butterknife.ButterKnife;
 /**
  * 综合讨论区详情
  */
-public class BookDiscussionDetailActivity extends BaseRVActivity<CommentList.CommentsBean> implements BookDiscussionDetailContract.View, OnRvItemClickListener<CommentList.CommentsBean> {
+public class BookDiscussionDetailActivity extends BaseRVActivity<CommentList.CommentsBean>
+        implements BookDiscussionDetailContract.View, OnRvItemClickListener<CommentList.CommentsBean> {
 
     private static final String INTENT_ID = "id";
 
@@ -50,14 +51,12 @@ public class BookDiscussionDetailActivity extends BaseRVActivity<CommentList.Com
     }
 
     private String id;
+    private List<CommentList.CommentsBean> mBestCommentList = new ArrayList<>();
+    private BestCommentListAdapter mBestCommentListAdapter;
+    private HeaderViewHolder headerViewHolder;
 
     @Inject
     BookDiscussionDetailPresenter mPresenter;
-
-    private List<CommentList.CommentsBean> mBestCommentList = new ArrayList<>();
-    private BestCommentListAdapter mBestCommentListAdapter;
-
-    private HeaderViewHolder headerViewHolder;
 
     @Override
     public void showError() {
@@ -142,7 +141,8 @@ public class BookDiscussionDetailActivity extends BaseRVActivity<CommentList.Com
 
     @Override
     public void showBookDisscussionDetail(Disscussion disscussion) {
-        Glide.with(mContext).load(Constant.IMG_BASE_URL + disscussion.post.author.avatar)
+        Glide.with(mContext)
+                .load(Constant.IMG_BASE_URL + disscussion.post.author.avatar)
                 .placeholder(R.drawable.avatar_default)
                 .transform(new GlideCircleTransform(mContext))
                 .into(headerViewHolder.ivAvatar);

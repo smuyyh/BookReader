@@ -13,7 +13,7 @@ public class Recommend extends Base {
 
     public List<RecommendBooks> books;
 
-    public class RecommendBooks implements Serializable {
+    public static class RecommendBooks implements Serializable {
 
         /**
          * _id : 526e8e3e7cfc087140004df7
