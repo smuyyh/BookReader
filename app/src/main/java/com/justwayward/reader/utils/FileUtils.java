@@ -240,7 +240,7 @@ public class FileUtils {
      * @return
      */
     public static String formatFileSizeToString(long fileLen) {
-        DecimalFormat df = new DecimalFormat("#.00");
+        DecimalFormat df = new DecimalFormat("0.00");
         String fileSizeString = "";
         if (fileLen < 1024) {
             fileSizeString = df.format((double) fileLen) + "B";

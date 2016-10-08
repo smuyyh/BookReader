@@ -45,7 +45,20 @@ public class SettingActivity extends BaseActivity{
 
     @Override
     public void initDatas() {
-      //  CacheManager.getInstance().ge
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final String cachesize=CacheManager.getInstance().getCacheSize();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mTvCacheSize.setText(cachesize);
+                    }
+                });
+
+            }
+        }).start();
+
     }
 
 
@@ -68,5 +81,48 @@ public class SettingActivity extends BaseActivity{
                .create().show();
     }
 
-
+    @OnClick(R.id.cleanCache)
+    public void onClickCleanCache(){
+         final boolean selected[]={false};
+        new AlertDialog.Builder(mContext)
+                .setTitle("清除缓存")
+                .setCancelable(true)
+                .setMessage("是否要清除缓存")
+                .setMultiChoiceItems(new String[]{"同时删除阅读记录"}, selected, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        switch (which){
+                            case 0:
+                                selected[0]=true;
+                                break;
+                        }
+                    }
+                })
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                CacheManager.getInstance().clearCache();
+                                final String cacheSize=CacheManager.getInstance().getCacheSize();
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mTvCacheSize.setText(cacheSize);
+                                    }
+                                });
+                            }
+                        }).start();
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create().show();
+    }
 }
