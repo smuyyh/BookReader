@@ -17,14 +17,12 @@ import butterknife.Bind;
  */
 public class GirlBookDiscussionActivity extends BaseCommuniteActivity {
 
-
     public static void startActivity(Context context) {
         context.startActivity(new Intent(context, GirlBookDiscussionActivity.class));
     }
 
     @Bind(R.id.slOverall)
     SelectionLayout slOverall;
-
 
     @Override
     public int getLayoutId() {

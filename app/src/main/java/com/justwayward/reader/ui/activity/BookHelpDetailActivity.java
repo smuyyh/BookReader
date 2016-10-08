@@ -51,14 +51,12 @@ public class BookHelpDetailActivity extends BaseRVActivity<CommentList.CommentsB
     }
 
     private String id;
+    private List<CommentList.CommentsBean> mBestCommentList = new ArrayList<>();
+    private BestCommentListAdapter mBestCommentListAdapter;
+    private HeaderViewHolder headerViewHolder;
 
     @Inject
     BookHelpDetailPresenter mPresenter;
-
-    private List<CommentList.CommentsBean> mBestCommentList = new ArrayList<>();
-    private BestCommentListAdapter mBestCommentListAdapter;
-
-    private HeaderViewHolder headerViewHolder;
 
     @Override
     public void showError() {

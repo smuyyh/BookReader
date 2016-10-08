@@ -295,6 +295,31 @@ public class FileUtils {
         return false;
     }
 
+    /**
+     * 获取文件夹大小
+     *
+     * @return
+     * @throws Exception
+     */
+    public static long getFolderSize(String dir) throws Exception {
+        File file = new File(dir);
+        long size = 0;
+        try {
+            File[] fileList = file.listFiles();
+            for (int i = 0; i < fileList.length; i++) {
+                // 如果下面还有文件
+                if (fileList[i].isDirectory()) {
+                    size = size + getFolderSize(fileList[i].getAbsolutePath());
+                } else {
+                    size = size + fileList[i].length();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return size;
+    }
+
     /***
      * 获取文件扩展名
      *
