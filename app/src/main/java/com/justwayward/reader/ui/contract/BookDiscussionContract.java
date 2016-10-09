@@ -16,7 +16,7 @@ public interface BookDiscussionContract {
     }
 
     interface Presenter extends BaseContract.BasePresenter<View> {
-        void getBookDisscussionList(String sort, String distillate, int start, int limit);
+        void getBookDisscussionList(String block, String sort, String distillate, int start, int limit);
     }
 
 }

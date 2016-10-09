@@ -1,5 +1,7 @@
 package com.justwayward.reader.ui.fragment;
 
+import android.os.Bundle;
+
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseRVFragment;
 import com.justwayward.reader.base.Constant;
@@ -26,6 +28,17 @@ import java.util.List;
  */
 public class BookDiscussionFragment extends BaseRVFragment<BookDiscussionPresenter, DiscussionList.PostsBean> implements BookDiscussionContract.View {
 
+    private static final String BUNDLE_BLOCK = "block";
+
+    public static BookDiscussionFragment newInstance(String block) {
+        BookDiscussionFragment fragment = new BookDiscussionFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(BUNDLE_BLOCK, block);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    private String block = "ramble";
     private String sort = Constant.SortType.DEFAULT;
     private String distillate = Constant.Distillate.ALL;
 
@@ -44,6 +57,7 @@ public class BookDiscussionFragment extends BaseRVFragment<BookDiscussionPresent
 
     @Override
     public void initDatas() {
+        block = getArguments().getString(BUNDLE_BLOCK);
         EventBus.getDefault().register(this);
     }
 
@@ -84,12 +98,12 @@ public class BookDiscussionFragment extends BaseRVFragment<BookDiscussionPresent
     @Override
     public void onRefresh() {
         super.onRefresh();
-        mPresenter.getBookDisscussionList(sort, distillate, 0, limit);
+        mPresenter.getBookDisscussionList(block, sort, distillate, 0, limit);
     }
 
     @Override
     public void onLoadMore() {
-        mPresenter.getBookDisscussionList(sort, distillate, start, limit);
+        mPresenter.getBookDisscussionList(block, sort, distillate, start, limit);
     }
 
     @Override
