@@ -17,8 +17,10 @@ import butterknife.Bind;
  */
 public class BookDiscussionActivity extends BaseCommuniteActivity {
 
-    public static void startActivity(Context context) {
+    static boolean mIsDiscussion;
+    public static void startActivity(Context context,boolean isDiscussion) {
         context.startActivity(new Intent(context, BookDiscussionActivity.class));
+        mIsDiscussion=isDiscussion;
     }
 
     @Bind(R.id.slOverall)
@@ -36,7 +38,11 @@ public class BookDiscussionActivity extends BaseCommuniteActivity {
 
     @Override
     public void initToolBar() {
-        mCommonToolbar.setTitle("综合讨论区");
+        if(mIsDiscussion) {
+            mCommonToolbar.setTitle("综合讨论区");
+        }else {
+            mCommonToolbar.setTitle("原创区");
+        }
         mCommonToolbar.setNavigationIcon(R.drawable.ab_back);
     }
 

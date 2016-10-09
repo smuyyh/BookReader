@@ -41,6 +41,7 @@ public class CommunityFragment extends BaseFragment implements OnRvItemClickList
         mList.add(new FindBean("书评区", R.drawable.comment_section));
         mList.add(new FindBean("书荒互助区", R.drawable.helper_section));
         mList.add(new FindBean("女生区", R.drawable.girl_section));
+        mList.add(new FindBean("原创区",R.drawable.yuanchuang));
     }
 
     @Override
@@ -68,7 +69,7 @@ public class CommunityFragment extends BaseFragment implements OnRvItemClickList
     public void onItemClick(View view, int position, FindBean data) {
         switch (position) {
             case 0:
-                BookDiscussionActivity.startActivity(activity);
+                BookDiscussionActivity.startActivity(activity,true);
                 break;
             case 1:
                 BookReviewActivity.startActivity(activity);
@@ -78,6 +79,9 @@ public class CommunityFragment extends BaseFragment implements OnRvItemClickList
                 break;
             case 3:
                 GirlBookDiscussionActivity.startActivity(activity);
+                break;
+            case 4:
+                BookDiscussionActivity.startActivity(activity,false);
                 break;
             default:
                 break;
