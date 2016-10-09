@@ -164,6 +164,8 @@ public class CacheManager {
 
     /**
      * 清除缓存
+     *
+     * @param clearReadPos 是否删除阅读记录
      */
     public synchronized void clearCache(boolean clearReadPos) {
         try {

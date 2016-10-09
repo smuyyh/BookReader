@@ -26,7 +26,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_setting"
-        android:background="@color/common_bg"
+        android:background="@drawable/touch_bg"
+        android:clickable="true"
         android:padding="@dimen/activity_vertical_margin">
 
         <TextView
@@ -88,7 +89,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/view_line_2"
-        android:background="@color/common_bg"
+        android:background="@drawable/touch_bg"
         android:padding="@dimen/activity_vertical_margin">
 
         <TextView
@@ -151,7 +152,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/view_line_3"
-        android:background="@color/common_bg"
+        android:background="@drawable/touch_bg"
+        android:clickable="true"
         android:padding="@dimen/activity_vertical_margin">
 
         <TextView
@@ -175,7 +177,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/view_line_4"
-        android:background="@color/common_bg"
+        android:background="@drawable/touch_bg"
+        android:clickable="true"
         android:padding="@dimen/activity_vertical_margin">
 
         <TextView
@@ -199,7 +202,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/view_line_5"
-        android:background="@color/common_bg"
+        android:background="@drawable/touch_bg"
+        android:clickable="true"
         android:padding="@dimen/activity_vertical_margin">
 
         <TextView

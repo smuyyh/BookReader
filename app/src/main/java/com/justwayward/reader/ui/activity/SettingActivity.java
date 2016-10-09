@@ -92,6 +92,11 @@ public class SettingActivity extends BaseActivity {
                 .create().show();
     }
 
+    @OnClick(R.id.feedBack)
+    public void feedBack() {
+        FeedbackActivity.startActivity(this);
+    }
+
     @OnClick(R.id.cleanCache)
     public void onClickCleanCache() {
         final boolean selected[] = {true};
