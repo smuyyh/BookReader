@@ -228,7 +228,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:text="© 2016 justwayward All Rights Reserved"
+        android:text="© 2016 JustWayward All Rights Reserved"
         android:textColor="@color/common_h3"
         android:textSize="@dimen/book_read_bottom_text" />
 </RelativeLayout>
