@@ -127,27 +127,9 @@ public class SettingManager {
     }
 
     /**
-     * 保存用户是否第一次进入app标志
+     * 保存用户选择的性别
      *
-     * @param isFirst
-     */
-    public void saveFirstEnterApp(boolean isFirst) {
-        SharedPreferencesUtil.getInstance().putBoolean("firstEnterApp", isFirst);
-    }
-
-    /**
-     * 获取用户是否第一次进入app标志
-     *
-     * @return
-     */
-    public boolean isFirstEnterApp() {
-        return SharedPreferencesUtil.getInstance().getBoolean("firstEnterApp", true);
-    }
-
-    /**
-     * 保存用户选择的性别 male：female
-     *
-     * @param sex
+     * @param sex male female
      */
     public void saveUserChooseSex(String sex) {
         SharedPreferencesUtil.getInstance().putString("userChooseSex", sex);
@@ -164,5 +146,13 @@ public class SettingManager {
 
     public boolean isUserChooseSex() {
         return SharedPreferencesUtil.getInstance().exists("userChooseSex");
+    }
+
+    public boolean isNoneCover() {
+        return SharedPreferencesUtil.getInstance().getBoolean("isNoneCover", false);
+    }
+
+    public void saveNoneCover(boolean isNoneCover) {
+        SharedPreferencesUtil.getInstance().putBoolean("isNoneCover", isNoneCover);
     }
 }

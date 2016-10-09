@@ -26,10 +26,11 @@
             <ImageView
                 android:id="@+id/ivBookCover"
                 android:layout_width="45dp"
-                android:layout_height="65dp"
+                android:layout_height="60dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:scaleType="centerCrop"
+                android:src="@drawable/cover_default"
                 tools:src="@drawable/cover_default" />
 
             <RelativeLayout

@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.HotReview;
+import com.justwayward.reader.manager.SettingManager;
 import com.justwayward.reader.utils.FormatUtils;
 import com.justwayward.reader.view.XLHRatingBar;
 import com.justwayward.reader.view.recyclerview.adapter.BaseViewHolder;
@@ -27,8 +28,14 @@ public class BookDetailReviewAdapter extends RecyclerArrayAdapter<HotReview.Revi
         return new BaseViewHolder<HotReview.Reviews>(parent, R.layout.item_book_detai_hot_review_list) {
             @Override
             public void setData(HotReview.Reviews item) {
-                holder.setCircleImageUrl(R.id.ivBookCover, Constant.IMG_BASE_URL + item.author.avatar, R.drawable.avatar_default)
-                        .setText(R.id.tvBookTitle, item.author.nickname)
+                if (!SettingManager.getInstance().isNoneCover()) {
+                    holder.setCircleImageUrl(R.id.ivBookCover, Constant.IMG_BASE_URL + item.author.avatar,
+                            R.drawable.avatar_default);
+                } else {
+                    holder.setImageResource(R.id.ivBookCover, R.drawable.avatar_default);
+                }
+
+                holder.setText(R.id.tvBookTitle, item.author.nickname)
                         .setText(R.id.tvBookType, String.format(mContext.getString(R.string
                                 .book_detail_user_lv), item.author.lv))
                         .setText(R.id.tvTime, FormatUtils.formatDate(item.created))

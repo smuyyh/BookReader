@@ -3,6 +3,8 @@ package com.justwayward.reader.ui.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.support.v7.widget.SwitchCompat;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.justwayward.reader.R;
@@ -10,6 +12,7 @@ import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerMainComponent;
 import com.justwayward.reader.manager.CacheManager;
+import com.justwayward.reader.manager.SettingManager;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -17,13 +20,15 @@ import butterknife.OnClick;
 /**
  * Created by xiaoshu on 2016/10/8.
  */
-public class SettingActivity extends BaseActivity{
-
+public class SettingActivity extends BaseActivity {
 
     @Bind(R.id.mTvSort)
     TextView mTvSort;
     @Bind(R.id.tvCacheSize)
     TextView mTvCacheSize;
+    @Bind(R.id.noneCoverCompat)
+    SwitchCompat noneCoverCompat;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_setting;
@@ -48,7 +53,7 @@ public class SettingActivity extends BaseActivity{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                final String cachesize=CacheManager.getInstance().getCacheSize();
+                final String cachesize = CacheManager.getInstance().getCacheSize();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -64,26 +69,32 @@ public class SettingActivity extends BaseActivity{
 
     @Override
     public void configViews() {
-
+        noneCoverCompat.setChecked(SettingManager.getInstance().isNoneCover());
+        noneCoverCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SettingManager.getInstance().saveNoneCover(isChecked);
+            }
+        });
     }
 
     @OnClick(R.id.bookshelfSort)
-    public void onClickBookShelfSort(){
-       new AlertDialog.Builder(mContext)
-               .setTitle("书架排序方式")
-               .setSingleChoiceItems(getResources().getStringArray(R.array.setting_dialog_choice), 0, new DialogInterface.OnClickListener() {
-                   @Override
-                   public void onClick(DialogInterface dialog, int which) {
-                       mTvSort.setText(getResources().getStringArray(R.array.setting_dialog_choice)[which]);
-                       dialog.dismiss();
-                   }
-               })
-               .create().show();
+    public void onClickBookShelfSort() {
+        new AlertDialog.Builder(mContext)
+                .setTitle("书架排序方式")
+                .setSingleChoiceItems(getResources().getStringArray(R.array.setting_dialog_choice), 0, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mTvSort.setText(getResources().getStringArray(R.array.setting_dialog_choice)[which]);
+                        dialog.dismiss();
+                    }
+                })
+                .create().show();
     }
 
     @OnClick(R.id.cleanCache)
-    public void onClickCleanCache(){
-         final boolean selected[]={false};
+    public void onClickCleanCache() {
+        final boolean selected[] = {false};
         new AlertDialog.Builder(mContext)
                 .setTitle("清除缓存")
                 .setCancelable(true)
@@ -91,9 +102,9 @@ public class SettingActivity extends BaseActivity{
                 .setMultiChoiceItems(new String[]{"同时删除阅读记录"}, selected, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        switch (which){
+                        switch (which) {
                             case 0:
-                                selected[0]=true;
+                                selected[0] = true;
                                 break;
                         }
                     }
@@ -105,7 +116,7 @@ public class SettingActivity extends BaseActivity{
                             @Override
                             public void run() {
                                 CacheManager.getInstance().clearCache();
-                                final String cacheSize=CacheManager.getInstance().getCacheSize();
+                                final String cacheSize = CacheManager.getInstance().getCacheSize();
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {

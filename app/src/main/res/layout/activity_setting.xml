@@ -81,7 +81,7 @@
         android:layout_height="0.5dp"
         android:layout_below="@+id/updateNotification"
         android:background="@color/common_divider_narrow"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/provincialTraffic"
@@ -98,13 +98,15 @@
             android:layout_centerVertical="true"
             android:text="省流量模式（无头像）"
             android:textColor="@color/common_h1" />
+
         <android.support.v7.widget.SwitchCompat
+            android:id="@+id/noneCoverCompat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:minWidth="30dp"
             android:textOff="关"
-            android:textOn="开"/>
+            android:textOn="开" />
     </RelativeLayout>
 
 
@@ -141,8 +143,9 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_below="@+id/disclaimer"
-        android:visibility="gone"
-        android:background="@color/common_divider_narrow" />
+        android:background="@color/common_divider_narrow"
+        android:visibility="gone" />
+
     <RelativeLayout
         android:id="@+id/aboutUs"
         android:layout_width="match_parent"
@@ -166,6 +169,7 @@
         android:layout_height="0.5dp"
         android:layout_below="@+id/aboutUs"
         android:background="@color/common_divider_narrow" />
+
     <RelativeLayout
         android:id="@+id/feedBack"
         android:layout_width="match_parent"
@@ -189,6 +193,7 @@
         android:layout_height="0.5dp"
         android:layout_below="@+id/feedBack"
         android:background="@color/common_divider_narrow" />
+
     <RelativeLayout
         android:id="@+id/cleanCache"
         android:layout_width="match_parent"
@@ -204,6 +209,7 @@
             android:layout_centerVertical="true"
             android:text="清除缓存"
             android:textColor="@color/common_h1" />
+
         <TextView
             android:id="@+id/tvCacheSize"
             android:layout_width="wrap_content"
@@ -215,13 +221,14 @@
             android:text="0.00M"
             android:textColor="@color/common_h2" />
     </RelativeLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:text="© 2016 justwayward All Rights Reserved"
         android:textColor="@color/common_h3"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:textSize="@dimen/book_read_bottom_text" />
 </RelativeLayout>

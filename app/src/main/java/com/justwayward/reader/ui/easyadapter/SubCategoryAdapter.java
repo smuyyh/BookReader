@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.BooksByCats;
+import com.justwayward.reader.manager.SettingManager;
 import com.justwayward.reader.view.recyclerview.adapter.BaseViewHolder;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
 
@@ -28,13 +29,19 @@ public class SubCategoryAdapter extends RecyclerArrayAdapter<BooksByCats.BooksBe
             @Override
             public void setData(BooksByCats.BooksBean item) {
                 super.setData(item);
-                holder.setRoundImageUrl(R.id.ivSubCateCover, Constant.IMG_BASE_URL + item.cover, R.drawable.cover_default)
-                        .setText(R.id.tvSubCateTitle, item.title)
+                if (!SettingManager.getInstance().isNoneCover()) {
+                    holder.setRoundImageUrl(R.id.ivSubCateCover, Constant.IMG_BASE_URL + item.cover,
+                            R.drawable.cover_default);
+                } else {
+                    holder.setImageResource(R.id.ivSubCateCover, R.drawable.cover_default);
+                }
+
+                holder.setText(R.id.tvSubCateTitle, item.title)
                         .setText(R.id.tvSubCateAuthor, (item.author == null ? "未知" : item.author) + " | " + (item.majorCate == null ? "未知" : item.majorCate))
                         .setText(R.id.tvSubCateShort, item.shortIntro)
                         .setText(R.id.tvSubCateMsg, String.format(mContext.getResources().getString(R.string.category_book_msg),
                                 item.latelyFollower,
-                                TextUtils.isEmpty(item.retentionRatio)?"0":item.retentionRatio));
+                                TextUtils.isEmpty(item.retentionRatio) ? "0" : item.retentionRatio));
             }
         };
     }
