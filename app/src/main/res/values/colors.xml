@@ -62,4 +62,10 @@
     <!--阅读页底部字体颜色-->
     <color name="book_read_bottom_text">#888888</color>
 
+    <!--性别选择颜色值-->
+    <color name="gender_select_male_normal">#B0E2FF</color>
+    <color name="gender_select_male_pressed">#B2DFEE</color>
+    <color name="gender_select_female_normal">#EEA9B8</color>
+    <color name="gender_select_female_pressed">#EEA2AD</color>
+
 </resources>

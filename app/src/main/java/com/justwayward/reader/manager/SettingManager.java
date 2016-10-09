@@ -125,4 +125,40 @@ public class SettingManager {
     public boolean isAutoBrightness() {
         return SharedPreferencesUtil.getInstance().getBoolean("autoBrightness", false);
     }
+
+    /**
+     * 保存用户是否第一次进入app标志
+     *
+     * @param isFirst
+     */
+    public void saveFirstEnterApp(boolean isFirst) {
+        SharedPreferencesUtil.getInstance().putBoolean("firstEnterApp", isFirst);
+    }
+
+    /**
+     * 获取用户是否第一次进入app标志
+     *
+     * @return
+     */
+    public boolean isFirstEnterApp() {
+        return SharedPreferencesUtil.getInstance().getBoolean("firstEnterApp", true);
+    }
+
+    /**
+     * 保存用户选择的性别 male：female
+     *
+     * @param sex
+     */
+    public void saveUserChooseSex(String sex) {
+        SharedPreferencesUtil.getInstance().putString("userChooseSex", sex);
+    }
+
+    /**
+     * 获取用户选择性别
+     *
+     * @return
+     */
+    public String getUserChooseSex() {
+        return SharedPreferencesUtil.getInstance().getString("userChooseSex", null);
+    }
 }
