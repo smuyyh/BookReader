@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
 
 /**
@@ -239,5 +241,38 @@ public class NetworkUtils {
             default:
                 return "NETWORK_UNKNOWN";
         }
+    }
+
+    /**
+     * 获取当前连接wifi的名称
+     *
+     * @return
+     */
+    public static String getConnectWifiSsid(Context context) {
+        if (isWifiConnected(context)) {
+            WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+            return wifiInfo.getSSID();
+        }
+        return null;
+    }
+
+    /**
+     * 获取当前连接wifi的名称
+     *
+     * @return
+     */
+    public static String getConnectWifiIp(Context context) {
+        if (isWifiConnected(context)) {
+            WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+            int ipAddress = wifiInfo.getIpAddress();
+            if(ipAddress==0){
+                return null;
+            }
+            return ((ipAddress & 0xff) + "." + (ipAddress >> 8 & 0xff) + "."
+                    + (ipAddress >> 16 & 0xff) + "." + (ipAddress >> 24 & 0xff));
+        }
+        return null;
     }
 }

@@ -56,6 +56,7 @@
         <activity android:name=".ui.activity.MyBookListActivity" />
         <activity android:name=".ui.activity.SettingActivity" />
         <activity android:name=".ui.activity.ScanLocalBookActivity"/>
+        <activity android:name=".ui.activity.WifiBookActivity"/>
 
         <service android:name=".service.DownloadBookService" />
 

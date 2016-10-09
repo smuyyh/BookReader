@@ -223,6 +223,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
             case R.id.action_scan_local_book:
                 break;
             case R.id.action_wifi_book:
+                startActivity(new Intent(mContext,WifiBookActivity.class));
                 break;
             case R.id.action_feedback:
                 break;
