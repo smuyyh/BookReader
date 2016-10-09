@@ -65,6 +65,7 @@
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/category_list.png?raw=true" width="280"/>
 
 - **设置**
+
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/setting.png?raw=true" width="280"/>
 
 
