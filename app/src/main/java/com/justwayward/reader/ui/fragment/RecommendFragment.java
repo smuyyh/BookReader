@@ -392,5 +392,4 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
         return false;
     }
 
-
 }

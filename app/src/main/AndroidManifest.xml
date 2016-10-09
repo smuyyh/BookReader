@@ -11,7 +11,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-
     <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
@@ -55,7 +54,8 @@
         <activity android:name=".ui.activity.BookDetailCommunityActivity" />
         <activity android:name=".ui.activity.GirlBookDiscussionActivity" />
         <activity android:name=".ui.activity.MyBookListActivity" />
-        <activity android:name=".ui.activity.SettingActivity"/>
+        <activity android:name=".ui.activity.SettingActivity" />
+        <activity android:name=".ui.activity.ScanLocalBookActivity"/>
 
         <service android:name=".service.DownloadBookService" />
 
@@ -76,6 +76,7 @@
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
     </application>
 
 </manifest>

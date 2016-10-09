@@ -12,11 +12,15 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 
 import com.justwayward.reader.R;
+import com.justwayward.reader.base.Constant;
+import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
 import com.justwayward.reader.manager.SettingManager;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by xiaoshu on 2016/10/9.
- * 性别选择弹窗 首次进入app或用户没有选择性别再次进入app提示
+ * 性别选择弹窗 用户没有选择性别则进入app提示
  */
 public class GenderPopupWindow extends PopupWindow {
     private View mContentView;
@@ -27,7 +31,7 @@ public class GenderPopupWindow extends PopupWindow {
     private ImageView mIvClose;
 
     public GenderPopupWindow(Activity activity) {
-        mActivity=activity;
+        mActivity = activity;
         setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -35,6 +39,7 @@ public class GenderPopupWindow extends PopupWindow {
         setContentView(mContentView);
         setFocusable(true);
         setOutsideTouchable(true);
+        setTouchable(true);
         setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00000000")));
 
         setAnimationStyle(R.style.LoginPopup);
@@ -43,27 +48,26 @@ public class GenderPopupWindow extends PopupWindow {
             @Override
             public void onDismiss() {
                 lighton();
+                EventBus.getDefault().post(new RefreshCollectionListEvent());
             }
         });
-        mBtnMale= (Button) mContentView.findViewById(R.id.mBtnMale);
+        mBtnMale = (Button) mContentView.findViewById(R.id.mBtnMale);
         mBtnMale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SettingManager.getInstance().saveUserChooseSex("male");
-                SettingManager.getInstance().saveFirstEnterApp(false);//用户选择性别后标志
+                SettingManager.getInstance().saveUserChooseSex(Constant.Gender.MALE);
                 dismiss();
             }
         });
-        mBtnFemale= (Button) mContentView.findViewById(R.id.mBtnFemale);
+        mBtnFemale = (Button) mContentView.findViewById(R.id.mBtnFemale);
         mBtnFemale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SettingManager.getInstance().saveUserChooseSex("female");
-                SettingManager.getInstance().saveFirstEnterApp(false);//用户选择性别后标志
+                SettingManager.getInstance().saveUserChooseSex(Constant.Gender.FEMALE);
                 dismiss();
             }
         });
-        mIvClose= (ImageView) mContentView.findViewById(R.id.mIvClose);
+        mIvClose = (ImageView) mContentView.findViewById(R.id.mIvClose);
         mIvClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

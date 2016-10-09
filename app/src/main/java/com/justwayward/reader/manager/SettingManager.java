@@ -159,6 +159,10 @@ public class SettingManager {
      * @return
      */
     public String getUserChooseSex() {
-        return SharedPreferencesUtil.getInstance().getString("userChooseSex", null);
+        return SharedPreferencesUtil.getInstance().getString("userChooseSex", Constant.Gender.MALE);
+    }
+
+    public boolean isUserChooseSex() {
+        return SharedPreferencesUtil.getInstance().exists("userChooseSex");
     }
 }

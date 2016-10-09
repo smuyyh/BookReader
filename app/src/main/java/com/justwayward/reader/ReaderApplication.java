@@ -34,7 +34,7 @@ public class ReaderApplication extends Application {
         AppUtils.init(this);
         initPrefs();
         initNightMode();
-        initHciCloud();
+        //initHciCloud();
     }
 
     public static ReaderApplication getsInstance() {

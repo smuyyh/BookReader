@@ -154,17 +154,6 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
         };
     }
 
-//    @Override //TODO 弹窗显示
-//    public void onWindowFocusChanged(boolean hasFocus) {
-//        super.onWindowFocusChanged(hasFocus);
-//        if(genderPopupWindow==null) {
-//            genderPopupWindow = new GenderPopupWindow(MainActivity.this);
-//        }
-//        if (SettingManager.getInstance().isFirstEnterApp()) {
-//            genderPopupWindow.showAtLocation(mCommonToolbar, Gravity.CENTER, 0, 0);
-//        }
-//    }
-
     @Override
     public void configViews() {
         mIndicator.setTabItemTitles(mDatas);
@@ -173,6 +162,23 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
         mIndicator.setViewPager(mViewPager, 0);
 
         mPresenter.attachView(this);
+
+        mIndicator.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showChooseSexPopupWindow();
+            }
+        }, 500);
+    }
+
+    public void showChooseSexPopupWindow() {
+        if (genderPopupWindow == null) {
+            genderPopupWindow = new GenderPopupWindow(MainActivity.this);
+        }
+        if (!SettingManager.getInstance().isUserChooseSex()
+                && !genderPopupWindow.isShowing()) {
+            genderPopupWindow.showAtLocation(mCommonToolbar, Gravity.CENTER, 0, 0);
+        }
     }
 
     public void setCurrentItem(int position) {
