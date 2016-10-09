@@ -64,7 +64,6 @@ public class BookDetailPresenter extends RxPresenter<BookDetailContract.View> im
                 .subscribe(new Observer<HotReview>() {
                     @Override
                     public void onNext(HotReview data) {
-                        Log.e(TAG, "getHotReview" + data.reviews);
                         List<HotReview.Reviews> list = data.reviews;
                         if (list != null && !list.isEmpty() && mView != null) {
                             mView.showHotReview(list);

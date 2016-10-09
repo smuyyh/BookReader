@@ -165,13 +165,16 @@ public class CacheManager {
     /**
      * 清除缓存
      */
-    public synchronized void clearCache() {
+    public synchronized void clearCache(boolean clearReadPos) {
         try {
             String cacheDir = AppUtils.getAppContext().getCacheDir().getPath();
             FileUtils.deleteFileOrDirectory(new File(cacheDir));
             if (FileUtils.isSdCardAvailable()) {
                 String extCacheDir = AppUtils.getAppContext().getExternalCacheDir().getPath();
                 FileUtils.deleteFileOrDirectory(new File(extCacheDir));
+            }
+            if (clearReadPos) {
+                SharedPreferencesUtil.getInstance().removeAll();
             }
         } catch (Exception e) {
             LogUtils.e(e.toString());

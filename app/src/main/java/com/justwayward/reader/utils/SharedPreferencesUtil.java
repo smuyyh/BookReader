@@ -204,4 +204,10 @@ public class SharedPreferencesUtil {
         editor.commit();
         return this;
     }
+
+    public SharedPreferencesUtil removeAll() {
+        editor.clear();
+        editor.commit();
+        return this;
+    }
 }
