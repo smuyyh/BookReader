@@ -1,7 +1,6 @@
 package com.justwayward.reader.utils;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.os.Environment;
 
 import com.justwayward.reader.base.Constant;
@@ -18,6 +17,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.channels.FileChannel;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author yuyh.
@@ -40,12 +41,16 @@ public class FileUtils {
         return new File(Constant.BASE_PATH + bookId);
     }
 
-    public static File getWifiTranfesFile(String fileName) {
+    /**
+     * 获取Wifi传书保存文件
+     *
+     * @param fileName
+     * @return
+     */
+    public static File createWifiTranfesFile(String fileName) {
         LogUtils.i("wifi trans save " + fileName);
         // 取文件名作为文件夹（bookid）
-        if (fileName.lastIndexOf(".") > 0)
-            fileName = fileName.substring(0, fileName.lastIndexOf("."));
-        String absPath = Constant.BASE_PATH + "/uploader/" + fileName + "/1.txt";
+        String absPath = Constant.BASE_PATH + "/" + fileName + "/1.txt";
 
         File file = new File(absPath);
         if (!file.exists())
@@ -53,6 +58,12 @@ public class FileUtils {
         return file;
     }
 
+    /**
+     * 读取Assets文件
+     *
+     * @param fileName
+     * @return
+     */
     public static byte[] readAssets(String fileName) {
         if (fileName == null || fileName.length() <= 0) {
             return null;
@@ -139,35 +150,12 @@ public class FileUtils {
         return "";
     }
 
-    public static String getImageCachePath(String path) {
-        return createDir(path);
-    }
-
-    /**
-     * 获取图片缓存目录
-     *
-     * @return 创建失败, 返回""
-     */
-    public static String getImageCachePath(Context context) {
-        String path = createDir(createRootPath(context) + File.separator + "img" + File.separator);
-        return path;
-    }
-
-    /**
-     * 获取图片裁剪缓存目录
-     *
-     * @return 创建失败, 返回""
-     */
-    public static String getImageCropCachePath(Context context) {
-        String path = createDir(createRootPath(context) + File.separator + "imgCrop" + File.separator);
-        return path;
-    }
-
     /**
      * 将内容写入文件
      *
      * @param filePath eg:/mnt/sdcard/demo.txt
      * @param content  内容
+     * @param isAppend 是否追加
      */
     public static void writeFile(String filePath, String content, boolean isAppend) {
         LogUtils.i("save:" + filePath);
@@ -190,24 +178,6 @@ public class FileUtils {
         } catch (java.io.IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * 打开Asset下的文件
-     *
-     * @param context
-     * @param fileName
-     * @return
-     */
-    public static InputStream openAssetFile(Context context, String fileName) {
-        AssetManager am = context.getAssets();
-        InputStream is = null;
-        try {
-            is = am.open(fileName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return is;
     }
 
     /**
@@ -387,5 +357,26 @@ public class FileUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 递归获取所有文件
+     *
+     * @param root
+     * @param ext  指定扩展名
+     */
+    private synchronized void getAllFiles(File root, String ext) {
+        List<File> list = new ArrayList<>();
+        File files[] = root.listFiles();
+        if (files != null) {
+            for (File f : files) {
+                if (f.isDirectory()) {
+                    getAllFiles(f, ext);
+                } else {
+                    if (f.getName().endsWith(ext) && f.length() > 50)
+                        list.add(f);
+                }
+            }
+        }
     }
 }

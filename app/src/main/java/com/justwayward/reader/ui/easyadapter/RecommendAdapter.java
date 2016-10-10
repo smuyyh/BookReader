@@ -28,7 +28,9 @@ public class RecommendAdapter extends RecyclerArrayAdapter<Recommend.RecommendBo
             @Override
             public void setData(final Recommend.RecommendBooks item) {
                 super.setData(item);
-                if (!SettingManager.getInstance().isNoneCover()) {
+                if (item.isFromSD) {
+                    holder.setImageResource(R.id.ivRecommendCover, R.drawable.home_shelf_txt_icon);
+                } else if (!SettingManager.getInstance().isNoneCover()) {
                     holder.setRoundImageUrl(R.id.ivRecommendCover, Constant.IMG_BASE_URL + item.cover,
                             R.drawable.cover_default);
                 } else {

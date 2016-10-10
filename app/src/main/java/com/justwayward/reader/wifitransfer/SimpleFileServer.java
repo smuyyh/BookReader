@@ -2,7 +2,12 @@ package com.justwayward.reader.wifitransfer;
 
 import android.text.TextUtils;
 
+import com.justwayward.reader.bean.Recommend;
+import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
+import com.justwayward.reader.manager.CollectionsManager;
 import com.justwayward.reader.utils.FileUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -58,8 +63,13 @@ public class SimpleFileServer extends NanoHTTPD {
             for (String s : files.keySet()) {
                 try {
                     FileInputStream fis = new FileInputStream(files.get(s));
-                    File outputFile = FileUtils.getWifiTranfesFile(parms.get("newfile"));
-                    FileUtils.createFile(outputFile);
+                    String fileName = parms.get("newfile");
+                    if (fileName.lastIndexOf(".") > 0)
+                        fileName = fileName.substring(0, fileName.lastIndexOf("."));
+                    // 创建文件
+                    File outputFile = FileUtils.createWifiTranfesFile(fileName);
+                    // 添加到收藏
+                    addToCollection(fileName);
                     FileOutputStream fos = new FileOutputStream(outputFile);
                     byte[] buffer = new byte[1024];
                     while (true) {
@@ -69,6 +79,7 @@ public class SimpleFileServer extends NanoHTTPD {
                         }
                         fos.write(buffer, 0, byteRead);
                     }
+                    fos.close();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -77,5 +88,21 @@ public class SimpleFileServer extends NanoHTTPD {
             }
             return new Response("");
         }
+    }
+
+    /**
+     * 添加到收藏
+     *
+     * @param fileName
+     */
+    private void addToCollection(String fileName) {
+        Recommend.RecommendBooks books = new Recommend.RecommendBooks();
+        books.isFromSD = true;
+
+        books._id = fileName;
+        books.title = fileName;
+
+        CollectionsManager.getInstance().add(books);
+        EventBus.getDefault().post(new RefreshCollectionListEvent());
     }
 }

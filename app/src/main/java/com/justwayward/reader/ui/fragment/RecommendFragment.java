@@ -135,7 +135,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
     public void onItemClick(int position) {
         if (isVisible(llBatchManagement)) //批量管理时，屏蔽点击事件
             return;
-        ReadActivity.startActivity(activity, mAdapter.getItem(position));
+        ReadActivity.startActivity(activity, mAdapter.getItem(position), mAdapter.getItem(position).isFromSD);
     }
 
     @Override
@@ -176,8 +176,12 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
                                         break;
                                     case 3:
                                         //缓存全本
-                                        showDialog();
-                                        mPresenter.getTocList(mAdapter.getItem(position)._id);
+                                        if (mAdapter.getItem(position).isFromSD) {
+                                            ToastUtils.showSingleToast("本地文件不支持该选项哦");
+                                        } else {
+                                            showDialog();
+                                            mPresenter.getTocList(mAdapter.getItem(position)._id);
+                                        }
                                         break;
                                     case 4:
                                         //删除

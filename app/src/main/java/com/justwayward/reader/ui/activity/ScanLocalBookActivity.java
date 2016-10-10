@@ -50,18 +50,4 @@ public class ScanLocalBookActivity extends BaseActivity {
 
     }
 
-    private synchronized void getAllFiles(File root) {
-
-        File files[] = root.listFiles();
-
-        if (files != null)
-            for (File f : files) {
-                if (f.isDirectory()) {
-                    getAllFiles(f);
-                } else {
-                    if (f.getName().endsWith(".txt") && f.length() > 50)
-                        this.list.add(f);
-                }
-            }
-    }
 }

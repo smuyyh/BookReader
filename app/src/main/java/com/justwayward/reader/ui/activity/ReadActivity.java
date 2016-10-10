@@ -163,15 +163,22 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 
     public static final String INTENT_BEAN = "recommendBooksBean";
+    public static final String INTENT_SD = "isFromSD";
 
     private Recommend.RecommendBooks recommendBooks;
 
     private boolean isAutoLightness = false; // 记录其他页面是否自动调整亮度
+    private boolean isFromSD = false;
 
     //添加收藏需要，所以跳转的时候传递整个实体类
     public static void startActivity(Context context, Recommend.RecommendBooks recommendBooks) {
+        startActivity(context, recommendBooks, false);
+    }
+
+    public static void startActivity(Context context, Recommend.RecommendBooks recommendBooks, boolean isFromSD) {
         context.startActivity(new Intent(context, ReadActivity.class)
-                .putExtra(INTENT_BEAN, recommendBooks));
+                .putExtra(INTENT_BEAN, recommendBooks)
+                .putExtra(INTENT_SD, isFromSD));
     }
 
     @Override
@@ -219,6 +226,15 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         initPagerWidget();
 
         mPresenter.attachView(this);
+        isFromSD = getIntent().getBooleanExtra(INTENT_SD, false);
+        // 本地收藏  直接打开
+        if (isFromSD) {
+            BookToc.mixToc.Chapters chapters = new BookToc.mixToc.Chapters();
+            chapters.title = recommendBooks.title;
+            mChapterList.add(chapters);
+            showChapterRead(null, currentChapter);
+            return;
+        }
         mPresenter.getBookToc(recommendBooks._id, "chapters");
     }
 

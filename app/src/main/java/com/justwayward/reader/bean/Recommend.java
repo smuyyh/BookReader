@@ -38,6 +38,7 @@ public class Recommend extends Base {
         public boolean isTop = false;
         public boolean isSeleted = false;
         public boolean showCheckBox = false;
+        public boolean isFromSD = false;
         public int latelyFollower;
         public double retentionRatio;
         public String updated;
