@@ -2,6 +2,7 @@ package com.justwayward.reader.manager;
 
 import android.text.TextUtils;
 
+import com.justwayward.reader.R;
 import com.justwayward.reader.ReaderApplication;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.utils.ACache;
@@ -133,6 +134,8 @@ public class CollectionsManager {
         }
         list.add(bean);
         ACache.get(ReaderApplication.getsInstance()).put("collection", (Serializable) list);
+        ToastUtils.showToast(String.format(AppUtils.getAppContext().getString(
+                R.string.book_detail_has_joined_the_book_shelf), bean.title));
     }
 
     /**

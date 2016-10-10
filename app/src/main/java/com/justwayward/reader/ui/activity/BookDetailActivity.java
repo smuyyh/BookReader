@@ -287,8 +287,6 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
         if (!isJoinedCollections) {
             if (recommendBooks != null) {
                 CollectionsManager.getInstance().add(recommendBooks);
-                ToastUtils.showToast(String.format(getString(
-                        R.string.book_detail_has_joined_the_book_shelf), recommendBooks.title));
                 initCollection(false);
             }
         } else {

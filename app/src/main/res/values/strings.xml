@@ -23,7 +23,7 @@
     <string name="book_detail_recommend_book_list">推荐书单</string>
     <string name="book_detail_recommend_book_list_book_count">共%1$d本书 |&#160;</string>
     <string name="book_detail_recommend_book_list_collector_count">%1$d人收藏</string>
-    <string name="book_detail_has_joined_the_book_shelf">已添加《%1$s》</string>
+    <string name="book_detail_has_joined_the_book_shelf">《%1$s》成功加入书架</string>
     <string name="book_detail_has_remove_the_book_shelf">已移除《%1$s》</string>
 
     <!--阅读页面相关-->

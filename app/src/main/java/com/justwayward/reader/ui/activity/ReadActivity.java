@@ -589,8 +589,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
                                 CollectionsManager.getInstance().add(bean);
-                                ToastUtils.showToast(String.format(getString(
-                                        R.string.book_detail_has_joined_the_book_shelf), bean.title));
                                 EventBus.getDefault().post(new RefreshCollectionIconEvent());
                                 EventBus.getDefault().post(new RefreshCollectionListEvent());
                                 finish();
