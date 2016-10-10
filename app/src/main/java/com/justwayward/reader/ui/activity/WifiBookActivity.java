@@ -9,8 +9,8 @@ import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerMainComponent;
 import com.justwayward.reader.utils.NetworkUtils;
-import com.justwayward.reader.wifitransfer.custom.Defaults;
-import com.justwayward.reader.wifitransfer.nano.ServerRunner;
+import com.justwayward.reader.wifitransfer.Defaults;
+import com.justwayward.reader.wifitransfer.ServerRunner;
 
 import butterknife.Bind;
 
@@ -52,8 +52,8 @@ public class WifiBookActivity extends BaseActivity {
         mTvWifiName.setText(NetworkUtils.getConnectWifiSsid(mContext).replace("\"", ""));
         mTvWifiIp.setText("http://" + NetworkUtils.getConnectWifiIp(mContext) + ":" + Defaults.getPort());
 
-        //WebService.start(this);
-        ServerRunner.startServer(8080);
+        // 启动wifi传书服务器
+        ServerRunner.startServer();
     }
 
     @Override
@@ -64,7 +64,6 @@ public class WifiBookActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //WebService.stop(this);
         ServerRunner.stopServer();
     }
 }

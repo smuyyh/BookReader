@@ -1,4 +1,4 @@
-package com.justwayward.reader.wifitransfer.custom;
+package com.justwayward.reader.wifitransfer;
 
 import java.util.HashMap;
 import java.util.Map;

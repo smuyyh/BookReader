@@ -1,4 +1,4 @@
-package com.justwayward.reader.wifitransfer.nano;
+package com.justwayward.reader.wifitransfer;
 
 import android.util.Log;
 

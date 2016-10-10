@@ -1,0 +1,42 @@
+/* ::::: http://192.168.56.103:12121/css/style.css ::::: */
+
+html { margin: 0px; padding: 0px; overflow: visible; }
+body { background: #362f2e; padding: 0px; margin: 0px; overflow: hidden; font-size: 14px; font-family: tahoma,宋体,Arial,"MS Trebuchet",sans-serif; }
+#wrapper { height: 768px; }
+#content { margin: 0px auto; width: 950px; height: 768px; position: relative; }
+#left { margin: 0px 0px 0px 50px; }
+#logo { position: relative; }
+.hint { font-size: 12px; color: rgb(255, 255, 255); width: 243px; height: 30px; text-align: center; line-height: 15px; }
+#upload_form { position: relative; }
+/* .file_upload_warper { position: absolute; top: 0px; left: 0px; width: 0px; height: 92px; overflow: hidden; } */
+.file_upload { cursor: pointer; position: absolute; top: 0px; left: -250px; width: 500px; height: 500px; font-size: 500px; opacity: 0;
+               -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(opacity=0)";
+             }
+#copyright { margin-top: 170px; font-size: 14px; color: rgb(255, 255, 255); width: 243px; text-align: center; }
+#right_wrapper { width: 559px; height: 5000px; position: absolute; top: 0px; left: 350px; }
+#right { height: 697px; width: 100%; margin-top: 110px; overflow: hidden;}
+#right .content_title { margin-left: 37px; width: 483px; height: 40px; background-color: rgb(150, 171, 190); background-image: url('bg_title.jpg'); line-height: 40px; text-indent: 10px; font-size: 14px; color: rgb(255, 255, 255); border-bottom: 1px solid rgb(135, 162, 184); }
+#right .table_header { margin-left: 37px; width: 483px; height: 34px; background-image: url('table_header_bg2.jpg'); border-bottom: 1px solid rgb(186, 200, 210); }
+#right .table_header .separator { background-image: url('table_header_bg.jpg'); background-repeat: no-repeat; }
+#right .table_header .column { text-indent: 10px; float: left; height: 34px; line-height: 34px; color: rgb(96, 117, 137); font-size: 12px; }
+#right .table_header .filename { width: 313px; }
+#right .table_header .size { width: 80px; }
+#right .table_header .operate { width: 80px; text-align: center; }
+#right .files { background-image: url('bg_file_list.jpg'); margin-left: 37px; width: 483px; overflow: auto; }
+#right .file { height: 40px; line-height: 40px; color: rgb(0, 0, 0); font-size: 12px; position: relative; }
+#right .files .column { position: relative; text-indent: 10px; float: left; height: 40px; overflow: hidden; z-index: 2; }
+#right .files .filename { width: 313px; }
+#right .files .size { width: 80px; }
+#right .files .trash { margin-left: 0px; width: 20px; height: 40px; background-position: center center; background-repeat: no-repeat; background-image: url('trash.gif'); cursor: pointer; }
+#right .files .download { margin-left: 0px; width: 44px; height: 40px; background-position: right center; background-repeat: no-repeat; background-image: url('download.gif'); cursor: pointer; }
+#drag_area { width: 230px; height: 230px; margin-left: 30px; background-image: url('bg_drag.png'); background-repeat: no-repeat; }
+#ie_drag_area { width: 230px; height: 230px; margin-left: 30px; background-image: url('h4_logo.png'); background-repeat: no-repeat; }
+#drag_area.normal { background-position: 0px 0px; }
+#drag_area.active { background-position: 0px -230px; }
+#upload_button { position: relative; width: 242px; height: 84px; margin-left: 22px; background-image: url('button_status.png'); background-repeat: no-repeat; overflow: hidden; }
+#upload_button.pressed { background-position: 0px -87px }
+#drag_area .drag_hint { font-size: 20px; text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.4); color: rgb(255, 255, 255); text-align: center; padding-top: 130px; -moz-user-select: none; }
+.button_lables { position: absolute; top: 20px; left: 11px; width: 212px; height: 92px; }
+.button_lables .button_lable1 { font-size: 18px; line-height: 18px; color: rgb(255, 255, 255); text-align: center; -moz-user-select: none; }
+.button_lables .button_lable2 { font-size: 12px; line-height: 16px; color: rgb(255, 255, 255); text-align: center; -moz-user-select: none; }
+

@@ -1,4 +1,4 @@
-package com.justwayward.reader.wifitransfer.nano;
+package com.justwayward.reader.wifitransfer;
 
 public abstract class HtmlConst {
     public static final String HTML_STRING = "<html>"

@@ -40,6 +40,17 @@ public class FileUtils {
         return new File(Constant.BASE_PATH + bookId);
     }
 
+    public static File getWifiTranfesFile(String fileName) {
+        // 取文件名作为文件夹（bookid）
+        String bookId = fileName.substring(0, fileName.lastIndexOf("."));
+        String absPath = Constant.BASE_PATH + "/uploader/" + bookId + "/1.txt";
+
+        File file = new File(absPath);
+        if (!file.exists())
+            createFile(file);
+        return file;
+    }
+
     /**
      * 创建根缓存目录
      *
