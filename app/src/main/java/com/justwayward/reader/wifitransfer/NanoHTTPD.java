@@ -29,58 +29,6 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
 
-/**
- * A simple, tiny, nicely embeddable HTTP 1.0 (partially 1.1) server in Java
- * <p/>
- * <p/>
- * NanoHTTPD -- version 1.25, Copyright &copy; 2001,2005-2012 Jarno Elonen
- * (elonen@iki.fi, http://iki.fi/elonen/) and Copyright &copy; 2010 Konstantinos
- * Togias (info@ktogias.gr, http://ktogias.gr)
- * <p/>
- * -- version 6 and above, Copyright &copy; 2012- Uplifted to Java6 by Paul
- * Hawke (paul.hawke@gmail.com) and Micah Hainline.
- * <p/>
- * <p/>
- * <b>Features + limitations: </b>
- * <ul>
- * <p/>
- * <li>Only one Java file</li>
- * <li>Java 5 compatible</li>
- * <li>Released as open source, Modified BSD licence</li>
- * <li>No fixed config files, logging, authorization etc. (Implement yourself if
- * you need them.)</li>
- * <li>Supports parameter parsing of GET and POST methods (+ rudimentary PUT
- * support in 1.25)</li>
- * <li>Supports both dynamic content and file serving</li>
- * <li>Supports file upload (since version 1.2, 2010)</li>
- * <li>Supports partial content (streaming)</li>
- * <li>Supports ETags</li>
- * <li>Never caches anything</li>
- * <li>Doesn't limit bandwidth, request time or simultaneous connections</li>
- * <li>Default code serves files and shows all HTTP parameters and headers</li>
- * <li>File server supports directory listing, index.html and index.htm</li>
- * <li>File server supports partial content (streaming)</li>
- * <li>File server supports ETags</li>
- * <li>File server does the 301 redirection trick for directories without '/'</li>
- * <li>File server supports simple skipping for files (continue download)</li>
- * <li>File server serves also very long files without memory overhead</li>
- * <li>Contains a built-in list of most common mime types</li>
- * <li>All header names are converted lowercase so they don't vary between
- * browsers/clients</li>
- * <p/>
- * </ul>
- * <p/>
- * <p/>
- * <b>How to use: </b>
- * <ul>
- * <p/>
- * <li>Subclass and implement serve() and embed to your own program</li>
- * <p/>
- * </ul>
- * <p/>
- * See the separate "LICENSE.md" file for the distribution license (Modified BSD
- * licence)
- */
 public abstract class NanoHTTPD {
     /*
      * Pseudo-Parameter to use to store the actual query string in the

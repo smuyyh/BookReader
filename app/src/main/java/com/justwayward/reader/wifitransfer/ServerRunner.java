@@ -13,6 +13,9 @@ public class ServerRunner {
     private static SimpleFileServer server;
     public static boolean serverIsRunning = false;
 
+    /**
+     * 启动wifi传书服务
+     */
     public static void startServer() {
         server = SimpleFileServer.getInstance();
         try {

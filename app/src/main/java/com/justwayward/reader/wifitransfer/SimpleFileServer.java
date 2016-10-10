@@ -3,7 +3,6 @@ package com.justwayward.reader.wifitransfer;
 import android.text.TextUtils;
 
 import com.justwayward.reader.utils.FileUtils;
-import com.justwayward.reader.utils.LogUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -38,26 +37,24 @@ public class SimpleFileServer extends NanoHTTPD {
     public Response serve(String uri, Method method,
                           Map<String, String> header, Map<String, String> parms,
                           Map<String, String> files) {
-
-        LogUtils.i(uri);
-
         if (Method.GET.equals(method)) {
             //return new Response(HtmlConst.HTML_STRING);
             if (uri.contains("index.html") || uri.equals("/")) {
-                return new Response(Response.Status.OK, "text/html", new String(FileSp.read("/index.html")));
+                return new Response(Response.Status.OK, "text/html", new String(FileUtils.readAssets("/index.html")));
             } else {
                 // 获取文件类型
                 String type = Defaults.extensions.get(uri.substring(uri.lastIndexOf(".") + 1));
                 if (TextUtils.isEmpty(type))
                     return new Response("");
                 // 读取文件
-                byte[] b = FileSp.read(uri);
+                byte[] b = FileUtils.readAssets(uri);
                 if (b == null || b.length < 1)
                     return new Response("");
                 // 响应
                 return new Response(Response.Status.OK, type, new ByteArrayInputStream(b));
             }
         } else {
+            // 读取文件
             for (String s : files.keySet()) {
                 try {
                     FileInputStream fis = new FileInputStream(files.get(s));

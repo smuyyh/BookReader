@@ -1,6 +1,6 @@
 var STRINGS = {};
 
-STRINGS.WIFI_TRANS_TITLE = 'WiFi 传书';
+STRINGS.WIFI_TRANS_TITLE = 'WiFi传书';
 STRINGS.FILES_ON_DEVICE = '您设备上的文件列表';
 STRINGS.FILENAME = '文件名';
 STRINGS.FILE_SIZE = '大小';
@@ -17,9 +17,9 @@ STRINGS.YOU_CHOOSE = '您选择了';
 STRINGS.CHOSEN_FILE_COUNT = '个文件，只能上传';
 STRINGS.VALID_CHOSEN_FILE_COUNT = '个文件。\n请选择TXT图书文件，文件名不能重复。';
 STRINGS.CANCEL = '取消';
-STRINGS.SELECT_YOUR_FILES = '请选择您要上传到多看阅读的文件';
+STRINGS.SELECT_YOUR_FILES = '请选择您要上传到任阅阅读的文件';
 STRINGS.SUPPORTED_FILE_TYPES = '支持TXT';
-STRINGS.CANNOT_CONNECT_SERVER = '无法连接WiFi传书服务器，请重新打开WiFi传书服务并刷新此页后重新上传。';
+STRINGS.CANNOT_CONNECT_SERVER = '无法连接任阅WiFi传书服务器，请重新打开WiFi传书服务并刷新此页后重新上传。';
 STRINGS.DRAG_TO_HERE = "拖拽到此处上传";
 STRINGS.SELECT_BUTTON_LABLE1 = "选择文件";
 STRINGS.SELECT_BUTTON_LABLE2 = "可同时上传多个文件";

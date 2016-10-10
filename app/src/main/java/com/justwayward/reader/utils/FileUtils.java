@@ -41,14 +41,34 @@ public class FileUtils {
     }
 
     public static File getWifiTranfesFile(String fileName) {
+        LogUtils.i("wifi trans save " + fileName);
         // 取文件名作为文件夹（bookid）
-        String bookId = fileName.substring(0, fileName.lastIndexOf("."));
-        String absPath = Constant.BASE_PATH + "/uploader/" + bookId + "/1.txt";
+        if (fileName.lastIndexOf(".") > 0)
+            fileName = fileName.substring(0, fileName.lastIndexOf("."));
+        String absPath = Constant.BASE_PATH + "/uploader/" + fileName + "/1.txt";
 
         File file = new File(absPath);
         if (!file.exists())
             createFile(file);
         return file;
+    }
+
+    public static byte[] readAssets(String fileName) {
+        if (fileName == null || fileName.length() <= 0) {
+            return null;
+        }
+        byte[] buffer = null;
+        try {
+            InputStream fin = AppUtils.getAppContext().getAssets().open("uploader" + fileName);
+            int length = fin.available();
+            buffer = new byte[length];
+            fin.read(buffer);
+            fin.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return buffer;
+        }
     }
 
     /**
