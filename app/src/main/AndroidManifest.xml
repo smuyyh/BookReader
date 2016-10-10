@@ -60,6 +60,7 @@
         <activity android:name=".ui.activity.FeedbackActivity" />
 
         <service android:name=".service.DownloadBookService" />
+        <service android:name=".wifitransfer.custom.WebService"/>
 
         <activity
             android:name="com.tencent.tauth.AuthActivity"

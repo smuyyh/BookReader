@@ -223,9 +223,10 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
             case R.id.action_scan_local_book:
                 break;
             case R.id.action_wifi_book:
-                startActivity(new Intent(mContext,WifiBookActivity.class));
+                WifiBookActivity.startActivity(this);
                 break;
             case R.id.action_feedback:
+                FeedbackActivity.startActivity(this);
                 break;
             case R.id.action_night_mode:
                 if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)) {
@@ -238,7 +239,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
                 recreate();
                 break;
             case R.id.action_settings:
-                startActivity(new Intent(this, SettingActivity.class));
+                SettingActivity.startActivity(this);
                 break;
             default:
                 break;

@@ -2,7 +2,9 @@ package com.justwayward.reader.ui.activity;
 
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.widget.SwitchCompat;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -21,6 +23,10 @@ import butterknife.OnClick;
  * Created by xiaoshu on 2016/10/8.
  */
 public class SettingActivity extends BaseActivity {
+
+    public static void startActivity(Context context) {
+        context.startActivity(new Intent(context, SettingActivity.class));
+    }
 
     @Bind(R.id.mTvSort)
     TextView mTvSort;
