@@ -8,6 +8,7 @@ import com.justwayward.reader.utils.ACache;
 import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.utils.LogUtils;
+import com.justwayward.reader.utils.ToastUtils;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -122,6 +123,10 @@ public class CollectionsManager {
      * @param bean
      */
     public void add(Recommend.RecommendBooks bean) {
+        if (isCollected(bean._id)) {
+            ToastUtils.showSingleToast("重复添加书籍：" + bean.title);
+            return;
+        }
         List<Recommend.RecommendBooks> list = getCollectionList();
         if (list == null) {
             list = new ArrayList<>();
