@@ -214,6 +214,8 @@ public class FileUtils {
      * @param desc 目的文件
      */
     public static void fileChannelCopy(File src, File desc) {
+        //createFile(src);
+        createFile(desc);
         FileInputStream fi = null;
         FileOutputStream fo = null;
         try {

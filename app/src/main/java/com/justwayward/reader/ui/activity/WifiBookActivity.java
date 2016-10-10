@@ -1,7 +1,9 @@
 package com.justwayward.reader.ui.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.widget.TextView;
 
 import com.justwayward.reader.R;
@@ -59,6 +61,25 @@ public class WifiBookActivity extends BaseActivity {
     @Override
     public void configViews() {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("提示")
+                .setMessage("确定要关闭？Wifi传书将会中断！")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).show();
     }
 
     @Override

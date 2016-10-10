@@ -221,6 +221,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
                 popupWindow.showAtLocation(mCommonToolbar, Gravity.CENTER, 0, 0);
                 break;
             case R.id.action_scan_local_book:
+                ScanLocalBookActivity.startActivity(this);
                 break;
             case R.id.action_wifi_book:
                 WifiBookActivity.startActivity(this);
