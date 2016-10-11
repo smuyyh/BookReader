@@ -38,7 +38,13 @@
             android:name=".ui.activity.ReadActivity"
             android:hardwareAccelerated="false"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar.FullScreen" />
+            android:theme="@style/AppTheme.NoActionBar.FullScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ui.activity.TopCategoryListActivity" />
         <activity android:name=".ui.activity.SubCategoryListActivity" />
         <activity android:name=".ui.activity.SubjectBookListActivity" />
@@ -60,7 +66,7 @@
         <activity android:name=".ui.activity.FeedbackActivity" />
 
         <service android:name=".service.DownloadBookService" />
-        <service android:name=".wifitransfer.custom.WebService"/>
+        <service android:name=".wifitransfer.custom.WebService" />
 
         <activity
             android:name="com.tencent.tauth.AuthActivity"

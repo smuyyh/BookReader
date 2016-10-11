@@ -199,9 +199,12 @@ public interface BookApiService {
      * 全部、默认排序  http://api.zhuishushenqi.com/post/by-block?block=ramble&duration=all&sort=updated&type=all&start=0&limit=20&distillate=
      * 精品、默认排序  http://api.zhuishushenqi.com/post/by-block?block=ramble&duration=all&sort=updated&type=all&start=0&limit=20&distillate=true
      *
-     * @param block      ramble
+     * @param block      ramble:综合讨论区
+     *                   original：原创区
      * @param duration   all
-     * @param sort       updated(默认排序)、created(最新发布)、comment-count(最多评论)
+     * @param sort       updated(默认排序)
+     *                   created(最新发布)
+     *                   comment-count(最多评论)
      * @param type       all
      * @param start      0
      * @param limit      20
@@ -246,8 +249,11 @@ public interface BookApiService {
      * 精品、玄幻奇幻、默认排序  http://api.zhuishushenqi.com/post/review?duration=all&sort=updated&type=xhqh&start=0&limit=20&distillate=true
      *
      * @param duration   all
-     * @param sort       updated(默认排序)、created(最新发布)、helpful(最有用的)、comment-count(最多评论)
-     * @param type       all(全部类型)、xhqh(玄幻奇幻)、dsyn(都市异能)
+     * @param sort       updated(默认排序)
+     *                   created(最新发布)
+     *                   helpful(最有用的)
+     *                   comment-count(最多评论)
+     * @param type       all(全部类型)、xhqh(玄幻奇幻)、dsyn(都市异能)...
      * @param start      0
      * @param limit      20
      * @param distillate true(精品) 、空字符（全部）
@@ -282,7 +288,9 @@ public interface BookApiService {
      * 精品、默认排序  http://api.zhuishushenqi.com/post/help?duration=all&sort=updated&start=0&limit=20&distillate=true
      *
      * @param duration   all
-     * @param sort       updated(默认排序)、created(最新发布)、comment-count(最多评论)
+     * @param sort       updated(默认排序)
+     *                   created(最新发布)
+     *                   comment-count(最多评论)
      * @param start      0
      * @param limit      20
      * @param distillate true(精品) 、空字符（全部）
@@ -317,11 +325,14 @@ public interface BookApiService {
     /**
      * 获取书籍详情讨论列表
      *
-     * @param book       bookId
-     * @param sort       updated(默认排序)、created(最新发布)、comment-count(最多评论)
-     * @param type       normal,vote
-     * @param start      0
-     * @param limit      20
+     * @param book  bookId
+     * @param sort  updated(默认排序)
+     *              created(最新发布)
+     *              comment-count(最多评论)
+     * @param type  normal
+     *              vote
+     * @param start 0
+     * @param limit 20
      * @return
      */
     @GET("/post/by-book")
@@ -330,10 +341,13 @@ public interface BookApiService {
     /**
      * 获取书籍详情书评列表
      *
-     * @param book       bookId
-     * @param sort       updated(默认排序)、created(最新发布)、helpful(最有用的)、comment-count(最多评论)
-     * @param start      0
-     * @param limit      20
+     * @param book  bookId
+     * @param sort  updated(默认排序)
+     *              created(最新发布)
+     *              helpful(最有用的)
+     *              comment-count(最多评论)
+     * @param start 0
+     * @param limit 20
      * @return
      */
     @GET("/post/review/by-book")

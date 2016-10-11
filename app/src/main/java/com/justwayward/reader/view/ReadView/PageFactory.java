@@ -160,7 +160,7 @@ public class PageFactory {
         try {
             File file = new File(path);
             long length = file.length();
-            if (length < 50) {
+            if (length < 10) {
                 return 0;
             }
             m_mpBufferLen = (int) length;
