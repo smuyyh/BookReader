@@ -1,16 +1,12 @@
 package com.justwayward.reader.wifitransfer;
 
-import android.os.Looper;
 import android.text.TextUtils;
 
-import com.justwayward.reader.R;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
 import com.justwayward.reader.manager.CollectionsManager;
-import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.utils.LogUtils;
-import com.justwayward.reader.utils.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -20,6 +16,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 /**
@@ -48,9 +45,19 @@ public class SimpleFileServer extends NanoHTTPD {
                           Map<String, String> header, Map<String, String> parms,
                           Map<String, String> files) {
         if (Method.GET.equals(method)) {
+            try {
+                uri = new String(uri.getBytes("ISO-8859-1"), "UTF-8");
+                LogUtils.d("uri= " + uri);
+            } catch (UnsupportedEncodingException e) {
+                LogUtils.w("URL参数编码转换错误：" + e.toString());
+            }
+
             //return new Response(HtmlConst.HTML_STRING);
             if (uri.contains("index.html") || uri.equals("/")) {
                 return new Response(Response.Status.OK, "text/html", new String(FileUtils.readAssets("/index.html")));
+            } else if (uri.startsWith("/files/") && uri.endsWith(".txt")) {
+                String bookid = uri.substring(7, uri.lastIndexOf("."));
+                return new Response(Response.Status.OK, "file", new String(FileUtils.getBytesFromFile(FileUtils.getChapterFile(bookid, 1))));
             } else {
                 // 获取文件类型
                 String type = Defaults.extensions.get(uri.substring(uri.lastIndexOf(".") + 1));
@@ -118,14 +125,14 @@ public class SimpleFileServer extends NanoHTTPD {
         books._id = fileName;
         books.title = fileName;
 
-        Looper.prepare();
+        //Looper.prepare();
         if (CollectionsManager.getInstance().add(books)) {
-            ToastUtils.showToast(String.format(AppUtils.getAppContext().getString(
-                    R.string.book_detail_has_joined_the_book_shelf), books.title));
+            //ToastUtils.showToast(String.format(AppUtils.getAppContext().getString(
+            //R.string.book_detail_has_joined_the_book_shelf), books.title));
             EventBus.getDefault().post(new RefreshCollectionListEvent());
         } else {
-            ToastUtils.showSingleToast("书籍已存在");
+            //ToastUtils.showSingleToast("书籍已存在");
         }
-        Looper.loop();
+        //Looper.loop();
     }
 }

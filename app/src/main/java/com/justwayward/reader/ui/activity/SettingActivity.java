@@ -11,10 +11,13 @@ import android.widget.TextView;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
+import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerMainComponent;
 import com.justwayward.reader.manager.CacheManager;
 import com.justwayward.reader.manager.SettingManager;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -133,6 +136,7 @@ public class SettingActivity extends BaseActivity {
                                     @Override
                                     public void run() {
                                         mTvCacheSize.setText(cacheSize);
+                                        EventBus.getDefault().post(new RefreshCollectionListEvent());
                                     }
                                 });
                             }

@@ -565,7 +565,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @Override
     public void showError() {
-        ToastUtils.showSingleToast("加载失败");
+        ToastUtils.showSingleToast("文章加载失败");
         hideDialog();
     }
 

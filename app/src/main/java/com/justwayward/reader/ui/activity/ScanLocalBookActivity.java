@@ -121,13 +121,14 @@ public class ScanLocalBookActivity extends BaseActivity implements RecyclerArray
 
     @Override
     public void onItemClick(final int position) {
+        final Recommend.RecommendBooks books = mAdapter.getItem(position);
         new AlertDialog.Builder(this)
                 .setTitle("提示")
-                .setMessage("是否加入书架")
+                .setMessage(String.format(getString(
+                        R.string.book_detail_is_joined_the_book_shelf), books.title))
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Recommend.RecommendBooks books = mAdapter.getItem(position);
                         // 拷贝到缓存目录
                         FileUtils.fileChannelCopy(new File(books.path),
                                 new File(FileUtils.getChapterPath(books._id, 1)));
