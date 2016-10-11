@@ -2,14 +2,12 @@ package com.justwayward.reader.manager;
 
 import android.text.TextUtils;
 
-import com.justwayward.reader.R;
 import com.justwayward.reader.ReaderApplication;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.utils.ACache;
 import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.utils.LogUtils;
-import com.justwayward.reader.utils.ToastUtils;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -123,10 +121,9 @@ public class CollectionsManager {
      *
      * @param bean
      */
-    public void add(Recommend.RecommendBooks bean) {
+    public boolean add(Recommend.RecommendBooks bean) {
         if (isCollected(bean._id)) {
-            ToastUtils.showSingleToast("重复添加书籍：" + bean.title);
-            return;
+            return false;
         }
         List<Recommend.RecommendBooks> list = getCollectionList();
         if (list == null) {
@@ -134,8 +131,7 @@ public class CollectionsManager {
         }
         list.add(bean);
         ACache.get(ReaderApplication.getsInstance()).put("collection", (Serializable) list);
-        ToastUtils.showToast(String.format(AppUtils.getAppContext().getString(
-                R.string.book_detail_has_joined_the_book_shelf), bean.title));
+        return true;
     }
 
     /**

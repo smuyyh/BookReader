@@ -1,11 +1,16 @@
 package com.justwayward.reader.wifitransfer;
 
+import android.os.Looper;
 import android.text.TextUtils;
 
+import com.justwayward.reader.R;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
 import com.justwayward.reader.manager.CollectionsManager;
+import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.FileUtils;
+import com.justwayward.reader.utils.LogUtils;
+import com.justwayward.reader.utils.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -66,10 +71,10 @@ public class SimpleFileServer extends NanoHTTPD {
                     String fileName = parms.get("newfile");
                     if (fileName.lastIndexOf(".") > 0)
                         fileName = fileName.substring(0, fileName.lastIndexOf("."));
-                    // 创建文件
-                    File outputFile = FileUtils.createWifiTranfesFile(fileName);
-                    // 添加到收藏
-                    addToCollection(fileName);
+
+                    // 创建临时文件保存
+                    File outputFile = FileUtils.createWifiTempFile();
+                    LogUtils.i("--" + outputFile.getAbsolutePath());
                     FileOutputStream fos = new FileOutputStream(outputFile);
                     byte[] buffer = new byte[1024];
                     while (true) {
@@ -80,6 +85,17 @@ public class SimpleFileServer extends NanoHTTPD {
                         fos.write(buffer, 0, byteRead);
                     }
                     fos.close();
+
+                    // 创建目标文件
+                    File desc = FileUtils.createWifiTranfesFile(fileName);
+                    LogUtils.i("--" + desc.getAbsolutePath());
+
+                    // 判断编码，转存UTF-8
+                    FileUtils.saveWifiTxt(outputFile.getAbsolutePath(), desc.getAbsolutePath());
+
+                    // 添加到收藏
+                    addToCollection(fileName);
+
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -102,7 +118,14 @@ public class SimpleFileServer extends NanoHTTPD {
         books._id = fileName;
         books.title = fileName;
 
-        CollectionsManager.getInstance().add(books);
-        EventBus.getDefault().post(new RefreshCollectionListEvent());
+        Looper.prepare();
+        if (CollectionsManager.getInstance().add(books)) {
+            ToastUtils.showToast(String.format(AppUtils.getAppContext().getString(
+                    R.string.book_detail_has_joined_the_book_shelf), books.title));
+            EventBus.getDefault().post(new RefreshCollectionListEvent());
+        } else {
+            ToastUtils.showSingleToast("书籍已存在");
+        }
+        Looper.loop();
     }
 }
