@@ -153,16 +153,21 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
      * @param position
      */
     private void showLongClickDialog(final int position) {
+        final boolean isTop = CollectionsManager.getInstance().isTop(mAdapter.getItem(position)._id);
+        String[] items = getResources().getStringArray(R.array.recommend_item_long_click_choice);
+        if (isTop) {
+            items[0] = getString(R.string.cancle_top);
+        }
         new AlertDialog.Builder(activity)
                 .setTitle(mAdapter.getItem(position).title)
-                .setItems(getResources().getStringArray(R.array.recommend_item_long_click_choice),
+                .setItems(items,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which) {
                                     case 0:
-                                        //置顶
-                                        CollectionsManager.getInstance().top(mAdapter.getItem(position)._id);
+                                        //置顶、取消置顶
+                                        CollectionsManager.getInstance().top(mAdapter.getItem(position)._id, !isTop);
                                         onRefresh();
                                         break;
                                     case 1:
