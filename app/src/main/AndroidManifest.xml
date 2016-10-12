@@ -22,6 +22,7 @@
         android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name=".ui.activity.SplashActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,11 +30,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.MainActivity" />
-        <activity android:name=".ui.activity.SearchActivity" />
-        <activity android:name=".ui.activity.SearchByAuthorActivity" />
-        <activity android:name=".ui.activity.BookDetailActivity" />
-        <activity android:name=".ui.activity.BooksByTagActivity" />
+        <activity
+            android:name=".ui.activity.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.SearchActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.SearchByAuthorActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.BookDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.BooksByTagActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.ReadActivity"
             android:hardwareAccelerated="false"
@@ -45,28 +56,65 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.TopCategoryListActivity" />
-        <activity android:name=".ui.activity.SubCategoryListActivity" />
-        <activity android:name=".ui.activity.SubjectBookListActivity" />
-        <activity android:name=".ui.activity.SubjectBookListDetailActivity" />
-        <activity android:name=".ui.activity.TopRankActivity" />
-        <activity android:name=".ui.activity.SubRankActivity" />
-        <activity android:name=".ui.activity.BookDiscussionActivity" />
-        <activity android:name=".ui.activity.BookReviewActivity" />
-        <activity android:name=".ui.activity.BookHelpActivity" />
-        <activity android:name=".ui.activity.BookDiscussionDetailActivity" />
-        <activity android:name=".ui.activity.BookReviewDetailActivity" />
-        <activity android:name=".ui.activity.BookHelpDetailActivity" />
-        <activity android:name=".ui.activity.BookDetailCommunityActivity" />
-        <activity android:name=".ui.activity.GirlBookDiscussionActivity" />
-        <activity android:name=".ui.activity.MyBookListActivity" />
-        <activity android:name=".ui.activity.SettingActivity" />
-        <activity android:name=".ui.activity.ScanLocalBookActivity" />
-        <activity android:name=".ui.activity.WifiBookActivity" />
-        <activity android:name=".ui.activity.FeedbackActivity" />
+        <activity
+            android:name=".ui.activity.TopCategoryListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.SubCategoryListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.SubjectBookListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.SubjectBookListDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.TopRankActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.SubRankActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.BookDiscussionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.BookReviewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.BookHelpActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.BookDiscussionDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.BookReviewDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.BookHelpDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.BookDetailCommunityActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.GirlBookDiscussionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.MyBookListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.SettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ScanLocalBookActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.WifiBookActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.FeedbackActivity"
+            android:screenOrientation="portrait" />
 
         <service android:name=".service.DownloadBookService" />
-        <service android:name=".wifitransfer.custom.WebService" />
 
         <activity
             android:name="com.tencent.tauth.AuthActivity"
