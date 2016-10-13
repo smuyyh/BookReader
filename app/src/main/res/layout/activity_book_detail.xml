@@ -30,7 +30,8 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginRight="10dp"
                     android:contentDescription="@null"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/cover_default" />
 
                 <TextView
                     android:id="@+id/tvBookListTitle"
@@ -41,9 +42,9 @@
                     android:layout_toRightOf="@+id/ivBookCover"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    tools:text="武侠世界自由行"
                     android:textColor="@color/common_h1"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    tools:text="武侠世界自由行" />
 
                 <TextView
                     android:id="@+id/tvBookListAuthor"
@@ -53,9 +54,9 @@
                     android:layout_toRightOf="@+id/ivBookCover"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    tools:text="w风雪 | "
                     android:textColor="@color/orange"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    tools:text="w风雪 | " />
 
                 <TextView
                     android:id="@+id/tvCatgory"
@@ -65,9 +66,9 @@
                     android:layout_toRightOf="@id/tvBookListAuthor"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    tools:text="仙侠 | "
                     android:textColor="@color/common_h2"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    tools:text="仙侠 | " />
 
                 <TextView
                     android:id="@+id/tvWordCount"
@@ -77,9 +78,9 @@
                     android:layout_toRightOf="@id/tvCatgory"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    tools:text="594万字"
                     android:textColor="@color/common_h2"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    tools:text="594万字" />
 
                 <TextView
                     android:id="@+id/tvLatelyUpdate"
@@ -90,9 +91,9 @@
                     android:layout_toRightOf="@id/ivBookCover"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    tools:text="4月前"
                     android:textColor="@color/common_h2"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    tools:text="4月前" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -168,9 +169,9 @@
                         android:layout_marginTop="5dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        tools:text="82"
                         android:textColor="@color/common_h1"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        tools:text="82" />
 
                 </LinearLayout>
 
@@ -197,9 +198,9 @@
                         android:layout_marginTop="5dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        tools:text="20.29%"
                         android:textColor="@color/common_h1"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        tools:text="20.29%" />
 
                 </LinearLayout>
 
@@ -226,9 +227,9 @@
                         android:layout_marginTop="5dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        tools:text="4614"
                         android:textColor="@color/common_h1"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        tools:text="4614" />
 
                 </LinearLayout>
             </LinearLayout>

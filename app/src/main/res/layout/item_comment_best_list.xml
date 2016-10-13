@@ -12,6 +12,7 @@
         android:layout_height="35dp"
         android:layout_alignParentLeft="true"
         android:layout_marginRight="10dp"
+        android:src="@drawable/avatar_default"
         android:scaleType="centerCrop" />
 
     <TextView

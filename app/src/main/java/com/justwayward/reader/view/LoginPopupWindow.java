@@ -57,7 +57,6 @@ public class LoginPopupWindow extends PopupWindow implements View.OnTouchListene
             @Override
             public void onDismiss() {
                 lighton();
-
             }
         });
     }

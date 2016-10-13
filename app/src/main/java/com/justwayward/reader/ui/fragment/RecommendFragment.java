@@ -135,7 +135,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
     public void onItemClick(int position) {
         if (isVisible(llBatchManagement)) //批量管理时，屏蔽点击事件
             return;
-        ReadActivity.startActivity(activity, mAdapter.getItem(position));
+        ReadActivity.startActivity(activity, mAdapter.getItem(position), mAdapter.getItem(position).isFromSD);
     }
 
     @Override
@@ -153,16 +153,21 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
      * @param position
      */
     private void showLongClickDialog(final int position) {
+        final boolean isTop = CollectionsManager.getInstance().isTop(mAdapter.getItem(position)._id);
+        String[] items = getResources().getStringArray(R.array.recommend_item_long_click_choice);
+        if (isTop) {
+            items[0] = getString(R.string.cancle_top);
+        }
         new AlertDialog.Builder(activity)
                 .setTitle(mAdapter.getItem(position).title)
-                .setItems(getResources().getStringArray(R.array.recommend_item_long_click_choice),
+                .setItems(items,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which) {
                                     case 0:
-                                        //置顶
-                                        CollectionsManager.getInstance().top(mAdapter.getItem(position)._id);
+                                        //置顶、取消置顶
+                                        CollectionsManager.getInstance().top(mAdapter.getItem(position)._id, !isTop);
                                         onRefresh();
                                         break;
                                     case 1:
@@ -176,8 +181,12 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
                                         break;
                                     case 3:
                                         //缓存全本
-                                        showDialog();
-                                        mPresenter.getTocList(mAdapter.getItem(position)._id);
+                                        if (mAdapter.getItem(position).isFromSD) {
+                                            ToastUtils.showSingleToast("本地文件不支持该选项哦");
+                                        } else {
+                                            showDialog();
+                                            mPresenter.getTocList(mAdapter.getItem(position)._id);
+                                        }
                                         break;
                                     case 4:
                                         //删除
@@ -391,6 +400,5 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
 
         return false;
     }
-
 
 }

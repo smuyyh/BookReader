@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.BookListDetail;
+import com.justwayward.reader.manager.SettingManager;
 import com.justwayward.reader.view.recyclerview.adapter.BaseViewHolder;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
 
@@ -24,8 +25,14 @@ public class SubjectBookListDetailBooksAdapter extends RecyclerArrayAdapter<Book
         return new BaseViewHolder<BookListDetail.BookListBean.BooksBean>(parent, R.layout.item_subject_book_list_detail) {
             @Override
             public void setData(BookListDetail.BookListBean.BooksBean item) {
-                holder.setRoundImageUrl(R.id.ivBookCover, Constant.IMG_BASE_URL + item.getBook().getCover(), R.drawable.cover_default)
-                        .setText(R.id.tvBookListTitle, item.getBook().getTitle())
+                if (!SettingManager.getInstance().isNoneCover()) {
+                    holder.setRoundImageUrl(R.id.ivBookCover, Constant.IMG_BASE_URL + item.getBook().getCover(),
+                            R.drawable.cover_default);
+                } else {
+                    holder.setImageResource(R.id.ivBookCover, R.drawable.cover_default);
+                }
+
+                holder.setText(R.id.tvBookListTitle, item.getBook().getTitle())
                         .setText(R.id.tvBookAuthor, item.getBook().getAuthor())
                         .setText(R.id.tvBookLatelyFollower, String.format(mContext.getResources().getString(R.string.subject_book_list_detail_book_lately_follower),
                                 item.getBook().getLatelyFollower()))

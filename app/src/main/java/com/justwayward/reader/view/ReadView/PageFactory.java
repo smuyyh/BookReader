@@ -154,11 +154,13 @@ public class PageFactory {
     public int openBook(int chapter, int[] position) {
         this.currentChapter = chapter;
         this.chapterSize = chaptersList.size();
+        if (currentChapter > chapterSize)
+            currentChapter = chapterSize;
         String path = getBookFile(currentChapter).getPath();
         try {
             File file = new File(path);
             long length = file.length();
-            if (length < 50) {
+            if (length < 10) {
                 return 0;
             }
             m_mpBufferLen = (int) length;
@@ -507,7 +509,7 @@ public class PageFactory {
      * @param textColor
      * @param titleColor
      */
-    public void setTextColor(int textColor,int titleColor) {
+    public void setTextColor(int textColor, int titleColor) {
         mPaint.setColor(textColor);
         mTitlePaint.setColor(titleColor);
     }

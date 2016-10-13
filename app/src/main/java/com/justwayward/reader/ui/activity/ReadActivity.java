@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
@@ -50,6 +51,7 @@ import com.justwayward.reader.ui.adapter.TocListAdapter;
 import com.justwayward.reader.ui.contract.BookReadContract;
 import com.justwayward.reader.ui.easyadapter.ReadThemeAdapter;
 import com.justwayward.reader.ui.presenter.BookReadPresenter;
+import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.ScreenUtils;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
@@ -65,6 +67,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -163,15 +166,22 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 
     public static final String INTENT_BEAN = "recommendBooksBean";
+    public static final String INTENT_SD = "isFromSD";
 
     private Recommend.RecommendBooks recommendBooks;
 
     private boolean isAutoLightness = false; // 记录其他页面是否自动调整亮度
+    private boolean isFromSD = false;
 
     //添加收藏需要，所以跳转的时候传递整个实体类
     public static void startActivity(Context context, Recommend.RecommendBooks recommendBooks) {
+        startActivity(context, recommendBooks, false);
+    }
+
+    public static void startActivity(Context context, Recommend.RecommendBooks recommendBooks, boolean isFromSD) {
         context.startActivity(new Intent(context, ReadActivity.class)
-                .putExtra(INTENT_BEAN, recommendBooks));
+                .putExtra(INTENT_BEAN, recommendBooks)
+                .putExtra(INTENT_SD, isFromSD));
     }
 
     @Override
@@ -196,10 +206,28 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @Override
     public void initDatas() {
+        recommendBooks = (Recommend.RecommendBooks) getIntent().getSerializableExtra(INTENT_BEAN);
+        isFromSD = getIntent().getBooleanExtra(INTENT_SD, false);
+
+        if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
+            String filePath = Uri.decode(getIntent().getDataString().replace("file://", ""));
+            String fileName = filePath.substring(filePath.lastIndexOf("/") + 1, filePath.lastIndexOf("."));
+            CollectionsManager.getInstance().remove(fileName);
+            // 转存
+            File desc = FileUtils.createWifiTranfesFile(fileName);
+            FileUtils.fileChannelCopy(new File(filePath), desc); // TODO 可能存在乱码问题
+            // 建立
+            recommendBooks = new Recommend.RecommendBooks();
+            recommendBooks.isFromSD = true;
+            recommendBooks._id = fileName;
+            recommendBooks.title = fileName;
+
+            isFromSD = true;
+
+            ToastUtils.showSingleToast("来自外部调用" + fileName);
+        }
         EventBus.getDefault().register(this);
         showDialog();
-
-        recommendBooks = (Recommend.RecommendBooks) getIntent().getSerializableExtra(INTENT_BEAN);
 
         mTvBookReadTocTitle.setText(recommendBooks.title);
 
@@ -219,6 +247,14 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         initPagerWidget();
 
         mPresenter.attachView(this);
+        // 本地收藏  直接打开
+        if (isFromSD) {
+            BookToc.mixToc.Chapters chapters = new BookToc.mixToc.Chapters();
+            chapters.title = recommendBooks.title;
+            mChapterList.add(chapters);
+            showChapterRead(null, currentChapter);
+            return;
+        }
         mPresenter.getBookToc(recommendBooks._id, "chapters");
     }
 
@@ -549,7 +585,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @Override
     public void showError() {
-        ToastUtils.showSingleToast("加载失败");
+        ToastUtils.showSingleToast("文章加载失败");
         hideDialog();
     }
 
@@ -573,8 +609,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
                                 CollectionsManager.getInstance().add(bean);
-                                ToastUtils.showToast(String.format(getString(
-                                        R.string.book_detail_has_joined_the_book_shelf), bean.title));
                                 EventBus.getDefault().post(new RefreshCollectionIconEvent());
                                 EventBus.getDefault().post(new RefreshCollectionListEvent());
                                 finish();
@@ -594,7 +628,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (mTocListPopupWindow.isShowing()) {
+            if (mTocListPopupWindow != null && mTocListPopupWindow.isShowing()) {
                 mTocListPopupWindow.dismiss();
                 gone(mTvBookReadTocTitle);
                 visible(mTvBookReadReading, mTvBookReadCommunity, mTvBookReadChangeSource);

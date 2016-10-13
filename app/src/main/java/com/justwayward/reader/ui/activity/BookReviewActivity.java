@@ -17,7 +17,6 @@ import butterknife.Bind;
  */
 public class BookReviewActivity extends BaseCommuniteActivity {
 
-
     public static void startActivity(Context context) {
         context.startActivity(new Intent(context, BookReviewActivity.class));
     }

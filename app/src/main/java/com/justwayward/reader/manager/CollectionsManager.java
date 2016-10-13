@@ -89,6 +89,26 @@ public class CollectionsManager {
     }
 
     /**
+     * 是否已置顶
+     *
+     * @param bookId
+     * @return
+     */
+    public boolean isTop(String bookId) {
+        List<Recommend.RecommendBooks> list = getCollectionList();
+        if (list == null || list.isEmpty()) {
+            return false;
+        }
+        for (Recommend.RecommendBooks bean : list) {
+            if (bean._id.equals(bookId)) {
+                if (bean.isTop)
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * 移除多个收藏
      *
      * @param removeList
@@ -121,21 +141,25 @@ public class CollectionsManager {
      *
      * @param bean
      */
-    public void add(Recommend.RecommendBooks bean) {
+    public boolean add(Recommend.RecommendBooks bean) {
+        if (isCollected(bean._id)) {
+            return false;
+        }
         List<Recommend.RecommendBooks> list = getCollectionList();
         if (list == null) {
             list = new ArrayList<>();
         }
         list.add(bean);
         ACache.get(ReaderApplication.getsInstance()).put("collection", (Serializable) list);
+        return true;
     }
 
     /**
-     * 置顶收藏
+     * 置顶收藏、取消置顶
      *
      * @param bookId
      */
-    public void top(String bookId) {
+    public void top(String bookId, boolean isTop) {
         List<Recommend.RecommendBooks> list = getCollectionList();
         if (list == null) {
             return;
@@ -143,7 +167,7 @@ public class CollectionsManager {
         for (Recommend.RecommendBooks bean : list) {
             if (bean != null) {
                 if (TextUtils.equals(bean._id, bookId)) {
-                    bean.isTop = true;
+                    bean.isTop = isTop;
                     list.remove(bean);
                     list.add(0, bean);
                     ACache.get(ReaderApplication.getsInstance()).put("collection", (Serializable) list);
@@ -152,6 +176,5 @@ public class CollectionsManager {
             }
         }
     }
-
 
 }

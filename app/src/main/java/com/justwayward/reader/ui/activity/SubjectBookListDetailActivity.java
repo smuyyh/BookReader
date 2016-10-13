@@ -123,12 +123,12 @@ public class SubjectBookListDetailActivity extends BaseRVActivity<BookListDetail
     public void showBookListDetail(BookListDetail data) {
         headerViewHolder.tvBookListTitle.setText(data.getBookList().getTitle());
         headerViewHolder.tvBookListDesc.setText(data.getBookList().getDesc());
-
         headerViewHolder.tvBookListAuthor.setText(data.getBookList().getAuthor().getNickname());
 
-
-        Glide.with(mContext).load(Constant.IMG_BASE_URL + data.getBookList().getAuthor().getAvatar())
-                .placeholder(R.drawable.avatar_default).transform(new GlideCircleTransform(mContext))
+        Glide.with(mContext)
+                .load(Constant.IMG_BASE_URL + data.getBookList().getAuthor().getAvatar())
+                .placeholder(R.drawable.avatar_default)
+                .transform(new GlideCircleTransform(mContext))
                 .into(headerViewHolder.ivAuthorAvatar);
 
         List<BookListDetail.BookListBean.BooksBean> list = data.getBookList().getBooks();

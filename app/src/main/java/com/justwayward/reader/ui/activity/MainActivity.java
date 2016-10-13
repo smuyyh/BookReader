@@ -47,6 +47,7 @@ import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.user.TencentLoginResult;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerMainComponent;
+import com.justwayward.reader.manager.SettingManager;
 import com.justwayward.reader.service.DownloadBookService;
 import com.justwayward.reader.ui.contract.MainContract;
 import com.justwayward.reader.ui.fragment.CommunityFragment;
@@ -56,6 +57,7 @@ import com.justwayward.reader.ui.presenter.MainActivityPresenter;
 import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
 import com.justwayward.reader.utils.ToastUtils;
+import com.justwayward.reader.view.GenderPopupWindow;
 import com.justwayward.reader.view.LoginPopupWindow;
 import com.justwayward.reader.view.RVPIndicator;
 import com.tencent.connect.common.Constants;
@@ -99,6 +101,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
     private LoginPopupWindow popupWindow;
     public static Tencent mTencent;
     public IUiListener loginListener;
+    private GenderPopupWindow genderPopupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,9 +162,26 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
         mIndicator.setViewPager(mViewPager, 0);
 
         mPresenter.attachView(this);
+
+        mIndicator.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showChooseSexPopupWindow();
+            }
+        }, 500);
     }
 
-    public void setCurrentItem(int position){
+    public void showChooseSexPopupWindow() {
+        if (genderPopupWindow == null) {
+            genderPopupWindow = new GenderPopupWindow(MainActivity.this);
+        }
+        if (!SettingManager.getInstance().isUserChooseSex()
+                && !genderPopupWindow.isShowing()) {
+            genderPopupWindow.showAtLocation(mCommonToolbar, Gravity.CENTER, 0, 0);
+        }
+    }
+
+    public void setCurrentItem(int position) {
         mViewPager.setCurrentItem(position);
     }
 
@@ -187,14 +207,27 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
                 popupWindow.showAtLocation(mCommonToolbar, Gravity.CENTER, 0, 0);
                 break;
             case R.id.action_my_message:
+                if (popupWindow == null) {
+                    popupWindow = new LoginPopupWindow(this);
+                    popupWindow.setLoginTypeListener(this);
+                }
+                popupWindow.showAtLocation(mCommonToolbar, Gravity.CENTER, 0, 0);
                 break;
             case R.id.action_sync_bookshelf:
+                if (popupWindow == null) {
+                    popupWindow = new LoginPopupWindow(this);
+                    popupWindow.setLoginTypeListener(this);
+                }
+                popupWindow.showAtLocation(mCommonToolbar, Gravity.CENTER, 0, 0);
                 break;
             case R.id.action_scan_local_book:
+                ScanLocalBookActivity.startActivity(this);
                 break;
             case R.id.action_wifi_book:
+                WifiBookActivity.startActivity(this);
                 break;
             case R.id.action_feedback:
+                FeedbackActivity.startActivity(this);
                 break;
             case R.id.action_night_mode:
                 if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)) {
@@ -207,6 +240,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
                 recreate();
                 break;
             case R.id.action_settings:
+                SettingActivity.startActivity(this);
                 break;
             default:
                 break;
@@ -225,7 +259,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
             } else {
                 finish(); // 退出
             }
-        }else if(event.getKeyCode() == KeyEvent.KEYCODE_MENU){
+        } else if (event.getKeyCode() == KeyEvent.KEYCODE_MENU) {
             return true;
         }
         return super.dispatchKeyEvent(event);

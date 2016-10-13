@@ -6,6 +6,7 @@ import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.base.RxPresenter;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.Recommend;
+import com.justwayward.reader.manager.SettingManager;
 import com.justwayward.reader.ui.contract.RecommendContract;
 import com.justwayward.reader.utils.ACache;
 import com.justwayward.reader.utils.LogUtils;
@@ -26,7 +27,8 @@ import rx.schedulers.Schedulers;
  * @author yuyh.
  * @date 2016/8/3.
  */
-public class RecommendPresenter extends RxPresenter<RecommendContract.View> implements RecommendContract.Presenter<RecommendContract.View> {
+public class RecommendPresenter extends RxPresenter<RecommendContract.View>
+        implements RecommendContract.Presenter<RecommendContract.View> {
 
     private Context mContext;
     private BookApi bookApi;
@@ -39,8 +41,8 @@ public class RecommendPresenter extends RxPresenter<RecommendContract.View> impl
 
     @Override
     public void getRecommendList() {
-        String key = StringUtils.creatAcacheKey("recommend-list", "male");
-        Observable<Recommend> fromNetWork = bookApi.getRecommend("male")
+        String key = StringUtils.creatAcacheKey("recommend-list", SettingManager.getInstance().getUserChooseSex());
+        Observable<Recommend> fromNetWork = bookApi.getRecommend(SettingManager.getInstance().getUserChooseSex())
                 .compose(RxUtil.<Recommend>rxCacheListHelper(key));
 
         //依次检查disk、network

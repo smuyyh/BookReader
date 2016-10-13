@@ -34,6 +34,7 @@
 
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/search.png?raw=true" width="280"/>
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/book_detail.png?raw=true" width="280"/>
+<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/scan_book.png?raw=true" width="280"/>
 
 </br>
 
@@ -53,6 +54,7 @@
 
 - **主题书单**
 
+<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/subject_list.png?raw=true" width="280"/>
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/subject_tag.png?raw=true" width="280"/>
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/subject_detail.png?raw=true" width="280"/>
 
@@ -62,6 +64,11 @@
 
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/category.png?raw=true" width="280"/>
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/category_list.png?raw=true" width="280"/>
+
+- **其他**
+
+<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/setting.png?raw=true" width="280"/>
+<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/wifi_transfer.png?raw=true" width="280"/>
 
 ## LICENSE
 

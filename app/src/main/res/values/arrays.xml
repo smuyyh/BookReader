@@ -43,4 +43,8 @@
         <item>删除</item>
     </string-array>
 
+    <string-array name="setting_dialog_choice">
+        <item>按更新时间</item>
+        <item>按最近阅读</item>
+    </string-array>
 </resources>

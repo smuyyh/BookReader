@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/touch_bg"
-                android:orientation="vertical"
-                android:padding="15dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/touch_bg"
+    android:orientation="vertical"
+    android:padding="15dp">
 
     <ImageView
         android:id="@+id/ivBookCover"
@@ -12,7 +12,8 @@
         android:layout_height="35dp"
         android:layout_alignParentLeft="true"
         android:layout_marginRight="10dp"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/avatar_default" />
 
     <TextView
         android:id="@+id/tvFloor"
@@ -77,10 +78,10 @@
         android:layout_toRightOf="@id/ivBookCover"
         android:ellipsize="end"
         android:singleLine="true"
-        android:visibility="gone"
         android:text="@string/comment_reply_nickname"
         android:textColor="@color/common_h3"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tvReplyFloor"
@@ -91,9 +92,9 @@
         android:layout_toRightOf="@id/tvReplyNickName"
         android:ellipsize="end"
         android:singleLine="true"
-        android:visibility="gone"
         android:text="@string/comment_reply_floor"
         android:textColor="@color/common_h3"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        android:visibility="gone" />
 
 </RelativeLayout>

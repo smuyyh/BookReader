@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseCommuniteActivity;
 import com.justwayward.reader.component.AppComponent;
+import com.justwayward.reader.ui.fragment.BookDiscussionFragment;
 import com.justwayward.reader.view.SelectionLayout;
 
 import java.util.List;
@@ -17,14 +18,17 @@ import butterknife.Bind;
  */
 public class BookDiscussionActivity extends BaseCommuniteActivity {
 
+    private static final String INTENT_DIS = "isDis";
 
-    public static void startActivity(Context context) {
-        context.startActivity(new Intent(context, BookDiscussionActivity.class));
+    public static void startActivity(Context context, boolean isDiscussion) {
+        context.startActivity(new Intent(context, BookDiscussionActivity.class)
+                .putExtra(INTENT_DIS, isDiscussion));
     }
+
+    private boolean mIsDiscussion;
 
     @Bind(R.id.slOverall)
     SelectionLayout slOverall;
-
 
     @Override
     public int getLayoutId() {
@@ -38,7 +42,12 @@ public class BookDiscussionActivity extends BaseCommuniteActivity {
 
     @Override
     public void initToolBar() {
-        mCommonToolbar.setTitle("综合讨论区");
+        mIsDiscussion = getIntent().getBooleanExtra(INTENT_DIS, false);
+        if (mIsDiscussion) {
+            mCommonToolbar.setTitle("综合讨论区");
+        } else {
+            mCommonToolbar.setTitle("原创区");
+        }
         mCommonToolbar.setNavigationIcon(R.drawable.ab_back);
     }
 
@@ -54,5 +63,7 @@ public class BookDiscussionActivity extends BaseCommuniteActivity {
 
     @Override
     public void configViews() {
+        BookDiscussionFragment fragment = BookDiscussionFragment.newInstance(mIsDiscussion ? "ramble" : "original");
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentCO, fragment).commit();
     }
 }

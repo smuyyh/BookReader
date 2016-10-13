@@ -20,6 +20,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
+            android:src="@drawable/avatar_default"
             android:scaleType="centerInside" />
 
         <TextView
@@ -84,7 +85,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:scaleType="centerCrop"
-            tools:src="@drawable/cover_default" />
+            android:src="@drawable/cover_default" />
 
         <RelativeLayout
             android:layout_width="match_parent"

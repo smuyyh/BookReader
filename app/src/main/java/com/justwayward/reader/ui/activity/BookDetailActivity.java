@@ -128,7 +128,6 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerBookComponent.builder()
                 .appComponent(appComponent)
-                //.mainActivityModule(new MainActivityModule(this))
                 .build()
                 .inject(this);
     }
@@ -154,8 +153,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
 
         mRvRecommendBoookList.setHasFixedSize(true);
         mRvRecommendBoookList.setLayoutManager(new LinearLayoutManager(this));
-        mRecommendBookListAdapter = new RecommendBookListAdapter(mContext, mRecommendBookList,
-                this);
+        mRecommendBookListAdapter = new RecommendBookListAdapter(mContext, mRecommendBookList, this);
         mRvRecommendBoookList.setAdapter(mRecommendBookListAdapter);
 
         mTagGroup.setOnTagClickListener(new TagGroup.OnTagClickListener() {
@@ -174,8 +172,11 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
 
     @Override
     public void showBookDetail(BookDetail data) {
-        Glide.with(mContext).load(Constant.IMG_BASE_URL + data.cover).placeholder(R.drawable
-                .cover_default).transform(new GlideRoundTransform(mContext)).into(mIvBookCover);
+        Glide.with(mContext)
+                .load(Constant.IMG_BASE_URL + data.cover)
+                .placeholder(R.drawable.cover_default)
+                .transform(new GlideRoundTransform(mContext))
+                .into(mIvBookCover);
 
         mTvBookTitle.setText(data.title);
         mTvAuthor.setText(String.format(getString(R.string.book_detail_author), data.author));
@@ -193,13 +194,9 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
 
         mTvlongIntro.setText(data.longIntro);
         mTvCommunity.setText(String.format(getString(R.string.book_detail_community), data.title));
-        mTvPostCount.setText(String.format(getString(R.string.book_detail_post_count), data
-                .postCount));
+        mTvPostCount.setText(String.format(getString(R.string.book_detail_post_count), data.postCount));
 
-
-        Recommend recommend = new Recommend();
-        recommendBooks = recommend.new RecommendBooks();
-
+        recommendBooks = new Recommend.RecommendBooks();
         recommendBooks.title = data.title;
         recommendBooks._id = data._id;
         recommendBooks.cover = data.cover;
@@ -211,10 +208,10 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     /**
      * 刷新收藏图标
      */
-    private void refreshCollectionIcon(){
-        if (CollectionsManager.getInstance().isCollected(recommendBooks._id)){
+    private void refreshCollectionIcon() {
+        if (CollectionsManager.getInstance().isCollected(recommendBooks._id)) {
             initCollection(false);
-        }else{
+        } else {
             initCollection(true);
         }
     }
@@ -269,11 +266,10 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
         if (data instanceof HotReview.Reviews) {
             BookDiscussionDetailActivity.startActivity(this, ((HotReview.Reviews) data)._id);
         } else if (data instanceof RecommendBookList.RecommendBook) {
-            //为了实现书单收藏，此处要构造一个BookLists.BookListsBean传入书单详情页
+            RecommendBookList.RecommendBook recommendBook = (RecommendBookList.RecommendBook) data;
+
             BookLists bookLists = new BookLists();
             BookLists.BookListsBean bookListsBean = bookLists.new BookListsBean();
-
-            RecommendBookList.RecommendBook recommendBook = (RecommendBookList.RecommendBook) data;
             bookListsBean._id = recommendBook.id;
             bookListsBean.author = recommendBook.author;
             bookListsBean.bookCount = recommendBook.bookCount;
@@ -326,9 +322,6 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
 
     @OnClick(R.id.btnRead)
     public void onClickRead() {
-//        startActivity(new Intent(this, BookReadActivity.class)
-//                .putExtra("bookId", bookId));
-        //跳转新版阅读页
         ReadActivity.startActivity(this, recommendBooks);
     }
 

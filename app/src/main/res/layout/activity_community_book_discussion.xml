@@ -10,11 +10,10 @@
     <com.justwayward.reader.view.SelectionLayout
         android:id="@+id/slOverall"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
-    <fragment
+    <FrameLayout
         android:id="@+id/fragmentCO"
-        android:name="com.justwayward.reader.ui.fragment.BookDiscussionFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

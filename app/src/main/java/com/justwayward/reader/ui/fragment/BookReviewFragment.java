@@ -80,7 +80,6 @@ public class BookReviewFragment extends BaseRVFragment<BookReviewPresenter, Book
         type = event.type;
         distillate = event.distillate;
         start = 0;
-        limit = 20;
         mPresenter.getBookReviewList(sort, type, distillate, start, limit);
     }
 

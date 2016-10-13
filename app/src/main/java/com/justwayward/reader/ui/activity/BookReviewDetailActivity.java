@@ -53,14 +53,12 @@ public class BookReviewDetailActivity extends BaseRVActivity<CommentList.Comment
     }
 
     private String id;
+    private List<CommentList.CommentsBean> mBestCommentList = new ArrayList<>();
+    private BestCommentListAdapter mBestCommentListAdapter;
+    private HeaderViewHolder headerViewHolder;
 
     @Inject
     BookReviewDetailPresenter mPresenter;
-
-    private List<CommentList.CommentsBean> mBestCommentList = new ArrayList<>();
-    private BestCommentListAdapter mBestCommentListAdapter;
-
-    private HeaderViewHolder headerViewHolder;
 
     @Override
     public void showError() {
@@ -157,7 +155,8 @@ public class BookReviewDetailActivity extends BaseRVActivity<CommentList.Comment
 
     @Override
     public void showBookReviewDetail(final BookReview data) {
-        Glide.with(mContext).load(Constant.IMG_BASE_URL + data.review.author.avatar)
+        Glide.with(mContext)
+                .load(Constant.IMG_BASE_URL + data.review.author.avatar)
                 .placeholder(R.drawable.avatar_default)
                 .transform(new GlideCircleTransform(mContext))
                 .into(headerViewHolder.ivAuthorAvatar);
@@ -167,7 +166,8 @@ public class BookReviewDetailActivity extends BaseRVActivity<CommentList.Comment
         headerViewHolder.tvTitle.setText(data.review.title);
         headerViewHolder.tvContent.setText(data.review.content);
 
-        Glide.with(mContext).load(Constant.IMG_BASE_URL + data.review.book.cover)
+        Glide.with(mContext)
+                .load(Constant.IMG_BASE_URL + data.review.book.cover)
                 .placeholder(R.drawable.cover_default)
                 .transform(new GlideRoundTransform(mContext))
                 .into(headerViewHolder.ivBookCover);

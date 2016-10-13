@@ -125,4 +125,34 @@ public class SettingManager {
     public boolean isAutoBrightness() {
         return SharedPreferencesUtil.getInstance().getBoolean("autoBrightness", false);
     }
+
+    /**
+     * 保存用户选择的性别
+     *
+     * @param sex male female
+     */
+    public void saveUserChooseSex(String sex) {
+        SharedPreferencesUtil.getInstance().putString("userChooseSex", sex);
+    }
+
+    /**
+     * 获取用户选择性别
+     *
+     * @return
+     */
+    public String getUserChooseSex() {
+        return SharedPreferencesUtil.getInstance().getString("userChooseSex", Constant.Gender.MALE);
+    }
+
+    public boolean isUserChooseSex() {
+        return SharedPreferencesUtil.getInstance().exists("userChooseSex");
+    }
+
+    public boolean isNoneCover() {
+        return SharedPreferencesUtil.getInstance().getBoolean("isNoneCover", false);
+    }
+
+    public void saveNoneCover(boolean isNoneCover) {
+        SharedPreferencesUtil.getInstance().putBoolean("isNoneCover", isNoneCover);
+    }
 }

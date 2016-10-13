@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.BookReviewList;
+import com.justwayward.reader.manager.SettingManager;
 import com.justwayward.reader.utils.FormatUtils;
 import com.justwayward.reader.view.recyclerview.adapter.BaseViewHolder;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
@@ -27,8 +28,14 @@ public class BookReviewAdapter extends RecyclerArrayAdapter<BookReviewList.Revie
         return new BaseViewHolder<BookReviewList.ReviewsBean>(parent, R.layout.item_community_book_review_list) {
             @Override
             public void setData(BookReviewList.ReviewsBean item) {
-                holder.setRoundImageUrl(R.id.ivBookCover, Constant.IMG_BASE_URL + item.book.cover,R.drawable.cover_default)
-                        .setText(R.id.tvBookTitle, item.book.title)
+                if (!SettingManager.getInstance().isNoneCover()) {
+                    holder.setRoundImageUrl(R.id.ivBookCover, Constant.IMG_BASE_URL + item.book.cover,
+                            R.drawable.cover_default);
+                } else {
+                    holder.setImageResource(R.id.ivBookCover, R.drawable.cover_default);
+                }
+
+                holder.setText(R.id.tvBookTitle, item.book.title)
                         .setText(R.id.tvBookType, String.format(mContext.getString(R.string.book_review_book_type), Constant.bookType.get(item.book.type)))
                         .setText(R.id.tvTitle, item.title)
                         .setText(R.id.tvHelpfulYes, String.format(mContext.getString(R.string.book_review_helpful_yes), item.helpful.yes));
@@ -37,11 +44,11 @@ public class BookReviewAdapter extends RecyclerArrayAdapter<BookReviewList.Revie
                     holder.setVisible(R.id.tvHot, true);
                     holder.setVisible(R.id.tvTime, false);
                     holder.setVisible(R.id.tvDistillate, false);
-                } else if(TextUtils.equals(item.state, "distillate")){
+                } else if (TextUtils.equals(item.state, "distillate")) {
                     holder.setVisible(R.id.tvDistillate, true);
                     holder.setVisible(R.id.tvHot, false);
                     holder.setVisible(R.id.tvTime, false);
-                }else {
+                } else {
                     holder.setVisible(R.id.tvTime, true);
                     holder.setVisible(R.id.tvHot, false);
                     holder.setVisible(R.id.tvDistillate, false);

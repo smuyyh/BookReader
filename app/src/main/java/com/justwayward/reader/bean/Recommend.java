@@ -13,7 +13,7 @@ public class Recommend extends Base {
 
     public List<RecommendBooks> books;
 
-    public class RecommendBooks implements Serializable {
+    public static class RecommendBooks implements Serializable {
 
         /**
          * _id : 526e8e3e7cfc087140004df7
@@ -38,6 +38,8 @@ public class Recommend extends Base {
         public boolean isTop = false;
         public boolean isSeleted = false;
         public boolean showCheckBox = false;
+        public boolean isFromSD = false;
+        public String path = "";
         public int latelyFollower;
         public double retentionRatio;
         public String updated;

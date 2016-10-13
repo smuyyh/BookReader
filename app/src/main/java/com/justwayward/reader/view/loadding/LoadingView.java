@@ -22,7 +22,6 @@ import com.justwayward.reader.R;
 
 public class LoadingView extends View {
 
-
     //the size in wrap_content model
     private static final int CIRCLE_DIAMETER = 56;
 

@@ -58,7 +58,6 @@ public class BookReadPresenter extends RxPresenter<BookReadContract.View>
 
                     @Override
                     public void onCompleted() {
-                        mView.complete();
                     }
 
                     @Override

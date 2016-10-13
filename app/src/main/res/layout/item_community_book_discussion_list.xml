@@ -12,7 +12,8 @@
         android:layout_height="55dp"
         android:layout_alignParentLeft="true"
         android:layout_marginRight="10dp"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/avatar_default" />
 
     <TextView
         android:id="@+id/tvBookTitle"
@@ -44,9 +45,9 @@
         android:ellipsize="end"
         android:singleLine="true"
         android:text="昨天"
-        android:visibility="gone"
         android:textColor="@color/common_h3"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tvHot"
@@ -59,11 +60,11 @@
         android:ellipsize="end"
         android:gravity="center"
         android:padding="5dp"
-        android:visibility="gone"
         android:singleLine="true"
         android:text="热门"
         android:textColor="@color/white"
-        android:textSize="8dp" />
+        android:textSize="8dp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tvDistillate"
@@ -76,11 +77,11 @@
         android:ellipsize="end"
         android:gravity="center"
         android:padding="5dp"
-        android:visibility="gone"
         android:singleLine="true"
         android:text="精品"
         android:textColor="@color/white"
-        android:textSize="8dp" />
+        android:textSize="8dp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tvTitle"

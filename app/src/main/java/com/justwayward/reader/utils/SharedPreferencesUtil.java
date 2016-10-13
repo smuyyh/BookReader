@@ -96,6 +96,10 @@ public class SharedPreferencesUtil {
         return this.prefs.getAll();
     }
 
+    public boolean exists(String key) {
+        return prefs.contains(key);
+    }
+
 
     public SharedPreferencesUtil putString(String key, String value) {
         editor.putString(key, value);
@@ -197,6 +201,12 @@ public class SharedPreferencesUtil {
 
     public SharedPreferencesUtil remove(String key) {
         editor.remove(key);
+        editor.commit();
+        return this;
+    }
+
+    public SharedPreferencesUtil removeAll() {
+        editor.clear();
         editor.commit();
         return this;
     }

@@ -23,7 +23,8 @@
     <string name="book_detail_recommend_book_list">推荐书单</string>
     <string name="book_detail_recommend_book_list_book_count">共%1$d本书 |&#160;</string>
     <string name="book_detail_recommend_book_list_collector_count">%1$d人收藏</string>
-    <string name="book_detail_has_joined_the_book_shelf">已添加《%1$s》</string>
+    <string name="book_detail_is_joined_the_book_shelf">是否将《%1$s》加入书架</string>
+    <string name="book_detail_has_joined_the_book_shelf">《%1$s》成功加入书架</string>
     <string name="book_detail_has_remove_the_book_shelf">已移除《%1$s》</string>
 
     <!--阅读页面相关-->
@@ -101,5 +102,6 @@
     <string name="has_not_selected_delete_book">你没有选择要删的书哦</string>
     <string name="add_the_book_you_like">添加你喜欢的小说</string>
     <string name="network_error_tips">加载失败，请检查网络或稍后再试</string>
+    <string name="cancle_top">取消置顶</string>
 
 </resources>

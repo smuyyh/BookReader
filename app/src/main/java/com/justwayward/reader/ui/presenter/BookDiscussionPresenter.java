@@ -29,9 +29,10 @@ public class BookDiscussionPresenter extends RxPresenter<BookDiscussionContract.
     }
 
     @Override
-    public void getBookDisscussionList(String sort, String distillate, final int start, int limit) {
-        String key = StringUtils.creatAcacheKey("book-discussion-list", "ramble", "all", sort, "all", start + "", limit + "", distillate);
-        Observable<DiscussionList> fromNetWork = bookApi.getBookDisscussionList("ramble", "all", sort, "all", start + "", limit + "", distillate)
+    public void getBookDisscussionList(String block, String sort, String distillate, final int start, int limit) {
+        String key = StringUtils.creatAcacheKey("book-discussion-list", block, "all", sort, "all", start + "", limit + "", distillate);
+
+        Observable<DiscussionList> fromNetWork = bookApi.getBookDisscussionList(block, "all", sort, "all", start + "", limit + "", distillate)
                 .compose(RxUtil.<DiscussionList>rxCacheListHelper(key));
 
         //依次检查disk、network

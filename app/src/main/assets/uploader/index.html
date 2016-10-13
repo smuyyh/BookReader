@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>WiFi 传书</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <script src="scripts/jquery-1.7.2.min.js" type="text/javascript"></script>
+    <script src="scripts/lang.zh-Hans.js" type="text/javascript"></script>
+    <script src="scripts/transfer.js" type="text/javascript"></script>
+    <script src="scripts/ajaxfileupload.js" type="text/javascript"></script>
+    <script src="scripts/bitcandies.upload5.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="content">
+        <div id="left">
+          <div id="logo">
+            <img src="logo5.png">
+            <!--[if (gte IE 9)|!(IE)]><!--> 
+                <div class="normal" id="drag_area">
+                  <div class="drag_hint"></div>
+                </div>
+                <!--<![endif]-->
+
+                <!--[if gt IE 7]>
+                    <div class="normal" id="ie_drag_area">
+                      <div class="drag_hint"></div>
+                    </div>
+                    <![endif]-->
+
+          </div>
+          <div id="upload_hint" class="hint"></div>
+          <div id="upload_form">
+            <div id="upload_button"><div class="button_lables"><div class="button_lable1"></div><div class="button_lable2"></div></div>
+              <div class="file_upload_warper">
+                <input name="newfile" value="" id="newfile_0" class="file_upload" multiple="multiple" type="file">
+              </div>
+            </div>
+          </div>
+          <div id="right_wrapper">
+            <div id="right">
+              <div class="content_title">您设备上的文件列表</div>
+              <div class="table_header">
+                <div class="filename column">文件名</div>
+                <div class="size column separator">大小</div>
+                <div class="operate column separator">操作</div>
+              </div>
+              <div style="height: 620px;" class="files"><div class="file"><div class="column filename" filename="a.txt">a.txt</div><div class="column size">0.0 KB</div><div class="column download" title="下载文件"></div><div class="column trash" title="删除文件"></div></div><div class="file"><div class="column filename" filename="3.txt">3.txt</div><div class="column size">0.2 KB</div><div class="column download" title="下载文件"></div><div class="column trash" title="删除文件"></div></div><div class="file"><div class="column filename" filename="1_no_chapter.txt">1_no_chapter.txt</div><div class="column size">635.4 KB</div><div class="column download" title="下载文件"></div><div class="column trash" title="删除文件"></div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div></body>
+</html>

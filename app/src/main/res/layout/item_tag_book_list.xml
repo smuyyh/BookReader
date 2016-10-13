@@ -11,6 +11,7 @@
         android:layout_height="65dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
+        android:src="@drawable/cover_default"
         android:scaleType="centerCrop" />
 
     <RelativeLayout
