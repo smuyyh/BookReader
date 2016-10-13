@@ -7,17 +7,20 @@ import com.justwayward.reader.base.RxPresenter;
 import com.justwayward.reader.bean.BookSource;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.ChapterRead;
-import com.justwayward.reader.manager.CacheManager;
 import com.justwayward.reader.ui.contract.BookReadContract;
 import com.justwayward.reader.utils.LogUtils;
+import com.justwayward.reader.utils.RxUtil;
+import com.justwayward.reader.utils.StringUtils;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -38,19 +41,24 @@ public class BookReadPresenter extends RxPresenter<BookReadContract.View>
 
     @Override
     public void getBookToc(final String bookId, String viewChapters) {
-        List<BookToc.mixToc.Chapters> list = CacheManager.getInstance().getTocList(mContext, bookId);
-        if (list != null && !list.isEmpty()) {
-            mView.showBookToc(list);
-            return;
-        }
-
-        Subscription rxSubscription = bookApi.getBookToc(bookId, viewChapters).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BookToc>() {
+        String key = StringUtils.creatAcacheKey("book-toc", bookId, viewChapters);
+        Observable<BookToc.mixToc> fromNetWork = bookApi.getBookToc(bookId, viewChapters)
+                .map(new Func1<BookToc, BookToc.mixToc>() {
                     @Override
-                    public void onNext(BookToc data) {
-                        CacheManager.getInstance().saveTocList(mContext, bookId, data);
-                        List<BookToc.mixToc.Chapters> list = data.mixToc.chapters;
+                    public BookToc.mixToc call(BookToc data) {
+                        return data.mixToc;
+                    }
+                })
+                .compose(RxUtil.<BookToc.mixToc>rxCacheListHelper(key));
+
+        //依次检查disk、network
+        Subscription rxSubscription = Observable
+                .concat(RxUtil.rxCreateDiskObservable(key, BookToc.mixToc.class), fromNetWork)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BookToc.mixToc>() {
+                    @Override
+                    public void onNext(BookToc.mixToc data) {
+                        List<BookToc.mixToc.Chapters> list = data.chapters;
                         if (list != null && !list.isEmpty() && mView != null) {
                             mView.showBookToc(list);
                         }

@@ -45,6 +45,7 @@ public class Recommend extends Base {
         public String updated;
         public int chaptersCount;
         public String lastChapter;
+        public String recentReadingTime = "";
 
         @Override
         public boolean equals(Object obj) {

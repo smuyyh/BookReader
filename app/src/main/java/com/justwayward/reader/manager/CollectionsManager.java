@@ -7,11 +7,15 @@ import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.utils.ACache;
 import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.FileUtils;
+import com.justwayward.reader.utils.FormatUtils;
 import com.justwayward.reader.utils.LogUtils;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,6 +50,23 @@ public class CollectionsManager {
         List<Recommend.RecommendBooks> list = (ArrayList<Recommend.RecommendBooks>) ACache.get(
                 ReaderApplication.getsInstance()).getAsObject("collection");
         return list == null ? null : list;
+    }
+
+    /**
+     * 获取收藏列表（按最近阅读时间排序）
+     *
+     * @return
+     */
+    public List<Recommend.RecommendBooks> getCollectionListByRecentReadingTime() {
+        List<Recommend.RecommendBooks> list = (ArrayList<Recommend.RecommendBooks>) ACache.get(
+                ReaderApplication.getsInstance()).getAsObject("collection");
+        if (list == null) {
+            return null;
+        } else {
+            Collections.sort(list, new RecentReadingTimeComparator());
+            Collections.reverse(list);
+            return list;
+        }
     }
 
     /**
@@ -174,6 +195,41 @@ public class CollectionsManager {
                     break;
                 }
             }
+        }
+    }
+
+    /**
+     * 设置最近阅读时间
+     *
+     * @param bookId
+     */
+    public void setRecentReadingTime(String bookId) {
+        List<Recommend.RecommendBooks> list = getCollectionList();
+        if (list == null) {
+            return;
+        }
+        for (Recommend.RecommendBooks bean : list) {
+            if (bean != null) {
+                if (TextUtils.equals(bean._id, bookId)) {
+                    bean.recentReadingTime = FormatUtils.formatDate(new Date().toString());
+                    list.remove(bean);
+                    list.add(bean);
+                    ACache.get(ReaderApplication.getsInstance()).put("collection", (Serializable) list);
+                    break;
+                }
+            }
+        }
+    }
+
+
+    /**
+     * 自定义比较器：按最近阅读时间来排序
+     */
+    static class RecentReadingTimeComparator implements Comparator {
+        public int compare(Object object1, Object object2) {// 实现接口中的方法
+            Recommend.RecommendBooks p1 = (Recommend.RecommendBooks) object1; // 强制转换
+            Recommend.RecommendBooks p2 = (Recommend.RecommendBooks) object2;
+            return p1.recentReadingTime.compareTo(p2.recentReadingTime);
         }
     }
 

@@ -323,7 +323,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
     public void onRefresh() {
         super.onRefresh();
         gone(llBatchManagement);
-        List<Recommend.RecommendBooks> data = CollectionsManager.getInstance().getCollectionList();
+        List<Recommend.RecommendBooks> data = CollectionsManager.getInstance().getCollectionListByRecentReadingTime();
         if (data != null && !data.isEmpty()) {
             //有收藏时，只显示收藏
             isHasCollections = true;

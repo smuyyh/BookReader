@@ -236,6 +236,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
         intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
         intentFilter.addAction(Intent.ACTION_TIME_TICK);
+
+        CollectionsManager.getInstance().setRecentReadingTime(recommendBooks._id);
     }
 
     @Override
