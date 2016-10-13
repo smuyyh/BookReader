@@ -52,7 +52,9 @@
             android:theme="@style/AppTheme.NoActionBar.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
@@ -113,6 +115,14 @@
         <activity
             android:name=".ui.activity.FeedbackActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.activity.ReadPDFActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="application/pdf" />
+            </intent-filter>
+        </activity>
 
         <service android:name=".service.DownloadBookService" />
 
