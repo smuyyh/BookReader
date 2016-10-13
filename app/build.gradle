@@ -72,4 +72,6 @@ dependencies {
     // Bus
     compile 'org.greenrobot:eventbus:3.0.0'
 
+    compile 'com.commit451:PhotoView:1.2.4'
+
 }
