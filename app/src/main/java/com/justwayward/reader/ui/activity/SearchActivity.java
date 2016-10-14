@@ -86,6 +86,8 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
 
     private ListPopupWindow mListPopupWindow;
 
+    int hotIndex = 0;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_search;
@@ -174,24 +176,14 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
     /**
      * 每次显示8个热搜词
      */
-    private void showHotWord() {
-        int start, end;
-        if (times < tagList.size() && times + 8 <= tagList.size()) {
-            start = times;
-            end = times + 8;
-        } else if (times < tagList.size() - 1 && times + 8 > tagList.size()) {
-            start = times;
-            end = tagList.size() - 1;
-        } else {
-            start = 0;
-            end = tagList.size() > 8 ? 8 : tagList.size();
+    private synchronized void showHotWord() {
+        int tagSize = 8;
+        String[] tags = new String[tagSize];
+        for (int j = 0; j < tagSize && j < tagList.size(); hotIndex++, j++) {
+            tags[j] = tagList.get(hotIndex % tagList.size());
         }
-        times = end;
-        if (end - start > 0) {
-            List<String> batch = tagList.subList(start, end);
-            List<TagColor> colors = TagColor.getRandomColors(batch.size());
-            mTagGroup.setTags(colors, (String[]) batch.toArray(new String[batch.size()]));
-        }
+        List<TagColor> colors = TagColor.getRandomColors(tagSize);
+        mTagGroup.setTags(colors, tags);
     }
 
     @Override
