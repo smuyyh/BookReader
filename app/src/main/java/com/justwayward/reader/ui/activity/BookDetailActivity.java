@@ -21,7 +21,6 @@ import com.justwayward.reader.bean.HotReview;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.RecommendBookList;
 import com.justwayward.reader.bean.support.RefreshCollectionIconEvent;
-import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
 import com.justwayward.reader.common.OnRvItemClickListener;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerBookComponent;
@@ -297,7 +296,6 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
                     R.string.book_detail_has_remove_the_book_shelf), recommendBooks.title));
             initCollection(true);
         }
-        EventBus.getDefault().post(new RefreshCollectionListEvent());
     }
 
     private void initCollection(boolean coll) {

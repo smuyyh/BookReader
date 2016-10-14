@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -27,7 +28,7 @@ public class StatusBarCompat {
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            int color = activity.getResources().getColor(R.color.colorPrimaryDark);
+            int color = ContextCompat.getColor(activity, R.color.colorPrimaryDark);
             ViewGroup contentView = (ViewGroup) activity.findViewById(android.R.id.content);
             if (statusColor != INVALID_VAL) {
                 color = statusColor;

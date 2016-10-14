@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
@@ -137,6 +138,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     @Bind(R.id.gvTheme)
     GridView gvTheme;
 
+    private View decodeView;
+
     @Inject
     BookReadPresenter mPresenter;
 
@@ -186,9 +189,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @Override
     public int getLayoutId() {
-        statusBarColor = -1;
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        statusBarColor = Color.parseColor("#191919");//ContextCompat.getColor(this, R.color.reader_menu_bg_color);
+        hideStatusBar();
         return R.layout.activity_read;
     }
 
@@ -242,6 +244,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @Override
     public void configViews() {
+        decodeView = getWindow().getDecorView();
+
         initTocList();
 
         initAASet();
@@ -338,6 +342,14 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         flReadWidget.addView(mPageWidget);
     }
 
+    @Override
+    public void showBookToc(List<BookToc.mixToc.Chapters> list) { // 加载章节列表
+        mChapterList.clear();
+        mChapterList.addAll(list);
+
+        readCurrentChapter();
+    }
+
     /**
      * 读取currentChapter章节。章节文件存在则直接阅读，不存在则请求
      */
@@ -347,14 +359,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         } else {
             mPresenter.getChapterRead(mChapterList.get(currentChapter - 1).link, currentChapter);
         }
-    }
-
-    @Override
-    public void showBookToc(List<BookToc.mixToc.Chapters> list) { // 加载章节列表
-        mChapterList.clear();
-        mChapterList.addAll(list);
-
-        readCurrentChapter();
     }
 
     @Override
@@ -569,12 +573,23 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         }
     }
 
-    private void hideReadBar() {
+    private synchronized void hideReadBar() {
         gone(mTvDownloadProgress, mLlBookReadBottom, mLlBookReadTop, rlReadAaSet);
+        hideStatusBar();
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mLlBookReadTop.getLayoutParams();
+        params.topMargin = ScreenUtils.getStatusBarHeight(this);
+        mLlBookReadTop.setLayoutParams(params);
+        decodeView.setSystemUiVisibility(View.SYSTEM_UI_LAYOUT_FLAGS);
+        decodeView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
     }
 
-    private void showReadBar() { // 显示工具栏
+    private synchronized void showReadBar() { // 显示工具栏
         visible(mLlBookReadBottom, mLlBookReadTop);
+        showStatusBar();
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mLlBookReadTop.getLayoutParams();
+        params.topMargin = ScreenUtils.getStatusBarHeight(this);
+        mLlBookReadTop.setLayoutParams(params);
+        decodeView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     }
 
     private void toggleReadBar() { // 切换工具栏 隐藏/显示 状态

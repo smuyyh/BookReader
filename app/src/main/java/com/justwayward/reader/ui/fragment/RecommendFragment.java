@@ -168,7 +168,6 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
                                     case 0:
                                         //置顶、取消置顶
                                         CollectionsManager.getInstance().top(mAdapter.getItem(position)._id, !isTop);
-                                        onRefresh();
                                         break;
                                     case 1:
                                         //书籍详情

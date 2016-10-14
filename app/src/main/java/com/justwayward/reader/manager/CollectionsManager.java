@@ -4,11 +4,14 @@ import android.text.TextUtils;
 
 import com.justwayward.reader.ReaderApplication;
 import com.justwayward.reader.bean.Recommend;
+import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
 import com.justwayward.reader.utils.ACache;
 import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.utils.FormatUtils;
 import com.justwayward.reader.utils.LogUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -88,6 +91,7 @@ public class CollectionsManager {
                 }
             }
         }
+        EventBus.getDefault().post(new RefreshCollectionListEvent());
     }
 
     /**
@@ -172,6 +176,7 @@ public class CollectionsManager {
         }
         list.add(bean);
         ACache.get(ReaderApplication.getsInstance()).put("collection", (Serializable) list);
+        EventBus.getDefault().post(new RefreshCollectionListEvent());
         return true;
     }
 
@@ -196,6 +201,7 @@ public class CollectionsManager {
                 }
             }
         }
+        EventBus.getDefault().post(new RefreshCollectionListEvent());
     }
 
     /**
@@ -219,6 +225,7 @@ public class CollectionsManager {
                 }
             }
         }
+        EventBus.getDefault().post(new RefreshCollectionListEvent());
     }
 
 
