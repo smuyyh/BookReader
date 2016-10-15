@@ -141,7 +141,11 @@ public class TopRankActivity extends BaseActivity implements TopRankContract.Vie
 
         @Override
         public void onItemClick(View view, int position, RankingList.MaleBean data) {
-            SubRankActivity.startActivity(mContext, data._id, data.monthRank, data.totalRank, data.title);
+            if (data.monthRank == null) {
+                SubOtherHomeRankActivity.startActivity(mContext, data._id, data.title);
+            } else {
+                SubRankActivity.startActivity(mContext, data._id, data.monthRank, data.totalRank, data.title);
+            }
         }
     }
 }

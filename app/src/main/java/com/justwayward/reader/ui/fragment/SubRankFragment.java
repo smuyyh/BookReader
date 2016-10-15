@@ -58,7 +58,7 @@ public class SubRankFragment extends BaseRVFragment<SubRankPresenter, BooksByCat
     }
 
     @Override
-    public void showCategoryList(BooksByCats data) {
+    public void showRankList(BooksByCats data) {
         mAdapter.clear();
         mAdapter.addAll(data.books);
     }

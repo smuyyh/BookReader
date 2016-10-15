@@ -42,7 +42,7 @@ public class SubRankPresenter extends RxPresenter<SubRankContract.View> implemen
 
                     @Override
                     public void onError(Throwable e) {
-                        LogUtils.e("getCategoryList:" + e.toString());
+                        LogUtils.e("getRankList:" + e.toString());
                         mView.showError();
                     }
 
@@ -55,7 +55,7 @@ public class SubRankPresenter extends RxPresenter<SubRankContract.View> implemen
                         for (Rankings.RankingBean.BooksBean bean : books) {
                             cats.books.add(new BooksByCats.BooksBean(bean._id, bean.cover, bean.title, bean.author, bean.cat, bean.shortIntro, bean.latelyFollower, bean.retentionRatio));
                         }
-                        mView.showCategoryList(cats);
+                        mView.showRankList(cats);
                     }
                 });
         addSubscrebe(rxSubscription);

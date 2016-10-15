@@ -1,6 +1,7 @@
 package com.justwayward.reader.component;
 
 import com.justwayward.reader.ui.activity.SubCategoryListActivity;
+import com.justwayward.reader.ui.activity.SubOtherHomeRankActivity;
 import com.justwayward.reader.ui.activity.SubRankActivity;
 import com.justwayward.reader.ui.activity.SubjectBookListActivity;
 import com.justwayward.reader.ui.activity.SubjectBookListDetailActivity;
@@ -30,6 +31,8 @@ public interface FindComponent {
     TopRankActivity inject(TopRankActivity activity);
 
     SubRankActivity inject(SubRankActivity activity);
+
+    SubOtherHomeRankActivity inject(SubOtherHomeRankActivity activity);
 
     SubRankFragment inject(SubRankFragment fragment);
 

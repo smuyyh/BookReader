@@ -76,6 +76,9 @@
             android:name=".ui.activity.SubRankActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.activity.SubOtherHomeRankActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.activity.BookDiscussionActivity"
             android:screenOrientation="portrait" />
         <activity
