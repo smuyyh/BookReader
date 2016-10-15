@@ -82,7 +82,7 @@ public class BookDetail implements Serializable {
     public int chaptersCount;
     public int tocCount;
     public String tocUpdated;
-    public double retentionRatio;
+    public String retentionRatio;
     public boolean hasCmread;
     public String thirdFlagsUpdated;
     public int wordCount;

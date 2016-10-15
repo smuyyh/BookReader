@@ -10,7 +10,7 @@ import com.justwayward.reader.bean.BooksByCats;
 public interface SubRankContract {
 
     interface View extends BaseContract.BaseView {
-        void showCategoryList(BooksByCats data);
+        void showRankList(BooksByCats data);
     }
 
     interface Presenter<T> extends BaseContract.BasePresenter<T> {

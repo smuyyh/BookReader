@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -183,8 +184,11 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
         mTvWordCount.setText(FormatUtils.formatWordCount(data.wordCount));
         mTvLatelyUpdate.setText(FormatUtils.formatDate(data.updated));
         mTvLatelyFollower.setText(String.valueOf(data.latelyFollower));
-        mTvRetentionRatio.setText(String.valueOf(data.retentionRatio));
-        mTvSerializeWordCount.setText(String.valueOf(data.serializeWordCount));
+        mTvRetentionRatio.setText(TextUtils.isEmpty(data.retentionRatio) ?
+                "-" : String.format(getString(R.string.book_detail_retention_ratio),
+                data.retentionRatio));
+        mTvSerializeWordCount.setText(data.serializeWordCount < 0 ? "-" :
+                String.valueOf(data.serializeWordCount));
 
         tagList.clear();
         tagList.addAll(data.tags);
