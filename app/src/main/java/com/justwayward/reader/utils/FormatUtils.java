@@ -21,6 +21,25 @@ public class FormatUtils {
     private static final String ONE_MONTH_AGO = "月前";
     private static final String ONE_YEAR_AGO = "年前";
 
+    public final static String FORMAT_DATE_TIME = "yyyy-MM-dd HH:mm:ss.SSS";
+    private static SimpleDateFormat sdf = new SimpleDateFormat();
+
+    /**
+     * 获取当前日期的指定格式的字符串
+     *
+     * @param format
+     *            指定的日期时间格式，若为null或""则使用指定的格式"yyyy-MM-dd HH:mm:ss.SSS"
+     * @return
+     */
+    public static String getCurrentTime(String format) {
+        if (format == null || format.trim().equals("")) {
+            sdf.applyPattern(FORMAT_DATE_TIME);
+        } else {
+            sdf.applyPattern(format);
+        }
+        return sdf.format(new Date());
+    }
+
     public static String formatDate(String date) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         try {

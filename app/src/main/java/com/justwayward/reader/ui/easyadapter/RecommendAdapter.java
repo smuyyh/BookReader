@@ -1,6 +1,7 @@
 package com.justwayward.reader.ui.easyadapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -9,6 +10,7 @@ import com.justwayward.reader.R;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.manager.SettingManager;
+import com.justwayward.reader.utils.FormatUtils;
 import com.justwayward.reader.view.recyclerview.adapter.BaseViewHolder;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
 
@@ -37,7 +39,13 @@ public class RecommendAdapter extends RecyclerArrayAdapter<Recommend.RecommendBo
                     holder.setImageResource(R.id.ivRecommendCover, R.drawable.cover_default);
                 }
 
+                String latelyUpdate = "";
+                if (!TextUtils.isEmpty(FormatUtils.formatDate(item.updated))) {
+                    latelyUpdate = FormatUtils.formatDate(item.updated) + ":";
+                }
+
                 holder.setText(R.id.tvRecommendTitle, item.title)
+                        .setText(R.id.tvLatelyUpdate, latelyUpdate)
                         .setText(R.id.tvRecommendShort, item.lastChapter)
                         .setVisible(R.id.ivTopLabel, item.isTop)
                         .setVisible(R.id.ckBoxSelect, item.showCheckBox);

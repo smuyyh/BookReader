@@ -53,6 +53,7 @@ import com.justwayward.reader.ui.contract.BookReadContract;
 import com.justwayward.reader.ui.easyadapter.ReadThemeAdapter;
 import com.justwayward.reader.ui.presenter.BookReadPresenter;
 import com.justwayward.reader.utils.FileUtils;
+import com.justwayward.reader.utils.FormatUtils;
 import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.ScreenUtils;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
@@ -73,11 +74,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.functions.Action1;
 
 /**
  * Created by lfh on 2016/9/18.
@@ -240,6 +244,14 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         intentFilter.addAction(Intent.ACTION_TIME_TICK);
 
         CollectionsManager.getInstance().setRecentReadingTime(recommendBooks._id);
+        Observable.timer(1000, TimeUnit.MILLISECONDS)
+                .subscribe(new Action1<Long>() {
+                    @Override
+                    public void call(Long aLong) {
+                        //延迟1秒刷新书架
+                        EventBus.getDefault().post(new RefreshCollectionListEvent());
+                    }
+                });
     }
 
     @Override
@@ -631,6 +643,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
+                                bean.recentReadingTime = FormatUtils.getCurrentTime(FormatUtils.FORMAT_DATE_TIME);
                                 CollectionsManager.getInstance().add(bean);
                                 EventBus.getDefault().post(new RefreshCollectionIconEvent());
                                 EventBus.getDefault().post(new RefreshCollectionListEvent());

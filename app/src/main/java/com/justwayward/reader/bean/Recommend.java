@@ -42,7 +42,7 @@ public class Recommend extends Base {
         public String path = "";
         public int latelyFollower;
         public double retentionRatio;
-        public String updated;
+        public String updated = "";
         public int chaptersCount;
         public String lastChapter;
         public String recentReadingTime = "";

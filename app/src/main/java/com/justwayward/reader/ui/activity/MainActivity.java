@@ -44,6 +44,7 @@ import com.google.gson.Gson;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.base.Constant;
+import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
 import com.justwayward.reader.bean.user.TencentLoginResult;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerMainComponent;
@@ -65,6 +66,7 @@ import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.lang.reflect.Method;
@@ -214,11 +216,13 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
                 popupWindow.showAtLocation(mCommonToolbar, Gravity.CENTER, 0, 0);
                 break;
             case R.id.action_sync_bookshelf:
-                if (popupWindow == null) {
+                mPresenter.syncBookShelf();
+                showDialog();
+               /* if (popupWindow == null) {
                     popupWindow = new LoginPopupWindow(this);
                     popupWindow.setLoginTypeListener(this);
                 }
-                popupWindow.showAtLocation(mCommonToolbar, Gravity.CENTER, 0, 0);
+                popupWindow.showAtLocation(mCommonToolbar, Gravity.CENTER, 0, 0);*/
                 break;
             case R.id.action_scan_local_book:
                 ScanLocalBookActivity.startActivity(this);
@@ -300,6 +304,12 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
     }
 
     @Override
+    public void syncBookShelfCompleted() {
+        dismissDialog();
+        EventBus.getDefault().post(new RefreshCollectionListEvent());
+    }
+
+    @Override
     public void onLogin(ImageView view, String type) {
         if (type.equals("QQ")) {
             if (!mTencent.isSessionValid()) {
@@ -312,7 +322,8 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
 
     @Override
     public void showError() {
-
+        ToastUtils.showSingleToast("同步异常");
+        dismissDialog();
     }
 
     @Override

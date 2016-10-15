@@ -11,11 +11,13 @@ import android.widget.TextView;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
+import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerMainComponent;
 import com.justwayward.reader.manager.CacheManager;
 import com.justwayward.reader.manager.SettingManager;
+import com.justwayward.reader.utils.SharedPreferencesUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -72,7 +74,8 @@ public class SettingActivity extends BaseActivity {
 
             }
         }).start();
-
+        mTvSort.setText(getResources().getStringArray(R.array.setting_dialog_choice)[
+                SharedPreferencesUtil.getInstance().getBoolean(Constant.ISBYUPDATESORT, true) ? 0 : 1]);
     }
 
 
@@ -91,13 +94,17 @@ public class SettingActivity extends BaseActivity {
     public void onClickBookShelfSort() {
         new AlertDialog.Builder(mContext)
                 .setTitle("书架排序方式")
-                .setSingleChoiceItems(getResources().getStringArray(R.array.setting_dialog_choice), 0, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mTvSort.setText(getResources().getStringArray(R.array.setting_dialog_choice)[which]);
-                        dialog.dismiss();
-                    }
-                })
+                .setSingleChoiceItems(getResources().getStringArray(R.array.setting_dialog_choice),
+                        SharedPreferencesUtil.getInstance().getBoolean(Constant.ISBYUPDATESORT, true) ? 0 : 1,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mTvSort.setText(getResources().getStringArray(R.array.setting_dialog_choice)[which]);
+                                SharedPreferencesUtil.getInstance().putBoolean(Constant.ISBYUPDATESORT, which == 0);
+                                EventBus.getDefault().post(new RefreshCollectionListEvent());
+                                dialog.dismiss();
+                            }
+                        })
                 .create().show();
     }
 

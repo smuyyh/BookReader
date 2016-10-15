@@ -200,6 +200,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
         recommendBooks._id = data._id;
         recommendBooks.cover = data.cover;
         recommendBooks.lastChapter = data.lastChapter;
+        recommendBooks.updated = data.updated;
 
         refreshCollectionIcon();
     }

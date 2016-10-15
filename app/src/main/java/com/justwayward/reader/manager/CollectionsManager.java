@@ -3,6 +3,7 @@ package com.justwayward.reader.manager;
 import android.text.TextUtils;
 
 import com.justwayward.reader.ReaderApplication;
+import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
 import com.justwayward.reader.utils.ACache;
@@ -10,6 +11,7 @@ import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.utils.FormatUtils;
 import com.justwayward.reader.utils.LogUtils;
+import com.justwayward.reader.utils.SharedPreferencesUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -18,7 +20,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -56,18 +57,21 @@ public class CollectionsManager {
     }
 
     /**
-     * 获取收藏列表（按最近阅读时间排序）
+     * 按排序方式获取收藏列表
      *
      * @return
      */
-    public List<Recommend.RecommendBooks> getCollectionListByRecentReadingTime() {
+    public List<Recommend.RecommendBooks> getCollectionListBySort() {
         List<Recommend.RecommendBooks> list = (ArrayList<Recommend.RecommendBooks>) ACache.get(
                 ReaderApplication.getsInstance()).getAsObject("collection");
         if (list == null) {
             return null;
         } else {
-            Collections.sort(list, new RecentReadingTimeComparator());
-            Collections.reverse(list);
+            if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISBYUPDATESORT, true)) {
+                Collections.sort(list, new LatelyUpdateTimeComparator());
+            } else {
+                Collections.sort(list, new RecentReadingTimeComparator());
+            }
             return list;
         }
     }
@@ -83,12 +87,10 @@ public class CollectionsManager {
             return;
         }
         for (Recommend.RecommendBooks bean : list) {
-            if (bean != null) {
-                if (TextUtils.equals(bean._id, bookId)) {
-                    list.remove(bean);
-                    ACache.get(ReaderApplication.getsInstance()).put("collection", (Serializable) list);
-                    break;
-                }
+            if (TextUtils.equals(bean._id, bookId)) {
+                list.remove(bean);
+                ACache.get(ReaderApplication.getsInstance()).put("collection", (Serializable) list);
+                break;
             }
         }
         EventBus.getDefault().post(new RefreshCollectionListEvent());
@@ -191,17 +193,37 @@ public class CollectionsManager {
             return;
         }
         for (Recommend.RecommendBooks bean : list) {
-            if (bean != null) {
-                if (TextUtils.equals(bean._id, bookId)) {
-                    bean.isTop = isTop;
-                    list.remove(bean);
-                    list.add(0, bean);
-                    ACache.get(ReaderApplication.getsInstance()).put("collection", (Serializable) list);
-                    break;
-                }
+            if (TextUtils.equals(bean._id, bookId)) {
+                bean.isTop = isTop;
+                list.remove(bean);
+                list.add(0, bean);
+                ACache.get(ReaderApplication.getsInstance()).put("collection", (Serializable) list);
+                break;
             }
         }
         EventBus.getDefault().post(new RefreshCollectionListEvent());
+    }
+
+    /**
+     * 设置最新章节和更新时间
+     *
+     * @param bookId
+     */
+    public void setLastChapterAndLatelyUpdate(String bookId, String lastChapter, String latelyUpdate) {
+        List<Recommend.RecommendBooks> list = getCollectionList();
+        if (list == null) {
+            return;
+        }
+        for (Recommend.RecommendBooks bean : list) {
+            if (TextUtils.equals(bean._id, bookId)) {
+                bean.lastChapter = lastChapter;
+                bean.updated = latelyUpdate;
+                list.remove(bean);
+                list.add(bean);
+                ACache.get(ReaderApplication.getsInstance()).put("collection", (Serializable) list);
+                break;
+            }
+        }
     }
 
     /**
@@ -215,28 +237,44 @@ public class CollectionsManager {
             return;
         }
         for (Recommend.RecommendBooks bean : list) {
-            if (bean != null) {
-                if (TextUtils.equals(bean._id, bookId)) {
-                    bean.recentReadingTime = FormatUtils.formatDate(new Date().toString());
-                    list.remove(bean);
-                    list.add(bean);
-                    ACache.get(ReaderApplication.getsInstance()).put("collection", (Serializable) list);
-                    break;
-                }
+            if (TextUtils.equals(bean._id, bookId)) {
+                bean.recentReadingTime = FormatUtils.getCurrentTime(FormatUtils.FORMAT_DATE_TIME);
+                list.remove(bean);
+                list.add(bean);
+                ACache.get(ReaderApplication.getsInstance()).put("collection", (Serializable) list);
+                break;
             }
         }
-        EventBus.getDefault().post(new RefreshCollectionListEvent());
     }
 
 
     /**
-     * 自定义比较器：按最近阅读时间来排序
+     * 自定义比较器：按最近阅读时间来排序，置顶优先，降序
      */
     static class RecentReadingTimeComparator implements Comparator {
-        public int compare(Object object1, Object object2) {// 实现接口中的方法
-            Recommend.RecommendBooks p1 = (Recommend.RecommendBooks) object1; // 强制转换
+        public int compare(Object object1, Object object2) {
+            Recommend.RecommendBooks p1 = (Recommend.RecommendBooks) object1;
             Recommend.RecommendBooks p2 = (Recommend.RecommendBooks) object2;
-            return p1.recentReadingTime.compareTo(p2.recentReadingTime);
+            if (p1.isTop && p2.isTop || !p1.isTop && !p2.isTop) {
+                return p2.recentReadingTime.compareTo(p1.recentReadingTime);
+            } else {
+                return p1.isTop ? -1 : 1;
+            }
+        }
+    }
+
+    /**
+     * 自定义比较器：按更新时间来排序，置顶优先，降序
+     */
+    static class LatelyUpdateTimeComparator implements Comparator {
+        public int compare(Object object1, Object object2) {
+            Recommend.RecommendBooks p1 = (Recommend.RecommendBooks) object1;
+            Recommend.RecommendBooks p2 = (Recommend.RecommendBooks) object2;
+            if (p1.isTop && p2.isTop || !p1.isTop && !p2.isTop) {
+                return p2.updated.compareTo(p1.updated);
+            } else {
+                return p1.isTop ? -1 : 1;
+            }
         }
     }
 

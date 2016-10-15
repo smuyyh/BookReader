@@ -19,8 +19,8 @@ public class BookToc extends Base {
     public mixToc mixToc;
     public static class mixToc implements Serializable {
         public String _id;
-        public String name;
-        public String link;
+        public String book;
+        public String chaptersUpdated;
         /**
          * title : 第一章 死在万花丛中
          * link : http://vip.zhuishushenqi.com/chapter/577e5290260289ff64a29213?cv=1467896464908
