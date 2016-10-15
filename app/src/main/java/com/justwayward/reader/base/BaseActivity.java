@@ -1,6 +1,7 @@
 package com.justwayward.reader.base;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -26,6 +27,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected Context mContext;
     protected int statusBarColor = 0;
+    protected View statusBarView = null;
     private boolean mNowMode;
     private CustomDialog dialog;//进度条
 
@@ -34,9 +36,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
         if (statusBarColor == 0) {
-            StatusBarCompat.compat(this, ContextCompat.getColor(this, R.color.colorPrimaryDark));
+            statusBarView = StatusBarCompat.compat(this, ContextCompat.getColor(this, R.color.colorPrimaryDark));
         } else if (statusBarColor != -1) {
-            StatusBarCompat.compat(this, statusBarColor);
+            statusBarView = StatusBarCompat.compat(this, statusBarColor);
         }
         transparent19and20();
         mContext = this;
@@ -156,12 +158,18 @@ public abstract class BaseActivity extends AppCompatActivity {
         WindowManager.LayoutParams attrs = getWindow().getAttributes();
         attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
         getWindow().setAttributes(attrs);
+        if(statusBarView != null){
+            statusBarView.setBackgroundColor(Color.TRANSPARENT);
+        }
     }
 
     protected void showStatusBar() {
         WindowManager.LayoutParams attrs = getWindow().getAttributes();
         attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
         getWindow().setAttributes(attrs);
+        if(statusBarView != null){
+            statusBarView.setBackgroundColor(statusBarColor);
+        }
     }
 
 }

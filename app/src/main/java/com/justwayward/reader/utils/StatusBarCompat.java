@@ -18,14 +18,14 @@ public class StatusBarCompat {
     private static final int INVALID_VAL = -1;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static void compat(Activity activity, int statusColor) {
+    public static View compat(Activity activity, int statusColor) {
         int color = ContextCompat.getColor(activity, R.color.colorPrimaryDark);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (statusColor != INVALID_VAL) {
                 color = statusColor;
             }
             activity.getWindow().setStatusBarColor(color);
-            return;
+            return null;
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
@@ -37,14 +37,16 @@ public class StatusBarCompat {
             View statusBarView = contentView.getChildAt(0);
             if (statusBarView != null && statusBarView.getMeasuredHeight() == getStatusBarHeight(activity)) {
                 statusBarView.setBackgroundColor(color);
-                return;
+                return statusBarView;
             }
             statusBarView = new View(activity);
             ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     getStatusBarHeight(activity));
             statusBarView.setBackgroundColor(color);
             contentView.addView(statusBarView, lp);
+            return statusBarView;
         }
+        return null;
 
     }
 

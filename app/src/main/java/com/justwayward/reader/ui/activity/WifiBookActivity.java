@@ -79,7 +79,7 @@ public class WifiBookActivity extends BaseActivity {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
-        }).show();
+        }).create().show();
     }
 
     @Override

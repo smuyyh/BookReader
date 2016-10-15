@@ -48,7 +48,8 @@
         <activity
             android:name=".ui.activity.ReadActivity"
             android:hardwareAccelerated="false"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
@@ -193,8 +192,9 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @Override
     public int getLayoutId() {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         statusBarColor = ContextCompat.getColor(this, R.color.reader_menu_bg_color);
-        hideStatusBar();
         return R.layout.activity_read;
     }
 
@@ -256,7 +256,11 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @Override
     public void configViews() {
+        hideStatusBar();
         decodeView = getWindow().getDecorView();
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mLlBookReadTop.getLayoutParams();
+        params.topMargin = ScreenUtils.getStatusBarHeight(this) - 2;
+        mLlBookReadTop.setLayoutParams(params);
 
         initTocList();
 
@@ -272,7 +276,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             mChapterList.add(chapters);
             showChapterRead(null, currentChapter);
             //本地书籍隐藏社区、简介、缓存按钮
-            gone(mTvBookReadCommunity,mTvBookReadChangeSource,mTvBookReadDownload);
+            gone(mTvBookReadCommunity, mTvBookReadChangeSource, mTvBookReadDownload);
             return;
         }
         mPresenter.getBookToc(recommendBooks._id, "chapters");
@@ -590,23 +594,12 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     private synchronized void hideReadBar() {
         gone(mTvDownloadProgress, mLlBookReadBottom, mLlBookReadTop, rlReadAaSet);
         hideStatusBar();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mLlBookReadTop.getLayoutParams();
-            params.topMargin = ScreenUtils.getStatusBarHeight(this);
-            mLlBookReadTop.setLayoutParams(params);
-        }
-        //decodeView.setSystemUiVisibility(View.SYSTEM_UI_LAYOUT_FLAGS);
         decodeView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
     }
 
     private synchronized void showReadBar() { // 显示工具栏
         visible(mLlBookReadBottom, mLlBookReadTop);
         showStatusBar();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mLlBookReadTop.getLayoutParams();
-            params.topMargin = ScreenUtils.getStatusBarHeight(this);
-            mLlBookReadTop.setLayoutParams(params);
-        }
         decodeView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     }
 
