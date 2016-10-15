@@ -259,6 +259,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             chapters.title = recommendBooks.title;
             mChapterList.add(chapters);
             showChapterRead(null, currentChapter);
+            //本地书籍隐藏社区、简介、缓存按钮
+            gone(mTvBookReadCommunity,mTvBookReadChangeSource,mTvBookReadDownload);
             return;
         }
         mPresenter.getBookToc(recommendBooks._id, "chapters");

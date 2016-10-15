@@ -328,6 +328,9 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
             isHasCollections = true;
             mAdapter.clear();
             mAdapter.addAll(data);
+            //不加下面这句代码会导致，添加本地书籍的时候，部分书籍添加后直接崩溃，
+            //报错：Scrapped or attached views may not be recycled. isScrap:false isAttached:tru
+            mAdapter.notifyDataSetChanged();
             mRecyclerView.setRefreshing(false);
         } else {
             //没有收藏时，显示推荐

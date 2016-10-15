@@ -25,7 +25,8 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="15dp"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <ImageView
             android:id="@+id/ivBack"
@@ -96,7 +97,7 @@
         android:singleLine="true"
         android:text="@string/book_read_download_progress"
         android:textColor="@color/white"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <include layout="@layout/layout_read_aa_set" />
 
@@ -109,7 +110,8 @@
         android:clickable="true"
         android:orientation="horizontal"
         android:padding="10dp"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <TextView
             android:id="@+id/tvBookReadMode"
