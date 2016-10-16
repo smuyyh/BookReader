@@ -87,7 +87,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="15dp"
-        android:src="@drawable/reader_topic_dot"
+        android:src="@drawable/notification_red_dot"
         android:visibility="gone"
         tools:visibility="visible"/>
 
