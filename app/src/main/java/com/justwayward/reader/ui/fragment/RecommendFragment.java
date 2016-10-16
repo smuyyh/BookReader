@@ -154,55 +154,83 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
      */
     private void showLongClickDialog(final int position) {
         final boolean isTop = CollectionsManager.getInstance().isTop(mAdapter.getItem(position)._id);
-        String[] items = getResources().getStringArray(R.array.recommend_item_long_click_choice);
-        if (isTop) {
-            items[0] = getString(R.string.cancle_top);
+        String[] items;
+        DialogInterface.OnClickListener listener;
+        if (mAdapter.getItem(position).isFromSD) {
+            items = getResources().getStringArray(R.array.recommend_item_long_click_choice_local);
+            listener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case 0:
+                            //置顶、取消置顶
+                            CollectionsManager.getInstance().top(mAdapter.getItem(position)._id, !isTop);
+                            break;
+                        case 1:
+                            //删除
+                            List<Recommend.RecommendBooks> removeList = new ArrayList<>();
+                            removeList.add(mAdapter.getItem(position));
+                            showDeleteCacheDialog(removeList);
+                            break;
+                        case 2:
+                            //批量管理
+                            showBatchManagementLayout();
+                            break;
+                        default:
+                            break;
+                    }
+                    dialog.dismiss();
+                }
+            };
+        } else {
+            items = getResources().getStringArray(R.array.recommend_item_long_click_choice);
+            listener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case 0:
+                            //置顶、取消置顶
+                            CollectionsManager.getInstance().top(mAdapter.getItem(position)._id, !isTop);
+                            break;
+                        case 1:
+                            //书籍详情
+                            BookDetailActivity.startActivity(activity,
+                                    mAdapter.getItem(position)._id);
+                            break;
+                        case 2:
+                            //移入养肥区
+                            ToastUtils.showToast("正在拼命开发中...");
+                            break;
+                        case 3:
+                            //缓存全本
+                            if (mAdapter.getItem(position).isFromSD) {
+                                ToastUtils.showSingleToast("本地文件不支持该选项哦");
+                            } else {
+                                showDialog();
+                                mPresenter.getTocList(mAdapter.getItem(position)._id);
+                            }
+                            break;
+                        case 4:
+                            //删除
+                            List<Recommend.RecommendBooks> removeList = new ArrayList<>();
+                            removeList.add(mAdapter.getItem(position));
+                            showDeleteCacheDialog(removeList);
+                            break;
+                        case 5:
+                            //批量管理
+                            showBatchManagementLayout();
+                            break;
+                        default:
+                            break;
+                    }
+                    dialog.dismiss();
+                }
+            };
         }
+        if (isTop) items[0] = getString(R.string.cancle_top);
         new AlertDialog.Builder(activity)
                 .setTitle(mAdapter.getItem(position).title)
-                .setItems(items,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                switch (which) {
-                                    case 0:
-                                        //置顶、取消置顶
-                                        CollectionsManager.getInstance().top(mAdapter.getItem(position)._id, !isTop);
-                                        break;
-                                    case 1:
-                                        //书籍详情
-                                        BookDetailActivity.startActivity(activity,
-                                                mAdapter.getItem(position)._id);
-                                        break;
-                                    case 2:
-                                        //移入养肥区
-                                        ToastUtils.showToast("正在拼命开发中...");
-                                        break;
-                                    case 3:
-                                        //缓存全本
-                                        if (mAdapter.getItem(position).isFromSD) {
-                                            ToastUtils.showSingleToast("本地文件不支持该选项哦");
-                                        } else {
-                                            showDialog();
-                                            mPresenter.getTocList(mAdapter.getItem(position)._id);
-                                        }
-                                        break;
-                                    case 4:
-                                        //删除
-                                        List<Recommend.RecommendBooks> removeList = new ArrayList<>();
-                                        removeList.add(mAdapter.getItem(position));
-                                        showDeleteCacheDialog(removeList);
-                                        break;
-                                    case 5:
-                                        //批量管理
-                                        showBatchManagementLayout();
-                                        break;
-                                    default:
-                                        break;
-                                }
-                                dialog.dismiss();
-                            }
-                        })
+                .setItems(items, listener)
                 .setNegativeButton(null, null)
                 .create().show();
     }

@@ -39,6 +39,12 @@
         <item>批量管理</item>
     </string-array>
 
+    <string-array name="recommend_item_long_click_choice_local">
+        <item>置顶</item>
+        <item>删除</item>
+        <item>批量管理</item>
+    </string-array>
+
     <string-array name="my_book_list_item_long_click_choice">
         <item>删除</item>
     </string-array>
