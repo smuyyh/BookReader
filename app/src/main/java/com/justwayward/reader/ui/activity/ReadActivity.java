@@ -636,7 +636,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
-                                bean.recentReadingTime = FormatUtils.getCurrentTime(FormatUtils.FORMAT_DATE_TIME);
+                                bean.recentReadingTime = FormatUtils.getCurrentTimeString(FormatUtils.FORMAT_DATE_TIME);
                                 CollectionsManager.getInstance().add(bean);
                                 EventBus.getDefault().post(new RefreshCollectionIconEvent());
                                 EventBus.getDefault().post(new RefreshCollectionListEvent());

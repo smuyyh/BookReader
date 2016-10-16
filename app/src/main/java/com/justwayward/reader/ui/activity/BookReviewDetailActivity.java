@@ -162,7 +162,7 @@ public class BookReviewDetailActivity extends BaseRVActivity<CommentList.Comment
                 .into(headerViewHolder.ivAuthorAvatar);
 
         headerViewHolder.tvBookAuthor.setText(data.review.author.nickname);
-        headerViewHolder.tvTime.setText(FormatUtils.formatDate(data.review.created));
+        headerViewHolder.tvTime.setText(FormatUtils.getDescriptionTimeFromDateString(data.review.created));
         headerViewHolder.tvTitle.setText(data.review.title);
         headerViewHolder.tvContent.setText(data.review.content);
 

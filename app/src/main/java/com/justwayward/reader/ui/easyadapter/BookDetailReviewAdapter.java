@@ -38,7 +38,7 @@ public class BookDetailReviewAdapter extends RecyclerArrayAdapter<HotReview.Revi
                 holder.setText(R.id.tvBookTitle, item.author.nickname)
                         .setText(R.id.tvBookType, String.format(mContext.getString(R.string
                                 .book_detail_user_lv), item.author.lv))
-                        .setText(R.id.tvTime, FormatUtils.formatDate(item.created))
+                        .setText(R.id.tvTime, FormatUtils.getDescriptionTimeFromDateString(item.created))
                         .setText(R.id.tvTitle, item.title)
                         .setText(R.id.tvContent, String.valueOf(item.content))
                         .setText(R.id.tvHelpfulYes, String.valueOf(item.helpful.yes));

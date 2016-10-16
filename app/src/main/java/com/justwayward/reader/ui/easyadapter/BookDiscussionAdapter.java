@@ -70,7 +70,7 @@ public class BookDiscussionAdapter extends RecyclerArrayAdapter<DiscussionList.P
                         holder.setVisible(R.id.tvTime, true);
                         holder.setVisible(R.id.tvHot, false);
                         holder.setVisible(R.id.tvDistillate, false);
-                        holder.setText(R.id.tvTime, FormatUtils.formatDate(item.created));
+                        holder.setText(R.id.tvTime, FormatUtils.getDescriptionTimeFromDateString(item.created));
                     }
                 } catch (Exception e) {
                     LogUtils.e(e.toString());

@@ -21,17 +21,16 @@ public class FormatUtils {
     private static final String ONE_MONTH_AGO = "月前";
     private static final String ONE_YEAR_AGO = "年前";
 
-    public final static String FORMAT_DATE_TIME = "yyyy-MM-dd HH:mm:ss.SSS";
     private static SimpleDateFormat sdf = new SimpleDateFormat();
+    public final static String FORMAT_DATE_TIME = "yyyy-MM-dd HH:mm:ss.SSS";
 
     /**
      * 获取当前日期的指定格式的字符串
      *
-     * @param format
-     *            指定的日期时间格式，若为null或""则使用指定的格式"yyyy-MM-dd HH:mm:ss.SSS"
+     * @param format 指定的日期时间格式，若为null或""则使用指定的格式"yyyy-MM-dd HH:mm:ss.SSS"
      * @return
      */
-    public static String getCurrentTime(String format) {
+    public static String getCurrentTimeString(String format) {
         if (format == null || format.trim().equals("")) {
             sdf.applyPattern(FORMAT_DATE_TIME);
         } else {
@@ -40,17 +39,39 @@ public class FormatUtils {
         return sdf.format(new Date());
     }
 
-    public static String formatDate(String date) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    /**
+     * 根据时间字符串获取描述性时间，如3分钟前，1天前
+     *
+     * @param dateString 时间字符串
+     * @return
+     */
+    public static String getDescriptionTimeFromDateString(String dateString) {
+        sdf.applyPattern(FORMAT_DATE_TIME);
         try {
-            return formatDate(format.parse(date.replaceAll("T", " ").replaceAll("Z", "")));
+            return getDescriptionTimeFromDate(sdf.parse(formatZhuiShuDateString(dateString)));
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.e("getDescriptionTimeFromDateString: " + e);
         }
         return "";
     }
 
-    public static String formatDate(Date date) {
+    /**
+     * 格式化追书神器返回的时间字符串
+     *
+     * @param dateString 时间字符串
+     * @return
+     */
+    public static String formatZhuiShuDateString(String dateString) {
+        return dateString.replaceAll("T", " ").replaceAll("Z", "");
+    }
+
+    /**
+     * 根据Date获取描述性时间，如3分钟前，1天前
+     *
+     * @param date
+     * @return
+     */
+    public static String getDescriptionTimeFromDate(Date date) {
         long delta = new Date().getTime() - date.getTime();
         if (delta < 1L * ONE_MINUTE) {
             long seconds = toSeconds(delta);

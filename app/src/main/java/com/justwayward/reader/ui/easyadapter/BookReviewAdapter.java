@@ -52,7 +52,7 @@ public class BookReviewAdapter extends RecyclerArrayAdapter<BookReviewList.Revie
                     holder.setVisible(R.id.tvTime, true);
                     holder.setVisible(R.id.tvHot, false);
                     holder.setVisible(R.id.tvDistillate, false);
-                    holder.setText(R.id.tvTime, FormatUtils.formatDate(item.created));
+                    holder.setText(R.id.tvTime, FormatUtils.getDescriptionTimeFromDateString(item.created));
                 }
             }
         };

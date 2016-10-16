@@ -147,7 +147,7 @@ public class BookHelpDetailActivity extends BaseRVActivity<CommentList.CommentsB
                 .into(headerViewHolder.ivAvatar);
 
         headerViewHolder.tvNickName.setText(data.help.author.nickname);
-        headerViewHolder.tvTime.setText(FormatUtils.formatDate(data.help.created));
+        headerViewHolder.tvTime.setText(FormatUtils.getDescriptionTimeFromDateString(data.help.created));
         headerViewHolder.tvTitle.setText(data.help.title);
         headerViewHolder.tvContent.setText(data.help.content);
         headerViewHolder.tvCommentCount.setText(String.format(mContext.getString(R.string.comment_comment_count), data.help.commentCount));

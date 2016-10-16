@@ -238,7 +238,7 @@ public class CollectionsManager {
         }
         for (Recommend.RecommendBooks bean : list) {
             if (TextUtils.equals(bean._id, bookId)) {
-                bean.recentReadingTime = FormatUtils.getCurrentTime(FormatUtils.FORMAT_DATE_TIME);
+                bean.recentReadingTime = FormatUtils.getCurrentTimeString(FormatUtils.FORMAT_DATE_TIME);
                 list.remove(bean);
                 list.add(bean);
                 ACache.get(ReaderApplication.getsInstance()).put("collection", (Serializable) list);

@@ -40,15 +40,17 @@ public class RecommendAdapter extends RecyclerArrayAdapter<Recommend.RecommendBo
                 }
 
                 String latelyUpdate = "";
-                if (!TextUtils.isEmpty(FormatUtils.formatDate(item.updated))) {
-                    latelyUpdate = FormatUtils.formatDate(item.updated) + ":";
+                if (!TextUtils.isEmpty(FormatUtils.getDescriptionTimeFromDateString(item.updated))) {
+                    latelyUpdate = FormatUtils.getDescriptionTimeFromDateString(item.updated) + ":";
                 }
 
                 holder.setText(R.id.tvRecommendTitle, item.title)
                         .setText(R.id.tvLatelyUpdate, latelyUpdate)
                         .setText(R.id.tvRecommendShort, item.lastChapter)
                         .setVisible(R.id.ivTopLabel, item.isTop)
-                        .setVisible(R.id.ckBoxSelect, item.showCheckBox);
+                        .setVisible(R.id.ckBoxSelect, item.showCheckBox)
+                        .setVisible(R.id.ivUnReadDot, FormatUtils.formatZhuiShuDateString(item.updated)
+                                .compareTo(item.recentReadingTime) > 0);
 
                 CheckBox ckBoxSelect = holder.getView(R.id.ckBoxSelect);
                 ckBoxSelect.setChecked(item.isSeleted);

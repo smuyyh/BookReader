@@ -148,7 +148,7 @@ public class BookDiscussionDetailActivity extends BaseRVActivity<CommentList.Com
                 .into(headerViewHolder.ivAvatar);
 
         headerViewHolder.tvNickName.setText(disscussion.post.author.nickname);
-        headerViewHolder.tvTime.setText(FormatUtils.formatDate(disscussion.post.created));
+        headerViewHolder.tvTime.setText(FormatUtils.getDescriptionTimeFromDateString(disscussion.post.created));
         headerViewHolder.tvTitle.setText(disscussion.post.title);
         headerViewHolder.tvContent.setText(disscussion.post.content);
         headerViewHolder.tvCommentCount.setText(String.format(mContext.getString(R.string.comment_comment_count), disscussion.post.commentCount));

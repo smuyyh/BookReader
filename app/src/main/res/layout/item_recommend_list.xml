@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxEms="15"
-            android:singleLine="true"
+            android:maxLines="1"
             android:textColor="@color/common_h1"
             android:textSize="16sp"
             tools:text="逆鳞"/>
@@ -41,7 +41,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvRecommendTitle"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="4dp"
+            android:textSize="12sp"
             android:textColor="@color/common_h2"
             tools:text="17小时前:"/>
 
@@ -50,11 +51,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/tvLatelyUpdate"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="4dp"
             android:layout_toRightOf="@id/tvLatelyUpdate"
             android:ellipsize="end"
             android:maxEms="14"
             android:maxLines="1"
+            android:textSize="12sp"
             android:textColor="@color/common_h2"
             tools:text="第二卷、逆水行舟！第四百六十五章、打蛇七寸！"/>
     </RelativeLayout>
@@ -75,6 +77,17 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="15dp"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
+    <ImageView
+        android:id="@+id/ivUnReadDot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dp"
+        android:src="@drawable/reader_topic_dot"
         android:visibility="gone"
         tools:visibility="visible"/>
 

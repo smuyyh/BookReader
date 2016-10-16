@@ -182,7 +182,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
         mTvAuthor.setText(String.format(getString(R.string.book_detail_author), data.author));
         mTvCatgory.setText(String.format(getString(R.string.book_detail_category), data.cat));
         mTvWordCount.setText(FormatUtils.formatWordCount(data.wordCount));
-        mTvLatelyUpdate.setText(FormatUtils.formatDate(data.updated));
+        mTvLatelyUpdate.setText(FormatUtils.getDescriptionTimeFromDateString(data.updated));
         mTvLatelyFollower.setText(String.valueOf(data.latelyFollower));
         mTvRetentionRatio.setText(TextUtils.isEmpty(data.retentionRatio) ?
                 "-" : String.format(getString(R.string.book_detail_retention_ratio),
