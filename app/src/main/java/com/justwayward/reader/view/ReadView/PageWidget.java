@@ -306,7 +306,6 @@ public class PageWidget extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        //canvas.drawColor(0xFFAAAAAA);
         calcPoints();
         drawCurrentPageArea(canvas, mCurPageBitmap, mPath0);
         drawNextPageAreaAndShadow(canvas, mNextPageBitmap);
@@ -481,7 +480,6 @@ public class PageWidget extends View {
             canvas.clipPath(mPath1, Region.Op.INTERSECT);
         } catch (Exception e) {
         }
-
 
         mPaint.setColorFilter(mColorMatrixFilter);
 
@@ -685,9 +683,9 @@ public class PageWidget extends View {
     }
 
     public synchronized void setFontSize(final int fontSizePx) {
+        restoreAnimation();
         pagefactory.setTextFont(fontSizePx);
         if (isPrepared) {
-            abortAnimation();
             pagefactory.onDraw(mCurrentPageCanvas);
             pagefactory.onDraw(mNextPageCanvas);
             SettingManager.getInstance().saveFontSize(bookId, fontSizePx);
@@ -698,7 +696,6 @@ public class PageWidget extends View {
     public synchronized void setTextColor(int textColor, int titleColor) {
         pagefactory.setTextColor(textColor, titleColor);
         if (isPrepared) {
-            abortAnimation();
             pagefactory.onDraw(mCurrentPageCanvas);
             pagefactory.onDraw(mNextPageCanvas);
             postInvalidate();
@@ -706,6 +703,7 @@ public class PageWidget extends View {
     }
 
     public synchronized void setTheme(int theme) {
+        restoreAnimation();
         Bitmap bg = ThemeManager.getThemeDrawable(theme);
         if (bg != null) {
             pagefactory.setBgBitmap(bg);

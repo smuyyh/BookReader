@@ -463,6 +463,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                 : R.drawable.ic_menu_mode_night_manual);
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
         mTvBookReadMode.setCompoundDrawables(null, drawable, null, null);
+
+        ThemeManager.setReaderTheme(curTheme, mRlBookReadRoot);
     }
 
     @OnClick(R.id.tvBookReadSettings)
