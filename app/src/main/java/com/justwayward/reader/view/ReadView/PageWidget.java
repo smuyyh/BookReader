@@ -577,12 +577,12 @@ public class PageWidget extends View {
                 mTouch.y = dy;
                 actiondownX = dx;
                 actiondownY = dy;
-                calcCornerXY(actiondownX, actiondownY);
                 if (actiondownX >= mScreenWidth / 3 && actiondownX <= mScreenWidth * 2 / 3
                         && actiondownY >= mScreenHeight / 3 && actiondownY <= mScreenHeight * 2 / 3) {
                     listener.onCenterClick();
                     return false;//停止向下分发事件
                 }
+                calcCornerXY(actiondownX, actiondownY);
                 pagefactory.onDraw(mCurrentPageCanvas);
                 if (actiondownX < mScreenWidth / 2) {// 从左翻
                     if (!pagefactory.prePage()) {
@@ -651,7 +651,6 @@ public class PageWidget extends View {
 
     public void jumpToChapter(int chapter) {
         abortAnimation();
-        restoreAnimation();
         pagefactory.openBook(chapter, new int[]{0, 0});
         pagefactory.onDraw(mCurrentPageCanvas);
         pagefactory.onDraw(mNextPageCanvas);
@@ -683,7 +682,6 @@ public class PageWidget extends View {
     }
 
     public synchronized void setFontSize(final int fontSizePx) {
-        restoreAnimation();
         pagefactory.setTextFont(fontSizePx);
         if (isPrepared) {
             pagefactory.onDraw(mCurrentPageCanvas);
@@ -703,7 +701,9 @@ public class PageWidget extends View {
     }
 
     public synchronized void setTheme(int theme) {
-        restoreAnimation();
+        mTouch.x = 0.1f;
+        mTouch.y = 0.1f;
+        calcCornerXY(mTouch.x, mTouch.y);
         Bitmap bg = ThemeManager.getThemeDrawable(theme);
         if (bg != null) {
             pagefactory.setBgBitmap(bg);
