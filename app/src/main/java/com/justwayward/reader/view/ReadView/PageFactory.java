@@ -177,16 +177,12 @@ public class PageFactory {
         return 0;
     }
 
-    public synchronized void onDraw(Canvas canvas) {
-        onDraw(canvas, false, false);
-    }
-
     /**
      * 绘制阅读页面
      *
      * @param canvas
      */
-    public synchronized void onDraw(Canvas canvas, boolean preDraw, boolean nextDraw) {
+    public synchronized void onDraw(Canvas canvas) {
         if (mLines.size() == 0) {
             curEndPos = curBeginPos;
             mLines = pageDown();
