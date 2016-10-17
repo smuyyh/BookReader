@@ -138,8 +138,8 @@ public class PageWidget extends View {
     /**
      * 计算拖拽点对应的拖拽脚
      *
-     * @param x
-     * @param y
+     * @param x 触摸点x坐标
+     * @param y 触摸点y坐标
      */
     public void calcCornerXY(float x, float y) {
         if (x <= mScreenWidth / 2)
@@ -155,34 +155,6 @@ public class PageWidget extends View {
             mIsRTandLB = true;
         else
             mIsRTandLB = false;
-    }
-
-    public boolean doTouchEvent(MotionEvent event) {
-
-        if (event.getAction() == MotionEvent.ACTION_MOVE) {
-            mTouch.x = event.getX();
-            mTouch.y = event.getY();
-            this.postInvalidate();
-        }
-
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            mTouch.x = event.getX();
-            mTouch.y = event.getY();
-            actiondownX = event.getX();
-            actiondownY = event.getY();
-        }
-        if (event.getAction() == MotionEvent.ACTION_UP) {
-            startAnimation(1000);
-            this.postInvalidate();
-        }
-        if (event.getAction() == MotionEvent.ACTION_MOVE
-                && event.getMetaState() == 1) {
-            mTouch.x = event.getX();
-            mTouch.y = event.getY();
-            startAnimation(1000);
-            this.postInvalidate();
-        }
-        return true;
     }
 
     /**
@@ -545,15 +517,12 @@ public class PageWidget extends View {
             mTouch.y = y;
             postInvalidate();
         }
-
     }
 
     /**
      * 开启翻页动画
-     *
-     * @param delayMillis
      */
-    private void startAnimation(int delayMillis) {
+    private void startAnimation() {
         int dx, dy;
         if (mCornerX > 0) {
             dx = -(int) (mScreenWidth + mTouch.x);
@@ -565,9 +534,12 @@ public class PageWidget extends View {
         } else {
             dy = (int) (1 - mTouch.y); // 防止mTouch.y最终变为0
         }
-        mScroller.startScroll((int) mTouch.x, (int) mTouch.y, dx, dy, delayMillis);
+        mScroller.startScroll((int) mTouch.x, (int) mTouch.y, dx, dy, 700);
     }
 
+    /**
+     * 停止翻页动画（滑到一半调用停止的话  翻页效果会卡住 可调用#restoreAnimation 还原效果）
+     */
     public void abortAnimation() {
         if (!mScroller.isFinished()) {
             mScroller.abortAnimation();
@@ -575,74 +547,113 @@ public class PageWidget extends View {
     }
 
     /**
-     * 是否能够拖动过去
-     *
-     * @return
+     * 还原翻页
      */
-    public boolean canDragOver() {
-        if (mTouchToCornerDis > mScreenWidth / 10)
-            return true;
-        return false;
-    }
-
-    /**
-     * 是否从左边翻向右边
-     *
-     * @return
-     */
-    public String DragToRight() {
-        if (actiondownX > mScreenWidth / 3.0 && actiondownX < (mScreenWidth * 2.0 / 3.0)) {
-            return "popview";
-        } else if (actiondownX < mScreenWidth / 3.0) {
-            return "right";
-        } else if (actiondownX > mScreenWidth * 2.0 / 3) {
-            return "left";
+    public void restoreAnimation() {
+        int dx, dy;
+        if (mCornerX > 0) {
+            dx = (int) (mScreenWidth - mTouch.x);
+        } else {
+            dx = (int) (-mTouch.x);
         }
-        return null;
+        if (mCornerY > 0) {
+            dy = (int) (mScreenHeight - mTouch.y);
+        } else {
+            dy = (int) (1 - mTouch.y);
+        }
+        mScroller.startScroll((int) mTouch.x, (int) mTouch.y, dx, dy, 300);
     }
 
-
-    public boolean right() {
-        if (mCornerX > -4)
-            return false;
-        return true;
-    }
+    private int dx, dy;
+    private long et = 0;
+    private boolean cancel = false;
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
-        if (e.getAction() == MotionEvent.ACTION_DOWN) {
-            int x = (int) e.getX();
-            int y = (int) e.getY();
-            if (x >= mScreenWidth / 3 && x <= mScreenWidth * 2 / 3
-                    && y >= mScreenHeight / 3 && y <= mScreenHeight * 2 / 3) {
-                listener.onCenterClick();
-                return false;//停止向下分发事件
-            }
-            abortAnimation();
-            calcCornerXY(e.getX(), e.getY());
-            pagefactory.onDraw(mCurrentPageCanvas);
-            if (x < mScreenWidth / 2) {// 从左翻
-                if (!pagefactory.prePage()) {
-                    ToastUtils.showSingleToast("没有上一页啦");
-                    return false;
+        switch (e.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                et = System.currentTimeMillis();
+                dx = (int) e.getX();
+                dy = (int) e.getY();
+                mTouch.x = dx;
+                mTouch.y = dy;
+                actiondownX = dx;
+                actiondownY = dy;
+                calcCornerXY(actiondownX, actiondownY);
+                if (actiondownX >= mScreenWidth / 3 && actiondownX <= mScreenWidth * 2 / 3
+                        && actiondownY >= mScreenHeight / 3 && actiondownY <= mScreenHeight * 2 / 3) {
+                    listener.onCenterClick();
+                    return false;//停止向下分发事件
                 }
-                pagefactory.onDraw(mNextPageCanvas);
-            } else if (x >= mScreenWidth / 2) {// 从右翻
-                if (!pagefactory.nextPage()) {
-                    ToastUtils.showSingleToast("没有下一页啦");
-                    return false;
+                pagefactory.onDraw(mCurrentPageCanvas);
+                if (actiondownX < mScreenWidth / 2) {// 从左翻
+                    if (!pagefactory.prePage()) {
+                        ToastUtils.showSingleToast("没有上一页啦");
+                        return false;
+                    }
+                    abortAnimation();
+                    pagefactory.onDraw(mNextPageCanvas);
+                } else if (actiondownX >= mScreenWidth / 2) {// 从右翻
+                    if (!pagefactory.nextPage()) {
+                        ToastUtils.showSingleToast("没有下一页啦");
+                        return false;
+                    }
+                    abortAnimation();
+                    pagefactory.onDraw(mNextPageCanvas);
                 }
-                pagefactory.onDraw(mNextPageCanvas);
-            }
-            listener.onFlip();
-            setBitmaps(mCurPageBitmap, mNextPageBitmap);
+                listener.onFlip();
+                setBitmaps(mCurPageBitmap, mNextPageBitmap);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                int mx = (int) e.getX();
+                int my = (int) e.getY();
+                if ((actiondownX < mScreenWidth / 2 && mx < mTouch.x) || (actiondownX > mScreenWidth / 2 && mx > mTouch.x)) {
+                    cancel = true;
+                } else {
+                    cancel = false;
+                }
+                mTouch.x = mx;
+                mTouch.y = my;
+                this.postInvalidate();
+                break;
+            case MotionEvent.ACTION_UP:
+
+                long t = System.currentTimeMillis();
+                int ux = (int) e.getX();
+                int uy = (int) e.getY();
+
+                if ((Math.abs(ux - dx) < 10) && (Math.abs(uy - dy) < 10)) {
+                    if ((t - et < 1000)) { // 单击
+                        startAnimation();
+                    } else { // 长按
+                        pagefactory.cancelPage();
+                        restoreAnimation();
+                    }
+                    postInvalidate();
+                    return true;
+                }
+                if (cancel) {
+                    pagefactory.cancelPage();
+                    restoreAnimation();
+                    postInvalidate();
+                } else {
+                    startAnimation();
+                    postInvalidate();
+                }
+                cancel = false;
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                cancel = false;
+                break;
+            default:
+                break;
         }
-        boolean ret = doTouchEvent(e);
-        return ret;
+        return true;
     }
 
     public void jumpToChapter(int chapter) {
         abortAnimation();
+        restoreAnimation();
         pagefactory.openBook(chapter, new int[]{0, 0});
         pagefactory.onDraw(mCurrentPageCanvas);
         pagefactory.onDraw(mNextPageCanvas);
@@ -684,8 +695,8 @@ public class PageWidget extends View {
         }
     }
 
-    public synchronized void setTextColor(int textColor,int titleColor) {
-        pagefactory.setTextColor(textColor,titleColor);
+    public synchronized void setTextColor(int textColor, int titleColor) {
+        pagefactory.setTextColor(textColor, titleColor);
         if (isPrepared) {
             abortAnimation();
             pagefactory.onDraw(mCurrentPageCanvas);
