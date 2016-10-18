@@ -26,6 +26,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 
@@ -45,7 +46,6 @@ public class ScanLocalBookActivity extends BaseActivity implements RecyclerArray
     EasyRecyclerView mRecyclerView;
 
     private RecommendAdapter mAdapter;
-    private ArrayList<Recommend.RecommendBooks> list;
 
     @Override
     public int getLayoutId() {
@@ -65,7 +65,6 @@ public class ScanLocalBookActivity extends BaseActivity implements RecyclerArray
 
     @Override
     public void initDatas() {
-        list = new ArrayList<>();
     }
 
     @Override
@@ -97,6 +96,7 @@ public class ScanLocalBookActivity extends BaseActivity implements RecyclerArray
                 int idindex = cursor.getColumnIndex(MediaStore.Files.FileColumns._ID);
                 int dataindex = cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA);
                 int sizeindex = cursor.getColumnIndex(MediaStore.Files.FileColumns.SIZE);
+                List<Recommend.RecommendBooks> list = new ArrayList<>();
                 do {
                     String path = cursor.getString(dataindex);
                     int dot = path.lastIndexOf("/");
@@ -111,9 +111,10 @@ public class ScanLocalBookActivity extends BaseActivity implements RecyclerArray
                     books.isFromSD = true;
                     books.lastChapter = path;
 
-                    mAdapter.add(books);
-
+                    list.add(books);
                 } while (cursor.moveToNext());
+
+                mAdapter.addAll(list);
             }
         }
         cursor.close();
