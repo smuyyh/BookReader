@@ -58,6 +58,7 @@ import com.justwayward.reader.utils.ScreenUtils;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
 import com.justwayward.reader.utils.TTSPlayerUtils;
 import com.justwayward.reader.utils.ToastUtils;
+import com.justwayward.reader.view.readview.BaseReadView;
 import com.justwayward.reader.view.readview.OnReadStateChangeListener;
 import com.justwayward.reader.view.readview.PageWidget;
 import com.sinovoice.hcicloudsdk.android.tts.player.TTSPlayer;
@@ -163,7 +164,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     private TTSPlayer mTtsPlayer;
     private TtsConfig ttsConfig;
 
-    private PageWidget mPageWidget;
+    private BaseReadView mPageWidget;
     private int curTheme = -1;
     private List<ReadTheme> themes;
     private ReadThemeAdapter gvAdapter;

@@ -24,7 +24,6 @@ import butterknife.Bind;
 
 public class TopRankActivity extends BaseActivity implements TopRankContract.View {
 
-
     @Bind(R.id.elvFeMale)
     ExpandableListView elvFeMale;
     @Bind(R.id.elvMale)
