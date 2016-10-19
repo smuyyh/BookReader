@@ -90,6 +90,7 @@ public class PageFactory {
     private int currentPage = 1;
 
     private OnReadStateChangeListener listener;
+    private String charset = "UTF-8";
 
     public PageFactory(Context context, String bookId, List<BookToc.mixToc.Chapters> chaptersList) {
         this(context, ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight(),
@@ -132,7 +133,10 @@ public class PageFactory {
     }
 
     public File getBookFile(int chapter) {
-        return FileUtils.getChapterFile(bookId, chapter);
+        File file = FileUtils.getChapterFile(bookId, chapter);
+        charset = FileUtils.getCharset(file.getAbsolutePath());
+        LogUtils.i("charset=" + charset);
+        return file;
     }
 
     public void openBook() {
@@ -242,7 +246,7 @@ public class PageFactory {
 
             curBeginPos -= parabuffer.length; // 2.变换起始位置指针
             try {
-                strParagraph = new String(parabuffer, "UTF-8");
+                strParagraph = new String(parabuffer, charset);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
@@ -258,7 +262,7 @@ public class PageFactory {
 
             while (lines.size() > mPageLineCount) { // 4.如果段落添加完，但是超出一页，则超出部分需删减
                 try {
-                    curBeginPos += lines.get(0).getBytes("UTF-8").length; // 5.删减行数同时起始位置指针也要跟着偏移
+                    curBeginPos += lines.get(0).getBytes(charset).length; // 5.删减行数同时起始位置指针也要跟着偏移
                     lines.remove(0);
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
@@ -284,7 +288,7 @@ public class PageFactory {
             byte[] parabuffer = readParagraphForward(curEndPos);
             curEndPos += parabuffer.length;
             try {
-                strParagraph = new String(parabuffer, "UTF-8");
+                strParagraph = new String(parabuffer, charset);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
@@ -302,7 +306,7 @@ public class PageFactory {
             lines.set(lines.size() - 1, lines.get(lines.size() - 1) + "@");
             if (strParagraph.length() != 0) {
                 try {
-                    curEndPos -= (strParagraph).getBytes("UTF-8").length;
+                    curEndPos -= (strParagraph).getBytes(charset).length;
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
@@ -330,7 +334,7 @@ public class PageFactory {
                 byte[] parabuffer = readParagraphForward(curEndPos);
                 curEndPos += parabuffer.length;
                 try {
-                    strParagraph = new String(parabuffer, "UTF-8");
+                    strParagraph = new String(parabuffer, charset);
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
@@ -349,7 +353,7 @@ public class PageFactory {
 
                 if (strParagraph.length() != 0) {
                     try {
-                        curEndPos -= (strParagraph).getBytes("UTF-8").length;
+                        curEndPos -= (strParagraph).getBytes(charset).length;
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
