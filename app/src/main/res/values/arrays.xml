@@ -49,8 +49,13 @@
         <item>删除</item>
     </string-array>
 
-    <string-array name="setting_dialog_choice">
+    <string-array name="setting_dialog_sort_choice">
         <item>按更新时间</item>
         <item>按最近阅读</item>
+    </string-array>
+
+    <string-array name="setting_dialog_style_choice">
+        <item>模拟翻书翻页效果</item>
+        <item>滑动覆盖翻页效果</item>
     </string-array>
 </resources>

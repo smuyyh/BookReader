@@ -3,6 +3,7 @@ package com.justwayward.reader.view.readview;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.PointF;
 import android.view.View;
 import android.widget.Scroller;
 
@@ -11,6 +12,7 @@ import com.justwayward.reader.manager.SettingManager;
 import com.justwayward.reader.manager.ThemeManager;
 import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.ScreenUtils;
+import com.justwayward.reader.utils.ToastUtils;
 
 import java.util.List;
 
@@ -22,6 +24,8 @@ public abstract class BaseReadView extends View {
 
     protected int mScreenWidth;
     protected int mScreenHeight;
+
+    protected PointF mTouch = new PointF();
 
     protected Bitmap mCurPageBitmap, mNextPageBitmap;
     protected Canvas mCurrentPageCanvas, mNextPageCanvas;
@@ -53,7 +57,7 @@ public abstract class BaseReadView extends View {
         pagefactory.setOnReadStateChangeListener(listener);
     }
 
-    public synchronized void init(int theme){
+    public synchronized void init(int theme) {
         if (!isPrepared) {
             try {
                 pagefactory.setBgBitmap(ThemeManager.getThemeDrawable(theme));
@@ -73,19 +77,90 @@ public abstract class BaseReadView extends View {
         }
     }
 
-    public abstract void jumpToChapter(int chapter);
+    @Override
+    protected void onDraw(Canvas canvas) {
+        calcPoints();
+        drawCurrentPageArea(canvas);
+        drawNextPageAreaAndShadow(canvas);
+        drawCurrentPageShadow(canvas);
+        drawCurrentBackArea(canvas);
+    }
 
-    public abstract void nextPage();
+    protected abstract void drawNextPageAreaAndShadow(Canvas canvas);
 
-    public abstract void prePage();
+    protected abstract void drawCurrentPageShadow(Canvas canvas);
 
-    public abstract void setFontSize(final int fontSizePx);
+    protected abstract void drawCurrentBackArea(Canvas canvas);
 
-    public abstract void setTextColor(int textColor, int titleColor);
+    protected abstract void drawCurrentPageArea(Canvas canvas);
+
+    protected abstract void calcPoints();
 
     public abstract void setTheme(int theme);
 
-    public abstract void setBattery(int battery);
+    public void jumpToChapter(int chapter) {
+        mTouch.x = 0.1f;
+        mTouch.y = 0.1f;
+        pagefactory.openBook(chapter, new int[]{0, 0});
+        pagefactory.onDraw(mCurrentPageCanvas);
+        pagefactory.onDraw(mNextPageCanvas);
+        postInvalidate();
+    }
 
-    public abstract void setTime(String time);
+    public void nextPage() {
+        if (!pagefactory.nextPage()) {
+            ToastUtils.showSingleToast("没有下一页啦");
+            return;
+        }
+        if (isPrepared) {
+            pagefactory.onDraw(mCurrentPageCanvas);
+            pagefactory.onDraw(mNextPageCanvas);
+            postInvalidate();
+        }
+    }
+
+    public void prePage() {
+        if (!pagefactory.prePage()) {
+            ToastUtils.showSingleToast("没有上一页啦");
+            return;
+        }
+        if (isPrepared) {
+            pagefactory.onDraw(mCurrentPageCanvas);
+            pagefactory.onDraw(mNextPageCanvas);
+            postInvalidate();
+        }
+    }
+
+    public synchronized void setFontSize(final int fontSizePx) {
+        mTouch.x = 0.1f;
+        mTouch.y = 0.1f;
+        pagefactory.setTextFont(fontSizePx);
+        if (isPrepared) {
+            pagefactory.onDraw(mCurrentPageCanvas);
+            pagefactory.onDraw(mNextPageCanvas);
+            SettingManager.getInstance().saveFontSize(bookId, fontSizePx);
+            postInvalidate();
+        }
+    }
+
+    public synchronized void setTextColor(int textColor, int titleColor) {
+        pagefactory.setTextColor(textColor, titleColor);
+        if (isPrepared) {
+            pagefactory.onDraw(mCurrentPageCanvas);
+            pagefactory.onDraw(mNextPageCanvas);
+            postInvalidate();
+        }
+    }
+
+    public void setBattery(int battery) {
+        pagefactory.setBattery(battery);
+        if (isPrepared) {
+            pagefactory.onDraw(mCurrentPageCanvas);
+            postInvalidate();
+        }
+    }
+
+    public void setTime(String time) {
+        pagefactory.setTime(time);
+    }
 }

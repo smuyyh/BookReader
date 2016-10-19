@@ -27,7 +27,6 @@ public class PageWidget extends BaseReadView {
     private Path mPath0;
     private Path mPath1;
 
-    PointF mTouch = new PointF(); // 拖拽点
     PointF mBezierStart1 = new PointF(); // 贝塞尔曲线起始点
     PointF mBezierControl1 = new PointF(); // 贝塞尔曲线控制点
     PointF mBeziervertex1 = new PointF(); // 贝塞尔曲线顶点
@@ -124,7 +123,8 @@ public class PageWidget extends BaseReadView {
         return CrossP;
     }
 
-    private void calcPoints() {
+    @Override
+    protected void calcPoints() {
         mMiddleX = (mTouch.x + mCornerX) / 2;
         mMiddleY = (mTouch.y + mCornerY) / 2;
         mBezierControl1.x = mMiddleX - (mCornerY - mMiddleY) * (mCornerY - mMiddleY) / (mCornerX - mMiddleX);
@@ -194,7 +194,8 @@ public class PageWidget extends BaseReadView {
         mBeziervertex2.y = (2 * mBezierControl2.y + mBezierStart2.y + mBezierEnd2.y) / 4;
     }
 
-    private void drawCurrentPageArea(Canvas canvas, Bitmap bitmap, Path path) {
+    @Override
+    protected void drawCurrentPageArea(Canvas canvas) {
         mPath0.reset();
         mPath0.moveTo(mBezierStart1.x, mBezierStart1.y);
         mPath0.quadTo(mBezierControl1.x, mBezierControl1.y, mBezierEnd1.x, mBezierEnd1.y);
@@ -205,8 +206,8 @@ public class PageWidget extends BaseReadView {
         mPath0.close();
 
         canvas.save();
-        canvas.clipPath(path, Region.Op.XOR);
-        canvas.drawBitmap(bitmap, 0, 0, null);
+        canvas.clipPath(mPath0, Region.Op.XOR);
+        canvas.drawBitmap(mCurPageBitmap, 0, 0, null);
         try {
             canvas.restore();
         } catch (Exception e) {
@@ -214,7 +215,8 @@ public class PageWidget extends BaseReadView {
         }
     }
 
-    private void drawNextPageAreaAndShadow(Canvas canvas, Bitmap bitmap) {
+    @Override
+    protected void drawNextPageAreaAndShadow(Canvas canvas) {
         mPath1.reset();
         mPath1.moveTo(mBezierStart1.x, mBezierStart1.y);
         mPath1.lineTo(mBeziervertex1.x, mBeziervertex1.y);
@@ -244,7 +246,7 @@ public class PageWidget extends BaseReadView {
         }
 
 
-        canvas.drawBitmap(bitmap, 0, 0, null);
+        canvas.drawBitmap(mNextPageBitmap, 0, 0, null);
         canvas.rotate(mDegrees, mBezierStart1.x, mBezierStart1.y);
         mBackShadowDrawable.setBounds(leftx, (int) mBezierStart1.y,
                 rightx, (int) (mMaxLength + mBezierStart1.y));//左上及右下角的xy坐标值,构成一个矩形
@@ -255,15 +257,6 @@ public class PageWidget extends BaseReadView {
     public void setBitmaps(Bitmap bm1, Bitmap bm2) {
         mCurPageBitmap = bm1;
         mNextPageBitmap = bm2;
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        calcPoints();
-        drawCurrentPageArea(canvas, mCurPageBitmap, mPath0);
-        drawNextPageAreaAndShadow(canvas, mNextPageBitmap);
-        drawCurrentPageShadow(canvas);
-        drawCurrentBackArea(canvas, mCurPageBitmap);
     }
 
     /**
@@ -396,13 +389,8 @@ public class PageWidget extends BaseReadView {
         canvas.restore();
     }
 
-    /**
-     * 绘制翻起页背面
-     *
-     * @param canvas
-     * @param bitmap
-     */
-    private void drawCurrentBackArea(Canvas canvas, Bitmap bitmap) {
+    @Override
+    protected void drawCurrentBackArea(Canvas canvas) {
         int i = (int) (mBezierStart1.x + mBezierControl1.x) / 2;
         float f1 = Math.abs(i - mBezierControl1.x);
         int i1 = (int) (mBezierStart2.y + mBezierControl2.y) / 2;
@@ -448,7 +436,7 @@ public class PageWidget extends BaseReadView {
         mMatrix.setValues(mMatrixArray);
         mMatrix.preTranslate(-mBezierControl1.x, -mBezierControl1.y);
         mMatrix.postTranslate(mBezierControl1.x, mBezierControl1.y);
-        canvas.drawBitmap(bitmap, mMatrix, mPaint);
+        canvas.drawBitmap(mCurPageBitmap, mMatrix, mPaint);
         // canvas.drawBitmap(bitmap, mMatrix, null);
         mPaint.setColorFilter(null);
         canvas.rotate(mDegrees, mBezierStart1.x, mBezierStart1.y);
@@ -603,62 +591,6 @@ public class PageWidget extends BaseReadView {
     }
 
     @Override
-    public void jumpToChapter(int chapter) {
-        abortAnimation();
-        pagefactory.openBook(chapter, new int[]{0, 0});
-        pagefactory.onDraw(mCurrentPageCanvas);
-        pagefactory.onDraw(mNextPageCanvas);
-        postInvalidate();
-    }
-
-    @Override
-    public void nextPage() {
-        if (!pagefactory.nextPage()) {
-            ToastUtils.showSingleToast("没有下一页啦");
-            return;
-        }
-        if (isPrepared) {
-            pagefactory.onDraw(mCurrentPageCanvas);
-            pagefactory.onDraw(mNextPageCanvas);
-            postInvalidate();
-        }
-    }
-
-    @Override
-    public void prePage() {
-        if (!pagefactory.prePage()) {
-            ToastUtils.showSingleToast("没有上一页啦");
-            return;
-        }
-        if (isPrepared) {
-            pagefactory.onDraw(mCurrentPageCanvas);
-            pagefactory.onDraw(mNextPageCanvas);
-            postInvalidate();
-        }
-    }
-
-    @Override
-    public synchronized void setFontSize(final int fontSizePx) {
-        pagefactory.setTextFont(fontSizePx);
-        if (isPrepared) {
-            pagefactory.onDraw(mCurrentPageCanvas);
-            pagefactory.onDraw(mNextPageCanvas);
-            SettingManager.getInstance().saveFontSize(bookId, fontSizePx);
-            postInvalidate();
-        }
-    }
-
-    @Override
-    public synchronized void setTextColor(int textColor, int titleColor) {
-        pagefactory.setTextColor(textColor, titleColor);
-        if (isPrepared) {
-            pagefactory.onDraw(mCurrentPageCanvas);
-            pagefactory.onDraw(mNextPageCanvas);
-            postInvalidate();
-        }
-    }
-
-    @Override
     public synchronized void setTheme(int theme) {
         mTouch.x = 0.1f;
         mTouch.y = 0.1f;
@@ -675,19 +607,5 @@ public class PageWidget extends BaseReadView {
         if (theme < 5) {
             SettingManager.getInstance().saveReadTheme(theme);
         }
-    }
-
-    @Override
-    public void setBattery(int battery) {
-        pagefactory.setBattery(battery);
-        if (isPrepared) {
-            pagefactory.onDraw(mCurrentPageCanvas);
-            postInvalidate();
-        }
-    }
-
-    @Override
-    public void setTime(String time) {
-        pagefactory.setTime(time);
     }
 }

@@ -60,6 +60,7 @@ import com.justwayward.reader.utils.TTSPlayerUtils;
 import com.justwayward.reader.utils.ToastUtils;
 import com.justwayward.reader.view.readview.BaseReadView;
 import com.justwayward.reader.view.readview.OnReadStateChangeListener;
+import com.justwayward.reader.view.readview.OverlappedWidget;
 import com.justwayward.reader.view.readview.PageWidget;
 import com.sinovoice.hcicloudsdk.android.tts.player.TTSPlayer;
 import com.sinovoice.hcicloudsdk.common.tts.TtsConfig;
@@ -351,7 +352,11 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     }
 
     private void initPagerWidget() {
-        mPageWidget = new PageWidget(this, recommendBooks._id, mChapterList, new ReadListener());// 页面
+        if (SharedPreferencesUtil.getInstance().getInt(Constant.FLIP_STYLE, 1) == 0) {
+            mPageWidget = new PageWidget(this, recommendBooks._id, mChapterList, new ReadListener());
+        } else {
+            mPageWidget = new OverlappedWidget(this, recommendBooks._id, mChapterList, new ReadListener());
+        }
         registerReceiver(receiver, intentFilter);
         if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)) {
             mPageWidget.setTextColor(ContextCompat.getColor(this, R.color.chapter_content_night),

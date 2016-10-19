@@ -31,6 +31,7 @@ public class Constant {
     public static final String ISNIGHT = "isNight";
 
     public static final String ISBYUPDATESORT = "isByUpdateSort";
+    public static final String FLIP_STYLE = "flipStyle";
 
     public static final int[] tagColors = new int[]{
             Color.parseColor("#90C5F0"),

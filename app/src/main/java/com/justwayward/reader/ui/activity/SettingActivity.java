@@ -35,10 +35,13 @@ public class SettingActivity extends BaseActivity {
 
     @Bind(R.id.mTvSort)
     TextView mTvSort;
+    @Bind(R.id.tvFlipStyle)
+    TextView mTvFlipStyle;
     @Bind(R.id.tvCacheSize)
     TextView mTvCacheSize;
     @Bind(R.id.noneCoverCompat)
     SwitchCompat noneCoverCompat;
+
 
     @Override
     public int getLayoutId() {
@@ -74,8 +77,10 @@ public class SettingActivity extends BaseActivity {
 
             }
         }).start();
-        mTvSort.setText(getResources().getStringArray(R.array.setting_dialog_choice)[
+        mTvSort.setText(getResources().getStringArray(R.array.setting_dialog_sort_choice)[
                 SharedPreferencesUtil.getInstance().getBoolean(Constant.ISBYUPDATESORT, true) ? 0 : 1]);
+        mTvFlipStyle.setText(getResources().getStringArray(R.array.setting_dialog_style_choice)[
+                SharedPreferencesUtil.getInstance().getInt(Constant.FLIP_STYLE, 1)]);
     }
 
 
@@ -94,14 +99,31 @@ public class SettingActivity extends BaseActivity {
     public void onClickBookShelfSort() {
         new AlertDialog.Builder(mContext)
                 .setTitle("书架排序方式")
-                .setSingleChoiceItems(getResources().getStringArray(R.array.setting_dialog_choice),
+                .setSingleChoiceItems(getResources().getStringArray(R.array.setting_dialog_sort_choice),
                         SharedPreferencesUtil.getInstance().getBoolean(Constant.ISBYUPDATESORT, true) ? 0 : 1,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mTvSort.setText(getResources().getStringArray(R.array.setting_dialog_choice)[which]);
+                                mTvSort.setText(getResources().getStringArray(R.array.setting_dialog_sort_choice)[which]);
                                 SharedPreferencesUtil.getInstance().putBoolean(Constant.ISBYUPDATESORT, which == 0);
                                 EventBus.getDefault().post(new RefreshCollectionListEvent());
+                                dialog.dismiss();
+                            }
+                        })
+                .create().show();
+    }
+
+    @OnClick(R.id.rlFlipStyle)
+    public void onClickFlipStyle() {
+        new AlertDialog.Builder(mContext)
+                .setTitle("阅读页翻页效果")
+                .setSingleChoiceItems(getResources().getStringArray(R.array.setting_dialog_style_choice),
+                        SharedPreferencesUtil.getInstance().getInt(Constant.FLIP_STYLE, 1),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mTvFlipStyle.setText(getResources().getStringArray(R.array.setting_dialog_style_choice)[which]);
+                                SharedPreferencesUtil.getInstance().putInt(Constant.FLIP_STYLE, which);
                                 dialog.dismiss();
                             }
                         })
