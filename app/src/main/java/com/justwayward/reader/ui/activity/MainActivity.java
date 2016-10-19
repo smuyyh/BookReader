@@ -295,6 +295,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        DownloadBookService.cancel();
         stopService(new Intent(this, DownloadBookService.class));
     }
 

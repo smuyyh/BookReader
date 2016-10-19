@@ -8,8 +8,8 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.justwayward.reader.R;
+import com.justwayward.reader.ReaderApplication;
 import com.justwayward.reader.api.BookApi;
-import com.justwayward.reader.api.support.HeaderInterceptor;
 import com.justwayward.reader.api.support.LoggingInterceptor;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.ChapterRead;
@@ -28,9 +28,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import okhttp3.OkHttpClient;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -47,20 +45,15 @@ public class DownloadBookService extends Service {
 
     public boolean isBusy = false; // 当前是否有下载任务在进行
 
+    public static boolean canceled = false;
+
     @Override
     public void onCreate() {
         super.onCreate();
         EventBus.getDefault().register(this);
         LoggingInterceptor logging = new LoggingInterceptor(new BookApiModule.MyLog());
         logging.setLevel(LoggingInterceptor.Level.BODY);
-
-        OkHttpClient.Builder builder = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS)
-                .connectTimeout(20 * 1000, TimeUnit.MILLISECONDS)
-                .readTimeout(20 * 1000, TimeUnit.MILLISECONDS)
-                .retryOnConnectionFailure(true) // 失败重发
-                .addInterceptor(new HeaderInterceptor())
-                .addInterceptor(logging);
-        bookApi = BookApi.getInstance(builder.build());
+        bookApi = ReaderApplication.getsInstance().getAppComponent().getReaderApi();
     }
 
     @Nullable
@@ -138,6 +131,9 @@ public class DownloadBookService extends Service {
                 }
                 int failureCount = 0;
                 for (int i = start; i <= end && i <= list.size(); i++) {
+                    if (canceled) {
+                        break;
+                    }
                     // 网络异常，取消下载
                     if (!NetworkUtils.isAvailable(AppUtils.getAppContext())) {
                         downloadQueue.isCancel = true;
@@ -150,12 +146,14 @@ public class DownloadBookService extends Service {
                         if (CacheManager.getInstance().getChapterFile(bookId, i) == null) {
                             BookToc.mixToc.Chapters chapters = list.get(i - 1);
                             String url = chapters.link;
-                            int ret = download(url, bookId, i);
+                            int ret = download(url, bookId, chapters.title, i, list.size());
                             if (ret != 1) {
                                 failureCount++;
                             }
                         } else {
-                            post(new DownloadProgress(bookId, i, true));
+                            post(new DownloadProgress(bookId, String.format(
+                                    getString(R.string.book_read_alreday_download), list.get(i - 1).title, i, list.size()),
+                                    true));
                         }
                     }
                 }
@@ -180,15 +178,20 @@ public class DownloadBookService extends Service {
                 downloadQueues.remove(downloadQueue);
                 // 释放 空闲状态
                 isBusy = false;
-                // post一个空事件，通知继续执行下一个任务
-                post(new DownloadQueue());
+                if (!canceled) {
+                    // post一个空事件，通知继续执行下一个任务
+                    post(new DownloadQueue());
+                } else {
+                    downloadQueues.clear();
+                }
+                canceled = false;
                 LogUtils.i(bookId + "缓存完成，失败" + failureCount + "章");
             }
         };
         downloadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    private int download(String url, final String bookId, final int chapter) {
+    private int download(String url, final String bookId, final String title, final int chapter, final int chapterSize) {
 
         final int[] result = {-1};
 
@@ -198,7 +201,9 @@ public class DownloadBookService extends Service {
                     @Override
                     public void onNext(ChapterRead data) {
                         if (data.chapter != null) {
-                            post(new DownloadProgress(bookId, chapter, false));
+                            post(new DownloadProgress(bookId, String.format(
+                                    getString(R.string.book_read_download_progress), title, chapter, chapterSize),
+                                    true));
                             CacheManager.getInstance().saveChapterFile(bookId, chapter, data.chapter);
                             result[0] = 1;
                         } else {
@@ -225,5 +230,9 @@ public class DownloadBookService extends Service {
             }
         }
         return result[0];
+    }
+
+    public static void cancel() {
+        canceled = true;
     }
 }

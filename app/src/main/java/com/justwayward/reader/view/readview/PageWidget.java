@@ -608,4 +608,12 @@ public class PageWidget extends BaseReadView {
             SettingManager.getInstance().saveReadTheme(theme);
         }
     }
+
+    @Override
+    public void jumpToChapter(int chapter) {
+        mTouch.x = 0.1f;
+        mTouch.y = 0.1f;
+        calcCornerXY(mTouch.x, mTouch.y);
+        super.jumpToChapter(chapter);
+    }
 }

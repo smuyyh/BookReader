@@ -570,11 +570,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             if (isVisible(mLlBookReadBottom)) { // 如果工具栏显示，则进度条也显示
                 visible(mTvDownloadProgress);
                 // 如果之前缓存过，就给提示
-                mTvDownloadProgress.setText(String.format(progress.isAlreadyDownload ?
-                                getString(R.string.book_read_alreday_download) :
-                                getString(R.string.book_read_download_progress),
-                        mChapterList.get(progress.progress - 1).title
-                        , progress.progress, mChapterList.size()));
+                mTvDownloadProgress.setText(progress.message);
             } else {
                 gone(mTvDownloadProgress);
             }

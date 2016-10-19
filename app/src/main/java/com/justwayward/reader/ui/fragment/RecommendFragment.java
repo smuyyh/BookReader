@@ -124,11 +124,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void showDownProgress(DownloadProgress progress) {
-        mRecyclerView.setTipViewText(String.format(progress.isAlreadyDownload ?
-                        getString(R.string.book_read_alreday_download) :
-                        getString(R.string.book_read_download_progress),
-                chaptersList.get(progress.progress - 1).title
-                , progress.progress, chaptersList.size()));
+        mRecyclerView.setTipViewText(progress.message);
     }
 
     @Override
@@ -140,9 +136,8 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
 
     @Override
     public boolean onItemLongClick(int position) {
-        //没有收藏时，屏蔽长按事件，因为置顶和删除等功能不好实现
         //批量管理时，屏蔽长按事件
-        if (!isHasCollections || isVisible(llBatchManagement)) return false;
+        if (isVisible(llBatchManagement)) return false;
         showLongClickDialog(position);
         return false;
     }

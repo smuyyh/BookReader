@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.justwayward.reader.base.Constant;
+import com.justwayward.reader.base.CrashHandler;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerAppComponent;
 import com.justwayward.reader.module.AppModule;
@@ -32,6 +33,7 @@ public class ReaderApplication extends Application {
         this.sInstance = this;
         initCompoent();
         AppUtils.init(this);
+        CrashHandler.getInstance().init(this);
         initPrefs();
         initNightMode();
         //initHciCloud();
@@ -77,7 +79,7 @@ public class ReaderApplication extends Application {
         initparam.addParam(InitParam.AuthParam.PARAM_KEY_CLOUD_URL, "test.api.hcicloud.com:8888");
         initparam.addParam(InitParam.AuthParam.PARAM_KEY_DEVELOPER_KEY, "0a5e69f8fb1c019b2d87a17acf200889");
         initparam.addParam(InitParam.AuthParam.PARAM_KEY_APP_KEY, "0d5d5466");
-        String logDirPath = FileUtils.createRootPath(this)+"/hcicloud";
+        String logDirPath = FileUtils.createRootPath(this) + "/hcicloud";
         FileUtils.createDir(logDirPath);
         initparam.addParam(InitParam.LogParam.PARAM_KEY_LOG_FILE_PATH, logDirPath);
         initparam.addParam(InitParam.LogParam.PARAM_KEY_LOG_FILE_COUNT, "5");
@@ -85,7 +87,7 @@ public class ReaderApplication extends Application {
         initparam.addParam(InitParam.LogParam.PARAM_KEY_LOG_LEVEL, "5");
         int errCode = HciCloudSys.hciInit(initparam.getStringConfig(), this);
         if (errCode != HciErrorCode.HCI_ERR_NONE) {
-            LogUtils.e("HciCloud初始化失败"+errCode);
+            LogUtils.e("HciCloud初始化失败" + errCode);
             return;
         }
         LogUtils.e("HciCloud初始化成功");

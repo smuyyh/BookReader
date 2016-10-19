@@ -38,7 +38,7 @@ public class OverlappedWidget extends BaseReadView {
 
         mPath0 = new Path();
 
-        int[] mBackShadowColors = new int[]{0xff333333, 0x333333};
+        int[] mBackShadowColors = new int[]{0xaa666666, 0x666666};
         mBackShadowDrawableRL = new GradientDrawable(GradientDrawable.Orientation.RIGHT_LEFT, mBackShadowColors);
         mBackShadowDrawableRL.setGradientType(GradientDrawable.LINEAR_GRADIENT);
 
@@ -59,10 +59,10 @@ public class OverlappedWidget extends BaseReadView {
         canvas.save();
         if (actiondownX > mScreenWidth >> 1) {
             canvas.clipPath(mPath0, Region.Op.XOR);
-            canvas.drawBitmap(mCurPageBitmap, 0, 0, null);
+            canvas.drawBitmap(mCurPageBitmap, -(mScreenWidth - mTouch.x), 0, null);
         } else {
             canvas.clipPath(mPath0);
-            canvas.drawBitmap(mCurPageBitmap, 0, 0, null);
+            canvas.drawBitmap(mCurPageBitmap, mTouch.x, 0, null);
         }
         try {
             canvas.restore();
@@ -80,7 +80,7 @@ public class OverlappedWidget extends BaseReadView {
         } else {
             shadow = mBackShadowDrawableRL;
         }
-        shadow.setBounds((int) mTouch.x - 10, 0, (int) mTouch.x + 10, mScreenHeight);
+        shadow.setBounds((int) mTouch.x - 5, 0, (int) mTouch.x + 5, mScreenHeight);
         shadow.draw(canvas);
         try {
             canvas.restore();
@@ -128,9 +128,6 @@ public class OverlappedWidget extends BaseReadView {
         }
     }
 
-    /**
-     * 开启翻页动画
-     */
     private void startAnimation() {
         int dx;
         if (actiondownX > mScreenWidth / 2) {
@@ -141,18 +138,12 @@ public class OverlappedWidget extends BaseReadView {
         mScroller.startScroll((int) mTouch.x, (int) mTouch.y, dx, 0, 700);
     }
 
-    /**
-     * 停止翻页动画（滑到一半调用停止的话  翻页效果会卡住 可调用#restoreAnimation 还原效果）
-     */
     public void abortAnimation() {
         if (!mScroller.isFinished()) {
             mScroller.abortAnimation();
         }
     }
 
-    /**
-     * 还原翻页
-     */
     public void restoreAnimation() {
         int dx;
         if (actiondownX > mScreenWidth / 2) {
