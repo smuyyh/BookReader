@@ -21,6 +21,7 @@ import com.justwayward.reader.bean.support.DownloadMessage;
 import com.justwayward.reader.bean.support.DownloadProgress;
 import com.justwayward.reader.bean.support.DownloadQueue;
 import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
+import com.justwayward.reader.bean.support.UserSexChooseFinishedEvent;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerMainComponent;
 import com.justwayward.reader.manager.CollectionsManager;
@@ -53,7 +54,6 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
     @Bind(R.id.tvDelete)
     TextView tvDelete;
 
-    private boolean isHasCollections = false;
     private boolean isSelectAll = false;
 
     private List<BookToc.mixToc.Chapters> chaptersList = new ArrayList<>();
@@ -89,7 +89,6 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
                 });
             }
         });
-        onRefresh();
     }
 
     @Override
@@ -104,6 +103,11 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
     public void showRecommendList(List<Recommend.RecommendBooks> list) {
         mAdapter.clear();
         mAdapter.addAll(list);
+        //推荐列表默认加入收藏
+        for (Recommend.RecommendBooks bean : list) {
+            //TODO 此处可优化：批量加入收藏->加入前需先判断是否收藏过
+            CollectionsManager.getInstance().add(bean);
+        }
     }
 
     @Override
@@ -270,10 +274,6 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
                                 for (Recommend.RecommendBooks bean : removeList) {
                                     mAdapter.remove(bean);
                                 }
-                                if (mAdapter.getCount() == 0) {
-                                    //没有收藏时，刷新页面
-                                    onRefresh();
-                                }
                                 if (isVisible(llBatchManagement)) {
                                     //批量管理完成后，隐藏批量管理布局并刷新页面
                                     goneBatchManagementAndRefreshUI();
@@ -347,25 +347,25 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
         gone(llBatchManagement);
         List<Recommend.RecommendBooks> data = CollectionsManager.getInstance().getCollectionListBySort();
         if (data != null && !data.isEmpty()) {
-            //有收藏时，只显示收藏
-            isHasCollections = true;
             mAdapter.clear();
             mAdapter.addAll(data);
             //不加下面这句代码会导致，添加本地书籍的时候，部分书籍添加后直接崩溃，
             //报错：Scrapped or attached views may not be recycled. isScrap:false isAttached:tru
             mAdapter.notifyDataSetChanged();
-            mRecyclerView.setRefreshing(false);
-        } else {
-            //没有收藏时，显示推荐
-            isHasCollections = false;
-            mPresenter.getRecommendList();
         }
+        mRecyclerView.setRefreshing(false);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void RefreshCollectionList(RefreshCollectionListEvent event) {
         mRecyclerView.setRefreshing(true);
         onRefresh();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void UserSexChooseFinished(UserSexChooseFinishedEvent event) {
+        //首次进入APP，选择性别后，获取推荐列表
+        mPresenter.getRecommendList();
     }
 
     @Override

@@ -13,7 +13,7 @@ import android.widget.PopupWindow;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.Constant;
-import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
+import com.justwayward.reader.bean.support.UserSexChooseFinishedEvent;
 import com.justwayward.reader.manager.SettingManager;
 
 import org.greenrobot.eventbus.EventBus;
@@ -48,7 +48,7 @@ public class GenderPopupWindow extends PopupWindow {
             @Override
             public void onDismiss() {
                 lighton();
-                EventBus.getDefault().post(new RefreshCollectionListEvent());
+                EventBus.getDefault().post(new UserSexChooseFinishedEvent());
             }
         });
         mBtnMale = (Button) mContentView.findViewById(R.id.mBtnMale);
