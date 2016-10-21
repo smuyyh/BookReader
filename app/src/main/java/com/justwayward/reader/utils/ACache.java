@@ -339,6 +339,7 @@ public class ACache {
      */
     public void put(String key, byte[] value) {
         File file = mCache.newFile(key);
+        FileUtils.createFile(file);
         FileOutputStream out = null;
         try {
             out = new FileOutputStream(file);

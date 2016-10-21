@@ -97,5 +97,5 @@ public class BookDetail implements Serializable {
     public List<String> tags;
     public List<String> tocs;
     public List<String> categories;
-    public List<String> gender;
+    public Object gender; // MLGB, 偶尔是String，偶尔是Array
 }
