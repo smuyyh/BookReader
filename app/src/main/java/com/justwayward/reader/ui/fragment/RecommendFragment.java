@@ -89,6 +89,13 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
                 });
             }
         });
+        mRecyclerView.getEmptyView().findViewById(R.id.btnToAdd).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) activity).setCurrentItem(2);
+            }
+        });
+        onRefresh();
     }
 
     @Override
@@ -346,13 +353,13 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
         super.onRefresh();
         gone(llBatchManagement);
         List<Recommend.RecommendBooks> data = CollectionsManager.getInstance().getCollectionListBySort();
-        if (data != null && !data.isEmpty()) {
+//        if (data != null && !data.isEmpty()) {
             mAdapter.clear();
             mAdapter.addAll(data);
             //不加下面这句代码会导致，添加本地书籍的时候，部分书籍添加后直接崩溃，
             //报错：Scrapped or attached views may not be recycled. isScrap:false isAttached:tru
-            mAdapter.notifyDataSetChanged();
-        }
+//        }
+        mAdapter.notifyDataSetChanged();
         mRecyclerView.setRefreshing(false);
     }
 
