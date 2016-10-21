@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.justwayward.reader.ReaderApplication;
+import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.BookLists;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.ChapterRead;
@@ -167,17 +168,25 @@ public class CacheManager {
      *
      * @param clearReadPos 是否删除阅读记录
      */
-    public synchronized void clearCache(boolean clearReadPos) {
+    public synchronized void clearCache(boolean clearReadPos, boolean clearCollect) {
         try {
+            // 删除内存缓存
             String cacheDir = AppUtils.getAppContext().getCacheDir().getPath();
             FileUtils.deleteFileOrDirectory(new File(cacheDir));
             if (FileUtils.isSdCardAvailable()) {
-                String extCacheDir = AppUtils.getAppContext().getExternalCacheDir().getPath();
-                FileUtils.deleteFileOrDirectory(new File(extCacheDir));
+                // 删除SD书籍缓存
+                FileUtils.deleteFileOrDirectory(new File(Constant.BASE_PATH));
             }
+            // 删除阅读记录（SharePreference）
             if (clearReadPos) {
                 SharedPreferencesUtil.getInstance().removeAll();
             }
+            // 清空书架
+            if (clearCollect) {
+                CollectionsManager.getInstance().clear();
+            }
+            // 清除其他缓存
+            ACache.get(AppUtils.getAppContext()).clear();
         } catch (Exception e) {
             LogUtils.e(e.toString());
         }

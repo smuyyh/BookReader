@@ -24,7 +24,9 @@ public class Constant {
 
     public static final String API_BASE_URL = "http://api.zhuishushenqi.com";
 
-    public static String PATH_DATA = FileUtils.createRootPath(AppUtils.getAppContext()) + "/data";
+    public static String PATH_DATA = FileUtils.createRootPath(AppUtils.getAppContext()) + "/cache";
+
+    public static String PATH_COLLECT = FileUtils.createRootPath(AppUtils.getAppContext()) + "/collect";
 
     public static String BASE_PATH = FileUtils.createRootPath(AppUtils.getAppContext()) + "/book/";
 

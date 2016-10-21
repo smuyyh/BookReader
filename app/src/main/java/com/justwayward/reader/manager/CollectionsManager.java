@@ -2,7 +2,6 @@ package com.justwayward.reader.manager;
 
 import android.text.TextUtils;
 
-import com.justwayward.reader.ReaderApplication;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
@@ -15,6 +14,7 @@ import com.justwayward.reader.utils.SharedPreferencesUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -51,9 +51,12 @@ public class CollectionsManager {
      * @return
      */
     public List<Recommend.RecommendBooks> getCollectionList() {
-        List<Recommend.RecommendBooks> list = (ArrayList<Recommend.RecommendBooks>) ACache.get(
-                ReaderApplication.getsInstance()).getAsObject("collection");
+        List<Recommend.RecommendBooks> list = (ArrayList<Recommend.RecommendBooks>) ACache.get(new File(Constant.PATH_COLLECT)).getAsObject("collection");
         return list == null ? null : list;
+    }
+
+    public void putCollectionList(List<Recommend.RecommendBooks> list) {
+        ACache.get(new File(Constant.PATH_COLLECT)).put("collection", (Serializable) list);
     }
 
     /**
@@ -62,8 +65,7 @@ public class CollectionsManager {
      * @return
      */
     public List<Recommend.RecommendBooks> getCollectionListBySort() {
-        List<Recommend.RecommendBooks> list = (ArrayList<Recommend.RecommendBooks>) ACache.get(
-                ReaderApplication.getsInstance()).getAsObject("collection");
+        List<Recommend.RecommendBooks> list = getCollectionList();
         if (list == null) {
             return null;
         } else {
@@ -89,7 +91,7 @@ public class CollectionsManager {
         for (Recommend.RecommendBooks bean : list) {
             if (TextUtils.equals(bean._id, bookId)) {
                 list.remove(bean);
-                ACache.get(ReaderApplication.getsInstance()).put("collection", (Serializable) list);
+                putCollectionList(list);
                 break;
             }
         }
@@ -160,7 +162,7 @@ public class CollectionsManager {
             }
         }
         list.removeAll(removeList);
-        ACache.get(ReaderApplication.getsInstance()).put("collection", (Serializable) list);
+        putCollectionList(list);
     }
 
     /**
@@ -177,7 +179,7 @@ public class CollectionsManager {
             list = new ArrayList<>();
         }
         list.add(bean);
-        ACache.get(ReaderApplication.getsInstance()).put("collection", (Serializable) list);
+        putCollectionList(list);
         EventBus.getDefault().post(new RefreshCollectionListEvent());
         return true;
     }
@@ -197,7 +199,7 @@ public class CollectionsManager {
                 bean.isTop = isTop;
                 list.remove(bean);
                 list.add(0, bean);
-                ACache.get(ReaderApplication.getsInstance()).put("collection", (Serializable) list);
+                putCollectionList(list);
                 break;
             }
         }
@@ -220,7 +222,7 @@ public class CollectionsManager {
                 bean.updated = latelyUpdate;
                 list.remove(bean);
                 list.add(bean);
-                ACache.get(ReaderApplication.getsInstance()).put("collection", (Serializable) list);
+                putCollectionList(list);
                 break;
             }
         }
@@ -241,9 +243,17 @@ public class CollectionsManager {
                 bean.recentReadingTime = FormatUtils.getCurrentTimeString(FormatUtils.FORMAT_DATE_TIME);
                 list.remove(bean);
                 list.add(bean);
-                ACache.get(ReaderApplication.getsInstance()).put("collection", (Serializable) list);
+                putCollectionList(list);
                 break;
             }
+        }
+    }
+
+    public void clear() {
+        try {
+            FileUtils.deleteFileOrDirectory(new File(Constant.PATH_COLLECT));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
