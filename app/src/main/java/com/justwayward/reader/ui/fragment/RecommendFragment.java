@@ -323,10 +323,8 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
     @OnClick(R.id.tvSelectAll)
     public void selectAll() {
         isSelectAll = !isSelectAll;
-        tvSelectAll.setText(isSelectAll ? activity.getString(R.string.cancel_selected_all) :
-                activity.getString(R.string.selected_all));
-        for (Recommend.RecommendBooks bean :
-                mAdapter.getAllData()) {
+        tvSelectAll.setText(isSelectAll ? activity.getString(R.string.cancel_selected_all) : activity.getString(R.string.selected_all));
+        for (Recommend.RecommendBooks bean : mAdapter.getAllData()) {
             bean.isSeleted = isSelectAll;
         }
         mAdapter.notifyDataSetChanged();
@@ -335,11 +333,8 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
     @OnClick(R.id.tvDelete)
     public void delete() {
         List<Recommend.RecommendBooks> removeList = new ArrayList<>();
-        for (Recommend.RecommendBooks bean :
-                mAdapter.getAllData()) {
-            if (bean.isSeleted) {
-                removeList.add(bean);
-            }
+        for (Recommend.RecommendBooks bean : mAdapter.getAllData()) {
+            if (bean.isSeleted) removeList.add(bean);
         }
         if (removeList.isEmpty()) {
             ToastUtils.showToast(activity.getString(R.string.has_not_selected_delete_book));
@@ -353,12 +348,10 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
         super.onRefresh();
         gone(llBatchManagement);
         List<Recommend.RecommendBooks> data = CollectionsManager.getInstance().getCollectionListBySort();
-//        if (data != null && !data.isEmpty()) {
-            mAdapter.clear();
-            mAdapter.addAll(data);
-            //不加下面这句代码会导致，添加本地书籍的时候，部分书籍添加后直接崩溃，
-            //报错：Scrapped or attached views may not be recycled. isScrap:false isAttached:tru
-//        }
+        mAdapter.clear();
+        mAdapter.addAll(data);
+        //不加下面这句代码会导致，添加本地书籍的时候，部分书籍添加后直接崩溃
+        //报错：Scrapped or attached views may not be recycled. isScrap:false isAttached:true
         mAdapter.notifyDataSetChanged();
         mRecyclerView.setRefreshing(false);
     }

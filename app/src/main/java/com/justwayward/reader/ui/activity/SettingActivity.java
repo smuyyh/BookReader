@@ -137,7 +137,8 @@ public class SettingActivity extends BaseActivity {
 
     @OnClick(R.id.cleanCache)
     public void onClickCleanCache() {
-        final boolean selected[] = {true, true};
+        //默认不勾选清空书架列表，防手抖！！
+        final boolean selected[] = {true, false};
         new AlertDialog.Builder(mContext)
                 .setTitle("清除缓存")
                 .setCancelable(true)

@@ -179,7 +179,10 @@ public class CacheManager {
             }
             // 删除阅读记录（SharePreference）
             if (clearReadPos) {
+                //防止再次弹出性别选择框，sp要重写入保存的性别
+                String chooseSex =SettingManager.getInstance().getUserChooseSex();
                 SharedPreferencesUtil.getInstance().removeAll();
+                SettingManager.getInstance().saveUserChooseSex(chooseSex);
             }
             // 清空书架
             if (clearCollect) {
