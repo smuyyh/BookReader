@@ -299,9 +299,9 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                 currentChapter = position + 1;
                 mTocListAdapter.setCurrentChapter(currentChapter);
                 startRead = false;
-                hideReadBar();
                 showDialog();
                 readCurrentChapter();
+                hideReadBar();
             }
         });
         mTocListPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {

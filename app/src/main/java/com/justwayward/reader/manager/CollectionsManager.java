@@ -211,7 +211,7 @@ public class CollectionsManager {
      *
      * @param bookId
      */
-    public void setLastChapterAndLatelyUpdate(String bookId, String lastChapter, String latelyUpdate) {
+    public synchronized void setLastChapterAndLatelyUpdate(String bookId, String lastChapter, String latelyUpdate) {
         List<Recommend.RecommendBooks> list = getCollectionList();
         if (list == null) {
             return;

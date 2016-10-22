@@ -216,8 +216,8 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
                 popupWindow.showAtLocation(mCommonToolbar, Gravity.CENTER, 0, 0);
                 break;
             case R.id.action_sync_bookshelf:
-                mPresenter.syncBookShelf();
                 showDialog();
+                mPresenter.syncBookShelf();
                /* if (popupWindow == null) {
                     popupWindow = new LoginPopupWindow(this);
                     popupWindow.setLoginTypeListener(this);
