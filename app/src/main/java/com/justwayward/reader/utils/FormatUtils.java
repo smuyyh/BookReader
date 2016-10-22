@@ -49,7 +49,7 @@ public class FormatUtils {
      */
     public static String getDescriptionTimeFromDateString(String dateString) {
         if (TextUtils.isEmpty(dateString))
-            dateString = new SimpleDateFormat(FormatUtils.FORMAT_DATE_TIME).format(new Date());
+            return "";
         sdf.applyPattern(FORMAT_DATE_TIME);
         try {
             return getDescriptionTimeFromDate(sdf.parse(formatZhuiShuDateString(dateString)));
