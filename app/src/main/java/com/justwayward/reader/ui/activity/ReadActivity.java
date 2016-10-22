@@ -286,7 +286,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
 
     private void initTocList() {
-        mTocListAdapter = new TocListAdapter(this, mChapterList, currentChapter);
+        mTocListAdapter = new TocListAdapter(this, mChapterList, recommendBooks._id, currentChapter);
         mTocListPopupWindow = new ListPopupWindow(this);
         mTocListPopupWindow.setAdapter(mTocListAdapter);
         mTocListPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
