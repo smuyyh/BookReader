@@ -1,5 +1,7 @@
 package com.justwayward.reader.utils;
 
+import android.text.TextUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -46,6 +48,8 @@ public class FormatUtils {
      * @return
      */
     public static String getDescriptionTimeFromDateString(String dateString) {
+        if (TextUtils.isEmpty(dateString))
+            return "";
         sdf.applyPattern(FORMAT_DATE_TIME);
         try {
             return getDescriptionTimeFromDate(sdf.parse(formatZhuiShuDateString(dateString)));

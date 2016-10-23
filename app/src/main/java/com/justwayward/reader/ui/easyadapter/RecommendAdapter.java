@@ -10,9 +10,12 @@ import com.justwayward.reader.R;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.manager.SettingManager;
+import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.utils.FormatUtils;
 import com.justwayward.reader.view.recyclerview.adapter.BaseViewHolder;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
+
+import java.text.NumberFormat;
 
 /**
  * @author yuyh.
@@ -30,20 +33,10 @@ public class RecommendAdapter extends RecyclerArrayAdapter<Recommend.RecommendBo
             @Override
             public void setData(final Recommend.RecommendBooks item) {
                 super.setData(item);
-                if (item.isFromSD) {
-                    holder.setImageResource(R.id.ivRecommendCover, R.drawable.home_shelf_txt_icon);
-                } else if (!SettingManager.getInstance().isNoneCover()) {
-                    holder.setRoundImageUrl(R.id.ivRecommendCover, Constant.IMG_BASE_URL + item.cover,
-                            R.drawable.cover_default);
-                } else {
-                    holder.setImageResource(R.id.ivRecommendCover, R.drawable.cover_default);
-                }
-
                 String latelyUpdate = "";
                 if (!TextUtils.isEmpty(FormatUtils.getDescriptionTimeFromDateString(item.updated))) {
                     latelyUpdate = FormatUtils.getDescriptionTimeFromDateString(item.updated) + ":";
                 }
-
                 holder.setText(R.id.tvRecommendTitle, item.title)
                         .setText(R.id.tvLatelyUpdate, latelyUpdate)
                         .setText(R.id.tvRecommendShort, item.lastChapter)
@@ -51,6 +44,21 @@ public class RecommendAdapter extends RecyclerArrayAdapter<Recommend.RecommendBo
                         .setVisible(R.id.ckBoxSelect, item.showCheckBox)
                         .setVisible(R.id.ivUnReadDot, FormatUtils.formatZhuiShuDateString(item.updated)
                                 .compareTo(item.recentReadingTime) > 0);
+                if (item.isFromSD) {
+                    holder.setImageResource(R.id.ivRecommendCover, R.drawable.home_shelf_txt_icon);
+                    long fileLen = FileUtils.getChapterFile(item._id, 1).length();
+                    if (fileLen > 10) {
+                        double progress = ((double) SettingManager.getInstance().getReadProgress(item._id)[2]) / fileLen;
+                        NumberFormat fmt = NumberFormat.getPercentInstance();
+                        fmt.setMaximumFractionDigits(2);
+                        holder.setText(R.id.tvRecommendShort, "当前阅读进度：" + fmt.format(progress));
+                    }
+                } else if (!SettingManager.getInstance().isNoneCover()) {
+                    holder.setRoundImageUrl(R.id.ivRecommendCover, Constant.IMG_BASE_URL + item.cover,
+                            R.drawable.cover_default);
+                } else {
+                    holder.setImageResource(R.id.ivRecommendCover, R.drawable.cover_default);
+                }
 
                 CheckBox ckBoxSelect = holder.getView(R.id.ckBoxSelect);
                 ckBoxSelect.setChecked(item.isSeleted);

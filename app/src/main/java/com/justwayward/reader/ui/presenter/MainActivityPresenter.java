@@ -8,6 +8,7 @@ import com.justwayward.reader.bean.user.Login;
 import com.justwayward.reader.manager.CollectionsManager;
 import com.justwayward.reader.ui.contract.MainContract;
 import com.justwayward.reader.utils.LogUtils;
+import com.justwayward.reader.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,20 +64,26 @@ public class MainActivityPresenter extends RxPresenter<MainContract.View> implem
     public void syncBookShelf() {
         List<Recommend.RecommendBooks> list = CollectionsManager.getInstance().getCollectionList();
         List<Observable<BookToc.mixToc>> observables = new ArrayList<>();
-        for (Recommend.RecommendBooks bean : list) {
-            if(!bean.isFromSD){
-                Observable<BookToc.mixToc> fromNetWork = bookApi.getBookToc(bean._id, "chapters")
-                        .map(new Func1<BookToc, BookToc.mixToc>() {
-                            @Override
-                            public BookToc.mixToc call(BookToc data) {
-                                return data.mixToc;
-                            }
-                        })
+        if (list != null && !list.isEmpty()) {
+            for (Recommend.RecommendBooks bean : list) {
+                if (!bean.isFromSD) {
+                    Observable<BookToc.mixToc> fromNetWork = bookApi.getBookToc(bean._id, "chapters")
+                            .map(new Func1<BookToc, BookToc.mixToc>() {
+                                @Override
+                                public BookToc.mixToc call(BookToc data) {
+                                    return data.mixToc;
+                                }
+                            })
 //                    .compose(RxUtil.<BookToc.mixToc>rxCacheListHelper(
 //                            StringUtils.creatAcacheKey("book-toc", bean._id, "chapters")))
-                        ;
-                observables.add(fromNetWork);
+                            ;
+                    observables.add(fromNetWork);
+                }
             }
+        } else {
+            ToastUtils.showSingleToast("书架空空如也...");
+            mView.syncBookShelfCompleted();
+            return;
         }
 
         Subscription rxSubscription = Observable.mergeDelayError(observables)
@@ -86,7 +93,7 @@ public class MainActivityPresenter extends RxPresenter<MainContract.View> implem
                     @Override
                     public void onNext(BookToc.mixToc data) {
                         String lastChapter = data.chapters.get(data.chapters.size() - 1).title;
-                        CollectionsManager.getInstance().setLastChapterAndLatelyUpdate(data.book,lastChapter,data.chaptersUpdated);
+                        CollectionsManager.getInstance().setLastChapterAndLatelyUpdate(data.book, lastChapter, data.chaptersUpdated);
                     }
 
                     @Override

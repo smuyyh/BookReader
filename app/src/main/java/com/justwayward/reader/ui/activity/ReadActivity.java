@@ -286,7 +286,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
 
     private void initTocList() {
-        mTocListAdapter = new TocListAdapter(this, mChapterList, currentChapter);
+        mTocListAdapter = new TocListAdapter(this, mChapterList, recommendBooks._id, currentChapter);
         mTocListPopupWindow = new ListPopupWindow(this);
         mTocListPopupWindow.setAdapter(mTocListAdapter);
         mTocListPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
@@ -299,9 +299,9 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                 currentChapter = position + 1;
                 mTocListAdapter.setCurrentChapter(currentChapter);
                 startRead = false;
-                hideReadBar();
                 showDialog();
                 readCurrentChapter();
+                hideReadBar();
             }
         });
         mTocListPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
@@ -642,8 +642,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                                 dialog.dismiss();
                                 bean.recentReadingTime = FormatUtils.getCurrentTimeString(FormatUtils.FORMAT_DATE_TIME);
                                 CollectionsManager.getInstance().add(bean);
-                                EventBus.getDefault().post(new RefreshCollectionIconEvent());
-                                EventBus.getDefault().post(new RefreshCollectionListEvent());
                                 finish();
                             }
                         })
@@ -713,6 +711,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         super.onDestroy();
         if (mTtsPlayer.getPlayerState() == TTSCommonPlayer.PLAYER_STATE_PLAYING)
             mTtsPlayer.stop();
+        EventBus.getDefault().post(new RefreshCollectionIconEvent());
+        EventBus.getDefault().post(new RefreshCollectionListEvent());
         EventBus.getDefault().unregister(this);
         try {
             unregisterReceiver(receiver);

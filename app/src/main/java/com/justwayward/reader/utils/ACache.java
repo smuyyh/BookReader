@@ -40,31 +40,26 @@ public class ACache {
     public static final int TIME_DAY = TIME_HOUR * 24;
     private static final int MAX_SIZE = 1000 * 1000 * 50; // 50 mb
     private static final int MAX_COUNT = Integer.MAX_VALUE; // 不限制存放数据的数量
-    private static Map<String, ACache> mInstanceMap = new HashMap<String, ACache>();
+    private static Map<String, ACache> mInstanceMap = new HashMap<>();
     private ACacheManager mCache;
-
 
     public static ACache get(Context ctx) {
         return get(ctx, "data");
     }
-
 
     public static ACache get(Context ctx, String cacheName) {
         File f = new File(Constant.PATH_DATA, cacheName);
         return get(f, MAX_SIZE, MAX_COUNT);
     }
 
-
     public static ACache get(File cacheDir) {
         return get(cacheDir, MAX_SIZE, MAX_COUNT);
     }
-
 
     public static ACache get(Context ctx, long max_zise, int max_count) {
         File f = new File(Constant.PATH_DATA, "data");
         return get(f, max_zise, max_count);
     }
-
 
     public static ACache get(File cacheDir, long max_zise, int max_count) {
         ACache manager = mInstanceMap.get(cacheDir.getAbsoluteFile() + myPid());
@@ -339,6 +334,7 @@ public class ACache {
      */
     public void put(String key, byte[] value) {
         File file = mCache.newFile(key);
+        FileUtils.createFile(file);
         FileOutputStream out = null;
         try {
             out = new FileOutputStream(file);

@@ -109,7 +109,7 @@ public class ScanLocalBookActivity extends BaseActivity implements RecyclerArray
                     books.path = path;
                     books.title = name;
                     books.isFromSD = true;
-                    books.lastChapter = path;
+                    books.lastChapter = FileUtils.formatFileSizeToString(cursor.getLong(sizeindex));
 
                     list.add(books);
                 } while (cursor.moveToNext());

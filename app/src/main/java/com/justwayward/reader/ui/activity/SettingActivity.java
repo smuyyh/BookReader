@@ -137,20 +137,15 @@ public class SettingActivity extends BaseActivity {
 
     @OnClick(R.id.cleanCache)
     public void onClickCleanCache() {
-        final boolean selected[] = {true};
+        //默认不勾选清空书架列表，防手抖！！
+        final boolean selected[] = {true, false};
         new AlertDialog.Builder(mContext)
                 .setTitle("清除缓存")
                 .setCancelable(true)
-                .setMultiChoiceItems(new String[]{"同时删除阅读记录"}, selected, new DialogInterface.OnMultiChoiceClickListener() {
+                .setMultiChoiceItems(new String[]{"删除阅读记录", "清空书架列表"}, selected, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        switch (which) {
-                            case 0:
-                                selected[0] = true;
-                                break;
-                            default:
-                                break;
-                        }
+                        selected[which] = isChecked;
                     }
                 })
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -159,7 +154,7 @@ public class SettingActivity extends BaseActivity {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                CacheManager.getInstance().clearCache(selected[0]);
+                                CacheManager.getInstance().clearCache(selected[0], selected[1]);
                                 final String cacheSize = CacheManager.getInstance().getCacheSize();
                                 runOnUiThread(new Runnable() {
                                     @Override

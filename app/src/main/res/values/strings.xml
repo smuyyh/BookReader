@@ -104,5 +104,6 @@
     <string name="add_the_book_you_like">添加你喜欢的小说</string>
     <string name="network_error_tips">加载失败，请检查网络或稍后再试</string>
     <string name="cancle_top">取消置顶</string>
+    <string name="to_add">去添加</string>
 
 </resources>

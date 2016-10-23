@@ -6,7 +6,6 @@ import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
 import com.justwayward.reader.manager.CollectionsManager;
 import com.justwayward.reader.utils.FileUtils;
-import com.justwayward.reader.utils.FormatUtils;
 import com.justwayward.reader.utils.LogUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -18,8 +17,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -126,7 +123,6 @@ public class SimpleFileServer extends NanoHTTPD {
 
         books._id = fileName;
         books.title = fileName;
-        books.updated = new SimpleDateFormat(FormatUtils.FORMAT_DATE_TIME).format(new Date());
 
         //Looper.prepare();
         if (CollectionsManager.getInstance().add(books)) {

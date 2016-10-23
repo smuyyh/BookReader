@@ -45,6 +45,12 @@
         <item>批量管理</item>
     </string-array>
 
+    <string-array name="recommend_item_long_click_choice_recommend">
+        <item>书籍详情</item>
+        <item>删除</item>
+        <item>缓存全本</item>
+    </string-array>
+
     <string-array name="my_book_list_item_long_click_choice">
         <item>删除</item>
     </string-array>

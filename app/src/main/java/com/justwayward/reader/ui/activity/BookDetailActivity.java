@@ -325,6 +325,7 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
 
     @OnClick(R.id.btnRead)
     public void onClickRead() {
+        if (recommendBooks == null) return;
         ReadActivity.startActivity(this, recommendBooks);
     }
 
