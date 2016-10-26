@@ -208,7 +208,6 @@ public class PageFactory {
                 if (line.endsWith("@")) {
                     canvas.drawText(line.substring(0, line.length() - 1), marginWidth, y, mPaint);
                     y += mLineSpace;
-                    canvas.drawText(" ", marginWidth, y, mPaint);
                 } else {
                     canvas.drawText(line, marginWidth, y, mPaint);
                 }
@@ -270,7 +269,7 @@ public class PageFactory {
             }
             curEndPos = curBeginPos; // 6.最后结束指针指向下一段的开始处
             paraSpace += mLineSpace;
-            mPageLineCount = (mVisibleHeight - paraSpace) / (mFontSize + mLineSpace); // 添加段落间距，实时更新行数
+            mPageLineCount = (mVisibleHeight - paraSpace) / (mFontSize + mLineSpace); // 添加段落间距，实时更新容纳行数
         }
     }
 
@@ -292,8 +291,8 @@ public class PageFactory {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            strParagraph = strParagraph.replaceAll("\r\n", "  ");
-            strParagraph = strParagraph.replaceAll("\n", " "); // 段落中的换行符去掉，绘制的时候再换行
+            strParagraph = strParagraph.replaceAll("\r\n", "  ")
+                    .replaceAll("\n", " "); // 段落中的换行符去掉，绘制的时候再换行
 
             while (strParagraph.length() > 0) {
                 int paintSize = mPaint.breakText(strParagraph, true, mVisibleWidth, null);
@@ -366,7 +365,7 @@ public class PageFactory {
             }
             currentPage++;
         }
-        SettingManager.getInstance().saveReadProgress(bookId, currentChapter, curBeginPos, curEndPos);
+        //SettingManager.getInstance().saveReadProgress(bookId, currentChapter, curBeginPos, curEndPos);
         return lines;
     }
 
