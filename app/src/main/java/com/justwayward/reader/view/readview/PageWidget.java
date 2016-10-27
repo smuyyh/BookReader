@@ -556,6 +556,7 @@ public class PageWidget extends BaseReadView {
                 this.postInvalidate();
                 break;
             case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
 
                 long t = System.currentTimeMillis();
                 int ux = (int) e.getX();
@@ -579,9 +580,6 @@ public class PageWidget extends BaseReadView {
                     startAnimation();
                     postInvalidate();
                 }
-                cancel = false;
-                break;
-            case MotionEvent.ACTION_CANCEL:
                 cancel = false;
                 break;
             default:
