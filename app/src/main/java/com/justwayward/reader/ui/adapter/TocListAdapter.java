@@ -35,13 +35,13 @@ public class TocListAdapter extends EasyLVAdapter<BookToc.mixToc.Chapters> {
         Drawable drawable;
         if (currentChapter == position + 1) {
             tvTocItem.setTextColor(ContextCompat.getColor(mContext, R.color.light_red));
-            drawable = mContext.getDrawable(R.drawable.ic_toc_item_activated);
+            drawable = ContextCompat.getDrawable(mContext, R.drawable.ic_toc_item_activated);
         } else if (FileUtils.getChapterFile(bookId, position + 1).length() > 10) {
             tvTocItem.setTextColor(ContextCompat.getColor(mContext, R.color.light_black));
-            drawable = mContext.getDrawable(R.drawable.ic_toc_item_download);
+            drawable = ContextCompat.getDrawable(mContext, R.drawable.ic_toc_item_download);
         } else {
             tvTocItem.setTextColor(ContextCompat.getColor(mContext, R.color.light_black));
-            drawable = mContext.getDrawable(R.drawable.ic_toc_item_normal);
+            drawable = ContextCompat.getDrawable(mContext, R.drawable.ic_toc_item_normal);
         }
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
         tvTocItem.setCompoundDrawables(drawable, null, null, null);
