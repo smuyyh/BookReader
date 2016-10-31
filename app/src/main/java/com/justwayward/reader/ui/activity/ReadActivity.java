@@ -219,11 +219,17 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
         if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
             String filePath = Uri.decode(getIntent().getDataString().replace("file://", ""));
-            String fileName = filePath.substring(filePath.lastIndexOf("/") + 1, filePath.lastIndexOf("."));
+            String fileName;
+            if (filePath.lastIndexOf(".") > filePath.lastIndexOf("/")) {
+                fileName = filePath.substring(filePath.lastIndexOf("/") + 1, filePath.lastIndexOf("."));
+            } else {
+                fileName = filePath.substring(filePath.lastIndexOf("/") + 1);
+            }
+
             CollectionsManager.getInstance().remove(fileName);
             // 转存
             File desc = FileUtils.createWifiTranfesFile(fileName);
-            FileUtils.fileChannelCopy(new File(filePath), desc); // TODO 可能存在乱码问题
+            FileUtils.fileChannelCopy(new File(filePath), desc);
             // 建立
             recommendBooks = new Recommend.RecommendBooks();
             recommendBooks.isFromSD = true;
@@ -231,8 +237,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             recommendBooks.title = fileName;
 
             isFromSD = true;
-
-            ToastUtils.showSingleToast("来自外部调用" + fileName);
         }
         EventBus.getDefault().register(this);
         showDialog();
