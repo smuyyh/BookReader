@@ -33,6 +33,7 @@ public class LogUtils {
     private static String LOG_FILE_NAME;// 日志文件保存名称
 
     public static void init(Context context) { // 在Application中初始化
+        //sdcard/android/0/
         LOG_FILE_PATH = Environment.getExternalStorageDirectory().getPath() + File.separator + ReaderApplication.getsInstance().getPackageName();
         LOG_FILE_NAME = "Log";
     }

@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface SubjectFragmentContract {
 
-    interface View extends BaseContract.BaseView {
+    interface View extends BaseContract.BaseView {//s
         void showBookList(List<BookLists.BookListsBean> bookLists, boolean isRefresh);
     }
 

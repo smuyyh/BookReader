@@ -8,6 +8,7 @@ import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -37,6 +38,7 @@ public class BookContentTextView extends TextView {
 
     public void setText(String text) {
         int startIndex = 0;
+        Log.i("Context","内容="+text);
         while (true) {
 
             int start = text.indexOf("《");
@@ -47,9 +49,11 @@ public class BookContentTextView extends TextView {
             }
 
             append(text.substring(startIndex, start));
+            Log.i("setText",start+"下标"+startIndex+"书名="+text.substring(startIndex,start));
 
             SpannableString spanableInfo = new SpannableString(text.substring(start, end + 1));
             spanableInfo.setSpan(new Clickable(spanableInfo.toString()), 0, end + 1 - start, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            Log.i("setText","spanableInfo="+spanableInfo.toString());
             append(spanableInfo);
             //setMovementMethod()该方法必须调用，否则点击事件不响应
             setMovementMethod(LinkMovementMethod.getInstance());

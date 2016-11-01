@@ -49,7 +49,7 @@ import java.util.List;
  * <p>To use something other than TextViews for the array display, for instance, ImageViews,
  * or to have some of data besides toString() results fill the views,
  */
-abstract public class RecyclerArrayAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> {
+public abstract  class RecyclerArrayAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> {
     /**
      * Contains the list of objects that represent the data of this ArrayAdapter.
      * The content of this list is referred to as "the array" in the documentation.
@@ -551,7 +551,7 @@ abstract public class RecyclerArrayAdapter<T> extends RecyclerView.Adapter<BaseV
         return viewHolder;
     }
 
-    abstract public BaseViewHolder OnCreateViewHolder(ViewGroup parent, int viewType);
+    public abstract BaseViewHolder OnCreateViewHolder(ViewGroup parent, int viewType);
 
 
     @Override

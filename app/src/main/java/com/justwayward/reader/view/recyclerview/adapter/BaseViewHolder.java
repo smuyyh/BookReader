@@ -35,7 +35,7 @@ import com.yuyh.easyadapter.glide.GlideRoundTransform;
  *
  * @param <M>
  */
-abstract public class BaseViewHolder<M> extends RecyclerView.ViewHolder {
+public abstract class BaseViewHolder<M> extends RecyclerView.ViewHolder {
 
     protected BaseViewHolder<M> holder;
 
