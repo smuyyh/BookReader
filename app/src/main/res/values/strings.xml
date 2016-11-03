@@ -105,5 +105,8 @@
     <string name="network_error_tips">加载失败，请检查网络或稍后再试</string>
     <string name="cancle_top">取消置顶</string>
     <string name="to_add">去添加</string>
+    <string name="sha1">82:BC:D2:9C:88:0B:8E:1F:0F:1F:EE:57:E1:0B:50:77:09:37:03:E9</string>
+    <string name="md5">4F:45:E9:20:FF:5D:1A:0E:29:D9:97:98:6C:D9:71:81</string>
+    <string name="sha256">20:49:74:D4:15:38:2E:65:41:34:CE:10:C6:FC:03:5A:E0:ED:55:7D:34:4F:98:50:0A:4F:AA:0F:CC:EC:FB:A9</string>
 
 </resources>
