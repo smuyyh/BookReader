@@ -281,7 +281,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         }else if(type==2){
             FlymeSetStatusBarLightMode(activity.getWindow(), false);
         }else if(type==3){
-            editStateBarFontColor();
+            //非沉浸式
+            activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
         }
     }
 }

@@ -230,6 +230,7 @@ public abstract  class RecyclerArrayAdapter<T> extends RecyclerView.Adapter<Base
         FrameLayout container = new FrameLayout(getContext());
         container.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         LayoutInflater.from(getContext()).inflate(res, container);
+//        Log.i("setMore","子数量"+container.getChildCount());
         getEventDelegate().setMore(container, listener);
         return container;
     }
@@ -563,7 +564,9 @@ public abstract  class RecyclerArrayAdapter<T> extends RecyclerView.Adapter<Base
         }
 
         int i = position - headers.size() - mObjects.size();
+        Log.i("onBindViewHolder","position="+position+"i="+i+"Object="+mObjects.size());
         if (footers.size() != 0 && i >= 0) {
+            Log.i("onBindViewHolder","i="+i);
             footers.get(i).onBindView(holder.itemView);
             return;
         }

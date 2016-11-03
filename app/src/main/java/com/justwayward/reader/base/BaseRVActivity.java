@@ -5,6 +5,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
+import com.bumptech.glide.Glide;
 import com.justwayward.reader.R;
 import com.justwayward.reader.utils.NetworkUtils;
 import com.justwayward.reader.view.recyclerview.EasyRecyclerView;
@@ -31,7 +32,7 @@ public abstract class BaseRVActivity<T> extends BaseActivity implements OnLoadMo
 
     protected void initAdapter(boolean refreshable, boolean loadmoreable) {
         if (mAdapter != null) {
-            mAdapter.setOnItemClickListener(this);
+            mAdapter.setOnItemClickListener(this);//点击事件
             mAdapter.setError(R.layout.common_error_view).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -39,11 +40,11 @@ public abstract class BaseRVActivity<T> extends BaseActivity implements OnLoadMo
                 }
             });
             if (loadmoreable) {
-                mAdapter.setMore(R.layout.common_more_view, this);
+                mAdapter.setMore(R.layout.common_more_view, this);//加载更多事件
                 mAdapter.setNoMore(R.layout.common_nomore_view);
             }
             if (refreshable && mRecyclerView != null) {
-                mRecyclerView.setRefreshListener(this);
+                mRecyclerView.setRefreshListener(this);//下拉刷新事件
             }
         }
         if (mRecyclerView != null) {

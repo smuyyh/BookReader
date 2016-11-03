@@ -40,7 +40,7 @@ public class DefaultEventDelegate implements EventDelegate {
         log("onMoreViewShowed");
         if (!isLoadingMore&&onLoadMoreListener!=null){
             isLoadingMore = true;
-            onLoadMoreListener.onLoadMore();
+            onLoadMoreListener.onLoadMore();//调用加载更多的方法
         }
     }
 
@@ -190,6 +190,7 @@ public class DefaultEventDelegate implements EventDelegate {
                     if (container.getChildAt(i) == view)view.setVisibility(View.VISIBLE);
                     else container.getChildAt(i).setVisibility(View.GONE);
                 }
+//                Log.i("refreshStatus","子数量"+((ViewGroup)container.getChildAt(0)).getChildCount());
             }
         }
 
