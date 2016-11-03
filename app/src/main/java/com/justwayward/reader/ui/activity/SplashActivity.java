@@ -24,7 +24,7 @@ public class SplashActivity extends AppCompatActivity {
     TextView tvSkip;
 
     private boolean flag = false;
-    private Runnable runnable;
+    private Runnable runnable; //keytool -list -v -keystore   //keytool -list -v -keystore D:\debug.keystore
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
