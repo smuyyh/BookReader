@@ -8,6 +8,7 @@ import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.HotReview;
 import com.justwayward.reader.bean.support.SelectionEvent;
 import com.justwayward.reader.component.AppComponent;
+import com.justwayward.reader.component.BookComponent;
 import com.justwayward.reader.component.DaggerBookComponent;
 import com.justwayward.reader.ui.activity.BookReviewDetailActivity;
 import com.justwayward.reader.ui.contract.BookDetailReviewContract;
@@ -50,7 +51,7 @@ public class BookDetailReviewFragment extends BaseRVFragment<BookDetailReviewPre
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
-        DaggerBookComponent.builder()
+       DaggerBookComponent.builder()
                 .appComponent(appComponent)
                 .build()
                 .inject(this);

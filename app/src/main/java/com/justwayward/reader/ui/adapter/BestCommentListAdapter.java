@@ -25,7 +25,8 @@ public class BestCommentListAdapter extends EasyRVAdapter<CommentList.CommentsBe
     }
 
     @Override
-    protected void onBindData(final EasyRVHolder viewHolder, final int position, final CommentList.CommentsBean item) {viewHolder.setCircleImageUrl(R.id.ivBookCover, Constant.IMG_BASE_URL + item.author.avatar, R.drawable.avatar_default)
+    protected void onBindData(final EasyRVHolder viewHolder, final int position, final CommentList.CommentsBean item) {
+        viewHolder.setCircleImageUrl(R.id.ivBookCover, Constant.IMG_BASE_URL + item.author.avatar, R.drawable.avatar_default)
                 .setText(R.id.tvBookTitle, item.author.nickname)
                 .setText(R.id.tvContent, item.content)
                 .setText(R.id.tvBookType, String.format(mContext.getString(R.string.book_detail_user_lv), item.author.lv))

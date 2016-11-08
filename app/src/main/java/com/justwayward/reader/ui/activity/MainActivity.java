@@ -33,6 +33,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.view.menu.MenuBuilder;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -165,12 +166,15 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
 
         mPresenter.attachView(this);
 
-        mIndicator.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showChooseSexPopupWindow();
-            }
-        }, 500);
+        if(TextUtils.isEmpty(SettingManager.getInstance().getUserChooseSex())){
+            mIndicator.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showChooseSexPopupWindow();
+                }
+            }, 500);
+        }
+
     }
 
     public void showChooseSexPopupWindow() {

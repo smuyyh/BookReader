@@ -72,7 +72,7 @@ public class SelectionLayout extends LinearLayout {
         }
     }
 
-    class ChildView extends LinearLayout implements OnClickListener, AdapterView.OnItemClickListener {
+    class ChildView extends LinearLayout implements OnClickListener,AdapterView.OnItemClickListener {
 
         private LinearLayout layout;
 
@@ -100,8 +100,8 @@ public class SelectionLayout extends LinearLayout {
 
         public ChildView(Context context, AttributeSet attrs, int defStyleAttr) {
             super(context, attrs, defStyleAttr);
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            layout = (LinearLayout) inflater.inflate(R.layout.view_selection, this);
+//            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            layout = (LinearLayout)LayoutInflater.from(context).inflate(R.layout.view_selection, this);
 
             initView();
         }

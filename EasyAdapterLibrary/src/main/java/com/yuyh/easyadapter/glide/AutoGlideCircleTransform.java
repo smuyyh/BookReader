@@ -1,4 +1,4 @@
-package com.justwayward.reader.utils.callback;
+package com.yuyh.easyadapter.glide;
 
 import android.content.Context;
 import android.content.res.Resources;
