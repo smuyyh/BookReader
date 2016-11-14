@@ -73,7 +73,7 @@
 
 - **其他**
 
-<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/setting.png?raw=true" width="280"/>
+<img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/settings-1.png?raw=true" width="280"/>
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/wifi_transfer.png?raw=true" width="280"/>
 
 ## LICENSE
