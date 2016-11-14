@@ -1,9 +1,7 @@
-项目地址：(https://github.com/JustWayward/BookReader)[https://github.com/JustWayward/BookReader]
+项目地址：[https://github.com/JustWayward/BookReader](https://github.com/JustWayward/BookReader)
 
 # BookReader
 #### “任阅”，开源小说阅读器。实现追书推荐、标签检索、模拟翻页效果、文章阅读、缓存章节、日夜间模式、文本朗读等功能。
-
-[toc]
 
 
 ## 项目
