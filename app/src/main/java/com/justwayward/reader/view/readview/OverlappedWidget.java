@@ -1,12 +1,12 @@
 /**
  * Copyright 2016 JustWayward Team
- * <p>
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p>
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,12 +21,10 @@ import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.Region;
 import android.graphics.drawable.GradientDrawable;
-import android.view.MotionEvent;
 
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.manager.SettingManager;
 import com.justwayward.reader.manager.ThemeManager;
-import com.justwayward.reader.utils.ToastUtils;
 
 import java.util.List;
 
@@ -40,8 +38,6 @@ public class OverlappedWidget extends BaseReadView {
 
     GradientDrawable mBackShadowDrawableLR;
     GradientDrawable mBackShadowDrawableRL;
-
-    private float actiondownX, actiondownY;
 
     public OverlappedWidget(Context context, String bookId,
                             List<BookToc.mixToc.Chapters> chaptersList,
@@ -132,6 +128,11 @@ public class OverlappedWidget extends BaseReadView {
     }
 
     @Override
+    protected void calcCornerXY(float x, float y) {
+
+    }
+
+    @Override
     public void computeScroll() {
         super.computeScroll();
         if (mScroller.computeScrollOffset()) {
@@ -143,7 +144,8 @@ public class OverlappedWidget extends BaseReadView {
         }
     }
 
-    private void startAnimation() {
+    @Override
+    protected void startAnimation() {
         int dx;
         if (actiondownX > mScreenWidth / 2) {
             dx = (int) (-mTouch.x);
@@ -153,13 +155,15 @@ public class OverlappedWidget extends BaseReadView {
         mScroller.startScroll((int) mTouch.x, (int) mTouch.y, dx, 0, 700);
     }
 
-    public void abortAnimation() {
+    @Override
+    protected void abortAnimation() {
         if (!mScroller.isFinished()) {
             mScroller.abortAnimation();
         }
     }
 
-    public void restoreAnimation() {
+    @Override
+    protected void restoreAnimation() {
         int dx;
         if (actiondownX > mScreenWidth / 2) {
             dx = (int) (mScreenWidth - mTouch.x);
@@ -173,7 +177,7 @@ public class OverlappedWidget extends BaseReadView {
     private long et = 0;
     private boolean cancel = false;
 
-    @Override
+    /*@Override
     public boolean onTouchEvent(MotionEvent e) {
         switch (e.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -253,7 +257,7 @@ public class OverlappedWidget extends BaseReadView {
                 break;
         }
         return true;
-    }
+    }*/
 
     public void setBitmaps(Bitmap bm1, Bitmap bm2) {
         mCurPageBitmap = bm1;
@@ -262,8 +266,7 @@ public class OverlappedWidget extends BaseReadView {
 
     @Override
     public synchronized void setTheme(int theme) {
-        mTouch.x = 0.1f;
-        mTouch.y = 0.1f;
+        resetTouchPoint();
         Bitmap bg = ThemeManager.getThemeDrawable(theme);
         if (bg != null) {
             pagefactory.setBgBitmap(bg);

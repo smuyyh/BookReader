@@ -1,12 +1,12 @@
 /**
  * Copyright 2016 JustWayward Team
- * <p>
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p>
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,12 +26,10 @@ import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.Region;
 import android.graphics.drawable.GradientDrawable;
-import android.view.MotionEvent;
 
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.manager.SettingManager;
 import com.justwayward.reader.manager.ThemeManager;
-import com.justwayward.reader.utils.ToastUtils;
 
 import java.util.List;
 
@@ -77,9 +75,6 @@ public class PageWidget extends BaseReadView {
 
     Paint mPaint;
 
-
-    private float actiondownX, actiondownY;
-
     public PageWidget(Context context, String bookId,
                       List<BookToc.mixToc.Chapters> chaptersList,
                       OnReadStateChangeListener listener) {
@@ -108,6 +103,7 @@ public class PageWidget extends BaseReadView {
      * @param x 触摸点x坐标
      * @param y 触摸点y坐标
      */
+    @Override
     public void calcCornerXY(float x, float y) {
         if (x <= mScreenWidth / 2)
             mCornerX = 0;
@@ -473,10 +469,8 @@ public class PageWidget extends BaseReadView {
         }
     }
 
-    /**
-     * 开启翻页动画
-     */
-    private void startAnimation() {
+    @Override
+    protected void startAnimation() {
         int dx, dy;
         if (mCornerX > 0) {
             dx = -(int) (mScreenWidth + mTouch.x);
@@ -491,18 +485,14 @@ public class PageWidget extends BaseReadView {
         mScroller.startScroll((int) mTouch.x, (int) mTouch.y, dx, dy, 700);
     }
 
-    /**
-     * 停止翻页动画（滑到一半调用停止的话  翻页效果会卡住 可调用#restoreAnimation 还原效果）
-     */
+    @Override
     public void abortAnimation() {
         if (!mScroller.isFinished()) {
             mScroller.abortAnimation();
         }
     }
 
-    /**
-     * 还原翻页
-     */
+    @Override
     public void restoreAnimation() {
         int dx, dy;
         if (mCornerX > 0) {
@@ -521,8 +511,9 @@ public class PageWidget extends BaseReadView {
     private int dx, dy;
     private long et = 0;
     private boolean cancel = false;
+    private boolean center = false;
 
-    @Override
+    /*@Override
     public boolean onTouchEvent(MotionEvent e) {
         switch (e.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -535,30 +526,34 @@ public class PageWidget extends BaseReadView {
                 actiondownY = dy;
                 if (actiondownX >= mScreenWidth / 3 && actiondownX <= mScreenWidth * 2 / 3
                         && actiondownY >= mScreenHeight / 3 && actiondownY <= mScreenHeight * 2 / 3) {
-                    listener.onCenterClick();
-                    return false;//停止向下分发事件
-                }
-                calcCornerXY(actiondownX, actiondownY);
-                pagefactory.onDraw(mCurrentPageCanvas);
-                if (actiondownX < mScreenWidth / 2) {// 从左翻
-                    if (!pagefactory.prePage()) {
-                        ToastUtils.showSingleToast("没有上一页啦");
-                        return false;
+                    // return false;//停止向下分发事件
+                    center = true;
+                } else {
+                    center = false;
+                    calcCornerXY(actiondownX, actiondownY);
+                    pagefactory.onDraw(mCurrentPageCanvas);
+                    if (actiondownX < mScreenWidth / 2) {// 从左翻
+                        if (!pagefactory.prePage()) {
+                            ToastUtils.showSingleToast("没有上一页啦");
+                            return false;
+                        }
+                        abortAnimation();
+                        pagefactory.onDraw(mNextPageCanvas);
+                    } else if (actiondownX >= mScreenWidth / 2) {// 从右翻
+                        if (!pagefactory.nextPage()) {
+                            ToastUtils.showSingleToast("没有下一页啦");
+                            return false;
+                        }
+                        abortAnimation();
+                        pagefactory.onDraw(mNextPageCanvas);
                     }
-                    abortAnimation();
-                    pagefactory.onDraw(mNextPageCanvas);
-                } else if (actiondownX >= mScreenWidth / 2) {// 从右翻
-                    if (!pagefactory.nextPage()) {
-                        ToastUtils.showSingleToast("没有下一页啦");
-                        return false;
-                    }
-                    abortAnimation();
-                    pagefactory.onDraw(mNextPageCanvas);
+                    listener.onFlip();
+                    setBitmaps(mCurPageBitmap, mNextPageBitmap);
                 }
-                listener.onFlip();
-                setBitmaps(mCurPageBitmap, mNextPageBitmap);
                 break;
             case MotionEvent.ACTION_MOVE:
+                if (center)
+                    break;
                 int mx = (int) e.getX();
                 int my = (int) e.getY();
                 if ((actiondownX < mScreenWidth / 2 && mx < mTouch.x) || (actiondownX > mScreenWidth / 2 && mx > mTouch.x)) {
@@ -576,6 +571,14 @@ public class PageWidget extends BaseReadView {
                 long t = System.currentTimeMillis();
                 int ux = (int) e.getX();
                 int uy = (int) e.getY();
+
+                if (center) { // ACTION_DOWN的位置在中间，则不响应滑动事件
+                    if (Math.abs(ux - actiondownX) < 5 && Math.abs(uy - actiondownY) < 5) {
+                        listener.onCenterClick();
+                        return false;
+                    }
+                    break;
+                }
 
                 if ((Math.abs(ux - dx) < 10) && (Math.abs(uy - dy) < 10)) {
                     if ((t - et < 1000)) { // 单击
@@ -596,17 +599,17 @@ public class PageWidget extends BaseReadView {
                     postInvalidate();
                 }
                 cancel = false;
+                center = false;
                 break;
             default:
                 break;
         }
         return true;
-    }
+    }*/
 
     @Override
     public synchronized void setTheme(int theme) {
-        mTouch.x = 0.1f;
-        mTouch.y = 0.1f;
+        resetTouchPoint();
         calcCornerXY(mTouch.x, mTouch.y);
         Bitmap bg = ThemeManager.getThemeDrawable(theme);
         if (bg != null) {
@@ -624,8 +627,6 @@ public class PageWidget extends BaseReadView {
 
     @Override
     public void jumpToChapter(int chapter) {
-        mTouch.x = 0.1f;
-        mTouch.y = 0.1f;
         calcCornerXY(mTouch.x, mTouch.y);
         super.jumpToChapter(chapter);
     }
