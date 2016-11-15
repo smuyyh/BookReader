@@ -1,12 +1,12 @@
 /**
  * Copyright 2016 JustWayward Team
- * <p>
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p>
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.Vector;
 
 public class PageFactory {
+    private Context mContext;
     /**
      * 屏幕宽高
      */
@@ -115,6 +116,7 @@ public class PageFactory {
 
     public PageFactory(Context context, int width, int height, int fontSize, String bookId,
                        List<BookToc.mixToc.Chapters> chaptersList) {
+        mContext = context;
         mWidth = width;
         mHeight = height;
         mFontSize = fontSize;
@@ -144,7 +146,6 @@ public class PageFactory {
         this.chaptersList = chaptersList;
 
         time = dateFormat.format(new Date());
-        batteryView = (ProgressBar) LayoutInflater.from(context).inflate(R.layout.layout_battery_progress, null);
     }
 
     public File getBookFile(int chapter) {
@@ -593,19 +594,23 @@ public class PageFactory {
             listener.onLoadChapterFailure(chapter);
     }
 
-    public Bitmap convertBetteryBitmap() {
+    public void convertBetteryBitmap() {
+        batteryView = (ProgressBar) LayoutInflater.from(mContext).inflate(R.layout.layout_battery_progress, null);
+        batteryView.setProgressDrawable(ContextCompat.getDrawable(mContext,
+                SettingManager.getInstance().getReadTheme() < 4 ?
+                        R.drawable.seekbar_battery_bg : R.drawable.seekbar_battery_night_bg));
         batteryView.setProgress(battery);
         batteryView.setDrawingCacheEnabled(true);
         batteryView.measure(View.MeasureSpec.makeMeasureSpec(ScreenUtils.dpToPxInt(26), View.MeasureSpec.EXACTLY),
                 View.MeasureSpec.makeMeasureSpec(ScreenUtils.dpToPxInt(14), View.MeasureSpec.EXACTLY));
         batteryView.layout(0, 0, batteryView.getMeasuredWidth(), batteryView.getMeasuredHeight());
         batteryView.buildDrawingCache();
-        return batteryView.getDrawingCache();
+        batteryBitmap = batteryView.getDrawingCache();
     }
 
     public void setBattery(int battery) {
         this.battery = battery;
-        batteryBitmap = convertBetteryBitmap();
+        convertBetteryBitmap();
     }
 
     public void setTime(String time) {

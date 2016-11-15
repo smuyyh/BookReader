@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2016 JustWayward Team
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +16,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rlReadAaSet"
     android:layout_width="match_parent"
-    android:layout_height="170dp"
+    android:layout_height="190dp"
     android:layout_above="@+id/llBookReadBottom"
     android:background="@color/reader_menu_bg_color"
     android:clickable="true"
@@ -35,8 +34,9 @@
 
         <ImageView
             android:id="@+id/ivBrightnessMinus"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:padding="5dp"
             android:scaleType="center"
             android:src="@drawable/ic_brightness_minus" />
 
@@ -56,8 +56,9 @@
 
         <ImageView
             android:id="@+id/ivBrightnessPlus"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:padding="5dp"
             android:scaleType="center"
             android:src="@drawable/ic_brightness_add" />
     </LinearLayout>
@@ -72,9 +73,10 @@
 
         <TextView
             android:id="@+id/tvFontsizeMinus"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:gravity="center"
+            android:padding="5dp"
             android:text="Aa-"
             android:textColor="@color/common_h2"
             android:textSize="14dp" />
@@ -95,9 +97,10 @@
 
         <TextView
             android:id="@+id/tvFontsizePlus"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:gravity="center"
+            android:padding="5dp"
             android:text="Aa+"
             android:textColor="@color/common_h2"
             android:textSize="14dp" />

@@ -110,13 +110,13 @@ public abstract class BaseReadView extends View {
                 mTouch.y = dy;
                 actiondownX = dx;
                 actiondownY = dy;
+                pagefactory.onDraw(mCurrentPageCanvas);
                 if (actiondownX >= mScreenWidth / 3 && actiondownX <= mScreenWidth * 2 / 3
                         && actiondownY >= mScreenHeight / 3 && actiondownY <= mScreenHeight * 2 / 3) {
                     center = true;
                 } else {
                     center = false;
                     calcCornerXY(actiondownX, actiondownY);
-                    pagefactory.onDraw(mCurrentPageCanvas);
                     if (actiondownX < mScreenWidth / 2) {// 从左翻
                         if (!pagefactory.prePage()) {
                             ToastUtils.showSingleToast("没有上一页啦");
@@ -158,11 +158,11 @@ public abstract class BaseReadView extends View {
                 int uy = (int) e.getY();
 
                 if (center) { // ACTION_DOWN的位置在中间，则不响应滑动事件
+                    resetTouchPoint();
                     if (Math.abs(ux - actiondownX) < 5 && Math.abs(uy - actiondownY) < 5) {
                         listener.onCenterClick();
                         return false;
                     }
-                    resetTouchPoint();
                     break;
                 }
 
@@ -239,6 +239,7 @@ public abstract class BaseReadView extends View {
     protected void resetTouchPoint() {
         mTouch.x = 0.1f;
         mTouch.y = 0.1f;
+        calcCornerXY(mTouch.x, mTouch.y);
     }
 
     public void jumpToChapter(int chapter) {

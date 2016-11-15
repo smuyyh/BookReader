@@ -508,105 +508,6 @@ public class PageWidget extends BaseReadView {
         mScroller.startScroll((int) mTouch.x, (int) mTouch.y, dx, dy, 300);
     }
 
-    private int dx, dy;
-    private long et = 0;
-    private boolean cancel = false;
-    private boolean center = false;
-
-    /*@Override
-    public boolean onTouchEvent(MotionEvent e) {
-        switch (e.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                et = System.currentTimeMillis();
-                dx = (int) e.getX();
-                dy = (int) e.getY();
-                mTouch.x = dx;
-                mTouch.y = dy;
-                actiondownX = dx;
-                actiondownY = dy;
-                if (actiondownX >= mScreenWidth / 3 && actiondownX <= mScreenWidth * 2 / 3
-                        && actiondownY >= mScreenHeight / 3 && actiondownY <= mScreenHeight * 2 / 3) {
-                    // return false;//停止向下分发事件
-                    center = true;
-                } else {
-                    center = false;
-                    calcCornerXY(actiondownX, actiondownY);
-                    pagefactory.onDraw(mCurrentPageCanvas);
-                    if (actiondownX < mScreenWidth / 2) {// 从左翻
-                        if (!pagefactory.prePage()) {
-                            ToastUtils.showSingleToast("没有上一页啦");
-                            return false;
-                        }
-                        abortAnimation();
-                        pagefactory.onDraw(mNextPageCanvas);
-                    } else if (actiondownX >= mScreenWidth / 2) {// 从右翻
-                        if (!pagefactory.nextPage()) {
-                            ToastUtils.showSingleToast("没有下一页啦");
-                            return false;
-                        }
-                        abortAnimation();
-                        pagefactory.onDraw(mNextPageCanvas);
-                    }
-                    listener.onFlip();
-                    setBitmaps(mCurPageBitmap, mNextPageBitmap);
-                }
-                break;
-            case MotionEvent.ACTION_MOVE:
-                if (center)
-                    break;
-                int mx = (int) e.getX();
-                int my = (int) e.getY();
-                if ((actiondownX < mScreenWidth / 2 && mx < mTouch.x) || (actiondownX > mScreenWidth / 2 && mx > mTouch.x)) {
-                    cancel = true;
-                } else {
-                    cancel = false;
-                }
-                mTouch.x = mx;
-                mTouch.y = my;
-                this.postInvalidate();
-                break;
-            case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL:
-
-                long t = System.currentTimeMillis();
-                int ux = (int) e.getX();
-                int uy = (int) e.getY();
-
-                if (center) { // ACTION_DOWN的位置在中间，则不响应滑动事件
-                    if (Math.abs(ux - actiondownX) < 5 && Math.abs(uy - actiondownY) < 5) {
-                        listener.onCenterClick();
-                        return false;
-                    }
-                    break;
-                }
-
-                if ((Math.abs(ux - dx) < 10) && (Math.abs(uy - dy) < 10)) {
-                    if ((t - et < 1000)) { // 单击
-                        startAnimation();
-                    } else { // 长按
-                        pagefactory.cancelPage();
-                        restoreAnimation();
-                    }
-                    postInvalidate();
-                    return true;
-                }
-                if (cancel) {
-                    pagefactory.cancelPage();
-                    restoreAnimation();
-                    postInvalidate();
-                } else {
-                    startAnimation();
-                    postInvalidate();
-                }
-                cancel = false;
-                center = false;
-                break;
-            default:
-                break;
-        }
-        return true;
-    }*/
-
     @Override
     public synchronized void setTheme(int theme) {
         resetTouchPoint();
@@ -614,6 +515,7 @@ public class PageWidget extends BaseReadView {
         Bitmap bg = ThemeManager.getThemeDrawable(theme);
         if (bg != null) {
             pagefactory.setBgBitmap(bg);
+            pagefactory.convertBetteryBitmap();
             if (isPrepared) {
                 pagefactory.onDraw(mCurrentPageCanvas);
                 pagefactory.onDraw(mNextPageCanvas);

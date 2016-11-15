@@ -1,12 +1,12 @@
 /**
  * Copyright 2016 JustWayward Team
- * <p>
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p>
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -336,8 +336,10 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         curTheme = SettingManager.getInstance().getReadTheme();
         ThemeManager.setReaderTheme(curTheme, mRlBookReadRoot);
 
-        seekbarFontSize.setMax(40);
-        seekbarFontSize.setProgress(ScreenUtils.pxToDpInt(SettingManager.getInstance().getReadFontSize(recommendBooks._id)));
+        seekbarFontSize.setMax(10);
+        int fontSizePx = SettingManager.getInstance().getReadFontSize(recommendBooks._id);
+        int progress = (int) ((ScreenUtils.pxToDpInt(fontSizePx) - 12) / 1.7f);
+        seekbarFontSize.setProgress(progress);
         seekbarFontSize.setOnSeekBarChangeListener(new SeekBarChangeListener());
 
         seekbarLightness.setMax(100);
@@ -371,7 +373,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     }
 
     private void initPagerWidget() {
-        if (SharedPreferencesUtil.getInstance().getInt(Constant.FLIP_STYLE, 1) != 0) {
+        if (SharedPreferencesUtil.getInstance().getInt(Constant.FLIP_STYLE, 0) == 0) {
             mPageWidget = new PageWidget(this, recommendBooks._id, mChapterList, new ReadListener());
         } else {
             mPageWidget = new OverlappedWidget(this, recommendBooks._id, mChapterList, new ReadListener());
@@ -565,22 +567,12 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @OnClick(R.id.tvFontsizeMinus)
     public void fontsizeMinus() {
-        int curFontSize = SettingManager.getInstance().getReadFontSize(recommendBooks._id);
-        int curFontSizeDp = ScreenUtils.pxToDpInt(curFontSize);
-        if (curFontSizeDp > 5) {
-            seekbarFontSize.setProgress(--curFontSizeDp);
-            mPageWidget.setFontSize(ScreenUtils.dpToPxInt(curFontSizeDp));
-        }
+        calcFontSize(seekbarFontSize.getProgress() - 1);
     }
 
     @OnClick(R.id.tvFontsizePlus)
     public void fontsizePlus() {
-        int curFontSize = SettingManager.getInstance().getReadFontSize(recommendBooks._id);
-        int curFontSizeDp = ScreenUtils.pxToDpInt(curFontSize);
-        if (curFontSizeDp < 40) {
-            seekbarFontSize.setProgress(++curFontSizeDp);
-            mPageWidget.setFontSize(ScreenUtils.dpToPxInt(curFontSizeDp));
-        }
+        calcFontSize(seekbarFontSize.getProgress() + 1);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -790,7 +782,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             if (seekBar.getId() == seekbarFontSize.getId() && fromUser) {
-                mPageWidget.setFontSize(ScreenUtils.dpToPxInt(progress));
+                calcFontSize(progress);
             } else if (seekBar.getId() == seekbarLightness.getId() && fromUser
                     && !SettingManager.getInstance().isAutoBrightness()) { // 非自动调节模式下 才可调整屏幕亮度
                 ScreenUtils.setScreenBrightness(progress, ReadActivity.this);
@@ -853,6 +845,14 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         seekbarLightness.setProgress(value);
         ScreenUtils.setScreenBrightness(value, ReadActivity.this);
         seekbarLightness.setEnabled(true);
+    }
+
+    private void calcFontSize(int progress) {
+        // progress range 1 - 10
+        if (progress >= 0 && progress <= 10) {
+            seekbarFontSize.setProgress(progress);
+            mPageWidget.setFontSize(ScreenUtils.dpToPxInt(12 + 1.7f * progress));
+        }
     }
 
 }
