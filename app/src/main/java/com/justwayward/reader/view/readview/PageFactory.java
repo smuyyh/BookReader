@@ -444,9 +444,9 @@ public class PageFactory {
     /**
      * 跳转下一页
      */
-    public boolean nextPage() {
+    public BookStatus nextPage() {
         if (!hasNextPage()) { // 最后一章的结束页
-            return false;
+            return BookStatus.NO_NEXT_PAGE;
         } else {
             tempChapter = currentChapter;
             tempBeginPos = curBeginPos;
@@ -455,7 +455,8 @@ public class PageFactory {
                 int ret = openBook(currentChapter, new int[]{0, 0}); // 打开下一章
                 if (ret == 0) {
                     onLoadChapterFailure(currentChapter);
-                    return false;
+                    currentChapter--;
+                    return BookStatus.NEXT_CHAPTER_LOAD_FAILURE;
                 } else {
                     currentPage = 0;
                     onChapterChanged(currentChapter);
@@ -466,15 +467,15 @@ public class PageFactory {
             mLines = pageDown(); // 读取一页内容
             onPageChanged(currentChapter, ++currentPage);
         }
-        return true;
+        return BookStatus.LOAD_SUCCESS;
     }
 
     /**
      * 跳转上一页
      */
-    public boolean prePage() {
+    public BookStatus prePage() {
         if (!hasPrePage()) { // 第一章第一页
-            return false;
+            return BookStatus.NO_PRE_PAGE;
         } else {
             // 保存当前页的值
             tempChapter = currentChapter;
@@ -484,13 +485,14 @@ public class PageFactory {
                 int ret = openBook(currentChapter, new int[]{0, 0});
                 if (ret == 0) {
                     onLoadChapterFailure(currentChapter);
-                    return false;
+                    currentChapter++;
+                    return BookStatus.PRE_CHAPTER_LOAD_FAILURE;
                 } else { // 跳转到上一章的最后一页
                     mLines.clear();
                     mLines = pageLast();
                     onChapterChanged(currentChapter);
                     onPageChanged(currentChapter, currentPage);
-                    return true;
+                    return BookStatus.LOAD_SUCCESS;
                 }
             }
             mLines.clear();
@@ -498,7 +500,7 @@ public class PageFactory {
             mLines = pageDown(); // 读取一页内容
             onPageChanged(currentChapter, --currentPage);
         }
-        return true;
+        return BookStatus.LOAD_SUCCESS;
     }
 
     public void cancelPage() {

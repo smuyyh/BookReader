@@ -118,19 +118,27 @@ public abstract class BaseReadView extends View {
                     center = false;
                     calcCornerXY(actiondownX, actiondownY);
                     if (actiondownX < mScreenWidth / 2) {// 从左翻
-                        if (!pagefactory.prePage()) {
+                        BookStatus status = pagefactory.prePage();
+                        if (status == BookStatus.NO_PRE_PAGE) {
                             ToastUtils.showSingleToast("没有上一页啦");
                             return false;
-                        }
-                        abortAnimation();
-                        pagefactory.onDraw(mNextPageCanvas);
-                    } else if (actiondownX >= mScreenWidth / 2) {// 从右翻
-                        if (!pagefactory.nextPage()) {
-                            ToastUtils.showSingleToast("没有下一页啦");
+                        } else if (status == BookStatus.LOAD_SUCCESS) {
+                            abortAnimation();
+                            pagefactory.onDraw(mNextPageCanvas);
+                        } else {
                             return false;
                         }
-                        abortAnimation();
-                        pagefactory.onDraw(mNextPageCanvas);
+                    } else if (actiondownX >= mScreenWidth / 2) {// 从右翻
+                        BookStatus status = pagefactory.nextPage();
+                        if (status == BookStatus.NO_NEXT_PAGE) {
+                            ToastUtils.showSingleToast("没有下一页啦");
+                            return false;
+                        } else if (status == BookStatus.LOAD_SUCCESS) {
+                            abortAnimation();
+                            pagefactory.onDraw(mNextPageCanvas);
+                        } else {
+                            return false;
+                        }
                     }
                     listener.onFlip();
                     setBitmaps(mCurPageBitmap, mNextPageBitmap);
@@ -251,26 +259,35 @@ public abstract class BaseReadView extends View {
     }
 
     public void nextPage() {
-        if (!pagefactory.nextPage()) {
+        BookStatus status = pagefactory.nextPage();
+        if (status == BookStatus.NO_NEXT_PAGE) {
             ToastUtils.showSingleToast("没有下一页啦");
             return;
+        } else if (status == BookStatus.LOAD_SUCCESS) {
+            if (isPrepared) {
+                pagefactory.onDraw(mCurrentPageCanvas);
+                pagefactory.onDraw(mNextPageCanvas);
+                postInvalidate();
+            }
+        } else {
+            return;
         }
-        if (isPrepared) {
-            pagefactory.onDraw(mCurrentPageCanvas);
-            pagefactory.onDraw(mNextPageCanvas);
-            postInvalidate();
-        }
+
     }
 
     public void prePage() {
-        if (!pagefactory.prePage()) {
+        BookStatus status = pagefactory.prePage();
+        if (status == BookStatus.NO_PRE_PAGE) {
             ToastUtils.showSingleToast("没有上一页啦");
             return;
-        }
-        if (isPrepared) {
-            pagefactory.onDraw(mCurrentPageCanvas);
-            pagefactory.onDraw(mNextPageCanvas);
-            postInvalidate();
+        } else if (status == BookStatus.LOAD_SUCCESS) {
+            if (isPrepared) {
+                pagefactory.onDraw(mCurrentPageCanvas);
+                pagefactory.onDraw(mNextPageCanvas);
+                postInvalidate();
+            }
+        } else {
+            return;
         }
     }
 

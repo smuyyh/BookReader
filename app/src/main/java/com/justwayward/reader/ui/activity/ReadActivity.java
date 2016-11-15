@@ -414,6 +414,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
         if (!startRead) {
             startRead = true;
+            currentChapter = chapter;
             if (!mPageWidget.isPrepared) {
                 mPageWidget.init(curTheme);
             } else {
@@ -428,9 +429,11 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     }
 
     @Override
-    public void netError() {
+    public void netError(int chapter) {
         hideDialog();//防止因为网络问题而出现dialog不消失
-        ToastUtils.showToast(R.string.net_error);
+        if (Math.abs(chapter - currentChapter) <= 1) {
+            ToastUtils.showToast(R.string.net_error);
+        }
     }
 
     @OnClick(R.id.ivBack)
@@ -628,7 +631,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @Override
     public void showError() {
-        ToastUtils.showSingleToast("文章加载失败");
         hideDialog();
     }
 

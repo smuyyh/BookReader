@@ -35,7 +35,7 @@ public interface BookReadContract {
 
         void showBookSource(List<BookSource> list);
 
-        void netError();//添加网络处理异常接口
+        void netError(int chapter);//添加网络处理异常接口
     }
 
     interface Presenter<T> extends BaseContract.BasePresenter<T> {
