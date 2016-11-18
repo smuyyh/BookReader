@@ -110,7 +110,8 @@ public class PageFactory {
 
     public PageFactory(Context context, String bookId, List<BookToc.mixToc.Chapters> chaptersList) {
         this(context, ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight(),
-                SettingManager.getInstance().getReadFontSize(bookId),
+                //SettingManager.getInstance().getReadFontSize(bookId),
+                SettingManager.getInstance().getReadFontSize(),
                 bookId, chaptersList);
     }
 

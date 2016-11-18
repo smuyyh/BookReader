@@ -337,7 +337,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         ThemeManager.setReaderTheme(curTheme, mRlBookReadRoot);
 
         seekbarFontSize.setMax(10);
-        int fontSizePx = SettingManager.getInstance().getReadFontSize(recommendBooks._id);
+        //int fontSizePx = SettingManager.getInstance().getReadFontSize(recommendBooks._id);
+        int fontSizePx = SettingManager.getInstance().getReadFontSize();
         int progress = (int) ((ScreenUtils.pxToDpInt(fontSizePx) - 12) / 1.7f);
         seekbarFontSize.setProgress(progress);
         seekbarFontSize.setOnSeekBarChangeListener(new SeekBarChangeListener());

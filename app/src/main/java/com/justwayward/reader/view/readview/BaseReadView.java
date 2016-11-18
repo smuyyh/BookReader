@@ -297,7 +297,8 @@ public abstract class BaseReadView extends View {
         if (isPrepared) {
             pagefactory.onDraw(mCurrentPageCanvas);
             pagefactory.onDraw(mNextPageCanvas);
-            SettingManager.getInstance().saveFontSize(bookId, fontSizePx);
+            //SettingManager.getInstance().saveFontSize(bookId, fontSizePx);
+            SettingManager.getInstance().saveFontSize(fontSizePx);
             postInvalidate();
         }
     }

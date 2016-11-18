@@ -55,6 +55,7 @@
     <string name="book_read_feedback">反馈</string>
     <string name="book_read_settings">设置</string>
     <string name="book_read_download">缓存</string>
+    <string name="book_read_mark">书签</string>
     <string name="book_read_toc">目录</string>
     <string name="book_read_download_error">网络异常，已取消下载</string>
     <string name="book_read_download_complete">缓存完成，失败%1$d章</string>
