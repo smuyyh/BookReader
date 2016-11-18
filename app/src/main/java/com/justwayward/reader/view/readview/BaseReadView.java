@@ -43,6 +43,7 @@ public abstract class BaseReadView extends View {
 
     protected PointF mTouch = new PointF();
     protected float actiondownX, actiondownY;
+    protected float touch_down = 0; // 当前触摸点与按下时的点的差值
 
     protected Bitmap mCurPageBitmap, mNextPageBitmap;
     protected Canvas mCurrentPageCanvas, mNextPageCanvas;
@@ -110,6 +111,7 @@ public abstract class BaseReadView extends View {
                 mTouch.y = dy;
                 actiondownX = dx;
                 actiondownY = dy;
+                touch_down = 0;
                 pagefactory.onDraw(mCurrentPageCanvas);
                 if (actiondownX >= mScreenWidth / 3 && actiondownX <= mScreenWidth * 2 / 3
                         && actiondownY >= mScreenHeight / 3 && actiondownY <= mScreenHeight * 2 / 3) {
@@ -156,6 +158,7 @@ public abstract class BaseReadView extends View {
                 }
                 mTouch.x = mx;
                 mTouch.y = my;
+                touch_down = mTouch.x - actiondownX;
                 this.postInvalidate();
                 break;
             case MotionEvent.ACTION_UP:
@@ -247,6 +250,7 @@ public abstract class BaseReadView extends View {
     protected void resetTouchPoint() {
         mTouch.x = 0.1f;
         mTouch.y = 0.1f;
+        touch_down = 0;
         calcCornerXY(mTouch.x, mTouch.y);
     }
 

@@ -60,20 +60,26 @@ public class OverlappedWidget extends BaseReadView {
     @Override
     protected void drawCurrentPageArea(Canvas canvas) {
         mPath0.reset();
-        mPath0.moveTo(mTouch.x, 0);
-        mPath0.lineTo(mTouch.x, mScreenHeight);
-        mPath0.lineTo(mScreenWidth, mScreenHeight);
-        mPath0.lineTo(mScreenWidth, 0);
-        mPath0.lineTo(mTouch.x, 0);
-        mPath0.close();
 
         canvas.save();
         if (actiondownX > mScreenWidth >> 1) {
+            mPath0.moveTo(mScreenWidth + touch_down, 0);
+            mPath0.lineTo(mScreenWidth + touch_down, mScreenHeight);
+            mPath0.lineTo(mScreenWidth, mScreenHeight);
+            mPath0.lineTo(mScreenWidth, 0);
+            mPath0.lineTo(mScreenWidth + touch_down, 0);
+            mPath0.close();
             canvas.clipPath(mPath0, Region.Op.XOR);
-            canvas.drawBitmap(mCurPageBitmap, -(mScreenWidth - mTouch.x), 0, null);
+            canvas.drawBitmap(mCurPageBitmap, touch_down, 0, null);
         } else {
+            mPath0.moveTo(touch_down, 0);
+            mPath0.lineTo(touch_down, mScreenHeight);
+            mPath0.lineTo(mScreenWidth, mScreenHeight);
+            mPath0.lineTo(mScreenWidth, 0);
+            mPath0.lineTo(touch_down, 0);
+            mPath0.close();
             canvas.clipPath(mPath0);
-            canvas.drawBitmap(mCurPageBitmap, mTouch.x, 0, null);
+            canvas.drawBitmap(mCurPageBitmap, touch_down, 0, null);
         }
         try {
             canvas.restore();
@@ -88,10 +94,12 @@ public class OverlappedWidget extends BaseReadView {
         GradientDrawable shadow;
         if (actiondownX > mScreenWidth >> 1) {
             shadow = mBackShadowDrawableLR;
+            shadow.setBounds((int) (mScreenWidth + touch_down - 5), 0, (int) (mScreenWidth + touch_down + 5), mScreenHeight);
+
         } else {
             shadow = mBackShadowDrawableRL;
+            shadow.setBounds((int) (touch_down - 5), 0, (int) (touch_down + 5), mScreenHeight);
         }
-        shadow.setBounds((int) mTouch.x - 5, 0, (int) mTouch.x + 5, mScreenHeight);
         shadow.draw(canvas);
         try {
             canvas.restore();
@@ -138,8 +146,13 @@ public class OverlappedWidget extends BaseReadView {
         if (mScroller.computeScrollOffset()) {
             float x = mScroller.getCurrX();
             float y = mScroller.getCurrY();
-            mTouch.x = x;
+            if (actiondownX > mScreenWidth >> 1) {
+                touch_down = -(mScreenWidth - x);
+            } else {
+                touch_down = x;
+            }
             mTouch.y = y;
+            //touch_down = mTouch.x - actiondownX;
             postInvalidate();
         }
     }
@@ -148,11 +161,12 @@ public class OverlappedWidget extends BaseReadView {
     protected void startAnimation() {
         int dx;
         if (actiondownX > mScreenWidth / 2) {
-            dx = (int) (-mTouch.x);
+            dx = (int) -(mScreenWidth + touch_down);
+            mScroller.startScroll((int) (mScreenWidth + touch_down), (int) mTouch.y, dx, 0, 700);
         } else {
-            dx = (int) (mScreenWidth - mTouch.x);
+            dx = (int) (mScreenWidth - touch_down);
+            mScroller.startScroll((int) touch_down, (int) mTouch.y, dx, 0, 700);
         }
-        mScroller.startScroll((int) mTouch.x, (int) mTouch.y, dx, 0, 700);
     }
 
     @Override
