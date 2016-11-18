@@ -524,7 +524,14 @@ public class PageFactory {
      * @return index 0：起始位置 1：结束位置
      */
     public int[] getPosition() {
-        return new int[]{curBeginPos, curEndPos};
+        return new int[]{currentChapter, curBeginPos, curEndPos};
+    }
+
+    public String getHeadLineStr() {
+        if (mLines != null && mLines.size() > 1) {
+            return mLines.get(0);
+        }
+        return "";
     }
 
     /**

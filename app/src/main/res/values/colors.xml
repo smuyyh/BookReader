@@ -76,7 +76,7 @@
     <!--阅读页顶部字体颜色-->
     <color name="book_read_top_text">#D1D1D1</color>
     <!--阅读页底部字体颜色-->
-    <color name="book_read_bottom_text">#888888</color>
+    <color name="book_read_bottom_text">#e6e6e6</color>
 
     <!--性别选择颜色值-->
     <color name="gender_select_male_normal">#B0E2FF</color>

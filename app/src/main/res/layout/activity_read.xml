@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2016 JustWayward Team
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -112,9 +111,11 @@
         android:singleLine="true"
         android:text="@string/book_read_download_progress"
         android:textColor="@color/white"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <include layout="@layout/layout_read_aa_set" />
+
+    <include layout="@layout/layout_read_mark" />
 
     <LinearLayout
         android:id="@+id/llBookReadBottom"

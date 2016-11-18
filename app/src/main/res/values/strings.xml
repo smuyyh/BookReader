@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2016 JustWayward Team
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -57,6 +56,9 @@
     <string name="book_read_download">缓存</string>
     <string name="book_read_mark">书签</string>
     <string name="book_read_toc">目录</string>
+    <string name="add_bookmark">新增书签</string>
+    <string name="manage_bookmark">管理</string>
+    <string name="clear_bookmark">清除</string>
     <string name="book_read_download_error">网络异常，已取消下载</string>
     <string name="book_read_download_complete">缓存完成，失败%1$d章</string>
     <string name="book_read_alreday_download">已缓存过:%1$s(%2$d/%3$d)...</string>

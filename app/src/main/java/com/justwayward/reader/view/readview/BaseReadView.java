@@ -324,4 +324,22 @@ public abstract class BaseReadView extends View {
     public void setTime(String time) {
         pagefactory.setTime(time);
     }
+
+    public void setPosition(int[] pos) {
+        int ret = pagefactory.openBook(pos[0], new int[]{pos[1], pos[2]});
+        if (ret == 0) {
+            listener.onLoadChapterFailure(pos[0]);
+            return;
+        }
+        pagefactory.onDraw(mCurrentPageCanvas);
+        postInvalidate();
+    }
+
+    public int[] getReadPos() {
+        return pagefactory.getPosition();
+    }
+
+    public String getHeadLine() {
+        return pagefactory.getHeadLineStr().replaceAll("@", "");
+    }
 }
