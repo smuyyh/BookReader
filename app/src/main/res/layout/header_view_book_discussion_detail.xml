@@ -81,7 +81,7 @@
         android:lineSpacingExtra="1dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:text=""
+        android:text="safsdsassafs"
         android:textColor="@color/common_h2"
         android:textSize="16dp" />
 

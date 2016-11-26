@@ -30,7 +30,7 @@
         android:background="@color/colorPrimary"
         android:orientation="horizontal"
         rvp:indicator_color="@color/common_bg"
-        rvp:indicator_style="triangle"
+        rvp:indicator_style="line"
         rvp:item_count="3"
         rvp:text_color_hightlight="@color/white"
         rvp:text_color_normal="@color/light_gray" />

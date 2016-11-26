@@ -64,7 +64,7 @@ import java.util.List;
  * <p>To use something other than TextViews for the array display, for instance, ImageViews,
  * or to have some of data besides toString() results fill the views,
  */
-abstract public class RecyclerArrayAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> {
+public abstract  class RecyclerArrayAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> {
     /**
      * Contains the list of objects that represent the data of this ArrayAdapter.
      * The content of this list is referred to as "the array" in the documentation.
@@ -245,6 +245,7 @@ abstract public class RecyclerArrayAdapter<T> extends RecyclerView.Adapter<BaseV
         FrameLayout container = new FrameLayout(getContext());
         container.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         LayoutInflater.from(getContext()).inflate(res, container);
+//        Log.i("setMore","子数量"+container.getChildCount());
         getEventDelegate().setMore(container, listener);
         return container;
     }
@@ -566,7 +567,7 @@ abstract public class RecyclerArrayAdapter<T> extends RecyclerView.Adapter<BaseV
         return viewHolder;
     }
 
-    abstract public BaseViewHolder OnCreateViewHolder(ViewGroup parent, int viewType);
+    public abstract BaseViewHolder OnCreateViewHolder(ViewGroup parent, int viewType);
 
 
     @Override
@@ -578,7 +579,9 @@ abstract public class RecyclerArrayAdapter<T> extends RecyclerView.Adapter<BaseV
         }
 
         int i = position - headers.size() - mObjects.size();
+        Log.i("onBindViewHolder","position="+position+"i="+i+"Object="+mObjects.size());
         if (footers.size() != 0 && i >= 0) {
+            Log.i("onBindViewHolder","i="+i);
             footers.get(i).onBindView(holder.itemView);
             return;
         }

@@ -11,7 +11,8 @@
         </shape>
     </item>
     <item android:id="@android:id/progress">
-        <clip>
+        <clip android:clipOrientation="horizontal"
+            android:gravity="left">
             <shape>
                 <size android:height="3dp" />
 

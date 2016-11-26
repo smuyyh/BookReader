@@ -54,6 +54,10 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 
+/**
+ * 主题书单
+ */
+
 public class SubjectBookListActivity extends BaseActivity implements SubjectBookListContract.View, OnRvItemClickListener<String> {
 
     @Bind(R.id.indicatorSubject)

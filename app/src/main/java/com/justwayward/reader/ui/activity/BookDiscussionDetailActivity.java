@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseRVActivity;
 import com.justwayward.reader.base.Constant;
@@ -43,6 +44,7 @@ import com.justwayward.reader.view.BookContentTextView;
 import com.justwayward.reader.view.SupportDividerItemDecoration;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
 import com.yuyh.easyadapter.glide.GlideCircleTransform;
+import com.yuyh.easyadapter.glide.GlideRoundTransform;
 
 import java.util.ArrayList;
 import java.util.List;

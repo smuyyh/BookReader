@@ -4,5 +4,4 @@
     <item android:drawable="@drawable/seekbar_thumb_selected" android:state_pressed="true"/>
     <item android:drawable="@drawable/seekbar_thumb_selected" android:state_focused="true"/>
     <item android:drawable="@drawable/seekbar_thumb_normal"></item>
-
 </selector>

@@ -117,6 +117,8 @@ public class TopRankActivity extends BaseActivity implements TopRankContract.Vie
             }
         }
         if (collapse.size() > 0) {
+            maleGroups.add(new RankingList.MaleBean("自家的排行榜"));
+            maleChilds.add(collapse);
             maleGroups.add(new RankingList.MaleBean("别人家的排行榜"));
             maleChilds.add(collapse);
         }

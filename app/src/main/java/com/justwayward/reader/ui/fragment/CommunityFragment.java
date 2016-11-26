@@ -15,6 +15,7 @@
  */
 package com.justwayward.reader.ui.fragment;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -30,6 +31,7 @@ import com.justwayward.reader.ui.activity.BookHelpActivity;
 import com.justwayward.reader.ui.activity.GirlBookDiscussionActivity;
 import com.justwayward.reader.ui.adapter.FindAdapter;
 import com.justwayward.reader.view.SupportDividerItemDecoration;
+import com.justwayward.reader.view.recyclerview.decoration.DividerDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +65,8 @@ public class CommunityFragment extends BaseFragment implements OnRvItemClickList
     public void configViews() {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.addItemDecoration(new SupportDividerItemDecoration(mContext, LinearLayoutManager.VERTICAL, true));
+        mRecyclerView.addItemDecoration(new SupportDividerItemDecoration(mContext, LinearLayoutManager.VERTICAL,true));
+//        mRecyclerView.addItemDecoration(new DividerDecoration(ContextCompat.getColor(mContext, R.color.gender_select_female_pressed),1,1,1));
 
         mAdapter = new FindAdapter(mContext, mList, this);
         mRecyclerView.setAdapter(mAdapter);
