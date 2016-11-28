@@ -1,3 +1,18 @@
+/**
+ * Copyright 2016 JustWayward Team
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.justwayward.reader.base;
 
 import android.content.Context;
@@ -18,7 +33,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.Field;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -32,8 +46,6 @@ import java.util.Map;
  */
 public class CrashHandler implements UncaughtExceptionHandler {
 
-    public static final String TAG = "CrashHandler";
-
     //系统默认的UncaughtException处理类
     private UncaughtExceptionHandler mDefaultHandler;
     //CrashHandler实例
@@ -41,14 +53,8 @@ public class CrashHandler implements UncaughtExceptionHandler {
     //程序的Context对象
     private Context mContext;
     //用来存储设备信息和异常信息
-    private Map<String, String> infos = new HashMap<String, String>();
+    private Map<String, String> infos = new HashMap<>();
 
-    //用于格式化日期,作为日志文件名的一部分
-    private DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-
-    /**
-     * 保证只有一个CrashHandler实例
-     */
     private CrashHandler() {
     }
 

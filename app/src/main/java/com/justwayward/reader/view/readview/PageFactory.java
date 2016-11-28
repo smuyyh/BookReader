@@ -1,3 +1,18 @@
+/**
+ * Copyright 2016 JustWayward Team
+ * <p/>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.justwayward.reader.view.readview;
 
 import android.content.Context;
@@ -32,6 +47,7 @@ import java.util.List;
 import java.util.Vector;
 
 public class PageFactory {
+    private Context mContext;
     /**
      * 屏幕宽高
      */
@@ -94,12 +110,14 @@ public class PageFactory {
 
     public PageFactory(Context context, String bookId, List<BookToc.mixToc.Chapters> chaptersList) {
         this(context, ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight(),
-                SettingManager.getInstance().getReadFontSize(bookId),
+                //SettingManager.getInstance().getReadFontSize(bookId),
+                SettingManager.getInstance().getReadFontSize(),
                 bookId, chaptersList);
     }
 
     public PageFactory(Context context, int width, int height, int fontSize, String bookId,
                        List<BookToc.mixToc.Chapters> chaptersList) {
+        mContext = context;
         mWidth = width;
         mHeight = height;
         mFontSize = fontSize;
@@ -129,7 +147,6 @@ public class PageFactory {
         this.chaptersList = chaptersList;
 
         time = dateFormat.format(new Date());
-        batteryView = (ProgressBar) LayoutInflater.from(context).inflate(R.layout.layout_battery_progress, null);
     }
 
     public File getBookFile(int chapter) {
@@ -208,7 +225,6 @@ public class PageFactory {
                 if (line.endsWith("@")) {
                     canvas.drawText(line.substring(0, line.length() - 1), marginWidth, y, mPaint);
                     y += mLineSpace;
-                    canvas.drawText(" ", marginWidth, y, mPaint);
                 } else {
                     canvas.drawText(line, marginWidth, y, mPaint);
                 }
@@ -270,7 +286,7 @@ public class PageFactory {
             }
             curEndPos = curBeginPos; // 6.最后结束指针指向下一段的开始处
             paraSpace += mLineSpace;
-            mPageLineCount = (mVisibleHeight - paraSpace) / (mFontSize + mLineSpace); // 添加段落间距，实时更新行数
+            mPageLineCount = (mVisibleHeight - paraSpace) / (mFontSize + mLineSpace); // 添加段落间距，实时更新容纳行数
         }
     }
 
@@ -292,8 +308,8 @@ public class PageFactory {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            strParagraph = strParagraph.replaceAll("\r\n", "  ");
-            strParagraph = strParagraph.replaceAll("\n", " "); // 段落中的换行符去掉，绘制的时候再换行
+            strParagraph = strParagraph.replaceAll("\r\n", "  ")
+                    .replaceAll("\n", " "); // 段落中的换行符去掉，绘制的时候再换行
 
             while (strParagraph.length() > 0) {
                 int paintSize = mPaint.breakText(strParagraph, true, mVisibleWidth, null);
@@ -366,7 +382,7 @@ public class PageFactory {
             }
             currentPage++;
         }
-        SettingManager.getInstance().saveReadProgress(bookId, currentChapter, curBeginPos, curEndPos);
+        //SettingManager.getInstance().saveReadProgress(bookId, currentChapter, curBeginPos, curEndPos);
         return lines;
     }
 
@@ -429,9 +445,9 @@ public class PageFactory {
     /**
      * 跳转下一页
      */
-    public boolean nextPage() {
+    public BookStatus nextPage() {
         if (!hasNextPage()) { // 最后一章的结束页
-            return false;
+            return BookStatus.NO_NEXT_PAGE;
         } else {
             tempChapter = currentChapter;
             tempBeginPos = curBeginPos;
@@ -440,7 +456,8 @@ public class PageFactory {
                 int ret = openBook(currentChapter, new int[]{0, 0}); // 打开下一章
                 if (ret == 0) {
                     onLoadChapterFailure(currentChapter);
-                    return false;
+                    currentChapter--;
+                    return BookStatus.NEXT_CHAPTER_LOAD_FAILURE;
                 } else {
                     currentPage = 0;
                     onChapterChanged(currentChapter);
@@ -451,15 +468,15 @@ public class PageFactory {
             mLines = pageDown(); // 读取一页内容
             onPageChanged(currentChapter, ++currentPage);
         }
-        return true;
+        return BookStatus.LOAD_SUCCESS;
     }
 
     /**
      * 跳转上一页
      */
-    public boolean prePage() {
+    public BookStatus prePage() {
         if (!hasPrePage()) { // 第一章第一页
-            return false;
+            return BookStatus.NO_PRE_PAGE;
         } else {
             // 保存当前页的值
             tempChapter = currentChapter;
@@ -469,13 +486,14 @@ public class PageFactory {
                 int ret = openBook(currentChapter, new int[]{0, 0});
                 if (ret == 0) {
                     onLoadChapterFailure(currentChapter);
-                    return false;
+                    currentChapter++;
+                    return BookStatus.PRE_CHAPTER_LOAD_FAILURE;
                 } else { // 跳转到上一章的最后一页
                     mLines.clear();
                     mLines = pageLast();
                     onChapterChanged(currentChapter);
                     onPageChanged(currentChapter, currentPage);
-                    return true;
+                    return BookStatus.LOAD_SUCCESS;
                 }
             }
             mLines.clear();
@@ -483,7 +501,7 @@ public class PageFactory {
             mLines = pageDown(); // 读取一页内容
             onPageChanged(currentChapter, --currentPage);
         }
-        return true;
+        return BookStatus.LOAD_SUCCESS;
     }
 
     public void cancelPage() {
@@ -506,7 +524,14 @@ public class PageFactory {
      * @return index 0：起始位置 1：结束位置
      */
     public int[] getPosition() {
-        return new int[]{curBeginPos, curEndPos};
+        return new int[]{currentChapter, curBeginPos, curEndPos};
+    }
+
+    public String getHeadLineStr() {
+        if (mLines != null && mLines.size() > 1) {
+            return mLines.get(0);
+        }
+        return "";
     }
 
     /**
@@ -579,19 +604,23 @@ public class PageFactory {
             listener.onLoadChapterFailure(chapter);
     }
 
-    public Bitmap convertBetteryBitmap() {
+    public void convertBetteryBitmap() {
+        batteryView = (ProgressBar) LayoutInflater.from(mContext).inflate(R.layout.layout_battery_progress, null);
+        batteryView.setProgressDrawable(ContextCompat.getDrawable(mContext,
+                SettingManager.getInstance().getReadTheme() < 4 ?
+                        R.drawable.seekbar_battery_bg : R.drawable.seekbar_battery_night_bg));
         batteryView.setProgress(battery);
         batteryView.setDrawingCacheEnabled(true);
         batteryView.measure(View.MeasureSpec.makeMeasureSpec(ScreenUtils.dpToPxInt(26), View.MeasureSpec.EXACTLY),
                 View.MeasureSpec.makeMeasureSpec(ScreenUtils.dpToPxInt(14), View.MeasureSpec.EXACTLY));
         batteryView.layout(0, 0, batteryView.getMeasuredWidth(), batteryView.getMeasuredHeight());
         batteryView.buildDrawingCache();
-        return batteryView.getDrawingCache();
+        batteryBitmap = batteryView.getDrawingCache();
     }
 
     public void setBattery(int battery) {
         this.battery = battery;
-        batteryBitmap = convertBetteryBitmap();
+        convertBetteryBitmap();
     }
 
     public void setTime(String time) {
