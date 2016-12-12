@@ -20,6 +20,9 @@ import android.content.Context;
 import dagger.Module;
 import dagger.Provides;
 
+/**
+ * 上下文对象模块
+ */
 @Module
 public class AppModule {
     private Context context;

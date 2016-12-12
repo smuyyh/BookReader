@@ -15,10 +15,11 @@
  */
 package com.justwayward.reader.module;
 
+import android.util.Log;
+
 import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.api.support.HeaderInterceptor;
 import com.justwayward.reader.api.support.LoggingInterceptor;
-import com.justwayward.reader.utils.LogUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -35,7 +36,8 @@ public class BookApiModule {
         LoggingInterceptor logging = new LoggingInterceptor(new MyLog());
         logging.setLevel(LoggingInterceptor.Level.BODY);
 
-        OkHttpClient.Builder builder = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS)
+        OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
                 .connectTimeout(20 * 1000, TimeUnit.MILLISECONDS)
                 .readTimeout(20 * 1000, TimeUnit.MILLISECONDS)
                 .retryOnConnectionFailure(true) // 失败重发
@@ -46,13 +48,15 @@ public class BookApiModule {
 
     @Provides
     protected BookApi provideBookService(OkHttpClient okHttpClient) {
+        Log.d("BookApiModule", "Msg:provideBookService() Called");
+        //将实例化的okHttpClient对象传入BookAPI对象里面
         return BookApi.getInstance(okHttpClient);
     }
 
     public static class MyLog implements LoggingInterceptor.Logger {
         @Override
         public void log(String message) {
-            LogUtils.i("oklog: " + message);
+            //LogUtils.i("Msg: " + message);
         }
     }
 }

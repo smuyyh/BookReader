@@ -21,6 +21,7 @@ import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.ReaderApplication;
@@ -49,6 +50,9 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
+ * 下载书籍Service.
+ * 启动Service 生命周期：onCreate--onStartCommand--onDestroy
+ *
  * @author yuyh.
  * @date 16/8/13.
  */
@@ -65,26 +69,34 @@ public class DownloadBookService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.d("DownloadBookService", "Msg:onCreate() Called");
+        //EventBus注册
         EventBus.getDefault().register(this);
+        //实例化日志拦截器
         LoggingInterceptor logging = new LoggingInterceptor(new BookApiModule.MyLog());
+
         logging.setLevel(LoggingInterceptor.Level.BODY);
+        //获取bookAPI实例
+        Log.i("DownloadBookService", "Msg:onCreate==getReaderApi");
         bookApi = ReaderApplication.getsInstance().getAppComponent().getReaderApi();
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
+        Log.d("DownloadBookService", "Msg:onBind() Called");
         return null;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
+        Log.d("DownloadBookService", "Msg:onStartCommand() Called");
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
+        Log.d("DownloadBookService", "Msg:onDestroy() Called");
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
@@ -103,6 +115,7 @@ public class DownloadBookService extends Service {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public synchronized void addToDownloadQueue(DownloadQueue queue) {
+        Log.d("DownloadBookService", "Msg:addToDownloadQueue() Called");
         if (!TextUtils.isEmpty(queue.bookId)) {
             boolean exists = false;
             // 判断当前书籍缓存任务是否存在

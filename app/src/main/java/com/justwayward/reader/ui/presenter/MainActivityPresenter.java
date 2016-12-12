@@ -50,10 +50,23 @@ public class MainActivityPresenter extends RxPresenter<MainContract.View> implem
         this.bookApi = bookApi;
     }
 
+    /**
+     * 执行登录QQ授权登录成功之后的操作
+     *
+     * @param uid
+     * @param token
+     * @param platform
+     */
     @Override
     public void login(String uid, String token, String platform) {
-        Subscription rxSubscription = bookApi.login(uid, token, platform).subscribeOn(Schedulers.io())
+        //添加订阅者实现
+        //mPresenter.login(result.openid, result.access_token, "QQ");
+        Subscription rxSubscription = bookApi.login(uid, token, platform)
+                //监听IO线程
+                .subscribeOn(Schedulers.io())
+                //运行在主线程
                 .observeOn(AndroidSchedulers.mainThread())
+                //监听操作
                 .subscribe(new Observer<Login>() {
                     @Override
                     public void onNext(Login data) {
@@ -72,6 +85,7 @@ public class MainActivityPresenter extends RxPresenter<MainContract.View> implem
                         LogUtils.e("login" + e.toString());
                     }
                 });
+        //添加订阅
         addSubscrebe(rxSubscription);
     }
 

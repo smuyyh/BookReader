@@ -21,17 +21,36 @@ package com.justwayward.reader.base;
  */
 public interface BaseContract {
 
+    /**
+     * 基础Precenter
+     *
+     * @param <T>
+     */
     interface BasePresenter<T> {
 
+        /**
+         * 绑定View
+         *
+         * @param view
+         */
         void attachView(T view);
 
+        /**
+         * 解绑View
+         */
         void detachView();
     }
 
     interface BaseView {
 
+        /**
+         * 显示异常错误信息
+         */
         void showError();
 
+        /**
+         * 加载完成
+         */
         void complete();
 
     }

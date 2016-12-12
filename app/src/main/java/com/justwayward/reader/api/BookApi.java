@@ -66,13 +66,20 @@ public class BookApi {
 
     private BookApiService service;
 
+    /**
+     * 这是BookAPI的构造函数
+     *
+     * @param okHttpClient
+     */
     public BookApi(OkHttpClient okHttpClient) {
+        //实例化retrofit对象
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constant.API_BASE_URL)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create()) // 添加Rx适配器
                 .addConverterFactory(GsonConverterFactory.create()) // 添加Gson转换器
-                .client(okHttpClient)
+                .client(okHttpClient) //添加网络请求框架
                 .build();
+        //将书籍请求网络接口列表传给retrofit
         service = retrofit.create(BookApiService.class);
     }
 

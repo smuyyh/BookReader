@@ -60,6 +60,9 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.OnClick;
 
+/**
+ * 推荐页面的RecommendFragment
+ */
 public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recommend.RecommendBooks> implements RecommendContract.View, RecyclerArrayAdapter.OnItemLongClickListener {
 
     @Bind(R.id.llBatchManagement)

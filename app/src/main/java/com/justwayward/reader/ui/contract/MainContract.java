@@ -18,21 +18,39 @@ package com.justwayward.reader.ui.contract;
 import com.justwayward.reader.base.BaseContract;
 
 /**
+ * 主页的订阅合同
+ *
  * @author yuyh.
  * @date 2016/8/3.
  */
 public interface MainContract {
 
     interface View extends BaseContract.BaseView {
+        /**
+         * 登录成功
+         */
         void loginSuccess();
 
+        /**
+         * 同步数据完成
+         */
         void syncBookShelfCompleted();
     }
 
     interface Presenter<T> extends BaseContract.BasePresenter<T> {
 
+        /**
+         * 登录
+         *
+         * @param uid
+         * @param token
+         * @param platform
+         */
         void login(String uid, String token, String platform);
 
+        /**
+         * 同步书架
+         */
         void syncBookShelf();
     }
 

@@ -176,6 +176,9 @@ abstract public class RecyclerArrayAdapter<T> extends RecyclerView.Adapter<BaseV
         mEventDelegate.pauseLoadMore();
     }
 
+    /**
+     * 回来之后加载更多
+     */
     public void resumeMore() {
         if (mEventDelegate == null)
             throw new NullPointerException("You should invoking setLoadMore() first");

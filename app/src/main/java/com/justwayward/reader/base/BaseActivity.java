@@ -23,6 +23,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -44,28 +45,44 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected int statusBarColor = 0;
     protected View statusBarView = null;
     private boolean mNowMode;
+    /**
+     * 自定义的进度条
+     */
     private CustomDialog dialog;//进度条
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(this.getClass().getSimpleName(), "Msg:onCreate() Called");
+        //Activity的布局文件
         setContentView(getLayoutId());
+
         if (statusBarColor == 0) {
             statusBarView = StatusBarCompat.compat(this, ContextCompat.getColor(this, R.color.colorPrimaryDark));
         } else if (statusBarColor != -1) {
             statusBarView = StatusBarCompat.compat(this, statusBarColor);
         }
         transparent19and20();
+
         mContext = this;
+
+        //ButterKnife的初始化
         ButterKnife.bind(this);
+
+        //创建ActivityComponent
         setupActivityComponent(ReaderApplication.getsInstance().getAppComponent());
+
         mCommonToolbar = ButterKnife.findById(this, R.id.common_toolbar);
+
+        //初始化ToolBar
         if (mCommonToolbar != null) {
             initToolBar();
             setSupportActionBar(mCommonToolbar);
         }
+        //初始化数据
         initDatas();
         configViews();
+        //获取当前的SharedPreferencesUtil的中间存储的夜间模式
         mNowMode = SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT);
     }
 
@@ -80,6 +97,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d(this.getClass().getSimpleName(), "Msg:onResume() Called");
         if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false) != mNowMode) {
             if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -93,6 +111,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d(this.getClass().getSimpleName(), "Msg:onCreate() onDestroy");
         ButterKnife.unbind(this);
         dismissDialog();
     }
@@ -173,7 +192,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         WindowManager.LayoutParams attrs = getWindow().getAttributes();
         attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
         getWindow().setAttributes(attrs);
-        if(statusBarView != null){
+        if (statusBarView != null) {
             statusBarView.setBackgroundColor(Color.TRANSPARENT);
         }
     }
@@ -182,7 +201,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         WindowManager.LayoutParams attrs = getWindow().getAttributes();
         attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
         getWindow().setAttributes(attrs);
-        if(statusBarView != null){
+        if (statusBarView != null) {
             statusBarView.setBackgroundColor(statusBarColor);
         }
     }

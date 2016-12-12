@@ -15,61 +15,63 @@
   ~ limitations under the License.
   -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity" >
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context=".MainActivity">
     <item
         android:id="@+id/action_search"
+        android:icon="@drawable/abc_ic_search_api_mtrl_alpha"
         android:orderInCategory="80"
         android:title="action_search"
-        android:icon="@drawable/abc_ic_search_api_mtrl_alpha"
         app:showAsAction="ifRoom"/>
+    <!--app:showAsAction="ifRoom"如果还有空间的话，就显示在外面-->
+    
 
     <item
         android:id="@+id/action_login"
-        android:title="@string/menu_main_please_login"
         android:icon="@drawable/home_menu_0"
-        app:showAsAction="never" />
+        android:title="@string/menu_main_please_login"
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/action_my_message"
-        android:title="@string/menu_main_my_message"
         android:icon="@drawable/home_menu_1"
-        app:showAsAction="never" />
+        android:title="@string/menu_main_my_message"
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/action_sync_bookshelf"
-        android:title="@string/menu_main_sync_bookshelf"
         android:icon="@drawable/home_menu_2"
-        app:showAsAction="never" />
+        android:title="@string/menu_main_sync_bookshelf"
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/action_scan_local_book"
-        android:title="@string/menu_main_scan_local_book"
         android:icon="@drawable/home_menu_3"
-        app:showAsAction="never" />
+        android:title="@string/menu_main_scan_local_book"
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/action_wifi_book"
-        android:title="@string/menu_main_wifi_book"
         android:icon="@drawable/home_menu_4"
-        app:showAsAction="never" />
+        android:title="@string/menu_main_wifi_book"
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/action_feedback"
-        android:title="@string/menu_main_feedback"
         android:icon="@drawable/home_menu_5"
-        app:showAsAction="never" />
+        android:title="@string/menu_main_feedback"
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/action_night_mode"
-        android:title="@string/menu_main_night_mode"
         android:icon="@drawable/theme_night"
-        app:showAsAction="never" />
+        android:title="@string/menu_main_night_mode"
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/action_settings"
-        android:title="@string/menu_main_settings"
         android:icon="@drawable/home_menu_6"
-        app:showAsAction="never" />
+        android:title="@string/menu_main_settings"
+        app:showAsAction="never"/>
 </menu>

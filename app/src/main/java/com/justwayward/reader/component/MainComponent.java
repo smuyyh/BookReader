@@ -22,12 +22,22 @@ import com.justwayward.reader.ui.fragment.RecommendFragment;
 
 import dagger.Component;
 
+/**
+ * 依赖AppComponent中的上下文对象
+ */
 @Component(dependencies = AppComponent.class)
 public interface MainComponent {
+    /**
+     * 注册自身？？？这是什么意思？？
+     *
+     * @param activity
+     * @return
+     */
     MainActivity inject(MainActivity activity);
 
     RecommendFragment inject(RecommendFragment fragment);
 
     SettingActivity inject(SettingActivity activity);
+
     WifiBookActivity inject(WifiBookActivity activity);
 }

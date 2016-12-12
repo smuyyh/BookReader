@@ -57,10 +57,19 @@ public abstract class BaseRVFragment<T1 extends BaseContract.BasePresenter, T2> 
             mPresenter.attachView(this);
     }
 
+    /**
+     * 初始化数据适配器
+     *
+     * @param refreshable
+     * @param loadmoreable
+     */
     protected void initAdapter(boolean refreshable, boolean loadmoreable) {
         if (mRecyclerView != null) {
+            //设置布局适配器
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getSupportActivity()));
+            //设置Item装饰者
             mRecyclerView.setItemDecoration(ContextCompat.getColor(activity, R.color.common_divider_narrow), 1, 0, 0);
+
             mRecyclerView.setAdapterWithProgress(mAdapter);
         }
         if (mAdapter != null) {

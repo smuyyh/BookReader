@@ -33,6 +33,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.view.menu.MenuBuilder;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -105,14 +106,18 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
     public IUiListener loginListener;
     private GenderPopupWindow genderPopupWindow;
 
+    /**
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //启动下载书籍Service
         startService(new Intent(this, DownloadBookService.class));
 
         initDatas();
         configViews();
-
+        //实例化QQ授期登录的对象
         mTencent = Tencent.createInstance("1105670298", MainActivity.this);
     }
 
@@ -123,6 +128,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
+        Log.d("MainActivity", "Msg:setupActivityComponent() Called");
         DaggerMainComponent.builder()
                 .appComponent(appComponent)
                 .build()
@@ -139,6 +145,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
     public void initDatas() {
         mDatas = Arrays.asList(getResources().getStringArray(R.array.home_tabs));
         mTabContents = new ArrayList<>();
+        //填充标签页数据
         mTabContents.add(new RecommendFragment());
         mTabContents.add(new CommunityFragment());
         mTabContents.add(new FindFragment());
@@ -203,9 +210,11 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
                 break;
             case R.id.action_login:
                 if (popupWindow == null) {
+                    //实例化登录的popupwindow
                     popupWindow = new LoginPopupWindow(this);
                     popupWindow.setLoginTypeListener(this);
                 }
+                //设置显示popupWindow的位置
                 popupWindow.showAtLocation(mCommonToolbar, Gravity.CENTER, 0, 0);
                 break;
             case R.id.action_my_message:
@@ -216,6 +225,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
                 popupWindow.showAtLocation(mCommonToolbar, Gravity.CENTER, 0, 0);
                 break;
             case R.id.action_sync_bookshelf:
+                //同步书架上的书籍
                 showDialog();
                 mPresenter.syncBookShelf();
                /* if (popupWindow == null) {
@@ -301,6 +311,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
 
     @Override
     public void loginSuccess() {
+        //登录成功
         ToastUtils.showSingleToast("登陆成功");
     }
 
@@ -310,11 +321,20 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
         EventBus.getDefault().post(new RefreshCollectionListEvent());
     }
 
+    /**
+     * 主页登录的PopupWindow的点击的功能实现
+     *
+     * @param view
+     * @param type
+     */
     @Override
     public void onLogin(ImageView view, String type) {
         if (type.equals("QQ")) {
+            //如果会员邮箱
             if (!mTencent.isSessionValid()) {
-                if (loginListener == null) loginListener = new BaseUIListener();
+                if (loginListener == null) {
+                    loginListener = new BaseUIListener();
+                }
                 mTencent.login(this, "all", loginListener);
             }
         }
@@ -333,6 +353,9 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
     }
 
 
+    /**
+     * QQ授权登录的回调结果
+     */
     public class BaseUIListener implements IUiListener {
 
         @Override
@@ -342,6 +365,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
             Gson gson = new Gson();
             TencentLoginResult result = gson.fromJson(json, TencentLoginResult.class);
             LogUtils.e(result.toString());
+            //传给mPresenter执行登录成功过的的操作。平台信息是QQ
             mPresenter.login(result.openid, result.access_token, "QQ");
         }
 

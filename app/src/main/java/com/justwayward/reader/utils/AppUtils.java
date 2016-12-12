@@ -24,6 +24,9 @@ import android.os.Looper;
 public class AppUtils {
 
     private static Context mContext;
+    /**
+     * 记录UI线程
+     */
     private static Thread mUiThread;
 
     private static Handler sHandler = new Handler(Looper.getMainLooper());

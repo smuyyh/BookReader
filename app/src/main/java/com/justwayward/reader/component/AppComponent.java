@@ -30,8 +30,18 @@ import dagger.Component;
 @Component(modules = {AppModule.class, BookApiModule.class})
 public interface AppComponent {
 
+    /**
+     * Application的上下文对象
+     *
+     * @return
+     */
     Context getContext();
 
+    /**
+     * 书籍请求的API的对象
+     *
+     * @return
+     */
     BookApi getReaderApi();
 
 }

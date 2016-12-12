@@ -42,6 +42,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * 简易的recyclerView的实现
+ */
 public class EasyRecyclerView extends FrameLayout {
     private Context mContext;
 
@@ -93,13 +96,17 @@ public class EasyRecyclerView extends FrameLayout {
     public EasyRecyclerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mContext = context;
-        if (attrs != null)
+        if (attrs != null) {
             initAttrs(attrs);
+        }
+
         initView();
     }
 
     protected void initAttrs(AttributeSet attrs) {
+        //
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.superrecyclerview);
+
         try {
             mClipToPadding = a.getBoolean(R.styleable.superrecyclerview_recyclerClipToPadding, false);
             mPadding = (int) a.getDimension(R.styleable.superrecyclerview_recyclerPadding, -1.0f);
@@ -124,9 +131,10 @@ public class EasyRecyclerView extends FrameLayout {
         }
         //生成主View
         View v = LayoutInflater.from(getContext()).inflate(R.layout.common_recyclerview, this);
+        //拿到刷新View
         mPtrLayout = (SwipeRefreshLayout) v.findViewById(R.id.ptr_layout);
         mPtrLayout.setEnabled(false);
-
+        //加载进度的View
         mProgressView = (ViewGroup) v.findViewById(R.id.progress);
         if (mProgressId != 0) LayoutInflater.from(getContext()).inflate(mProgressId, mProgressView);
         mEmptyView = (ViewGroup) v.findViewById(R.id.empty);

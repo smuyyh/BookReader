@@ -18,6 +18,7 @@ package com.justwayward.reader;
 import android.app.Application;
 import android.content.Context;
 import android.support.v7.app.AppCompatDelegate;
+import android.util.Log;
 
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.base.CrashHandler;
@@ -48,9 +49,11 @@ public class ReaderApplication extends Application {
         this.sInstance = this;
         initCompoent();
         AppUtils.init(this);
+        //初始化异常拦截器
         CrashHandler.getInstance().init(this);
         initPrefs();
         initNightMode();
+
         //initHciCloud();
     }
 
@@ -58,7 +61,11 @@ public class ReaderApplication extends Application {
         return sInstance;
     }
 
+    /**
+     * 初始化Dagger组件
+     */
     private void initCompoent() {
+        Log.i("ReaderApplication", "Msg:initCompoent");
         appComponent = DaggerAppComponent.builder()
                 .bookApiModule(new BookApiModule())
                 .appModule(new AppModule(this))
@@ -66,6 +73,7 @@ public class ReaderApplication extends Application {
     }
 
     public AppComponent getAppComponent() {
+        Log.d("ReaderApplication", "Msg:getAppComponent() Called");
         return appComponent;
     }
 

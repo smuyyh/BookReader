@@ -26,6 +26,8 @@ import android.view.ViewGroup;
 import com.justwayward.reader.R;
 
 /**
+ * 状态栏组建类
+ *
  * @author yuyh.
  * @date 16/8/9.
  */

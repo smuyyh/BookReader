@@ -31,6 +31,8 @@ import android.widget.PopupWindow;
 import com.justwayward.reader.R;
 
 /**
+ * 登录的PopupWindows.也就是登录的弹出框
+ *
  * @author yuyh.
  * @date 16/9/5.
  */
@@ -48,10 +50,13 @@ public class LoginPopupWindow extends PopupWindow implements View.OnTouchListene
 
     public LoginPopupWindow(Activity activity) {
         mActivity = activity;
+        //设置布局的样式
         setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
 
         mContentView = LayoutInflater.from(activity).inflate(R.layout.layout_login_popup_window, null);
+
+        //设置布局
         setContentView(mContentView);
 
         qq = (ImageView) mContentView.findViewById(R.id.ivQQ);
@@ -61,11 +66,11 @@ public class LoginPopupWindow extends PopupWindow implements View.OnTouchListene
         qq.setOnTouchListener(this);
         weibo.setOnTouchListener(this);
         wechat.setOnTouchListener(this);
-
+        //设置可触摸
         setFocusable(true);
         setOutsideTouchable(true);
         setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00000000")));
-
+        //设置进入退出动画
         setAnimationStyle(R.style.LoginPopup);
 
         setOnDismissListener(new OnDismissListener() {
@@ -79,6 +84,7 @@ public class LoginPopupWindow extends PopupWindow implements View.OnTouchListene
     private void scale(View v, boolean isDown) {
         if (v.getId() == qq.getId() || v.getId() == weibo.getId() || v.getId() == wechat.getId()) {
             if (isDown) {
+                //设置按下时候的动画
                 Animation testAnim = AnimationUtils.loadAnimation(mActivity, R.anim.scale_down);
                 v.startAnimation(testAnim);
             } else {
@@ -86,7 +92,7 @@ public class LoginPopupWindow extends PopupWindow implements View.OnTouchListene
                 v.startAnimation(testAnim);
             }
         }
-        if (!isDown && listener!=null) {
+        if (!isDown && listener != null) {
             switch (v.getId()) {
                 case R.id.ivQQ:
                     listener.onLogin(qq, "QQ");
@@ -145,7 +151,7 @@ public class LoginPopupWindow extends PopupWindow implements View.OnTouchListene
         void onLogin(ImageView view, String type);
     }
 
-    public void setLoginTypeListener(LoginTypeListener listener){
+    public void setLoginTypeListener(LoginTypeListener listener) {
         this.listener = listener;
     }
 

@@ -15,7 +15,6 @@
  */
 package com.justwayward.reader.base;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -49,6 +48,7 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle state) {
+        //inflater布局文件
         parentView = inflater.inflate(getLayoutResId(), container, false);
         activity = getSupportActivity();
         mContext = activity;
@@ -60,7 +60,9 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //注册ButterKnife
         ButterKnife.bind(this, view);
+        //创建setupActivityComponent
         setupActivityComponent(ReaderApplication.getsInstance().getAppComponent());
         attachView();
         initDatas();
@@ -77,9 +79,9 @@ public abstract class BaseFragment extends Fragment {
     public abstract void configViews();
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        this.activity = (FragmentActivity) activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.activity = getSupportActivity();
     }
 
     @Override
