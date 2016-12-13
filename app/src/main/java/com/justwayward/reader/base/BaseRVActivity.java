@@ -61,6 +61,7 @@ public abstract class BaseRVActivity<T> extends BaseActivity implements OnLoadMo
                 mRecyclerView.setRefreshListener(this);
             }
         }
+
         if (mRecyclerView != null) {
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
             mRecyclerView.setItemDecoration(ContextCompat.getColor(this, R.color.common_divider_narrow), 1, 0, 0);

@@ -1,12 +1,12 @@
 /**
  * Copyright 2016 JustWayward Team
- * <p>
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p>
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,6 +32,7 @@ import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.manager.CollectionsManager;
 import com.justwayward.reader.ui.easyadapter.RecommendAdapter;
+import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.utils.ToastUtils;
 import com.justwayward.reader.view.recyclerview.EasyRecyclerView;
@@ -61,6 +62,9 @@ public class ScanLocalBookActivity extends BaseActivity implements RecyclerArray
     EasyRecyclerView mRecyclerView;
 
     private RecommendAdapter mAdapter;
+
+    private final String SUFFIX_TXT = ".txt";
+    private final String SUFFIX_PDF = ".pdf";
 
     @Override
     public int getLayoutId() {
@@ -99,71 +103,92 @@ public class ScanLocalBookActivity extends BaseActivity implements RecyclerArray
                 MediaStore.Files.FileColumns.DATA,
                 MediaStore.Files.FileColumns.SIZE
         };
+
+        // cache
+        String bookpath = FileUtils.createRootPath(AppUtils.getAppContext());
+
+        // 查询后缀名为txt与pdf，并且不位于项目缓存中的文档
         Cursor cursor = getContentResolver().query(
                 Uri.parse("content://media/external/file"),
                 projection,
-                MediaStore.Files.FileColumns.DATA + " like ?",
-                new String[]{"%.txt"},
+                MediaStore.Files.FileColumns.DATA + " not like ? and ("
+                        + MediaStore.Files.FileColumns.DATA + " like ? or "
+                        + MediaStore.Files.FileColumns.DATA + " like ? )",
+                new String[]{"%" + bookpath + "%", "%" + SUFFIX_TXT, "%" + SUFFIX_PDF},
                 null);
 
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                int idindex = cursor.getColumnIndex(MediaStore.Files.FileColumns._ID);
-                int dataindex = cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA);
-                int sizeindex = cursor.getColumnIndex(MediaStore.Files.FileColumns.SIZE);
-                List<Recommend.RecommendBooks> list = new ArrayList<>();
-                do {
-                    String path = cursor.getString(dataindex);
-                    int dot = path.lastIndexOf("/");
-                    String name = path.substring(dot + 1);
-                    if (name.lastIndexOf(".") > 0)
-                        name = name.substring(0, name.lastIndexOf("."));
+        if (cursor != null && cursor.moveToFirst()) {
+            int idindex = cursor.getColumnIndex(MediaStore.Files.FileColumns._ID);
+            int dataindex = cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA);
+            int sizeindex = cursor.getColumnIndex(MediaStore.Files.FileColumns.SIZE);
+            List<Recommend.RecommendBooks> list = new ArrayList<>();
 
-                    Recommend.RecommendBooks books = new Recommend.RecommendBooks();
-                    books._id = name;
-                    books.path = path;
-                    books.title = name;
-                    books.isFromSD = true;
-                    books.lastChapter = FileUtils.formatFileSizeToString(cursor.getLong(sizeindex));
 
-                    list.add(books);
-                } while (cursor.moveToNext());
+            do {
+                String path = cursor.getString(dataindex);
 
-                mAdapter.addAll(list);
-            }
+                int dot = path.lastIndexOf("/");
+                String name = path.substring(dot + 1);
+                if (name.lastIndexOf(".") > 0)
+                    name = name.substring(0, name.lastIndexOf("."));
+
+                Recommend.RecommendBooks books = new Recommend.RecommendBooks();
+                books._id = name;
+                books.path = path;
+                books.title = name;
+                books.isFromSD = true;
+                books.lastChapter = FileUtils.formatFileSizeToString(cursor.getLong(sizeindex));
+
+                list.add(books);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+
+            mAdapter.addAll(list);
+        } else {
+            mAdapter.clear();
         }
-        cursor.close();
     }
 
     @Override
     public void onItemClick(final int position) {
         final Recommend.RecommendBooks books = mAdapter.getItem(position);
-        new AlertDialog.Builder(this)
-                .setTitle("提示")
-                .setMessage(String.format(getString(
-                        R.string.book_detail_is_joined_the_book_shelf), books.title))
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // 拷贝到缓存目录
-                        FileUtils.fileChannelCopy(new File(books.path),
-                                new File(FileUtils.getChapterPath(books._id, 1)));
-                        // 加入书架
-                        if (CollectionsManager.getInstance().add(books)) {
-                            ToastUtils.showToast(String.format(getString(
-                                    R.string.book_detail_has_joined_the_book_shelf), books.title));
-                            // 通知
-                            EventBus.getDefault().post(new RefreshCollectionListEvent());
-                        } else {
-                            ToastUtils.showSingleToast("书籍已存在");
+
+        if (books.path.endsWith(SUFFIX_TXT)) {
+            // TXT
+            new AlertDialog.Builder(this)
+                    .setTitle("提示")
+                    .setMessage(String.format(getString(
+                            R.string.book_detail_is_joined_the_book_shelf), books.title))
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // 拷贝到缓存目录
+                            FileUtils.fileChannelCopy(new File(books.path),
+                                    new File(FileUtils.getChapterPath(books._id, 1)));
+                            // 加入书架
+                            if (CollectionsManager.getInstance().add(books)) {
+                                ToastUtils.showToast(String.format(getString(
+                                        R.string.book_detail_has_joined_the_book_shelf), books.title));
+                                // 通知
+                                EventBus.getDefault().post(new RefreshCollectionListEvent());
+                            } else {
+                                ToastUtils.showSingleToast("书籍已存在");
+                            }
+                            dialog.dismiss();
                         }
-                        dialog.dismiss();
-                    }
-                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        }).show();
+                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }).show();
+        } else {
+            // PDF
+            Intent intent = new Intent(this, ReadPDFActivity.class);
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setData(Uri.fromFile(new File(books.path)));
+            startActivity(intent);
+        }
     }
 }

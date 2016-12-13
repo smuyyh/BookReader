@@ -63,6 +63,7 @@ public abstract class BaseRVFragment<T1 extends BaseContract.BasePresenter, T2> 
             mRecyclerView.setItemDecoration(ContextCompat.getColor(activity, R.color.common_divider_narrow), 1, 0, 0);
             mRecyclerView.setAdapterWithProgress(mAdapter);
         }
+
         if (mAdapter != null) {
             mAdapter.setOnItemClickListener(this);
             mAdapter.setError(R.layout.common_error_view).setOnClickListener(new View.OnClickListener() {
