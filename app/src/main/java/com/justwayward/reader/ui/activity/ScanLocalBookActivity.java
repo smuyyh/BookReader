@@ -34,7 +34,6 @@ import com.justwayward.reader.manager.CollectionsManager;
 import com.justwayward.reader.ui.easyadapter.RecommendAdapter;
 import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.FileUtils;
-import com.justwayward.reader.utils.ToastUtils;
 import com.justwayward.reader.view.recyclerview.EasyRecyclerView;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
 
@@ -168,12 +167,12 @@ public class ScanLocalBookActivity extends BaseActivity implements RecyclerArray
                                     new File(FileUtils.getChapterPath(books._id, 1)));
                             // 加入书架
                             if (CollectionsManager.getInstance().add(books)) {
-                                ToastUtils.showToast(String.format(getString(
+                                mRecyclerView.showTipViewAndDelayClose(String.format(getString(
                                         R.string.book_detail_has_joined_the_book_shelf), books.title));
                                 // 通知
                                 EventBus.getDefault().post(new RefreshCollectionListEvent());
                             } else {
-                                ToastUtils.showSingleToast("书籍已存在");
+                                mRecyclerView.showTipViewAndDelayClose("书籍已存在");
                             }
                             dialog.dismiss();
                         }

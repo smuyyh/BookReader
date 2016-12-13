@@ -47,7 +47,6 @@ import com.justwayward.reader.ui.activity.ReadActivity;
 import com.justwayward.reader.ui.contract.RecommendContract;
 import com.justwayward.reader.ui.easyadapter.RecommendAdapter;
 import com.justwayward.reader.ui.presenter.RecommendPresenter;
-import com.justwayward.reader.utils.ToastUtils;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -220,12 +219,12 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
                             break;
                         case 2:
                             //移入养肥区
-                            ToastUtils.showToast("正在拼命开发中...");
+                            mRecyclerView.showTipViewAndDelayClose("正在拼命开发中...");
                             break;
                         case 3:
                             //缓存全本
                             if (mAdapter.getItem(position).isFromSD) {
-                                ToastUtils.showSingleToast("本地文件不支持该选项哦");
+                                mRecyclerView.showTipViewAndDelayClose("本地文件不支持该选项哦");
                             } else {
                                 showDialog();
                                 mPresenter.getTocList(mAdapter.getItem(position)._id);
@@ -292,7 +291,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
                             @Override
                             protected void onPostExecute(String s) {
                                 super.onPostExecute(s);
-                                ToastUtils.showSingleToast("成功移除书籍");
+                                mRecyclerView.showTipViewAndDelayClose("成功移除书籍");
                                 for (Recommend.RecommendBooks bean : removeList) {
                                     mAdapter.remove(bean);
                                 }
@@ -352,7 +351,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
             if (bean.isSeleted) removeList.add(bean);
         }
         if (removeList.isEmpty()) {
-            ToastUtils.showToast(activity.getString(R.string.has_not_selected_delete_book));
+            mRecyclerView.showTipViewAndDelayClose(activity.getString(R.string.has_not_selected_delete_book));
         } else {
             showDeleteCacheDialog(removeList);
         }
