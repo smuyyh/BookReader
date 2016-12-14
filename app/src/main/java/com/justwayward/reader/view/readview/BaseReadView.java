@@ -151,11 +151,7 @@ public abstract class BaseReadView extends View {
                     break;
                 int mx = (int) e.getX();
                 int my = (int) e.getY();
-                if ((actiondownX < mScreenWidth / 2 && mx < mTouch.x) || (actiondownX > mScreenWidth / 2 && mx > mTouch.x)) {
-                    cancel = true;
-                } else {
-                    cancel = false;
-                }
+                cancel = (actiondownX < mScreenWidth / 2 && mx < mTouch.x) || (actiondownX > mScreenWidth / 2 && mx > mTouch.x);
                 mTouch.x = mx;
                 mTouch.y = my;
                 touch_down = mTouch.x - actiondownX;

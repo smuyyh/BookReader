@@ -1,12 +1,12 @@
 /**
  * Copyright 2016 JustWayward Team
- * <p/>
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p/>
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,6 +27,7 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
+import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
 import com.justwayward.reader.component.AppComponent;
@@ -61,9 +62,6 @@ public class ScanLocalBookActivity extends BaseActivity implements RecyclerArray
     EasyRecyclerView mRecyclerView;
 
     private RecommendAdapter mAdapter;
-
-    private final String SUFFIX_TXT = ".txt";
-    private final String SUFFIX_PDF = ".pdf";
 
     @Override
     public int getLayoutId() {
@@ -112,9 +110,12 @@ public class ScanLocalBookActivity extends BaseActivity implements RecyclerArray
                 projection,
                 MediaStore.Files.FileColumns.DATA + " not like ? and ("
                         + MediaStore.Files.FileColumns.DATA + " like ? or "
+                        + MediaStore.Files.FileColumns.DATA + " like ? or "
                         + MediaStore.Files.FileColumns.DATA + " like ? )",
-                new String[]{"%" + bookpath + "%", "%" + SUFFIX_TXT, "%" + SUFFIX_PDF},
-                null);
+                new String[]{"%" + bookpath + "%",
+                        "%" + Constant.SUFFIX_TXT,
+                        "%" + Constant.SUFFIX_PDF,
+                        "%" + Constant.SUFFIX_EPUB}, null);
 
         if (cursor != null && cursor.moveToFirst()) {
             int idindex = cursor.getColumnIndex(MediaStore.Files.FileColumns._ID);
@@ -153,7 +154,7 @@ public class ScanLocalBookActivity extends BaseActivity implements RecyclerArray
     public void onItemClick(final int position) {
         final Recommend.RecommendBooks books = mAdapter.getItem(position);
 
-        if (books.path.endsWith(SUFFIX_TXT)) {
+        if (books.path.endsWith(Constant.SUFFIX_TXT)) {
             // TXT
             new AlertDialog.Builder(this)
                     .setTitle("提示")
@@ -182,12 +183,15 @@ public class ScanLocalBookActivity extends BaseActivity implements RecyclerArray
                     dialog.dismiss();
                 }
             }).show();
-        } else {
+        } else if (books.path.endsWith(Constant.SUFFIX_PDF)) {
             // PDF
             Intent intent = new Intent(this, ReadPDFActivity.class);
             intent.setAction(Intent.ACTION_VIEW);
             intent.setData(Uri.fromFile(new File(books.path)));
             startActivity(intent);
+        } else if (books.path.endsWith(Constant.SUFFIX_EPUB)) {
+            // EPub
+
         }
     }
 }

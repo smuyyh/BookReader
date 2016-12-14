@@ -203,7 +203,7 @@ public class BookHelpDetailActivity extends BaseRVActivity<CommentList.CommentsB
 
     @Override
     public void onItemClick(int position) {
-        CommentList.CommentsBean data = (CommentList.CommentsBean) mAdapter.getItem(position);
+        CommentList.CommentsBean data = mAdapter.getItem(position);
     }
 
 }

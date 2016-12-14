@@ -261,7 +261,7 @@ public class RVPIndicator extends LinearLayout {
                 //mIndicatorWidth = w / mTabVisibleCount / 4;
                 // mIndicatorHeight = h / 4;
                 mIndicatorWidth = (int) (w / mTabVisibleCount * RADIO_TRIANGEL);// 1/6 of  width  ;
-                mIndicatorHeight = (int) (mIndicatorWidth / 2 / Math.sqrt(2)); ;
+                mIndicatorHeight = (int) (mIndicatorWidth / 2 / Math.sqrt(2));
                 mTranslationX = 0;
 
                 break;
@@ -501,12 +501,12 @@ public class RVPIndicator extends LinearLayout {
      *
      */
     public interface PageChangeListener {
-        public void onPageScrolled(int position, float positionOffset,
-                                   int positionOffsetPixels);
+        void onPageScrolled(int position, float positionOffset,
+                            int positionOffsetPixels);
 
-        public void onPageSelected(int position);
+        void onPageSelected(int position);
 
-        public void onPageScrollStateChanged(int state);
+        void onPageScrollStateChanged(int state);
     }
 
     // 对外的ViewPager的回调接口

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2016 JustWayward Team
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -115,6 +114,13 @@
 
         <attr name="ring_width" format="dimension" />
         <attr name="ring_radius" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="DirectionalViewpager">
+        <attr name="direction" format="string">
+            <enum name="vertical" value="vertical"></enum>
+            <enum name="horizontal" value="horizontal"></enum>
+        </attr>
     </declare-styleable>
 
 </resources>

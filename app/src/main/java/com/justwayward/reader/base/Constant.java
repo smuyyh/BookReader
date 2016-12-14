@@ -50,6 +50,10 @@ public class Constant {
     public static final String ISBYUPDATESORT = "isByUpdateSort";
     public static final String FLIP_STYLE = "flipStyle";
 
+    public static final String SUFFIX_TXT = ".txt";
+    public static final String SUFFIX_PDF = ".pdf";
+    public static final String SUFFIX_EPUB = ".epub";
+
     public static final int[] tagColors = new int[]{
             Color.parseColor("#90C5F0"),
             Color.parseColor("#91CED5"),

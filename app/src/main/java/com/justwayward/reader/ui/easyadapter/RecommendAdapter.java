@@ -85,11 +85,7 @@ public class RecommendAdapter extends RecyclerArrayAdapter<Recommend.RecommendBo
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView,
                                                  boolean isChecked) {
-                        if (isChecked) {
-                            item.isSeleted = true;
-                        } else {
-                            item.isSeleted = false;
-                        }
+                        item.isSeleted = isChecked;
                     }
                 });
             }

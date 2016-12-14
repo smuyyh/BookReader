@@ -113,11 +113,8 @@ public class PageWidget extends BaseReadView {
             mCornerY = 0;
         else
             mCornerY = mScreenHeight;
-        if ((mCornerX == 0 && mCornerY == mScreenHeight)
-                || (mCornerX == mScreenWidth && mCornerY == 0))
-            mIsRTandLB = true;
-        else
-            mIsRTandLB = false;
+        mIsRTandLB = (mCornerX == 0 && mCornerY == mScreenHeight)
+                || (mCornerX == mScreenWidth && mCornerY == 0);
     }
 
     /**
