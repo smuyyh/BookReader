@@ -83,6 +83,10 @@ public class FileUtils {
         return file;
     }
 
+    public static String getFolioEpubFolderPath(String epubFileName) {
+        return Constant.PATH_EPUB + "/" + epubFileName;
+    }
+
     /**
      * 读取Assets文件
      *

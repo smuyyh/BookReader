@@ -43,6 +43,8 @@ public class Constant {
 
     public static String PATH_COLLECT = FileUtils.createRootPath(AppUtils.getAppContext()) + "/collect";
 
+    public static String PATH_EPUB = FileUtils.createRootPath(AppUtils.getAppContext()) + "/epub";
+
     public static String BASE_PATH = FileUtils.createRootPath(AppUtils.getAppContext()) + "/book/";
 
     public static final String ISNIGHT = "isNight";
