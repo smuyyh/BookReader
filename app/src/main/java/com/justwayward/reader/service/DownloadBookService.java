@@ -33,7 +33,6 @@ import com.justwayward.reader.bean.support.DownloadMessage;
 import com.justwayward.reader.bean.support.DownloadProgress;
 import com.justwayward.reader.bean.support.DownloadQueue;
 import com.justwayward.reader.manager.CacheManager;
-import com.justwayward.reader.module.BookApiModule;
 import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.NetworkUtils;

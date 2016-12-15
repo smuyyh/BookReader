@@ -61,8 +61,10 @@ public class RecommendAdapter extends RecyclerArrayAdapter<Recommend.RecommendBo
                         .setVisible(R.id.ivUnReadDot, FormatUtils.formatZhuiShuDateString(item.updated)
                                 .compareTo(item.recentReadingTime) > 0);
 
-                if (item.path != null && item.path.endsWith(".pdf")) {
+                if (item.path != null && item.path.endsWith(Constant.SUFFIX_PDF)) {
                     holder.setImageResource(R.id.ivRecommendCover, R.drawable.ic_shelf_pdf);
+                } else if (item.path != null && item.path.endsWith(Constant.SUFFIX_EPUB)) {
+                    holder.setImageResource(R.id.ivRecommendCover, R.drawable.ic_shelf_epub);
                 } else if (item.isFromSD) {
                     holder.setImageResource(R.id.ivRecommendCover, R.drawable.ic_shelf_txt);
                     long fileLen = FileUtils.getChapterFile(item._id, 1).length();
