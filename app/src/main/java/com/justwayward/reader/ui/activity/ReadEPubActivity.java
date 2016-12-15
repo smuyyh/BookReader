@@ -5,8 +5,10 @@ import android.os.AsyncTask;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
+import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.ui.adapter.EPubReaderAdapter;
+import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.view.epubview.DirectionalViewpager;
 
 import java.io.FileInputStream;
@@ -88,6 +90,9 @@ public class ReadEPubActivity extends BaseActivity {
             mSpineReferences = mBook.getSpine().getSpineReferences();
 
             setSpineReferenceTitle();
+
+            // 解压epub至缓存目录
+            FileUtils.unzipFile(mFilePath, Constant.PATH_EPUB + "/" + mFileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -115,5 +120,17 @@ public class ReadEPubActivity extends BaseActivity {
                 }
             }
         }
+    }
+
+    public String getPageHref(int position) {
+        String pageHref = mSpineReferences.get(position).getResource().getHref();
+        String opfpath = FileUtils.getPathOPF(FileUtils.getEpubFolderPath(mFileName));
+        if (FileUtils.checkOPFInRootDirectory(FileUtils.getEpubFolderPath(mFileName))) {
+            pageHref = FileUtils.getEpubFolderPath(mFileName) + "/" + pageHref;
+        } else {
+            pageHref = FileUtils.getEpubFolderPath(mFileName) + "/" + opfpath + "/" + pageHref;
+        }
+        //String html = EpubManipulator.readPage(pageHref);
+        return pageHref;
     }
 }

@@ -191,7 +191,10 @@ public class ScanLocalBookActivity extends BaseActivity implements RecyclerArray
             startActivity(intent);
         } else if (books.path.endsWith(Constant.SUFFIX_EPUB)) {
             // EPub
-
+            Intent intent = new Intent(this, ReadEPubActivity.class);
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setData(Uri.fromFile(new File(books.path)));
+            startActivity(intent);
         }
     }
 }

@@ -8,10 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.SeekBar;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseFragment;
 import com.justwayward.reader.component.AppComponent;
+import com.justwayward.reader.ui.activity.ReadEPubActivity;
 import com.justwayward.reader.view.epubview.ObservableWebView;
 import com.justwayward.reader.view.epubview.VerticalSeekbar;
 
@@ -39,6 +41,8 @@ public class EPubReaderFragment extends BaseFragment {
     private String mEpubFileName = null;
     private boolean mIsSmilAvailable;
     private int mScrollY;
+
+    private ReadEPubActivity activity;
 
     public static Fragment newInstance(int position, Book book, String epubFileName, boolean isSmilAvailable) {
         EPubReaderFragment fragment = new EPubReaderFragment();
@@ -80,6 +84,8 @@ public class EPubReaderFragment extends BaseFragment {
 
     @Override
     public void initDatas() {
+        activity = (ReadEPubActivity) getActivity();
+
         mPosition = getArguments().getInt(BUNDLE_POSITION);
         mBook = (Book) getArguments().getSerializable(BUNDLE_BOOK);
         mEpubFileName = getArguments().getString(BUNDLE_EPUB_FILE_NAME);
@@ -94,9 +100,36 @@ public class EPubReaderFragment extends BaseFragment {
     }
 
     private void initSeekbar() {
-        mScrollSeekbar.getProgressDrawable()
-                .setColorFilter(ContextCompat.getColor(mContext, R.color.colorAccent),
-                        PorterDuff.Mode.SRC_IN);
+
+        if (mScrollSeekbar.getProgressDrawable() != null)
+            mScrollSeekbar.getProgressDrawable()
+                    .setColorFilter(ContextCompat.getColor(mContext, R.color.colorAccent),
+                            PorterDuff.Mode.SRC_IN);
+
+        mScrollSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(final SeekBar seekBar, final int progress, boolean fromUser) {
+                if (fromUser) {
+                    mWebview.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mWebview.setScrollY((int) (mWebview.getContentHeight() * mWebview.getScale() * progress / seekBar.getMax()));
+                        }
+                    }, 200);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
     }
 
     private void initWebView() {
@@ -105,10 +138,11 @@ public class EPubReaderFragment extends BaseFragment {
                 addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
-                        int height =
-                                (int) Math.floor(mWebview.getContentHeight() * mWebview.getScale());
-                        int webViewHeight = mWebview.getMeasuredHeight();
-                        mScrollSeekbar.setMaximum(height - webViewHeight);
+                        if (mWebview != null && mScrollSeekbar != null) {
+                            int height = (int) Math.floor(mWebview.getContentHeight() * mWebview.getScale());
+                            int webViewHeight = mWebview.getMeasuredHeight();
+                            mScrollSeekbar.setMax(height - webViewHeight);
+                        }
                     }
                 });
 
@@ -124,10 +158,14 @@ public class EPubReaderFragment extends BaseFragment {
                 if (mWebview.getScrollY() != 0) {
                     mScrollY = mWebview.getScrollY();
                 }
-                mScrollSeekbar.setProgressAndThumb(percent);
+                mScrollSeekbar.setProgress(percent);
             }
         });
 
         mWebview.getSettings().setDefaultTextEncodingName("utf-8");
+
+        String herf = activity.getPageHref(mPosition);
+
+        mWebview.loadUrl("file://" + herf);
     }
 }
