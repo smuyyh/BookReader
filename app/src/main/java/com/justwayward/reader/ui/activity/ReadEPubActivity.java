@@ -1,7 +1,14 @@
 package com.justwayward.reader.ui.activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Handler;
+import android.view.ViewTreeObserver;
+import android.view.animation.LinearInterpolator;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
@@ -10,6 +17,7 @@ import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.ui.adapter.EPubReaderAdapter;
 import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.view.epubview.DirectionalViewpager;
+import com.justwayward.reader.view.epubview.ReaderCallback;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -23,7 +31,7 @@ import nl.siegmann.epublib.domain.SpineReference;
 import nl.siegmann.epublib.domain.TOCReference;
 import nl.siegmann.epublib.epub.EpubReader;
 
-public class ReadEPubActivity extends BaseActivity {
+public class ReadEPubActivity extends BaseActivity implements ReaderCallback {
 
     @Bind(R.id.epubViewPager)
     DirectionalViewpager viewpager;
@@ -38,6 +46,8 @@ public class ReadEPubActivity extends BaseActivity {
     private List<SpineReference> mSpineReferences;
     public boolean mIsSmilParsed = false;
 
+    private boolean mIsActionBarVisible = true;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_read_epub;
@@ -51,6 +61,20 @@ public class ReadEPubActivity extends BaseActivity {
     @Override
     public void initToolBar() {
 
+        mCommonToolbar.getViewTreeObserver()
+                .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
+                            mCommonToolbar.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        } else {
+                            mCommonToolbar.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        }
+                        hideToolBarIfVisible();
+                    }
+                });
+
+        showDialog();
     }
 
     @Override
@@ -105,6 +129,7 @@ public class ReadEPubActivity extends BaseActivity {
                     mSpineReferences, mBook, mFileName, mIsSmilParsed);
             viewpager.setAdapter(mAdapter);
         }
+        hideDialog();
     }
 
     private void setSpineReferenceTitle() {
@@ -122,6 +147,7 @@ public class ReadEPubActivity extends BaseActivity {
         }
     }
 
+    @Override
     public String getPageHref(int position) {
         String pageHref = mSpineReferences.get(position).getResource().getHref();
         String opfpath = FileUtils.getPathOPF(FileUtils.getEpubFolderPath(mFileName));
@@ -132,5 +158,74 @@ public class ReadEPubActivity extends BaseActivity {
         }
         //String html = EpubManipulator.readPage(pageHref);
         return pageHref;
+    }
+
+    @Override
+    public void toggleToolBarVisible() {
+        if (mIsActionBarVisible) {
+            toolbarAnimateHide();
+        } else {
+            toolbarAnimateShow(1);
+        }
+    }
+
+    @Override
+    public void hideToolBarIfVisible() {
+        if (mIsActionBarVisible) {
+            toolbarAnimateHide();
+        }
+    }
+
+    private void toolbarAnimateShow(final int verticalOffset) {
+        showStatusBar();
+        mCommonToolbar.animate()
+                .translationY(0)
+                .setInterpolator(new LinearInterpolator())
+                .setDuration(180)
+                .setListener(new AnimatorListenerAdapter() {
+
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        toolbarSetElevation(verticalOffset == 0 ? 0 : 1);
+                    }
+                });
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mIsActionBarVisible) {
+                            toolbarAnimateHide();
+                        }
+                    }
+                });
+            }
+        }, 10000);
+
+        mIsActionBarVisible = true;
+    }
+
+    private void toolbarAnimateHide() {
+        mCommonToolbar.animate()
+                .translationY(-mCommonToolbar.getHeight())
+                .setInterpolator(new LinearInterpolator())
+                .setDuration(180)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        toolbarSetElevation(0);
+                        hideStatusBar();
+                    }
+                });
+        mIsActionBarVisible = false;
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void toolbarSetElevation(float elevation) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mCommonToolbar.setElevation(elevation);
+        }
     }
 }

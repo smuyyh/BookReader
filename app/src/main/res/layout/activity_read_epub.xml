@@ -13,19 +13,46 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/llPdfRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/common_toolbar" />
 
     <com.justwayward.reader.view.epubview.DirectionalViewpager
         android:id="@+id/epubViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="5dp"
         app:direction="vertical" />
 
-</LinearLayout>
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/common_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:navigationIcon="@drawable/ab_back"
+        app:title=" ">
+
+        <ImageView
+            android:id="@+id/toolbar_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_menu_toc_normal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="xxx"
+            android:textColor="@color/white"
+            android:textSize="16dp" />
+
+
+    </android.support.v7.widget.Toolbar>
+
+</FrameLayout>

@@ -164,21 +164,15 @@ public class VerticalSeekbar extends SeekBar {
         progress += scale * max;
 
         setProgress((int) progress);
+        // 便于监听用户触摸改变进度
         mOnSeekBarChangeListener.onProgressChanged(this, (int) progress, true);
 
     }
 
-    /**
-     * This is called when the user has started touching this widget.
-     */
     void onStartTrackingTouch() {
         mIsDragging = true;
     }
 
-    /**
-     * This is called when the user either releases his touch or the touch is
-     * canceled.
-     */
     void onStopTrackingTouch() {
         mIsDragging = false;
     }

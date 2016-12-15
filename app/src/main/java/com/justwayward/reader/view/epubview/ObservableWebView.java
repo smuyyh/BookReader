@@ -11,6 +11,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
 
+import com.justwayward.reader.ui.activity.ReadEPubActivity;
+import com.justwayward.reader.ui.fragment.EPubReaderFragment;
+
 /**
  * @author yuyh.
  * @date 2016/12/13.
@@ -19,21 +22,31 @@ public class ObservableWebView extends WebView {
 
     private ActionMode.Callback mActionModeCallback;
     private ScrollListener mScrollListener;
+    private ReaderCallback mActivityCallback;
+    private EPubReaderFragment fragment;
+
+    private float MOVE_THRESHOLD_DP;
+    private boolean mMoveOccured = false;
+
+    private float mDownPosX;
+    private float mDownPosY;
 
     public interface ScrollListener {
         void onScrollChange(int percent);
     }
 
     public ObservableWebView(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public ObservableWebView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
     }
 
     public ObservableWebView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        MOVE_THRESHOLD_DP = 20 * getResources().getDisplayMetrics().density;
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -48,8 +61,8 @@ public class ObservableWebView extends WebView {
 
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
-        //mActivityCallback = (FolioActivity) getContext();
-        //mActivityCallback.hideToolBarIfVisible();
+        mActivityCallback = (ReadEPubActivity) getContext();
+        mActivityCallback.hideToolBarIfVisible();
         // Log.d("in ScrollChange","l"+l+"t"+t);
         if (mScrollListener != null) mScrollListener.onScrollChange(t);
         super.onScrollChanged(l, t, oldl, oldt);
@@ -71,32 +84,31 @@ public class ObservableWebView extends WebView {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        final boolean[] mMoveOccured = new boolean[1];
-        final float[] mDownPosX = new float[1];
-        final float[] mDownPosY = new float[1];
-        // Log.d("dispatchTouchEvent","dispatch touch event");
-        final float MOVE_THRESHOLD_DP = 20 * getResources().getDisplayMetrics().density;
-        //mActivityCallback = (FolioActivity) getContext();
+
+
+        if (mActivityCallback == null)
+            mActivityCallback = (ReadEPubActivity) getContext();
+
         final int action = event.getAction();
         int positionScroll = 0;
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                mMoveOccured[0] = false;
-                mDownPosX[0] = event.getX();
-                mDownPosY[0] = event.getY();
+                mMoveOccured = false;
+                mDownPosX = event.getX();
+                mDownPosY = event.getY();
                 //mFolioPageFragment.removeCallback();
                 break;
             case MotionEvent.ACTION_UP:
-                if (!mMoveOccured[0]) {
-                    //mActivityCallback.hideOrshowToolBar();
+                if (!mMoveOccured) {
+                    mActivityCallback.toggleToolBarVisible();
                 }
 
                 //mFolioPageFragment.startCallback();
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (Math.abs(event.getX() - mDownPosX[0]) > MOVE_THRESHOLD_DP
-                        || Math.abs(event.getY() - mDownPosY[0]) > MOVE_THRESHOLD_DP) {
-                    mMoveOccured[0] = true;
+                if (Math.abs(event.getX() - mDownPosX) > MOVE_THRESHOLD_DP
+                        || Math.abs(event.getY() - mDownPosY) > MOVE_THRESHOLD_DP) {
+                    mMoveOccured = true;
                     //mFolioPageFragment.fadeInSeekbarIfInvisible();
                 }
                 break;
@@ -165,5 +177,9 @@ public class ObservableWebView extends WebView {
                 return null;
             }
         };
+    }
+
+    public void setFragment(EPubReaderFragment fragment) {
+        this.fragment = fragment;
     }
 }
