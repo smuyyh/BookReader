@@ -216,13 +216,13 @@ public class EPubReaderFragment extends BaseFragment {
     };
 
     public void fadeInSeekbarIfInvisible() {
-        if (!isVisible(mScrollSeekbar)) {
+        if (mScrollSeekbar != null && !isVisible(mScrollSeekbar)) {
             mScrollSeekbar.startAnimation(mFadeInAnimation);
         }
     }
 
     public void fadeoutSeekbarIfVisible() {
-        if (isVisible(mScrollSeekbar)) {
+        if (mScrollSeekbar != null && isVisible(mScrollSeekbar)) {
             mScrollSeekbar.startAnimation(mFadeOutAnimation);
         }
     }

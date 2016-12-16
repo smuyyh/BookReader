@@ -8,7 +8,7 @@
         android:id="@+id/contentWebView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="2dp" />
+        android:layout_margin="5dp" />
 
     <com.justwayward.reader.view.epubview.VerticalSeekbar
         android:id="@+id/scrollSeekbar"

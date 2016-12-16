@@ -25,7 +25,6 @@
         android:id="@+id/epubViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
         app:direction="vertical" />
 
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"

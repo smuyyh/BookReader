@@ -146,12 +146,28 @@ public class ReadEPubActivity extends BaseActivity implements ReaderCallback {
     }
 
     private void initPager() {
+        viewpager.setOnPageChangeListener(new DirectionalViewpager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mTocListAdapter.setCurrentChapter(position + 1);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+
         if (mBook != null && mSpineReferences != null && mTocReferences != null) {
 
             mAdapter = new EPubReaderAdapter(getSupportFragmentManager(),
                     mSpineReferences, mBook, mFileName, mIsSmilParsed);
             viewpager.setAdapter(mAdapter);
         }
+
         hideDialog();
     }
 
@@ -297,6 +313,15 @@ public class ReadEPubActivity extends BaseActivity implements ReaderCallback {
             mTocListPopupWindow.show();
             mTocListPopupWindow.setSelection(currentChapter - 1);
             mTocListPopupWindow.getListView().setFastScrollEnabled(true);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mTocListPopupWindow != null && mTocListPopupWindow.isShowing()) {
+            mTocListPopupWindow.dismiss();
+        } else {
+            super.onBackPressed();
         }
     }
 }
