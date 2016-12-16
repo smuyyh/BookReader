@@ -2,12 +2,14 @@ package com.justwayward.reader.ui.fragment;
 
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.SeekBar;
 
 import com.justwayward.reader.R;
@@ -40,9 +42,13 @@ public class EPubReaderFragment extends BaseFragment {
     private Book mBook = null;
     private String mEpubFileName = null;
     private boolean mIsSmilAvailable;
+
     private int mScrollY;
 
     private ReadEPubActivity activity;
+
+    private Animation mFadeInAnimation, mFadeOutAnimation;
+    private Handler mHandler = new Handler();
 
     public static Fragment newInstance(int position, Book book, String epubFileName, boolean isSmilAvailable) {
         EPubReaderFragment fragment = new EPubReaderFragment();
@@ -94,6 +100,8 @@ public class EPubReaderFragment extends BaseFragment {
 
     @Override
     public void configViews() {
+        initAnimations();
+
         initSeekbar();
 
         initWebView();
@@ -101,6 +109,7 @@ public class EPubReaderFragment extends BaseFragment {
 
     private void initSeekbar() {
 
+        mScrollSeekbar.setFragment(this);
         if (mScrollSeekbar.getProgressDrawable() != null)
             mScrollSeekbar.getProgressDrawable()
                     .setColorFilter(ContextCompat.getColor(mContext, R.color.colorAccent),
@@ -134,18 +143,7 @@ public class EPubReaderFragment extends BaseFragment {
 
     private void initWebView() {
 
-        mWebview.getViewTreeObserver().
-                addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        if (mWebview != null && mScrollSeekbar != null) {
-                            int height = (int) Math.floor(mWebview.getContentHeight() * mWebview.getScale());
-                            int webViewHeight = mWebview.getMeasuredHeight();
-                            mScrollSeekbar.setMax(height - webViewHeight);
-                        }
-                    }
-                });
-
+        mWebview.setFragment(this);
         mWebview.getSettings().setJavaScriptEnabled(true);
         mWebview.setVerticalScrollBarEnabled(false);
         mWebview.getSettings().setAllowFileAccess(true);
@@ -158,6 +156,11 @@ public class EPubReaderFragment extends BaseFragment {
                 if (mWebview.getScrollY() != 0) {
                     mScrollY = mWebview.getScrollY();
                 }
+
+                int height = (int) Math.floor(mWebview.getContentHeight() * mWebview.getScale());
+                int webViewHeight = mWebview.getMeasuredHeight();
+                mScrollSeekbar.setMax(height - webViewHeight);
+
                 mScrollSeekbar.setProgress(percent);
             }
         });
@@ -167,5 +170,73 @@ public class EPubReaderFragment extends BaseFragment {
         String herf = activity.getPageHref(mPosition);
 
         mWebview.loadUrl("file://" + herf);
+    }
+
+    private void initAnimations() {
+        mFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadein);
+        mFadeInAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                mScrollSeekbar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        mFadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeout);
+        mFadeOutAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mScrollSeekbar.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+    }
+
+    private Runnable mHideSeekbarRunnable = new Runnable() {
+        @Override
+        public void run() {
+            fadeoutSeekbarIfVisible();
+        }
+    };
+
+    public void fadeInSeekbarIfInvisible() {
+        if (!isVisible(mScrollSeekbar)) {
+            mScrollSeekbar.startAnimation(mFadeInAnimation);
+        }
+    }
+
+    public void fadeoutSeekbarIfVisible() {
+        if (isVisible(mScrollSeekbar)) {
+            mScrollSeekbar.startAnimation(mFadeOutAnimation);
+        }
+    }
+
+    public void removeCallback() {
+        mHandler.removeCallbacks(mHideSeekbarRunnable);
+    }
+
+    public void startCallback() {
+        mHandler.postDelayed(mHideSeekbarRunnable, 3000);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 }

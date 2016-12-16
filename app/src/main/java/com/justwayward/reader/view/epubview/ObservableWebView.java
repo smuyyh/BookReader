@@ -20,8 +20,6 @@ import com.justwayward.reader.ui.fragment.EPubReaderFragment;
  */
 public class ObservableWebView extends WebView {
 
-    private ActionMode.Callback mActionModeCallback;
-    private ScrollListener mScrollListener;
     private ReaderCallback mActivityCallback;
     private EPubReaderFragment fragment;
 
@@ -31,8 +29,15 @@ public class ObservableWebView extends WebView {
     private float mDownPosX;
     private float mDownPosY;
 
+    private ScrollListener mScrollListener;
+    private SizeChangedListener mSizeChangedListener;
+
     public interface ScrollListener {
         void onScrollChange(int percent);
+    }
+
+    public interface SizeChangedListener {
+        void onSizeChanged(int height);
     }
 
     public ObservableWebView(Context context) {
@@ -59,13 +64,25 @@ public class ObservableWebView extends WebView {
         mScrollListener = listener;
     }
 
+    public void setSizeChangedListener(SizeChangedListener listener) {
+        mSizeChangedListener = listener;
+    }
+
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         mActivityCallback = (ReadEPubActivity) getContext();
         mActivityCallback.hideToolBarIfVisible();
-        // Log.d("in ScrollChange","l"+l+"t"+t);
-        if (mScrollListener != null) mScrollListener.onScrollChange(t);
+        if (mScrollListener != null)
+            mScrollListener.onScrollChange(t);
         super.onScrollChanged(l, t, oldl, oldt);
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int ow, int oh) {
+        super.onSizeChanged(w, h, ow, oh);
+        if (mSizeChangedListener != null) {
+            mSizeChangedListener.onSizeChanged(h);
+        }
     }
 
     public int getContentHeightVal() {
@@ -90,26 +107,25 @@ public class ObservableWebView extends WebView {
             mActivityCallback = (ReadEPubActivity) getContext();
 
         final int action = event.getAction();
-        int positionScroll = 0;
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 mMoveOccured = false;
                 mDownPosX = event.getX();
                 mDownPosY = event.getY();
-                //mFolioPageFragment.removeCallback();
+                fragment.removeCallback();
                 break;
             case MotionEvent.ACTION_UP:
                 if (!mMoveOccured) {
                     mActivityCallback.toggleToolBarVisible();
                 }
 
-                //mFolioPageFragment.startCallback();
+                fragment.startCallback();
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (Math.abs(event.getX() - mDownPosX) > MOVE_THRESHOLD_DP
                         || Math.abs(event.getY() - mDownPosY) > MOVE_THRESHOLD_DP) {
                     mMoveOccured = true;
-                    //mFolioPageFragment.fadeInSeekbarIfInvisible();
+                    fragment.fadeInSeekbarIfInvisible();
                 }
                 break;
         }

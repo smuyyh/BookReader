@@ -7,14 +7,23 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
+import android.support.v7.widget.ListPopupWindow;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
+import android.widget.AdapterView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.base.Constant;
+import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.ui.adapter.EPubReaderAdapter;
+import com.justwayward.reader.ui.adapter.TocListAdapter;
 import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.view.epubview.DirectionalViewpager;
 import com.justwayward.reader.view.epubview.ReaderCallback;
@@ -26,7 +35,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 import nl.siegmann.epublib.domain.Book;
+import nl.siegmann.epublib.domain.Resource;
 import nl.siegmann.epublib.domain.SpineReference;
 import nl.siegmann.epublib.domain.TOCReference;
 import nl.siegmann.epublib.epub.EpubReader;
@@ -35,6 +46,11 @@ public class ReadEPubActivity extends BaseActivity implements ReaderCallback {
 
     @Bind(R.id.epubViewPager)
     DirectionalViewpager viewpager;
+
+    @Bind(R.id.toolbar_menu)
+    View ivMenu;
+    @Bind(R.id.toolbar_title)
+    TextView tvTitle;
 
     private EPubReaderAdapter mAdapter;
 
@@ -46,7 +62,12 @@ public class ReadEPubActivity extends BaseActivity implements ReaderCallback {
     private List<SpineReference> mSpineReferences;
     public boolean mIsSmilParsed = false;
 
+    private List<BookToc.mixToc.Chapters> mChapterList = new ArrayList<>();
+    private ListPopupWindow mTocListPopupWindow;
+    private TocListAdapter mTocListAdapter;
+
     private boolean mIsActionBarVisible = true;
+    private int currentChapter;
 
     @Override
     public int getLayoutId() {
@@ -97,6 +118,8 @@ public class ReadEPubActivity extends BaseActivity implements ReaderCallback {
             @Override
             protected void onPostExecute(Void aVoid) {
                 initPager();
+
+                initTocList();
             }
         }.execute();
 
@@ -132,31 +155,63 @@ public class ReadEPubActivity extends BaseActivity implements ReaderCallback {
         hideDialog();
     }
 
+    private void initTocList() {
+        mTocListAdapter = new TocListAdapter(this, mChapterList, "", 1);
+        mTocListAdapter.setEpub(true);
+        mTocListPopupWindow = new ListPopupWindow(this);
+        mTocListPopupWindow.setAdapter(mTocListAdapter);
+        mTocListPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        mTocListPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        mTocListPopupWindow.setAnchorView(mCommonToolbar);
+        mTocListPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mTocListPopupWindow.dismiss();
+                currentChapter = position + 1;
+                mTocListAdapter.setCurrentChapter(currentChapter);
+                viewpager.setCurrentItem(position);
+            }
+        });
+        mTocListPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                toolbarAnimateHide();
+            }
+        });
+    }
+
     private void setSpineReferenceTitle() {
-        for (int j = 0; j < mSpineReferences.size(); j++) {
+        int srSize = mSpineReferences.size();
+        int trSize = mTocReferences.size();
+        for (int j = 0; j < srSize; j++) {
             String href = mSpineReferences.get(j).getResource().getHref();
-            for (int i = 0; i < mTocReferences.size(); i++) {
+            for (int i = 0; i < trSize; i++) {
                 if (mTocReferences.get(i).getResource().getHref().equalsIgnoreCase(href)) {
-                    mSpineReferences.get(j).getResource()
-                            .setTitle(mTocReferences.get(i).getTitle());
+                    mSpineReferences.get(j).getResource().setTitle(mTocReferences.get(i).getTitle());
                     break;
                 } else {
                     mSpineReferences.get(j).getResource().setTitle("");
                 }
             }
         }
+
+        for (int i = 0; i < trSize; i++) {
+            Resource resource = mTocReferences.get(i).getResource();
+            if (resource != null) {
+                mChapterList.add(new BookToc.mixToc.Chapters(resource.getTitle(), resource.getHref()));
+            }
+        }
     }
 
     @Override
     public String getPageHref(int position) {
-        String pageHref = mSpineReferences.get(position).getResource().getHref();
+        String pageHref = mTocReferences.get(position).getResource().getHref();
         String opfpath = FileUtils.getPathOPF(FileUtils.getEpubFolderPath(mFileName));
         if (FileUtils.checkOPFInRootDirectory(FileUtils.getEpubFolderPath(mFileName))) {
             pageHref = FileUtils.getEpubFolderPath(mFileName) + "/" + pageHref;
         } else {
             pageHref = FileUtils.getEpubFolderPath(mFileName) + "/" + opfpath + "/" + pageHref;
         }
-        //String html = EpubManipulator.readPage(pageHref);
         return pageHref;
     }
 
@@ -208,24 +263,40 @@ public class ReadEPubActivity extends BaseActivity implements ReaderCallback {
     }
 
     private void toolbarAnimateHide() {
-        mCommonToolbar.animate()
-                .translationY(-mCommonToolbar.getHeight())
-                .setInterpolator(new LinearInterpolator())
-                .setDuration(180)
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        toolbarSetElevation(0);
-                        hideStatusBar();
-                    }
-                });
-        mIsActionBarVisible = false;
+        if (mIsActionBarVisible) {
+            mCommonToolbar.animate()
+                    .translationY(-mCommonToolbar.getHeight())
+                    .setInterpolator(new LinearInterpolator())
+                    .setDuration(180)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            toolbarSetElevation(0);
+                            hideStatusBar();
+                            if (mTocListPopupWindow != null && mTocListPopupWindow.isShowing()) {
+                                mTocListPopupWindow.dismiss();
+                            }
+                        }
+                    });
+            mIsActionBarVisible = false;
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void toolbarSetElevation(float elevation) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mCommonToolbar.setElevation(elevation);
+        }
+    }
+
+    @OnClick(R.id.toolbar_menu)
+    public void showMenu() {
+        if (!mTocListPopupWindow.isShowing()) {
+            mTocListPopupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
+            mTocListPopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            mTocListPopupWindow.show();
+            mTocListPopupWindow.setSelection(currentChapter - 1);
+            mTocListPopupWindow.getListView().setFastScrollEnabled(true);
         }
     }
 }

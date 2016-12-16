@@ -37,6 +37,8 @@ public class TocListAdapter extends EasyLVAdapter<BookToc.mixToc.Chapters> {
     private int currentChapter;
     private String bookId;
 
+    private boolean isEpub = false;
+
     public TocListAdapter(Context context, List<BookToc.mixToc.Chapters> list, String bookId, int currentChapter) {
         super(context, list, R.layout.item_book_read_toc_list);
         this.currentChapter = currentChapter;
@@ -51,7 +53,7 @@ public class TocListAdapter extends EasyLVAdapter<BookToc.mixToc.Chapters> {
         if (currentChapter == position + 1) {
             tvTocItem.setTextColor(ContextCompat.getColor(mContext, R.color.light_red));
             drawable = ContextCompat.getDrawable(mContext, R.drawable.ic_toc_item_activated);
-        } else if (FileUtils.getChapterFile(bookId, position + 1).length() > 10) {
+        } else if (isEpub || FileUtils.getChapterFile(bookId, position + 1).length() > 10) {
             tvTocItem.setTextColor(ContextCompat.getColor(mContext, R.color.light_black));
             drawable = ContextCompat.getDrawable(mContext, R.drawable.ic_toc_item_download);
         } else {
@@ -65,5 +67,9 @@ public class TocListAdapter extends EasyLVAdapter<BookToc.mixToc.Chapters> {
     public void setCurrentChapter(int chapter) {
         currentChapter = chapter;
         notifyDataSetChanged();
+    }
+
+    public void setEpub(boolean isEpub) {
+        this.isEpub = isEpub;
     }
 }

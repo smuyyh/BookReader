@@ -1,12 +1,12 @@
 /**
  * Copyright 2016 JustWayward Team
- * <p/>
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p/>
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -95,17 +95,12 @@ public class FileUtils {
     public static String getPathOPF(String unzipDir) {
         String mPathOPF = "";
         try {
-            // get the OPF path, directly from container.xml
-            /*BufferedReader br = new BufferedReader(new FileReader(unzipDir
-                    + "/META-INF/container.xml"));*/
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(unzipDir
                     + "/META-INF/container.xml"), "UTF-8"));
             String line;
             while ((line = br.readLine()) != null) {
-                //if (line.indexOf(getS(R.string.full_path)) > -1)
                 if (line.contains("full-path")) {
                     int start = line.indexOf("full-path");
-                    //int start2 = line.indexOf("\"", start);
                     int start2 = line.indexOf('\"', start);
                     int stop2 = line.indexOf('\"', start2 + 1);
                     if (start2 > -1 && stop2 > start2) {
@@ -116,12 +111,10 @@ public class FileUtils {
             }
             br.close();
 
-            // in case the OPF file is in the root directory
             if (!mPathOPF.contains("/")) {
                 return null;
             }
 
-            // remove the OPF file name and the preceding '/'
             int last = mPathOPF.lastIndexOf('/');
             if (last > -1) {
                 mPathOPF = mPathOPF.substring(0, last);
@@ -138,17 +131,12 @@ public class FileUtils {
         String mPathOPF = "";
         boolean status = false;
         try {
-            // get the OPF path, directly from container.xml
-           /* BufferedReader br = new BufferedReader(new FileReader(unzipDir
-                    + "/META-INF/container.xml"));*/
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(unzipDir
                     + "/META-INF/container.xml"), "UTF-8"));
             String line;
             while ((line = br.readLine()) != null) {
-                //if (line.indexOf(getS(R.string.full_path)) > -1)
                 if (line.contains("full-path")) {
                     int start = line.indexOf("full-path");
-                    //int start2 = line.indexOf("\"", start);
                     int start2 = line.indexOf('\"', start);
                     int stop2 = line.indexOf('\"', start2 + 1);
                     if (start2 > -1 && stop2 > start2) {
@@ -159,14 +147,11 @@ public class FileUtils {
             }
             br.close();
 
-            // check the OPF file is in the root directory
             if (!mPathOPF.contains("/")) {
                 status = true;
             } else {
                 status = false;
             }
-
-
         } catch (NullPointerException | IOException e) {
             LogUtils.e(e.toString());
         }

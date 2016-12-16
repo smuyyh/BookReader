@@ -8,11 +8,16 @@ import android.view.ViewConfiguration;
 import android.view.ViewParent;
 import android.widget.SeekBar;
 
+import com.justwayward.reader.ui.fragment.EPubReaderFragment;
+
 /**
  * @author yuyh.
  * @date 2016/12/13.
  */
 public class VerticalSeekbar extends SeekBar {
+
+    private EPubReaderFragment fragment;
+
     private boolean mIsDragging;
     private float mTouchDownY;
     private int mScaledTouchSlop;
@@ -26,11 +31,6 @@ public class VerticalSeekbar extends SeekBar {
     public void setInScrollingContainer(boolean isInScrollingContainer) {
         this.isInScrollingContainer = isInScrollingContainer;
     }
-
-    /**
-     * On touch, this offset plus the scaled value from the position of the
-     * touch will form the progress value. Usually 0.
-     */
     float mTouchProgressOffset;
 
     public VerticalSeekbar(Context context, AttributeSet attrs, int defStyle) {
@@ -92,6 +92,9 @@ public class VerticalSeekbar extends SeekBar {
 
                     onSizeChanged(getWidth(), getHeight(), 0, 0);
                 }
+                if (fragment != null) {
+                    fragment.removeCallback();
+                }
                 break;
 
             case MotionEvent.ACTION_MOVE:
@@ -120,19 +123,18 @@ public class VerticalSeekbar extends SeekBar {
                     setPressed(false);
 
                 } else {
-                    // Touch up when we never crossed the touch slop threshold
-                    // should
-                    // be interpreted as a tap-seek to that location.
                     onStartTrackingTouch();
                     trackTouchEvent(event);
                     onStopTrackingTouch();
 
                 }
                 onSizeChanged(getWidth(), getHeight(), 0, 0);
-                // ProgressBar doesn't know to repaint the thumb drawable
-                // in its inactive state when the touch stops (because the
-                // value has not apparently changed)
                 invalidate();
+
+                if (fragment != null) {
+                    fragment.startCallback();
+                }
+
                 break;
         }
         return true;
@@ -193,5 +195,9 @@ public class VerticalSeekbar extends SeekBar {
     public void setOnSeekBarChangeListener(OnSeekBarChangeListener l) {
         mOnSeekBarChangeListener = l;
         super.setOnSeekBarChangeListener(mOnSeekBarChangeListener);
+    }
+
+    public void setFragment(EPubReaderFragment fragment) {
+        this.fragment = fragment;
     }
 }
