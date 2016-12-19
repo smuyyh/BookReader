@@ -9,7 +9,7 @@ public class WindowsLanguageID {
     private static final Map<Integer, Locale> map = loadMap();
 
     private static Map<Integer, Locale> loadMap() {
-        Map<Integer, Locale> map = new HashMap<Integer, Locale>();
+        Map<Integer, Locale> map = new HashMap<>();
         map.put(0x0404, new Locale("zh", "TW", ""));
         map.put(0x0804, new Locale("zh", "CN", ""));
         map.put(0x0436, new Locale("af", "ZA", "")); // Afrikaans
