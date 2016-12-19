@@ -1,12 +1,12 @@
 /**
  * Copyright 2016 JustWayward Team
- * <p/>
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p/>
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -43,11 +43,13 @@ public class Constant {
 
     public static String PATH_COLLECT = FileUtils.createRootPath(AppUtils.getAppContext()) + "/collect";
 
-    public static String PATH_EPUB = FileUtils.createRootPath(AppUtils.getAppContext()) + "/epub";
+    public static String PATH_TXT = PATH_DATA + "/book/";
 
-    public static String PATH_CHM = FileUtils.createRootPath(AppUtils.getAppContext()) + "/chm";
+    public static String PATH_EPUB = PATH_DATA + "/epub";
 
-    public static String BASE_PATH = FileUtils.createRootPath(AppUtils.getAppContext()) + "/book/";
+    public static String PATH_CHM = PATH_DATA + "/chm";
+
+    public static String BASE_PATH = AppUtils.getAppContext().getCacheDir().getPath();
 
     public static final String ISNIGHT = "isNight";
 

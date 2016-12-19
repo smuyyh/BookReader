@@ -49,7 +49,7 @@ import java.util.zip.ZipFile;
 public class FileUtils {
 
     public static String getChapterPath(String bookId, int chapter) {
-        return Constant.BASE_PATH + bookId + File.separator + chapter + ".txt";
+        return Constant.PATH_TXT + bookId + File.separator + chapter + ".txt";
     }
 
     public static File getChapterFile(String bookId, int chapter) {
@@ -60,7 +60,7 @@ public class FileUtils {
     }
 
     public static File getBookDir(String bookId) {
-        return new File(Constant.BASE_PATH + bookId);
+        return new File(Constant.PATH_TXT + bookId);
     }
 
     public static File createWifiTempFile() {
@@ -80,7 +80,7 @@ public class FileUtils {
     public static File createWifiTranfesFile(String fileName) {
         LogUtils.i("wifi trans save " + fileName);
         // 取文件名作为文件夹（bookid）
-        String absPath = Constant.BASE_PATH + "/" + fileName + "/1.txt";
+        String absPath = Constant.PATH_TXT + "/" + fileName + "/1.txt";
 
         File file = new File(absPath);
         if (!file.exists())
