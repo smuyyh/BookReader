@@ -1,12 +1,12 @@
 /**
  * Copyright 2016 JustWayward Team
- * <p>
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p>
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -111,11 +111,13 @@ public class ScanLocalBookActivity extends BaseActivity implements RecyclerArray
                 MediaStore.Files.FileColumns.DATA + " not like ? and ("
                         + MediaStore.Files.FileColumns.DATA + " like ? or "
                         + MediaStore.Files.FileColumns.DATA + " like ? or "
+                        + MediaStore.Files.FileColumns.DATA + " like ? or "
                         + MediaStore.Files.FileColumns.DATA + " like ? )",
                 new String[]{"%" + bookpath + "%",
                         "%" + Constant.SUFFIX_TXT,
                         "%" + Constant.SUFFIX_PDF,
-                        "%" + Constant.SUFFIX_EPUB}, null);
+                        "%" + Constant.SUFFIX_EPUB,
+                        "%" + Constant.SUFFIX_CHM}, null);
 
         if (cursor != null && cursor.moveToFirst()) {
             int idindex = cursor.getColumnIndex(MediaStore.Files.FileColumns._ID);
@@ -185,16 +187,13 @@ public class ScanLocalBookActivity extends BaseActivity implements RecyclerArray
             }).show();
         } else if (books.path.endsWith(Constant.SUFFIX_PDF)) {
             // PDF
-            Intent intent = new Intent(this, ReadPDFActivity.class);
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.setData(Uri.fromFile(new File(books.path)));
-            startActivity(intent);
+            ReadPDFActivity.start(this, books.path);
         } else if (books.path.endsWith(Constant.SUFFIX_EPUB)) {
             // EPub
-            Intent intent = new Intent(this, ReadEPubActivity.class);
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.setData(Uri.fromFile(new File(books.path)));
-            startActivity(intent);
+            ReadEPubActivity.start(this, books.path);
+        } else if (books.path.endsWith(Constant.SUFFIX_CHM)) {
+            // CHM
+            ReadCHMActivity.start(this, books.path);
         }
     }
 }

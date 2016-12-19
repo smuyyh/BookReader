@@ -1,5 +1,7 @@
 package com.justwayward.reader.view.chmview;
 
+import com.justwayward.reader.utils.LogUtils;
+
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
 import java.io.EOFException;
@@ -13,15 +15,46 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
-import java.util.logging.Logger;
 
+/**
+ * CHM 文件结构
+ * <p>
+ * 1. Header
+ * - 1.1 ITSF, 4字节
+ * - 1.2 版本信息, 4字节
+ * - 1.3 文件头总长度, 4字节
+ * - 1.4 固定为1, 4字节
+ * - 1.5 时间记录, 4字节
+ * - 1.6 windows语言ID标识, 4字节
+ * - 1.7 两个GUID, 16字节, 固定为{7C01FD10-7BAA-11D0-9E0C-00A0-C922-E6EC},{7C01FD11-7BAA-11D0-9E0C-00A0-C922-E6EC}
+ * - 1.8 两项header section, 每项16字节, 记录着从文件头开始的偏移量和section的长度，各占8个字节
+ * - - 1.8.1 header section 0
+ * - - - 1.8.1.1 第一双字：0x01fe
+ * - - - 1.8.1.2 第三双字为文件大小
+ * - - - 1.8.1.3 共占5个双字，其余均为0
+ * - - 1.8.2 header section 1
+ * - - - 1.8.2.1 第一双字为ITSP
+ * - - - 1.8.2.2 第二双字为版本号
+ * - - - 1.8.2.3 第三双字为本section长度
+ * - - - 1.8.2.4 第四双字为0x0a
+ * - - - 1.8.2.5 第五双字值为0x1000，是目录块的大小
+ * - - - 1.8.2.6 第六双字是quickref section的“密度”，一般是2
+ * - - - 1.8.2.7 第七双字是索引树的深度，1表示没有索引，2表示有一层的PMGI数据块
+ * - - - 1.8.2.8 第八双字表示根索引的块号，如果没有索引为-1
+ * - - - 1.8.2.9 第九双字是第一个PMGL(listing)的块号
+ * - - - 1.8.2.A 第十双字是最后一个PMGL的块号
+ * - - - 1.8.2.B 第十一双字是-1
+ * - - - 1.8.2.C 第十二双字是目录块的块数
+ * - - - 1.8.2.D 第十三双字是windows语言ID标识
+ * - 1.9 8个字节的信息，这些在版本2里是没有的
+ * <p>
+ * 2.
+ */
 public class CHMFile implements Closeable {
 
     public static final int CHM_HEADER_LENGTH = 0x60;
 
     public static final int CHM_DIRECTORY_HEADER_LENGTH = 0x54;
-
-    private static Logger log = Logger.getLogger(CHMFile.class.getName());
 
     // header info
     private int version;    // 3, 2
@@ -49,13 +82,10 @@ public class CHMFile implements Closeable {
 
     private String siteMap;
 
-    private Section[] sections = new Section[]{new Section()}; // for section 0
+    private Section[] sections = new Section[]{new Section()};
 
     private String filepath;
 
-    /**
-     * We need random access to the source file
-     */
     public CHMFile(String filepath) throws IOException, DataFormatException {
         int iTemp;
         fileAccess = new RandomAccessFile(this.filepath = filepath, "r");
@@ -63,48 +93,59 @@ public class CHMFile implements Closeable {
         /**
          * Step 1. CHM header
          */
-        // The header length is 0x60 (96)
         LEInputStream in = new LEInputStream(createInputStream(0, CHM_HEADER_LENGTH));
+
+        // ITSF
         if (!in.readUTF8(4).equals("ITSF")) {
             throw new DataFormatException("CHM file should start with \"ITSF\"");
         }
 
+        // version
         if ((version = in.read32()) > 3) {
-            log.warning("CHM header version unexpected value " + version);
+            LogUtils.w("CHM header version unexpected value " + version);
         }
 
+        // header length
         int length = in.read32();
+
+        // value
         iTemp = in.read32(); // -1
 
+        // timestamp
         timestamp = in.read32(); // big-endian DWORD?
-//		log.info("CHM timestamp " + new Date(timestamp));
-        lang = in.read32();
-        log.info("CHM ITSF language " + WindowsLanguageID.getLocale(lang));
+        LogUtils.i("CHM timestamp: " + timestamp);
 
+        // windows language id
+        lang = in.read32();
+        LogUtils.i("CHM ITSF language: " + WindowsLanguageID.getLocale(lang));
+
+        // GUID
         String strTmp = in.readGUID();    //.equals("7C01FD10-7BAA-11D0-9E0C-00A0-C922-E6EC");
         strTmp = in.readGUID();    //.equals("7C01FD11-7BAA-11D0-9E0C-00A0-C922-E6EC");
 
+        // header section
         long off0 = in.read64();
         long len0 = in.read64();
         long off1 = in.read64();
         long len1 = in.read64();
 
-        // if the header length is really 0x60, read the final QWORD
-        // or the content should be immediate after header section 1
+        // if the header length is really 0x60, read the final QWORD, or the content should be immediate after header section 1
         contentOffset = (length >= CHM_HEADER_LENGTH) ? in.read64() : (off1 + len1);
-        log.fine("CHM content offset " + contentOffset);
+        LogUtils.i("CHM content offset " + contentOffset);
 
         /* Step 1.1 (Optional)  CHM header section 0 */
         in = new LEInputStream(createInputStream(off0, (int) len0)); // len0 can't exceed 32-bit
         iTemp = in.read32(); // 0x01FE;
         iTemp = in.read32(); // 0;
         if ((fileLength = in.read64()) != fileAccess.length()) {
-            log.warning("CHM file may be corrupted, expect file length " + fileLength);
+            LogUtils.w("CHM file may be corrupted, expect file length " + fileLength);
         }
         iTemp = in.read32(); // 0;
         iTemp = in.read32(); // 0;
 
-        /* Step 1.2 CHM header section 1: directory index header */
+        /**
+         *  Step 1.2 CHM header section 1: directory index header
+         */
         in = new LEInputStream(createInputStream(off1, CHM_DIRECTORY_HEADER_LENGTH));
 
         if (!in.readUTF8(4).equals("ITSP")) {
@@ -116,18 +157,18 @@ public class CHMFile implements Closeable {
         iTemp = in.read32(); // = 0x0a
         chunkSize = in.read32();    // 0x1000
         quickRef = 1 + (1 << in.read32());    // = 1 + (1 << quickRefDensity )
-        for (int i = in.read32(); i > 1; i--) // depth of index tree, 1: no index, 2: one level of PMGI chunks
-        {
+        for (int i = in.read32(); i > 1; i--) { // depth of index tree, 1: no index, 2: one level of PMGI chunks
             indexTree.add(new TreeMap<String, Integer>());
         }
 
         rootIndexChunkNo = in.read32();    // chunk number of root, -1: none
-        firstPMGLChunkNo = in.read32();
-        lastPMGLChunkNo = in.read32();
+        firstPMGLChunkNo = in.read32();    // chunk number of first PMGL
+        lastPMGLChunkNo = in.read32();     // chunk number of last PMGL
+
         iTemp = in.read32(); // = -1
-        totalChunks = in.read32();
+        totalChunks = in.read32(); // chunk counts
         int lang2 = in.read32(); // language code
-        log.info("CHM ITSP language " + WindowsLanguageID.getLocale(lang2));
+        LogUtils.i("CHM ITSP language " + WindowsLanguageID.getLocale(lang2));
 
         strTmp = in.readGUID(); //.equals("5D02926A-212E-11D0-9DF9-00A0-C922-E6EC"))
         iTemp = in.read32(); // = x54
@@ -139,12 +180,12 @@ public class CHMFile implements Closeable {
             throw new DataFormatException("CHM directory list chunks size mismatch");
         }
 
-        /* Step 2. CHM name list: content sections */
+        /**
+         *  Step 2. CHM name list: content sections
+         */
         in = new LEInputStream(
                 getResourceAsStream("::DataSpace/NameList"));
-        if (in == null) {
-            throw new DataFormatException("Missing ::DataSpace/NameList entry");
-        }
+
         iTemp = in.read16(); // length in 16-bit-word, = in.length() / 2
         sections = new Section[in.read16()];
         for (int i = 0; i < sections.length; i++) {
@@ -191,7 +232,7 @@ public class CHMFile implements Closeable {
 //
 //        if (entry == null) {// ugly
 //            entry = resolveIndexedEntry(name.toLowerCase(), rootIndexChunkNo, 0);
-//            log.warning("Resolved using lowercase name " + name);
+//            LogUtils.w("Resolved using lowercase name " + name);
 //        }
 
         if (entry == null) {
@@ -231,7 +272,7 @@ public class CHMFile implements Closeable {
                 while (in.available() > freeSpace) {
                     index.put(in.readUTF8(in.readENC()), in.readENC());
                 }
-                log.fine("Index L" + level + indexTree);
+                LogUtils.i("Index L" + level + indexTree);
             }
 
             chunkNo = -1;
@@ -270,11 +311,11 @@ public class CHMFile implements Closeable {
 				chunkSize-0004: WORD     Offset of entry n from entry 0
 				chunkSize-0008: WORD     Offset of entry 2n from entry 0
 				chunkSize-000C: WORD     Offset of entry 3n from entry 0
-					log.info("resources.size() = " + resources.size());
+					LogUtils.i("resources.size() = " + resources.size());
 					if ( (in.available() & 1) >0 ) // align to word
 						in.skip(1);
 					while (in.available() > 0)
-						log.info("chunk " + i + ": " + in.read16());
+						LogUtils.i("chunk " + i + ": " + in.read16());
              */
             return entryCache.get(name);
         }
@@ -301,7 +342,7 @@ public class CHMFile implements Closeable {
      * Get the name of the resources in the CHM. Caches perform better when
      * iterate the CHM using order of this returned list.
      *
-     * @see resolveIndexEntry(String name, int chunkNo, int level) TODO: some
+     * @see #resolveIndexedEntry
      * chunk will be read twice, one in resolveIndexEntry, one here, fix it!
      */
     public synchronized List<String> list() throws IOException {
@@ -326,7 +367,7 @@ public class CHMFile implements Closeable {
                         resources.add(entry.name);
                         if (entry.name.endsWith(".hhc")) { // .hhc entry is the navigation file
                             siteMap = entry.name;
-                            log.info("CHM sitemap " + siteMap);
+                            LogUtils.i("CHM sitemap " + siteMap);
                         }
                     }
                 }
@@ -339,8 +380,6 @@ public class CHMFile implements Closeable {
 
     /**
      * The sitemap file, usually the .hhc file.
-     *
-     * @see http://www.nongnu.org/chmspec/latest/Sitemap.html#HHC
      */
     public String getSiteMap() throws IOException {
         if (resources == null) {
@@ -398,7 +437,7 @@ public class CHMFile implements Closeable {
             resetInterval = in.read32(); // huffman reset interval for blocks
             windowSize = in.read32() * 0x8000;    // usu. 0x10, windows size in 0x8000-byte blocks
             int cacheSize = in.read32();    // unknown, 0, 1, 2
-            log.info("LZX cache size " + cacheSize);
+            LogUtils.i("LZX cache size " + cacheSize);
             cachedBlocks = new LRUCache<Integer, byte[][]>((1 + cacheSize) << 2);
             in.read32(); // = 0
 
@@ -406,12 +445,9 @@ public class CHMFile implements Closeable {
             in = new LEInputStream(
                     getResourceAsStream("::DataSpace/Storage/MSCompressed/Transform/"
                             + "{7FC28940-9D31-11D0-9B27-00A0C91E9C7C}/InstanceData/ResetTable"));
-            if (in == null) {
-                throw new DataFormatException("LZXC missing reset table");
-            }
             int version = in.read32();
             if (version != 2) {
-                log.warning("LZXC version unknown " + version);
+                LogUtils.w("LZXC version unknown " + version);
             }
             addressTable = new long[in.read32()];
             in.read32(); // = 8; size of table entry
@@ -486,7 +522,7 @@ public class CHMFile implements Closeable {
                                 int len = (int) ((blockNo + 1 < addressTable.length)
                                         ? (addressTable[blockNo + 1] - addressTable[blockNo])
                                         : (compressedLength - addressTable[blockNo]));
-                                log.fine("readBlock " + blockNo + ": " + (sectionOffset + addressTable[blockNo]) + "+ " + len);
+                                LogUtils.i("readBlock " + blockNo + ": " + (sectionOffset + addressTable[blockNo]) + "+ " + len);
                                 inflater.inflate(i == 0, // reset flag
                                         createInputStream(sectionOffset + addressTable[blockNo], len),
                                         cache[i]); // here is the heart
@@ -536,7 +572,7 @@ public class CHMFile implements Closeable {
 
                 @Override
                 public long skip(long n) throws IOException {
-                    log.warning("LZX skip happens: " + pos + "+ " + n);
+                    LogUtils.w("LZX skip happens: " + pos + "+ " + n);
                     pos += n;    // TODO n chould be negative, so do boundary checks!
                     return n;
                 }

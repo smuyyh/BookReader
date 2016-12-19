@@ -1,12 +1,12 @@
 /**
  * Copyright 2016 JustWayward Team
- * <p>
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p>
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -45,6 +45,8 @@ public class Constant {
 
     public static String PATH_EPUB = FileUtils.createRootPath(AppUtils.getAppContext()) + "/epub";
 
+    public static String PATH_CHM = FileUtils.createRootPath(AppUtils.getAppContext()) + "/chm";
+
     public static String BASE_PATH = FileUtils.createRootPath(AppUtils.getAppContext()) + "/book/";
 
     public static final String ISNIGHT = "isNight";
@@ -56,6 +58,7 @@ public class Constant {
     public static final String SUFFIX_PDF = ".pdf";
     public static final String SUFFIX_EPUB = ".epub";
     public static final String SUFFIX_ZIP = ".zip";
+    public static final String SUFFIX_CHM = ".chm";
 
     public static final int[] tagColors = new int[]{
             Color.parseColor("#90C5F0"),

@@ -7,15 +7,15 @@ import java.io.InputStream;
 
 public class BitsInputStream extends FilterInputStream {
 
+    int bitbuf;
+    int bitsLeft;
+
     static final int BUFFER_BITS = 32;
 
     static final int[] UNSIGNED_MASK = new int[]{
             0, 0x01, 0x03, 0x07, 0x0f, 0x01f, 0x3f, 0x7f, 0xff,
             0x1ff, 0x3ff, 0x7ff, 0xfff, 0x1fff, 0x3fff, 0x7fff, 0xffff,
     };
-
-    int bitbuf;
-    int bitsLeft;
 
     public BitsInputStream(InputStream in) {
         super(in);
@@ -34,7 +34,7 @@ public class BitsInputStream extends FilterInputStream {
      * NOTE: n may be negative integer, e.g. -2
      */
     public void skip(int n) throws IOException {
-        bitbuf = 0;    // TODO really want to do this?
+        bitbuf = 0;
         bitsLeft = 0;
         super.skip(n);
     }

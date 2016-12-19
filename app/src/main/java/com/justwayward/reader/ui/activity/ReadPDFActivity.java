@@ -15,6 +15,7 @@
  */
 package com.justwayward.reader.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.widget.LinearLayout;
@@ -24,11 +25,18 @@ import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.view.pdfview.PDFViewPager;
 
+import java.io.File;
+
 import butterknife.Bind;
 
 public class ReadPDFActivity extends BaseActivity {
 
-    private PDFViewPager pdfViewPager;
+    public static void start(Context context, String filePath) {
+        Intent intent = new Intent(context, ReadPDFActivity.class);
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setData(Uri.fromFile(new File(filePath)));
+        context.startActivity(intent);
+    }
 
     @Bind(R.id.llPdfRoot)
     LinearLayout llPdfRoot;
@@ -58,7 +66,7 @@ public class ReadPDFActivity extends BaseActivity {
         if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
             String filePath = Uri.decode(getIntent().getDataString().replace("file://", ""));
 
-            pdfViewPager = new PDFViewPager(this, filePath);
+            PDFViewPager pdfViewPager = new PDFViewPager(this, filePath);
             llPdfRoot.addView(pdfViewPager);
         }
     }

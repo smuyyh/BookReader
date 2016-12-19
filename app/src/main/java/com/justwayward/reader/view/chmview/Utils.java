@@ -19,10 +19,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-/**
- * Created by nguyenbinh on 29/11/2016.
- */
-
 public class Utils {
     public static CHMFile chm = null;
 
@@ -72,7 +68,7 @@ public class Utils {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if(chm.getResourceAsStream("") != null) {
+            if (chm.getResourceAsStream("") != null) {
                 SAXParserImpl.newInstance(null).parse(
                         chm.getResourceAsStream(""),
                         new DefaultHandler() {
@@ -155,13 +151,13 @@ public class Utils {
                             }
                         }
                 );
-            }else{
+            } else {
                 fosHTMLMap.write("<HTML> <BODY> <UL>".getBytes());
-                for(String fileName: chm.list()){
+                for (String fileName : chm.list()) {
                     fileName = fileName.substring(1);
-                    if(fileName.endsWith(".htm")||fileName.endsWith(".html")){
+                    if (fileName.endsWith(".htm") || fileName.endsWith(".html")) {
                         fosListSite.write((fileName + ";").getBytes());
-                        fosHTMLMap.write(("<li><a href=\""+fileName+"\">" + fileName + "</a></li>").getBytes());
+                        fosHTMLMap.write(("<li><a href=\"" + fileName + "\">" + fileName + "</a></li>").getBytes());
                         listSite.add(fileName);
                     }
                 }
@@ -238,12 +234,11 @@ public class Utils {
         }
         try {
             return Integer.parseInt(reval.toString());
-        }catch (Exception e){
+        } catch (Exception e) {
             return 0;
         }
 
     }
-
 
 
     public static void saveBookmark(String extractPath, String md5, ArrayList<String> listBookmark) {
@@ -260,7 +255,7 @@ public class Utils {
     public static void saveHistory(String extractPath, String md5, int index) {
         try {
             FileOutputStream fos = new FileOutputStream(extractPath + "/history_" + md5, false);
-            fos.write((""+index).getBytes());
+            fos.write(("" + index).getBytes());
             fos.close();
         } catch (IOException ignored) {
         }
@@ -344,9 +339,9 @@ public class Utils {
             }
             byte[] hash = md.digest();
             checksum = new BigInteger(1, hash).toString(16); //don't use this, truncates leading zero
-        } catch (IOException ex) {
-        } catch (NoSuchAlgorithmException ex) {
+        } catch (IOException | NoSuchAlgorithmException ignored) {
         }
+        assert checksum != null;
         return checksum.trim();
     }
 
@@ -355,7 +350,7 @@ public class Utils {
             if (chm == null) {
                 chm = new CHMFile(filePath);
             }
-            if(new File(pathExtractFile).exists()) return true;
+            if (new File(pathExtractFile).exists()) return true;
             String path = pathExtractFile.substring(0, pathExtractFile.lastIndexOf("/"));
             File filePathTemp = new File(path);
             if (!filePathTemp.exists()) {

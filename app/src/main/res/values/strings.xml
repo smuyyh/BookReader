@@ -19,6 +19,7 @@
     <string name="add_tag">Add Tag</string>
 
     <!--搜索相关-->
+    <string name="search">搜索</string>
     <string name="search_hot_search">大家都在搜</string>
     <string name="search_change_a_lot">换一批</string>
     <string name="search_result_lately_follower">"%1$d人在追 |&#160;"</string>

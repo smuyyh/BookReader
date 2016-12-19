@@ -3,6 +3,8 @@ package com.justwayward.reader.ui.activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -28,6 +30,7 @@ import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.view.epubview.DirectionalViewpager;
 import com.justwayward.reader.view.epubview.ReaderCallback;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,6 +46,13 @@ import nl.siegmann.epublib.domain.TOCReference;
 import nl.siegmann.epublib.epub.EpubReader;
 
 public class ReadEPubActivity extends BaseActivity implements ReaderCallback {
+
+    public static void start(Context context, String filePath) {
+        Intent intent = new Intent(context, ReadEPubActivity.class);
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setData(Uri.fromFile(new File(filePath)));
+        context.startActivity(intent);
+    }
 
     @Bind(R.id.epubViewPager)
     DirectionalViewpager viewpager;
