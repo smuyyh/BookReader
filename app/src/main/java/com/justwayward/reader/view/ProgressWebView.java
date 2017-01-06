@@ -149,23 +149,17 @@ public class ProgressWebView extends LinearLayout {
                 return super.onJsAlert(view, url, message, result);
             }
 
-            ;
-
             @Override
             // 处理javascript中的confirm
             public boolean onJsConfirm(WebView view, String url, String message, final JsResult result) {
                 return super.onJsConfirm(view, url, message, result);
             }
 
-            ;
-
             @Override
             // 处理javascript中的prompt
             public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, final JsPromptResult result) {
                 return super.onJsPrompt(view, url, message, defaultValue, result);
             }
-
-            ;
 
             // 设置网页加载的进度条
             @Override

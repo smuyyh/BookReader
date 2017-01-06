@@ -54,6 +54,14 @@ public class BookToc extends Base {
             public int currency;
             public boolean unreadble;
             public boolean isVip;
+
+            public Chapters() {
+            }
+
+            public Chapters(String title, String link) {
+                this.title = title;
+                this.link = link;
+            }
         }
     }
 

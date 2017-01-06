@@ -1,19 +1,17 @@
 项目地址：[https://github.com/JustWayward/BookReader](https://github.com/JustWayward/BookReader)
 
 # BookReader
-#### "任阅" 网络小说阅读器，实现追书推荐收藏、书籍/标签检索、模拟翻书的翻页效果、缓存书籍、日夜间模式、本地txt/pdf书籍阅读、字体/主题/亮度设置、Wifi传书等功能！
+#### "任阅" 网络小说阅读器，实现追书推荐收藏、书籍/标签检索、模拟翻书的翻页效果、缓存书籍、日夜间模式、本地txt/pdf/epub书籍阅读、字体/主题/亮度设置、Wifi传书等功能！
 
 
 ## 项目
 项目基于RxJava + Retrofit2 + Dagger2，结合MVP模式开发，代码结构清晰。项目中的API均来自追书神器，纯属共享学习之用，不得用于商业！！
-有任何疑问或建议可提[issue](https://github.com/JustWayward/BookReader/issues/new)。
+有任何疑问或建议可提[issue](https://github.com/JustWayward/BookReader/issues/new)或联系[smuyyh@gmail.com](mailto://smuyyh@gmail.com)。
 
 ## TODO
-* [ ] 新版阅读页优化模拟翻书效果，提高分页速度以及分页准确性
+* [ ] txt阅读优化模拟翻书效果，提高分页速度以及分页准确性
 
-* [ ] 登录模块（由于openid的限制，可能无法实现）
-
-* [ ] 细节优化
+* [ ] epub阅读优化
 
 ## 截图
 
@@ -79,8 +77,7 @@
 ## LICENSE
 
 ```
-Copyright 2016 JustWayward Team
-
+Copyright 2016 JustWayward Team, All right reserved.
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at

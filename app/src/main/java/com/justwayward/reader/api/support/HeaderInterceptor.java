@@ -25,7 +25,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * Retrofit2 Cookie拦截器。用于保存和设置Cookies
+ * Retrofit2 Header拦截器。用于保存和设置Cookies
  *
  * @author yuyh.
  * @date 16/8/6.
@@ -35,11 +35,13 @@ public final class HeaderInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request original = chain.request();
-        if (original.url().toString().contains("book/") ||
-                original.url().toString().contains("book-list/") ||
-                original.url().toString().contains("toc/") ||
-                original.url().toString().contains("post/") ||
-                original.url().toString().contains("user/")) {
+
+        String url = original.url().toString();
+        if (url.contains("book/") ||
+                url.contains("book-list/") ||
+                url.contains("toc/") ||
+                url.contains("post/") ||
+                url.contains("user/")) {
             Request request = original.newBuilder()
                     .addHeader("User-Agent", "ZhuiShuShenQi/3.40[preload=false;locale=zh_CN;clientidbase=android-nvidia]") // 不能转UTF-8
                     .addHeader("X-User-Agent", "ZhuiShuShenQi/3.40[preload=false;locale=zh_CN;clientidbase=android-nvidia]")

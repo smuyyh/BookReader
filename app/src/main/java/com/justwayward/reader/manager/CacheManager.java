@@ -1,12 +1,12 @@
 /**
  * Copyright 2016 JustWayward Team
- * <p>
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p>
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -165,7 +165,7 @@ public class CacheManager {
         long cacheSize = 0;
 
         try {
-            String cacheDir = AppUtils.getAppContext().getCacheDir().getPath();
+            String cacheDir = Constant.BASE_PATH;
             cacheSize += FileUtils.getFolderSize(cacheDir);
             if (FileUtils.isSdCardAvailable()) {
                 String extCacheDir = AppUtils.getAppContext().getExternalCacheDir().getPath();
@@ -190,12 +190,12 @@ public class CacheManager {
             FileUtils.deleteFileOrDirectory(new File(cacheDir));
             if (FileUtils.isSdCardAvailable()) {
                 // 删除SD书籍缓存
-                FileUtils.deleteFileOrDirectory(new File(Constant.BASE_PATH));
+                FileUtils.deleteFileOrDirectory(new File(Constant.PATH_DATA));
             }
             // 删除阅读记录（SharePreference）
             if (clearReadPos) {
                 //防止再次弹出性别选择框，sp要重写入保存的性别
-                String chooseSex =SettingManager.getInstance().getUserChooseSex();
+                String chooseSex = SettingManager.getInstance().getUserChooseSex();
                 SharedPreferencesUtil.getInstance().removeAll();
                 SettingManager.getInstance().saveUserChooseSex(chooseSex);
             }

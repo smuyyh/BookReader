@@ -138,7 +138,7 @@ public class BasePDFPagerAdapter extends PagerAdapter {
         page.close();
 
         iv.setImageBitmap(bitmap);
-        ((ViewPager) container).addView(v, 0);
+        container.addView(v, 0);
 
         return v;
     }
@@ -176,6 +176,6 @@ public class BasePDFPagerAdapter extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return view == (View) object;
+        return view == object;
     }
 }

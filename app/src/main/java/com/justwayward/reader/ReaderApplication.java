@@ -45,7 +45,7 @@ public class ReaderApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        this.sInstance = this;
+        sInstance = this;
         initCompoent();
         AppUtils.init(this);
         CrashHandler.getInstance().init(this);

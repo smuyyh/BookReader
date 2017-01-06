@@ -63,6 +63,7 @@ public abstract class BaseRVFragment<T1 extends BaseContract.BasePresenter, T2> 
             mRecyclerView.setItemDecoration(ContextCompat.getColor(activity, R.color.common_divider_narrow), 1, 0, 0);
             mRecyclerView.setAdapterWithProgress(mAdapter);
         }
+
         if (mAdapter != null) {
             mAdapter.setOnItemClickListener(this);
             mAdapter.setError(R.layout.common_error_view).setOnClickListener(new View.OnClickListener() {
@@ -90,9 +91,9 @@ public abstract class BaseRVFragment<T1 extends BaseContract.BasePresenter, T2> 
     public Object createInstance(Class<?> cls) {
         Object obj;
         try {
-            Constructor c1 = cls.getDeclaredConstructor(new Class[]{Context.class});
+            Constructor c1 = cls.getDeclaredConstructor(Context.class);
             c1.setAccessible(true);
-            obj = c1.newInstance(new Object[]{mContext});
+            obj = c1.newInstance(mContext);
         } catch (Exception e) {
             obj = null;
         }

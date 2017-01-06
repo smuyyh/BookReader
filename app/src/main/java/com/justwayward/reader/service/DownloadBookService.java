@@ -25,6 +25,7 @@ import android.text.TextUtils;
 import com.justwayward.reader.R;
 import com.justwayward.reader.ReaderApplication;
 import com.justwayward.reader.api.BookApi;
+import com.justwayward.reader.api.support.Logger;
 import com.justwayward.reader.api.support.LoggingInterceptor;
 import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.ChapterRead;
@@ -32,7 +33,6 @@ import com.justwayward.reader.bean.support.DownloadMessage;
 import com.justwayward.reader.bean.support.DownloadProgress;
 import com.justwayward.reader.bean.support.DownloadQueue;
 import com.justwayward.reader.manager.CacheManager;
-import com.justwayward.reader.module.BookApiModule;
 import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.NetworkUtils;
@@ -66,7 +66,7 @@ public class DownloadBookService extends Service {
     public void onCreate() {
         super.onCreate();
         EventBus.getDefault().register(this);
-        LoggingInterceptor logging = new LoggingInterceptor(new BookApiModule.MyLog());
+        LoggingInterceptor logging = new LoggingInterceptor(new Logger());
         logging.setLevel(LoggingInterceptor.Level.BODY);
         bookApi = ReaderApplication.getsInstance().getAppComponent().getReaderApi();
     }

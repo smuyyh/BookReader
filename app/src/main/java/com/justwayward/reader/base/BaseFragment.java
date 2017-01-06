@@ -95,7 +95,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public FragmentActivity getSupportActivity() {
-        return (FragmentActivity) super.getActivity();
+        return super.getActivity();
     }
 
     public Context getApplicationContext() {

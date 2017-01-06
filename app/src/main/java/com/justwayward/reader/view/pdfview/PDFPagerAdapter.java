@@ -1,12 +1,12 @@
 /**
  * Copyright 2016 JustWayward Team
- * <p>
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p>
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,7 +19,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.RectF;
 import android.graphics.pdf.PdfRenderer;
-import android.support.v4.view.ViewPager;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +27,7 @@ import android.widget.ImageView;
 import com.justwayward.reader.R;
 
 import java.lang.ref.WeakReference;
+
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class PDFPagerAdapter extends BasePDFPagerAdapter
@@ -37,7 +37,7 @@ public class PDFPagerAdapter extends BasePDFPagerAdapter
 
     SparseArray<WeakReference<PhotoViewAttacher>> attachers;
     PdfScale scale = new PdfScale();
-    View.OnClickListener pageClickListener = new EmptyClickListener();
+    OnPageClickListener pageClickListener;
 
     public PDFPagerAdapter(Context context, String pdfPath) {
         super(context, pdfPath);
@@ -70,11 +70,13 @@ public class PDFPagerAdapter extends BasePDFPagerAdapter
         attacher.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
             @Override
             public void onPhotoTap(View view, float x, float y) {
-                pageClickListener.onClick(view);
+                if (pageClickListener != null) {
+                    pageClickListener.onPageTap(view, x, y);
+                }
             }
         });
         attacher.update();
-        ((ViewPager) container).addView(v, 0);
+        container.addView(v, 0);
 
         return v;
     }
@@ -103,7 +105,7 @@ public class PDFPagerAdapter extends BasePDFPagerAdapter
         float centerX = 0f, centerY = 0f;
         int offScreenSize = DEFAULT_OFFSCREENSIZE;
         float renderQuality = DEFAULT_QUALITY;
-        View.OnClickListener pageClickListener = new EmptyClickListener();
+        OnPageClickListener pageClickListener;
 
         public Builder(Context context) {
             this.context = context;
@@ -146,7 +148,7 @@ public class PDFPagerAdapter extends BasePDFPagerAdapter
             return this;
         }
 
-        public Builder setOnPageClickListener(View.OnClickListener listener) {
+        public Builder setOnPageClickListener(OnPageClickListener listener) {
             if (listener != null) {
                 pageClickListener = listener;
             }
