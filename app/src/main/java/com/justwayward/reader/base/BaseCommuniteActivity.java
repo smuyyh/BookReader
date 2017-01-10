@@ -101,10 +101,10 @@ public abstract class BaseCommuniteActivity extends BaseActivity implements Sele
             case 0:
                 switch (position) {
                     case 0:
-                        distillate = "";
+                        distillate = Constant.Distillate.ALL;
                         break;
                     case 1:
-                        distillate = "true";
+                        distillate = Constant.Distillate.DISTILLATE;
                         break;
                     default:
                         break;

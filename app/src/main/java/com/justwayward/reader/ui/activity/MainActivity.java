@@ -27,7 +27,6 @@
 package com.justwayward.reader.ui.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -106,17 +105,6 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
     private GenderPopupWindow genderPopupWindow;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        startService(new Intent(this, DownloadBookService.class));
-
-        initDatas();
-        configViews();
-
-        mTencent = Tencent.createInstance("1105670298", MainActivity.this);
-    }
-
-    @Override
     public int getLayoutId() {
         return R.layout.activity_main;
     }
@@ -137,6 +125,10 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
 
     @Override
     public void initDatas() {
+        startService(new Intent(this, DownloadBookService.class));
+
+        mTencent = Tencent.createInstance("1105670298", MainActivity.this);
+
         mDatas = Arrays.asList(getResources().getStringArray(R.array.home_tabs));
         mTabContents = new ArrayList<>();
         mTabContents.add(new RecommendFragment());

@@ -101,10 +101,8 @@ public class Constant {
     }
 
     @StringDef({
-            SortType.DEFAULT,
-            SortType.COMMENT_COUNT,
-            SortType.CREATED,
-            SortType.HELPFUL
+            Distillate.ALL,
+            Distillate.DISTILLATE
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface Distillate {
