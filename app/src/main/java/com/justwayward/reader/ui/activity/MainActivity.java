@@ -285,13 +285,6 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        DownloadBookService.cancel();
-        stopService(new Intent(this, DownloadBookService.class));
-    }
-
-    @Override
     public void loginSuccess() {
         ToastUtils.showSingleToast("登陆成功");
     }
@@ -353,5 +346,15 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
             Tencent.onActivityResultData(requestCode, resultCode, data, loginListener);
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        DownloadBookService.cancel();
+        stopService(new Intent(this, DownloadBookService.class));
+        if (mPresenter != null) {
+            mPresenter.detachView();
+        }
     }
 }

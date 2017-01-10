@@ -217,4 +217,11 @@ public class SubjectBookListActivity extends BaseActivity implements SubjectBook
         rsvTags.setVisibility(View.GONE);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mPresenter != null) {
+            mPresenter.detachView();
+        }
+    }
 }

@@ -385,5 +385,8 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        if (mPresenter != null) {
+            mPresenter.detachView();
+        }
     }
 }

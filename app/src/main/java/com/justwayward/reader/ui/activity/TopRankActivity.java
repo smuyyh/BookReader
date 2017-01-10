@@ -162,4 +162,12 @@ public class TopRankActivity extends BaseActivity implements TopRankContract.Vie
             }
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mPresenter != null) {
+            mPresenter.detachView();
+        }
+    }
 }

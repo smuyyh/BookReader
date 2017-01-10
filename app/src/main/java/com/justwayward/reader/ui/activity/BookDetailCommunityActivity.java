@@ -169,4 +169,8 @@ public class BookDetailCommunityActivity extends BaseActivity {
         dialog.show();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

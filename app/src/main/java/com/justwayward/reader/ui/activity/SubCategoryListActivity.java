@@ -246,4 +246,11 @@ public class SubCategoryListActivity extends BaseActivity implements SubCategory
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mPresenter != null) {
+            mPresenter.detachView();
+        }
+    }
 }

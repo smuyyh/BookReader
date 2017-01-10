@@ -359,4 +359,12 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
     public void complete() {
         mRecyclerView.setRefreshing(false);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mPresenter != null) {
+            mPresenter.detachView();
+        }
+    }
 }
