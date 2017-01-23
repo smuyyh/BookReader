@@ -211,5 +211,8 @@ public class BookDiscussionDetailActivity extends BaseRVActivity<CommentList.Com
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(headerViewHolder);
+        if (mPresenter != null) {
+            mPresenter.detachView();
+        }
     }
 }

@@ -808,18 +808,25 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         super.onDestroy();
         if (mTtsPlayer.getPlayerState() == TTSCommonPlayer.PLAYER_STATE_PLAYING)
             mTtsPlayer.stop();
+
         EventBus.getDefault().post(new RefreshCollectionIconEvent());
         EventBus.getDefault().post(new RefreshCollectionListEvent());
         EventBus.getDefault().unregister(this);
+
         try {
             unregisterReceiver(receiver);
         } catch (Exception e) {
             LogUtils.e("Receiver not registered");
         }
+
         if (isAutoLightness) {
             ScreenUtils.startAutoBrightness(ReadActivity.this);
         } else {
             ScreenUtils.stopAutoBrightness(ReadActivity.this);
+        }
+
+        if (mPresenter != null) {
+            mPresenter.detachView();
         }
     }
 

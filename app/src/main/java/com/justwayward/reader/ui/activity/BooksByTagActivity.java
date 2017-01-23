@@ -161,4 +161,11 @@ public class BooksByTagActivity extends BaseActivity implements BooksByTagContra
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mPresenter != null) {
+            mPresenter.detachView();
+        }
+    }
 }

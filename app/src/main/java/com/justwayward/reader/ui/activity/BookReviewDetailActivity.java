@@ -241,4 +241,11 @@ public class BookReviewDetailActivity extends BaseRVActivity<CommentList.Comment
         CommentList.CommentsBean data  = mAdapter.getItem(position);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mPresenter != null) {
+            mPresenter.detachView();
+        }
+    }
 }

@@ -216,5 +216,8 @@ public class SubjectBookListDetailActivity extends BaseRVActivity<BookListDetail
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(headerViewHolder);
+        if (mPresenter != null) {
+            mPresenter.detachView();
+        }
     }
 }

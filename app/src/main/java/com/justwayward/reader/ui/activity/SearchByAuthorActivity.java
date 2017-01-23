@@ -107,4 +107,12 @@ public class SearchByAuthorActivity extends BaseRVActivity<SearchDetail.SearchBo
     public void complete() {
         mRecyclerView.setRefreshing(false);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mPresenter != null) {
+            mPresenter.detachView();
+        }
+    }
 }

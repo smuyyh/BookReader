@@ -133,4 +133,11 @@ public class TopCategoryListActivity extends BaseActivity implements TopCategory
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mPresenter != null) {
+            mPresenter.detachView();
+        }
+    }
 }
