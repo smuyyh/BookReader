@@ -8,6 +8,7 @@
 项目基于RxJava + Retrofit2 + Dagger2，结合MVP模式开发，代码结构清晰。项目中的API均来自追书神器，纯属共享学习之用，不得用于商业！！
 有任何疑问或建议可提[issue](https://github.com/JustWayward/BookReader/issues/new)或联系[smuyyh@gmail.com](mailto://smuyyh@gmail.com)。
 
+demo下载：[任阅.apk](https://github.com/JustWayward/BookReader/raw/master/体验demo/任阅-20170129.apk)
 ## TODO
 * [ ] txt阅读优化模拟翻书效果，提高分页速度以及分页准确性
 
