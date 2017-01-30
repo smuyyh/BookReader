@@ -127,7 +127,7 @@ public class BookApi {
     }
 
     public synchronized Observable<List<BookSource>> getBookSource(String view, String book) {
-        return service.getBookSource(view, book);
+        return service.getABookSource(view, book);
     }
 
     public Observable<RankingList> getRanking() {

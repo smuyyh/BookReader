@@ -55,12 +55,11 @@ import com.justwayward.reader.bean.support.DownloadMessage;
 import com.justwayward.reader.bean.support.DownloadProgress;
 import com.justwayward.reader.bean.support.DownloadQueue;
 import com.justwayward.reader.bean.support.ReadTheme;
-import com.justwayward.reader.bean.support.RefreshCollectionIconEvent;
-import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerBookComponent;
 import com.justwayward.reader.manager.CacheManager;
 import com.justwayward.reader.manager.CollectionsManager;
+import com.justwayward.reader.manager.EventManager;
 import com.justwayward.reader.manager.SettingManager;
 import com.justwayward.reader.manager.ThemeManager;
 import com.justwayward.reader.service.DownloadBookService;
@@ -116,6 +115,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     TextView mTvBookReadCommunity;
     @Bind(R.id.tvBookReadIntroduce)
     TextView mTvBookReadChangeSource;
+    @Bind(R.id.tvBookReadSource)
+    TextView mTvBookReadSource;
 
     @Bind(R.id.flReadWidget)
     FrameLayout flReadWidget;
@@ -285,7 +286,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                     @Override
                     public void call(Long aLong) {
                         //延迟1秒刷新书架
-                        EventBus.getDefault().post(new RefreshCollectionListEvent());
+                        EventManager.refreshCollectionList();
                     }
                 });
     }
@@ -403,8 +404,13 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         flReadWidget.addView(mPageWidget);
     }
 
+    /**
+     * 加载章节列表
+     *
+     * @param list
+     */
     @Override
-    public void showBookToc(List<BookToc.mixToc.Chapters> list) { // 加载章节列表
+    public void showBookToc(List<BookToc.mixToc.Chapters> list) {
         mChapterList.clear();
         mChapterList.addAll(list);
 
@@ -412,7 +418,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     }
 
     /**
-     * 读取currentChapter章节。章节文件存在则直接阅读，不存在则请求
+     * 获取当前章节。章节文件存在则直接阅读，不存在则请求
      */
     public void readCurrentChapter() {
         if (CacheManager.getInstance().getChapterFile(bookId, currentChapter) != null) {
@@ -452,6 +458,38 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         }
     }
 
+    @Override
+    public void showError() {
+        hideDialog();
+    }
+
+    @Override
+    public void complete() {
+        hideDialog();
+    }
+
+    private synchronized void hideReadBar() {
+        gone(mTvDownloadProgress, mLlBookReadBottom, mLlBookReadTop, rlReadAaSet, rlReadMark);
+        hideStatusBar();
+        decodeView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+    }
+
+    private synchronized void showReadBar() { // 显示工具栏
+        visible(mLlBookReadBottom, mLlBookReadTop);
+        showStatusBar();
+        decodeView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+    }
+
+    private synchronized void toggleReadBar() { // 切换工具栏 隐藏/显示 状态
+        if (isVisible(mLlBookReadTop)) {
+            hideReadBar();
+        } else {
+            showReadBar();
+        }
+    }
+
+    /***************Title Bar*****************/
+
     @OnClick(R.id.ivBack)
     public void onClickBack() {
         if (mTocListPopupWindow.isShowing()) {
@@ -478,6 +516,13 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         gone(rlReadAaSet, rlReadMark);
         BookDetailActivity.startActivity(mContext, bookId);
     }
+
+    @OnClick(R.id.tvBookReadSource)
+    public void onClickSource() {
+
+    }
+
+    /***************Bottom Bar*****************/
 
     @OnClick(R.id.tvBookReadMode)
     public void onClickChangeMode() { // 日/夜间模式切换
@@ -580,6 +625,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         }
     }
 
+    /***************Setting Menu*****************/
+
     @OnClick(R.id.ivBrightnessMinus)
     public void brightnessMinus() {
         int curBrightness = SettingManager.getInstance().getReadBrightness();
@@ -616,6 +663,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
         updateMark();
     }
+
+    /***************Book Mark*****************/
 
     @OnClick(R.id.tvAddMark)
     public void addBookMark() {
@@ -662,6 +711,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         }
     }
 
+    /***************Event*****************/
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void showDownProgress(DownloadProgress progress) {
         if (bookId.equals(progress.bookId)) {
@@ -693,36 +744,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         }
     }
 
-    private synchronized void hideReadBar() {
-        gone(mTvDownloadProgress, mLlBookReadBottom, mLlBookReadTop, rlReadAaSet, rlReadMark);
-        hideStatusBar();
-        decodeView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
-    }
-
-    private synchronized void showReadBar() { // 显示工具栏
-        visible(mLlBookReadBottom, mLlBookReadTop);
-        showStatusBar();
-        decodeView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-    }
-
-    private void toggleReadBar() { // 切换工具栏 隐藏/显示 状态
-        if (isVisible(mLlBookReadTop)) {
-            hideReadBar();
-        } else {
-            showReadBar();
-        }
-    }
-
-    @Override
-    public void showError() {
-        hideDialog();
-    }
-
-    @Override
-    public void complete() {
-        hideDialog();
-    }
-
     /**
      * 显示加入书架对话框
      *
@@ -732,56 +753,61 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         new AlertDialog.Builder(mContext)
                 .setTitle(getString(R.string.book_read_add_book))
                 .setMessage(getString(R.string.book_read_would_you_like_to_add_this_to_the_book_shelf))
-                .setPositiveButton(getString(R.string.book_read_join_the_book_shelf),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                bean.recentReadingTime = FormatUtils.getCurrentTimeString(FormatUtils.FORMAT_DATE_TIME);
-                                CollectionsManager.getInstance().add(bean);
-                                finish();
-                            }
-                        })
-                .setNegativeButton(getString(R.string.book_read_not),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                finish();
-                            }
-                        })
-                .create().show();
+                .setPositiveButton(getString(R.string.book_read_join_the_book_shelf), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        bean.recentReadingTime = FormatUtils.getCurrentTimeString(FormatUtils.FORMAT_DATE_TIME);
+                        CollectionsManager.getInstance().add(bean);
+                        finish();
+                    }
+                })
+                .setNegativeButton(getString(R.string.book_read_not), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                })
+                .create()
+                .show();
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (mTocListPopupWindow != null && mTocListPopupWindow.isShowing()) {
-                mTocListPopupWindow.dismiss();
-                gone(mTvBookReadTocTitle);
-                visible(mTvBookReadReading, mTvBookReadCommunity, mTvBookReadChangeSource);
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                if (mTocListPopupWindow != null && mTocListPopupWindow.isShowing()) {
+                    mTocListPopupWindow.dismiss();
+                    gone(mTvBookReadTocTitle);
+                    visible(mTvBookReadReading, mTvBookReadCommunity, mTvBookReadChangeSource);
+                    return true;
+                } else if (isVisible(rlReadAaSet)) {
+                    gone(rlReadAaSet);
+                    return true;
+                } else if (isVisible(mLlBookReadBottom)) {
+                    hideReadBar();
+                    return true;
+                } else if (!CollectionsManager.getInstance().isCollected(bookId)) {
+                    showJoinBookShelfDialog(recommendBooks);
+                    return true;
+                }
+                break;
+            case KeyEvent.KEYCODE_MENU:
+                toggleReadBar();
                 return true;
-            } else if (isVisible(rlReadAaSet)) {
-                gone(rlReadAaSet);
-                return true;
-            } else if (isVisible(mLlBookReadBottom)) {
-                hideReadBar();
-                return true;
-            } else if (!CollectionsManager.getInstance().isCollected(bookId)) {
-                showJoinBookShelfDialog(recommendBooks);
-                return true;
-            }
-        } else if (keyCode == KeyEvent.KEYCODE_MENU) {
-            toggleReadBar();
-            return true;
-        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-            if (SettingManager.getInstance().isVolumeFlipEnable()) {
-                return true;
-            }
-        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
-            if (SettingManager.getInstance().isVolumeFlipEnable()) {
-                return true;
-            }
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                if (SettingManager.getInstance().isVolumeFlipEnable()) {
+                    return true;
+                }
+                break;
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                if (SettingManager.getInstance().isVolumeFlipEnable()) {
+                    return true;
+                }
+                break;
+            default:
+                break;
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -789,10 +815,9 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-            // 防止翻页有声音
             if (SettingManager.getInstance().isVolumeFlipEnable()) {
                 mPageWidget.nextPage();
-                return true;
+                return true;// 防止翻页有声音
             }
         } else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
             if (SettingManager.getInstance().isVolumeFlipEnable()) {
@@ -809,8 +834,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         if (mTtsPlayer.getPlayerState() == TTSCommonPlayer.PLAYER_STATE_PLAYING)
             mTtsPlayer.stop();
 
-        EventBus.getDefault().post(new RefreshCollectionIconEvent());
-        EventBus.getDefault().post(new RefreshCollectionListEvent());
+        EventManager.refreshCollectionIcon();
+        EventManager.refreshCollectionList();
         EventBus.getDefault().unregister(this);
 
         try {
@@ -830,7 +855,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         }
     }
 
-    class ReadListener implements OnReadStateChangeListener {
+    private class ReadListener implements OnReadStateChangeListener {
         @Override
         public void onChapterChanged(int chapter) {
             LogUtils.i("onChapterChanged:" + chapter);
@@ -870,7 +895,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         }
     }
 
-    class SeekBarChangeListener implements SeekBar.OnSeekBarChangeListener {
+    private class SeekBarChangeListener implements SeekBar.OnSeekBarChangeListener {
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -894,7 +919,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         }
     }
 
-    class ChechBoxChangeListener implements CompoundButton.OnCheckedChangeListener {
+    private class ChechBoxChangeListener implements CompoundButton.OnCheckedChangeListener {
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

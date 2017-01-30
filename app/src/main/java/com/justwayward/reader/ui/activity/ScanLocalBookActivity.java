@@ -29,16 +29,14 @@ import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.Recommend;
-import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.manager.CollectionsManager;
+import com.justwayward.reader.manager.EventManager;
 import com.justwayward.reader.ui.easyadapter.RecommendAdapter;
 import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.view.recyclerview.EasyRecyclerView;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -173,7 +171,7 @@ public class ScanLocalBookActivity extends BaseActivity implements RecyclerArray
                                 mRecyclerView.showTipViewAndDelayClose(String.format(getString(
                                         R.string.book_detail_has_joined_the_book_shelf), books.title));
                                 // 通知
-                                EventBus.getDefault().post(new RefreshCollectionListEvent());
+                                EventManager.refreshCollectionList();
                             } else {
                                 mRecyclerView.showTipViewAndDelayClose("书籍已存在");
                             }

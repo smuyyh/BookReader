@@ -67,14 +67,30 @@ public interface BookApiService {
     @GET("/book/recommend")
     Observable<Recommend> getRecomend(@Query("gender") String gender);
 
+    /**
+     * 获取正版源(若有) 与 盗版源
+     * @param view
+     * @param book
+     * @return
+     */
     @GET("/atoc")
-    Observable<List<BookSource>> getBookSource(@Query("view") String view, @Query("book") String book);
+    Observable<List<BookSource>> getABookSource(@Query("view") String view, @Query("book") String book);
 
-    @GET("/mix-toc/{bookId}")
-    Observable<BookRead> getBookRead(@Path("bookId") String bookId);
+    /**
+     * 只能获取正版源
+     *
+     * @param view
+     * @param book
+     * @return
+     */
+    @GET("/btoc")
+    Observable<List<BookSource>> getBBookSource(@Query("view") String view, @Query("book") String book);
 
     @GET("/mix-atoc/{bookId}")
     Observable<BookToc> getBookToc(@Path("bookId") String bookId, @Query("view") String view);
+
+    @GET("/mix-toc/{bookId}")
+    Observable<BookRead> getBookRead(@Path("bookId") String bookId);
 
     @GET("/btoc/{bookId}")
     Observable<BookToc> getBookBToc(@Path("bookId") String bookId, @Query("view") String view);

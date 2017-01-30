@@ -18,12 +18,10 @@ package com.justwayward.reader.wifitransfer;
 import android.text.TextUtils;
 
 import com.justwayward.reader.bean.Recommend;
-import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
 import com.justwayward.reader.manager.CollectionsManager;
+import com.justwayward.reader.manager.EventManager;
 import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.utils.LogUtils;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -143,7 +141,7 @@ public class SimpleFileServer extends NanoHTTPD {
         if (CollectionsManager.getInstance().add(books)) {
             //ToastUtils.showToast(String.format(AppUtils.getAppContext().getString(
             //R.string.book_detail_has_joined_the_book_shelf), books.title));
-            EventBus.getDefault().post(new RefreshCollectionListEvent());
+            EventManager.refreshCollectionList();
         } else {
             //ToastUtils.showSingleToast("书籍已存在");
         }

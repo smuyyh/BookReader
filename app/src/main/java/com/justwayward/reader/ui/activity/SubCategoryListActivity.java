@@ -32,16 +32,14 @@ import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.CategoryListLv2;
-import com.justwayward.reader.bean.support.SubEvent;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerFindComponent;
+import com.justwayward.reader.manager.EventManager;
 import com.justwayward.reader.ui.adapter.MinorAdapter;
 import com.justwayward.reader.ui.contract.SubCategoryActivityContract;
 import com.justwayward.reader.ui.fragment.SubCategoryFragment;
 import com.justwayward.reader.ui.presenter.SubCategoryActivityPresenter;
 import com.justwayward.reader.view.RVPIndicator;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -154,7 +152,7 @@ public class SubCategoryListActivity extends BaseActivity implements SubCategory
 
             @Override
             public void onPageSelected(int position) {
-                EventBus.getDefault().post(new SubEvent(currentMinor, types[position]));
+                EventManager.refreshSubCategory(currentMinor, types[position]);
             }
 
             @Override
@@ -186,7 +184,7 @@ public class SubCategoryListActivity extends BaseActivity implements SubCategory
         minorAdapter = new MinorAdapter(this, mMinors);
         minorAdapter.setChecked(0);
         currentMinor = "";
-        EventBus.getDefault().post(new SubEvent(currentMinor, Constant.CateType.NEW));
+        EventManager.refreshSubCategory(currentMinor, Constant.CateType.NEW);
     }
 
     @Override
@@ -236,7 +234,7 @@ public class SubCategoryListActivity extends BaseActivity implements SubCategory
                             currentMinor = "";
                         }
                         int current = mViewPager.getCurrentItem();
-                        EventBus.getDefault().post(new SubEvent(currentMinor, types[current]));
+                        EventManager.refreshSubCategory(currentMinor, types[current]);
                         mListPopupWindow.dismiss();
                         mCommonToolbar.setTitle(mMinors.get(position));
                     }
