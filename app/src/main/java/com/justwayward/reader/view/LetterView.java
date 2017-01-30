@@ -55,9 +55,7 @@ public class LetterView extends TextView {
         mPaintText = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaintText.setColor(Color.WHITE);
 
-        int color = colors[charHash % colors.length];
         mPaintBackground = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaintBackground.setColor(color);
 
         mRect = new Rect();
     }
@@ -92,6 +90,8 @@ public class LetterView extends TextView {
         this.text = String.valueOf(content.toCharArray()[0]);
         this.text = text.toUpperCase();
         charHash = this.text.hashCode();
+        int color = colors[charHash % colors.length];
+        mPaintBackground.setColor(color);
         invalidate();
     }
 }
