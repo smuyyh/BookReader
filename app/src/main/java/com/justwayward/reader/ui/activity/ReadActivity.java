@@ -773,8 +773,10 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case 1:
-                BookSource bookSource = (BookSource) data.getSerializableExtra("source");
-                bookId = bookSource._id;
+                if(resultCode == RESULT_OK) {
+                    BookSource bookSource = (BookSource) data.getSerializableExtra("source");
+                    bookId = bookSource._id;
+                }
                 //mPresenter.getBookMixAToc(bookId, "chapters");
                 break;
             default:
