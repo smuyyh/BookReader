@@ -21,11 +21,11 @@ import com.justwayward.reader.bean.BookHelpList;
 import com.justwayward.reader.bean.BookListDetail;
 import com.justwayward.reader.bean.BookListTags;
 import com.justwayward.reader.bean.BookLists;
+import com.justwayward.reader.bean.BookMixAToc;
 import com.justwayward.reader.bean.BookRead;
 import com.justwayward.reader.bean.BookReview;
 import com.justwayward.reader.bean.BookReviewList;
 import com.justwayward.reader.bean.BookSource;
-import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.BooksByCats;
 import com.justwayward.reader.bean.BooksByTag;
 import com.justwayward.reader.bean.CategoryList;
@@ -87,13 +87,13 @@ public interface BookApiService {
     Observable<List<BookSource>> getBBookSource(@Query("view") String view, @Query("book") String book);
 
     @GET("/mix-atoc/{bookId}")
-    Observable<BookToc> getBookToc(@Path("bookId") String bookId, @Query("view") String view);
+    Observable<BookMixAToc> getBookMixAToc(@Path("bookId") String bookId, @Query("view") String view);
 
     @GET("/mix-toc/{bookId}")
     Observable<BookRead> getBookRead(@Path("bookId") String bookId);
 
     @GET("/btoc/{bookId}")
-    Observable<BookToc> getBookBToc(@Path("bookId") String bookId, @Query("view") String view);
+    Observable<BookMixAToc> getBookBToc(@Path("bookId") String bookId, @Query("view") String view);
 
     @GET("http://chapter2.zhuishushenqi.com/chapter/{url}")
     Observable<ChapterRead> getChapterRead(@Path("url") String url);

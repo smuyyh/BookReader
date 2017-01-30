@@ -22,7 +22,7 @@ import android.widget.TextView;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.base.Constant;
-import com.justwayward.reader.bean.BookToc;
+import com.justwayward.reader.bean.BookMixAToc;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.ui.adapter.EPubReaderAdapter;
 import com.justwayward.reader.ui.adapter.TocListAdapter;
@@ -72,7 +72,7 @@ public class ReadEPubActivity extends BaseActivity implements ReaderCallback {
     private List<SpineReference> mSpineReferences;
     public boolean mIsSmilParsed = false;
 
-    private List<BookToc.mixToc.Chapters> mChapterList = new ArrayList<>();
+    private List<BookMixAToc.mixToc.Chapters> mChapterList = new ArrayList<>();
     private ListPopupWindow mTocListPopupWindow;
     private TocListAdapter mTocListAdapter;
 
@@ -224,7 +224,7 @@ public class ReadEPubActivity extends BaseActivity implements ReaderCallback {
         for (int i = 0; i < trSize; i++) {
             Resource resource = mTocReferences.get(i).getResource();
             if (resource != null) {
-                mChapterList.add(new BookToc.mixToc.Chapters(resource.getTitle(), resource.getHref()));
+                mChapterList.add(new BookMixAToc.mixToc.Chapters(resource.getTitle(), resource.getHref()));
             }
         }
     }

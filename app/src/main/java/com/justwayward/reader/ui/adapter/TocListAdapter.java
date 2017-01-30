@@ -21,7 +21,7 @@ import android.support.v4.content.ContextCompat;
 import android.widget.TextView;
 
 import com.justwayward.reader.R;
-import com.justwayward.reader.bean.BookToc;
+import com.justwayward.reader.bean.BookMixAToc;
 import com.justwayward.reader.utils.FileUtils;
 import com.yuyh.easyadapter.abslistview.EasyLVAdapter;
 import com.yuyh.easyadapter.abslistview.EasyLVHolder;
@@ -32,21 +32,21 @@ import java.util.List;
  * @author lfh.
  * @date 16/8/11.
  */
-public class TocListAdapter extends EasyLVAdapter<BookToc.mixToc.Chapters> {
+public class TocListAdapter extends EasyLVAdapter<BookMixAToc.mixToc.Chapters> {
 
     private int currentChapter;
     private String bookId;
 
     private boolean isEpub = false;
 
-    public TocListAdapter(Context context, List<BookToc.mixToc.Chapters> list, String bookId, int currentChapter) {
+    public TocListAdapter(Context context, List<BookMixAToc.mixToc.Chapters> list, String bookId, int currentChapter) {
         super(context, list, R.layout.item_book_read_toc_list);
         this.currentChapter = currentChapter;
         this.bookId = bookId;
     }
 
     @Override
-    public void convert(EasyLVHolder holder, int position, BookToc.mixToc.Chapters chapters) {
+    public void convert(EasyLVHolder holder, int position, BookMixAToc.mixToc.Chapters chapters) {
         TextView tvTocItem = holder.getView(R.id.tvTocItem);
         tvTocItem.setText(chapters.title);
         Drawable drawable;

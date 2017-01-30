@@ -30,7 +30,7 @@ import android.widget.TextView;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseRVFragment;
-import com.justwayward.reader.bean.BookToc;
+import com.justwayward.reader.bean.BookMixAToc;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.support.DownloadMessage;
 import com.justwayward.reader.bean.support.DownloadProgress;
@@ -70,7 +70,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
 
     private boolean isSelectAll = false;
 
-    private List<BookToc.mixToc.Chapters> chaptersList = new ArrayList<>();
+    private List<BookMixAToc.mixToc.Chapters> chaptersList = new ArrayList<>();
 
     @Override
     public int getLayoutResId() {
@@ -132,7 +132,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
     }
 
     @Override
-    public void showBookToc(String bookId, List<BookToc.mixToc.Chapters> list) {
+    public void showBookToc(String bookId, List<BookMixAToc.mixToc.Chapters> list) {
         chaptersList.clear();
         chaptersList.addAll(list);
         DownloadBookService.post(new DownloadQueue(bookId, list, 1, list.size()));

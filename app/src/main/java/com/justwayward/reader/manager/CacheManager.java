@@ -21,7 +21,7 @@ import android.text.TextUtils;
 import com.justwayward.reader.ReaderApplication;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.BookLists;
-import com.justwayward.reader.bean.BookToc;
+import com.justwayward.reader.bean.BookMixAToc;
 import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.utils.ACache;
 import com.justwayward.reader.utils.AppUtils;
@@ -116,12 +116,12 @@ public class CacheManager {
      * @param bookId
      * @return
      */
-    public List<BookToc.mixToc.Chapters> getTocList(Context mContext, String bookId) {
+    public List<BookMixAToc.mixToc.Chapters> getTocList(Context mContext, String bookId) {
         Object obj = ACache.get(mContext).getAsObject(getTocListKey(bookId));
         if (obj != null) {
             try {
-                BookToc data = (BookToc) obj;
-                List<BookToc.mixToc.Chapters> list = data.mixToc.chapters;
+                BookMixAToc data = (BookMixAToc) obj;
+                List<BookMixAToc.mixToc.Chapters> list = data.mixToc.chapters;
                 if (list != null && !list.isEmpty()) {
                     return list;
                 }
@@ -132,7 +132,7 @@ public class CacheManager {
         return null;
     }
 
-    public void saveTocList(Context mContext, String bookId, BookToc data) {
+    public void saveTocList(Context mContext, String bookId, BookMixAToc data) {
         ACache.get(mContext).put(getTocListKey(bookId), data);
     }
 

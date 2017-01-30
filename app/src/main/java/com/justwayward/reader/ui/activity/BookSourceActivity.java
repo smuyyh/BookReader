@@ -15,20 +15,18 @@
  */
 package com.justwayward.reader.ui.activity;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseRVActivity;
-import com.justwayward.reader.bean.BooksByTag;
-import com.justwayward.reader.bean.SearchDetail;
+import com.justwayward.reader.bean.BookSource;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerBookComponent;
-import com.justwayward.reader.ui.contract.SearchByAuthorContract;
-import com.justwayward.reader.ui.easyadapter.SearchAdapter;
-import com.justwayward.reader.ui.presenter.SearchByAuthorPresenter;
+import com.justwayward.reader.ui.contract.BookSourceContract;
+import com.justwayward.reader.ui.easyadapter.BookSourceAdapter;
+import com.justwayward.reader.ui.presenter.BookSourcePresenter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -37,19 +35,19 @@ import javax.inject.Inject;
  * @author yuyh.
  * @date 2016/9/8.
  */
-public class SearchByAuthorActivity extends BaseRVActivity<SearchDetail.SearchBooks> implements SearchByAuthorContract.View {
+public class BookSourceActivity extends BaseRVActivity<BookSource> implements BookSourceContract.View {
 
-    public static final String INTENT_AUTHOR = "author";
+    public static final String INTENT_BOOK_ID = "bookId";
 
-    public static void startActivity(Context context, String author) {
-        context.startActivity(new Intent(context, SearchByAuthorActivity.class)
-                .putExtra(INTENT_AUTHOR, author));
+    public static void start(Activity activity, String bookId, int reqId) {
+        activity.startActivityForResult(new Intent(activity, BookSourceActivity.class)
+                .putExtra(INTENT_BOOK_ID, bookId), reqId);
     }
 
     @Inject
-    SearchByAuthorPresenter mPresenter;
+    BookSourcePresenter mPresenter;
 
-    private String author = "";
+    private String bookId = "";
 
     @Override
     public int getLayoutId() {
@@ -66,36 +64,36 @@ public class SearchByAuthorActivity extends BaseRVActivity<SearchDetail.SearchBo
 
     @Override
     public void initToolBar() {
-        author = getIntent().getStringExtra(INTENT_AUTHOR);
-        mCommonToolbar.setTitle(author);
+        bookId = getIntent().getStringExtra(INTENT_BOOK_ID);
+        mCommonToolbar.setTitle("选择来源");
         mCommonToolbar.setNavigationIcon(R.drawable.ab_back);
     }
 
     @Override
     public void initDatas() {
-        initAdapter(SearchAdapter.class, false, false);
+        initAdapter(BookSourceAdapter.class, false, false);
     }
 
     @Override
     public void configViews() {
         mPresenter.attachView(this);
-        mPresenter.getSearchResultList(author);
+        mPresenter.getBookSource("summary", bookId);
     }
 
     @Override
     public void onItemClick(int position) {
-        SearchDetail.SearchBooks data = mAdapter.getItem(position);
-        BookDetailActivity.startActivity(this, data._id);
+        BookSource data = mAdapter.getItem(position);
+        Intent intent = new Intent();
+        intent.putExtra("source", data);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
+
     @Override
-    public void showSearchResultList(List<BooksByTag.TagBook> list) {
-        List<SearchDetail.SearchBooks> mList = new ArrayList<>();
-        for (BooksByTag.TagBook book : list) {
-            mList.add(new SearchDetail.SearchBooks(book._id, book.title, book.author, book.cover, book.retentionRatio, book.latelyFollower));
-        }
+    public void showBookSource(List<BookSource> list) {
         mAdapter.clear();
-        mAdapter.addAll(mList);
+        mAdapter.addAll(list);
     }
 
     @Override
@@ -115,4 +113,5 @@ public class SearchByAuthorActivity extends BaseRVActivity<SearchDetail.SearchBo
             mPresenter.detachView();
         }
     }
+
 }

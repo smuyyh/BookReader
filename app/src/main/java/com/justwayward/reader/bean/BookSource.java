@@ -15,10 +15,12 @@
  */
 package com.justwayward.reader.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2016/8/12.
  */
-public class BookSource {
+public class BookSource implements Serializable {
 
     /**
      * _id : 55219c4ea9240fb868282e65

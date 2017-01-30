@@ -85,6 +85,8 @@ public class RxUtil {
                                     public void call() {
                                         LogUtils.d("get data from network finish ,start cache...");
                                         //通过反射获取List,再判空决定是否缓存
+                                        if (data == null)
+                                            return;
                                         Class clazz = data.getClass();
                                         Field[] fields = clazz.getFields();
                                         for (Field field : fields) {

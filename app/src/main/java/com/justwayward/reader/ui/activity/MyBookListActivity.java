@@ -36,7 +36,7 @@ public class MyBookListActivity extends BaseRVActivity<BookLists.BookListsBean> 
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_my_book_list;
+        return R.layout.activity_common_recyclerview;
     }
 
     @Override

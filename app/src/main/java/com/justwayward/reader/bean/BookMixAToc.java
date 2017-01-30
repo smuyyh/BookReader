@@ -24,7 +24,7 @@ import java.util.List;
  * @author lfh.
  * @date 2016/8/7.
  */
-public class BookToc extends Base {
+public class BookMixAToc extends Base {
 
     /**
      * _id:577e528e2160421a02d7380d

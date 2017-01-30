@@ -47,7 +47,7 @@ import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.BookSource;
-import com.justwayward.reader.bean.BookToc;
+import com.justwayward.reader.bean.BookMixAToc;
 import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.support.BookMark;
@@ -174,7 +174,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     @Inject
     BookReadPresenter mPresenter;
 
-    private List<BookToc.mixToc.Chapters> mChapterList = new ArrayList<>();
+    private List<BookMixAToc.mixToc.Chapters> mChapterList = new ArrayList<>();
     private ListPopupWindow mTocListPopupWindow;
     private TocListAdapter mTocListAdapter;
 
@@ -308,7 +308,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         mPresenter.attachView(this);
         // 本地收藏  直接打开
         if (isFromSD) {
-            BookToc.mixToc.Chapters chapters = new BookToc.mixToc.Chapters();
+            BookMixAToc.mixToc.Chapters chapters = new BookMixAToc.mixToc.Chapters();
             chapters.title = recommendBooks.title;
             mChapterList.add(chapters);
             showChapterRead(null, currentChapter);
@@ -316,7 +316,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             gone(mTvBookReadCommunity, mTvBookReadChangeSource, mTvBookReadDownload);
             return;
         }
-        mPresenter.getBookToc(bookId, "chapters");
+        mPresenter.getBookMixAToc(bookId, "chapters");
     }
 
 
@@ -410,7 +410,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
      * @param list
      */
     @Override
-    public void showBookToc(List<BookToc.mixToc.Chapters> list) {
+    public void showBookToc(List<BookMixAToc.mixToc.Chapters> list) {
         mChapterList.clear();
         mChapterList.addAll(list);
 
@@ -444,10 +444,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             }
             hideDialog();
         }
-    }
-
-    @Override
-    public void showBookSource(List<BookSource> list) {
     }
 
     @Override
@@ -519,7 +515,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
     @OnClick(R.id.tvBookReadSource)
     public void onClickSource() {
-
+        BookSourceActivity.start(this, bookId, 1);
     }
 
     /***************Bottom Bar*****************/
@@ -771,6 +767,19 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                 })
                 .create()
                 .show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 1:
+                BookSource bookSource = (BookSource) data.getSerializableExtra("source");
+                bookId = bookSource._id;
+                //mPresenter.getBookMixAToc(bookId, "chapters");
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
