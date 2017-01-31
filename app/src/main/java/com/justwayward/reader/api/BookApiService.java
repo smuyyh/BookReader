@@ -1,3 +1,18 @@
+/**
+ * Copyright 2016 JustWayward Team
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.justwayward.reader.api;
 
 import com.justwayward.reader.bean.AutoComplete;
@@ -6,11 +21,11 @@ import com.justwayward.reader.bean.BookHelpList;
 import com.justwayward.reader.bean.BookListDetail;
 import com.justwayward.reader.bean.BookListTags;
 import com.justwayward.reader.bean.BookLists;
+import com.justwayward.reader.bean.BookMixAToc;
 import com.justwayward.reader.bean.BookRead;
 import com.justwayward.reader.bean.BookReview;
 import com.justwayward.reader.bean.BookReviewList;
 import com.justwayward.reader.bean.BookSource;
-import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.BooksByCats;
 import com.justwayward.reader.bean.BooksByTag;
 import com.justwayward.reader.bean.CategoryList;
@@ -41,22 +56,44 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 
+/**
+ * https://github.com/JustWayward/BookReader
+ *
+ * @author yuyh.
+ * @date 2016/8/3.
+ */
 public interface BookApiService {
 
     @GET("/book/recommend")
     Observable<Recommend> getRecomend(@Query("gender") String gender);
 
+    /**
+     * 获取正版源(若有) 与 盗版源
+     * @param view
+     * @param book
+     * @return
+     */
     @GET("/atoc")
-    Observable<List<BookSource>> getBookSource(@Query("view") String view, @Query("book") String book);
+    Observable<List<BookSource>> getABookSource(@Query("view") String view, @Query("book") String book);
+
+    /**
+     * 只能获取正版源
+     *
+     * @param view
+     * @param book
+     * @return
+     */
+    @GET("/btoc")
+    Observable<List<BookSource>> getBBookSource(@Query("view") String view, @Query("book") String book);
+
+    @GET("/mix-atoc/{bookId}")
+    Observable<BookMixAToc> getBookMixAToc(@Path("bookId") String bookId, @Query("view") String view);
 
     @GET("/mix-toc/{bookId}")
     Observable<BookRead> getBookRead(@Path("bookId") String bookId);
 
-    @GET("/mix-atoc/{bookId}")
-    Observable<BookToc> getBookToc(@Path("bookId") String bookId, @Query("view") String view);
-
     @GET("/btoc/{bookId}")
-    Observable<BookToc> getBookBToc(@Path("bookId") String bookId, @Query("view") String view);
+    Observable<BookMixAToc> getBookBToc(@Path("bookId") String bookId, @Query("view") String view);
 
     @GET("http://chapter2.zhuishushenqi.com/chapter/{url}")
     Observable<ChapterRead> getChapterRead(@Path("url") String url);

@@ -73,5 +73,6 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
 
     compile 'com.commit451:PhotoView:1.2.4'
+    compile 'org.ccil.cowan.tagsoup:tagsoup:1.2.1'
 
 }

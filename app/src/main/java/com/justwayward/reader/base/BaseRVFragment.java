@@ -1,3 +1,18 @@
+/**
+ * Copyright 2016 JustWayward Team
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.justwayward.reader.base;
 
 import android.content.Context;
@@ -48,6 +63,7 @@ public abstract class BaseRVFragment<T1 extends BaseContract.BasePresenter, T2> 
             mRecyclerView.setItemDecoration(ContextCompat.getColor(activity, R.color.common_divider_narrow), 1, 0, 0);
             mRecyclerView.setAdapterWithProgress(mAdapter);
         }
+
         if (mAdapter != null) {
             mAdapter.setOnItemClickListener(this);
             mAdapter.setError(R.layout.common_error_view).setOnClickListener(new View.OnClickListener() {
@@ -75,9 +91,9 @@ public abstract class BaseRVFragment<T1 extends BaseContract.BasePresenter, T2> 
     public Object createInstance(Class<?> cls) {
         Object obj;
         try {
-            Constructor c1 = cls.getDeclaredConstructor(new Class[]{Context.class});
+            Constructor c1 = cls.getDeclaredConstructor(Context.class);
             c1.setAccessible(true);
-            obj = c1.newInstance(new Object[]{mContext});
+            obj = c1.newInstance(mContext);
         } catch (Exception e) {
             obj = null;
         }
