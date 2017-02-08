@@ -42,7 +42,11 @@ import retrofit2.http.Query;
 import rx.Observable;
 
 public interface BookApiService {
-
+    /**
+     * 推荐
+     * @param gender
+     * @return
+     */
     @GET("/book/recommend")
     Observable<Recommend> getRecomend(@Query("gender") String gender);
 
