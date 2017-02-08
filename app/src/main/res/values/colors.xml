@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2016 JustWayward Team
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
 <resources>
     <!--标题栏的颜色-->
     <color name="colorPrimary">#3B99DF</color>
@@ -61,7 +76,7 @@
     <!--阅读页顶部字体颜色-->
     <color name="book_read_top_text">#D1D1D1</color>
     <!--阅读页底部字体颜色-->
-    <color name="book_read_bottom_text">#888888</color>
+    <color name="book_read_bottom_text">#e6e6e6</color>
 
     <!--性别选择颜色值-->
     <color name="gender_select_male_normal">#B0E2FF</color>

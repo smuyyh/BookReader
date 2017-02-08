@@ -1,3 +1,18 @@
+/**
+ * Copyright 2016 JustWayward Team
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.justwayward.reader.ui.fragment;
 
 import android.app.ActivityManager;
@@ -15,7 +30,7 @@ import android.widget.TextView;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseRVFragment;
-import com.justwayward.reader.bean.BookToc;
+import com.justwayward.reader.bean.BookMixAToc;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.support.DownloadMessage;
 import com.justwayward.reader.bean.support.DownloadProgress;
@@ -32,7 +47,6 @@ import com.justwayward.reader.ui.activity.ReadActivity;
 import com.justwayward.reader.ui.contract.RecommendContract;
 import com.justwayward.reader.ui.easyadapter.RecommendAdapter;
 import com.justwayward.reader.ui.presenter.RecommendPresenter;
-import com.justwayward.reader.utils.ToastUtils;
 import com.justwayward.reader.view.recyclerview.adapter.RecyclerArrayAdapter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -56,7 +70,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
 
     private boolean isSelectAll = false;
 
-    private List<BookToc.mixToc.Chapters> chaptersList = new ArrayList<>();
+    private List<BookMixAToc.mixToc.Chapters> chaptersList = new ArrayList<>();
 
     @Override
     public int getLayoutResId() {
@@ -118,7 +132,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
     }
 
     @Override
-    public void showBookToc(String bookId, List<BookToc.mixToc.Chapters> list) {
+    public void showBookToc(String bookId, List<BookMixAToc.mixToc.Chapters> list) {
         chaptersList.clear();
         chaptersList.addAll(list);
         DownloadBookService.post(new DownloadQueue(bookId, list, 1, list.size()));
@@ -205,12 +219,12 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
                             break;
                         case 2:
                             //移入养肥区
-                            ToastUtils.showToast("正在拼命开发中...");
+                            mRecyclerView.showTipViewAndDelayClose("正在拼命开发中...");
                             break;
                         case 3:
                             //缓存全本
                             if (mAdapter.getItem(position).isFromSD) {
-                                ToastUtils.showSingleToast("本地文件不支持该选项哦");
+                                mRecyclerView.showTipViewAndDelayClose("本地文件不支持该选项哦");
                             } else {
                                 showDialog();
                                 mPresenter.getTocList(mAdapter.getItem(position)._id);
@@ -277,7 +291,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
                             @Override
                             protected void onPostExecute(String s) {
                                 super.onPostExecute(s);
-                                ToastUtils.showSingleToast("成功移除书籍");
+                                mRecyclerView.showTipViewAndDelayClose("成功移除书籍");
                                 for (Recommend.RecommendBooks bean : removeList) {
                                     mAdapter.remove(bean);
                                 }
@@ -337,7 +351,7 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
             if (bean.isSeleted) removeList.add(bean);
         }
         if (removeList.isEmpty()) {
-            ToastUtils.showToast(activity.getString(R.string.has_not_selected_delete_book));
+            mRecyclerView.showTipViewAndDelayClose(activity.getString(R.string.has_not_selected_delete_book));
         } else {
             showDeleteCacheDialog(removeList);
         }

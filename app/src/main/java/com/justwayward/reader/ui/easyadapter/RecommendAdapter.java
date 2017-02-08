@@ -1,3 +1,18 @@
+/**
+ * Copyright 2016 JustWayward Team
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.justwayward.reader.ui.easyadapter;
 
 import android.content.Context;
@@ -37,6 +52,7 @@ public class RecommendAdapter extends RecyclerArrayAdapter<Recommend.RecommendBo
                 if (!TextUtils.isEmpty(FormatUtils.getDescriptionTimeFromDateString(item.updated))) {
                     latelyUpdate = FormatUtils.getDescriptionTimeFromDateString(item.updated) + ":";
                 }
+
                 holder.setText(R.id.tvRecommendTitle, item.title)
                         .setText(R.id.tvLatelyUpdate, latelyUpdate)
                         .setText(R.id.tvRecommendShort, item.lastChapter)
@@ -44,8 +60,15 @@ public class RecommendAdapter extends RecyclerArrayAdapter<Recommend.RecommendBo
                         .setVisible(R.id.ckBoxSelect, item.showCheckBox)
                         .setVisible(R.id.ivUnReadDot, FormatUtils.formatZhuiShuDateString(item.updated)
                                 .compareTo(item.recentReadingTime) > 0);
-                if (item.isFromSD) {
-                    holder.setImageResource(R.id.ivRecommendCover, R.drawable.home_shelf_txt_icon);
+
+                if (item.path != null && item.path.endsWith(Constant.SUFFIX_PDF)) {
+                    holder.setImageResource(R.id.ivRecommendCover, R.drawable.ic_shelf_pdf);
+                } else if (item.path != null && item.path.endsWith(Constant.SUFFIX_EPUB)) {
+                    holder.setImageResource(R.id.ivRecommendCover, R.drawable.ic_shelf_epub);
+                } else if (item.path != null && item.path.endsWith(Constant.SUFFIX_CHM)) {
+                    holder.setImageResource(R.id.ivRecommendCover, R.drawable.ic_shelf_chm);
+                } else if (item.isFromSD) {
+                    holder.setImageResource(R.id.ivRecommendCover, R.drawable.ic_shelf_txt);
                     long fileLen = FileUtils.getChapterFile(item._id, 1).length();
                     if (fileLen > 10) {
                         double progress = ((double) SettingManager.getInstance().getReadProgress(item._id)[2]) / fileLen;
@@ -66,11 +89,7 @@ public class RecommendAdapter extends RecyclerArrayAdapter<Recommend.RecommendBo
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView,
                                                  boolean isChecked) {
-                        if (isChecked) {
-                            item.isSeleted = true;
-                        } else {
-                            item.isSeleted = false;
-                        }
+                        item.isSeleted = isChecked;
                     }
                 });
             }

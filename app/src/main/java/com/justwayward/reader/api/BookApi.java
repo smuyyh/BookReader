@@ -1,3 +1,18 @@
+/**
+ * Copyright 2016 JustWayward Team
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.justwayward.reader.api;
 
 import com.justwayward.reader.base.Constant;
@@ -8,10 +23,10 @@ import com.justwayward.reader.bean.BookHelpList;
 import com.justwayward.reader.bean.BookListDetail;
 import com.justwayward.reader.bean.BookListTags;
 import com.justwayward.reader.bean.BookLists;
+import com.justwayward.reader.bean.BookMixAToc;
 import com.justwayward.reader.bean.BookReview;
 import com.justwayward.reader.bean.BookReviewList;
 import com.justwayward.reader.bean.BookSource;
-import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.BooksByCats;
 import com.justwayward.reader.bean.BooksByTag;
 import com.justwayward.reader.bean.CategoryList;
@@ -40,6 +55,8 @@ import retrofit2.http.Query;
 import rx.Observable;
 
 /**
+ * https://github.com/JustWayward/BookReader
+ *
  * @author yuyh.
  * @date 2016/8/3.
  */
@@ -81,7 +98,7 @@ public class BookApi {
         return service.searchBooks(query);
     }
 
-    public Observable<BooksByTag> searchBooksByAuthor(String author){
+    public Observable<BooksByTag> searchBooksByAuthor(String author) {
         return service.searchBooksByAuthor(author);
     }
 
@@ -101,8 +118,8 @@ public class BookApi {
         return service.getBooksByTag(tags, start, limit);
     }
 
-    public Observable<BookToc> getBookToc(String bookId, String view) {
-        return service.getBookToc(bookId, view);
+    public Observable<BookMixAToc> getBookMixAToc(String bookId, String view) {
+        return service.getBookMixAToc(bookId, view);
     }
 
     public synchronized Observable<ChapterRead> getChapterRead(String url) {
@@ -110,7 +127,7 @@ public class BookApi {
     }
 
     public synchronized Observable<List<BookSource>> getBookSource(String view, String book) {
-        return service.getBookSource(view, book);
+        return service.getABookSource(view, book);
     }
 
     public Observable<RankingList> getRanking() {
@@ -193,8 +210,8 @@ public class BookApi {
         return service.getBookDetailDisscussionList(book, sort, type, start, limit);
     }
 
-    public Observable<HotReview> getBookDetailReviewList(String book, String sort,  String start, String limit) {
-        return service.getBookDetailReviewList(book, sort,  start, limit);
+    public Observable<HotReview> getBookDetailReviewList(String book, String sort, String start, String limit) {
+        return service.getBookDetailReviewList(book, sort, start, limit);
     }
 
     public Observable<DiscussionList> getGirlBookDisscussionList(String block, String duration, String sort, String type, String start, String limit, String distillate) {

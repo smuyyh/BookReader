@@ -1,3 +1,18 @@
+/**
+ * Copyright 2016 JustWayward Team
+ * <p/>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.justwayward.reader.manager;
 
 import android.content.Context;
@@ -6,7 +21,7 @@ import android.text.TextUtils;
 import com.justwayward.reader.ReaderApplication;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.BookLists;
-import com.justwayward.reader.bean.BookToc;
+import com.justwayward.reader.bean.BookMixAToc;
 import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.utils.ACache;
 import com.justwayward.reader.utils.AppUtils;
@@ -101,12 +116,12 @@ public class CacheManager {
      * @param bookId
      * @return
      */
-    public List<BookToc.mixToc.Chapters> getTocList(Context mContext, String bookId) {
+    public List<BookMixAToc.mixToc.Chapters> getTocList(Context mContext, String bookId) {
         Object obj = ACache.get(mContext).getAsObject(getTocListKey(bookId));
         if (obj != null) {
             try {
-                BookToc data = (BookToc) obj;
-                List<BookToc.mixToc.Chapters> list = data.mixToc.chapters;
+                BookMixAToc data = (BookMixAToc) obj;
+                List<BookMixAToc.mixToc.Chapters> list = data.mixToc.chapters;
                 if (list != null && !list.isEmpty()) {
                     return list;
                 }
@@ -117,7 +132,7 @@ public class CacheManager {
         return null;
     }
 
-    public void saveTocList(Context mContext, String bookId, BookToc data) {
+    public void saveTocList(Context mContext, String bookId, BookMixAToc data) {
         ACache.get(mContext).put(getTocListKey(bookId), data);
     }
 
@@ -150,7 +165,7 @@ public class CacheManager {
         long cacheSize = 0;
 
         try {
-            String cacheDir = AppUtils.getAppContext().getCacheDir().getPath();
+            String cacheDir = Constant.BASE_PATH;
             cacheSize += FileUtils.getFolderSize(cacheDir);
             if (FileUtils.isSdCardAvailable()) {
                 String extCacheDir = AppUtils.getAppContext().getExternalCacheDir().getPath();
@@ -175,12 +190,12 @@ public class CacheManager {
             FileUtils.deleteFileOrDirectory(new File(cacheDir));
             if (FileUtils.isSdCardAvailable()) {
                 // 删除SD书籍缓存
-                FileUtils.deleteFileOrDirectory(new File(Constant.BASE_PATH));
+                FileUtils.deleteFileOrDirectory(new File(Constant.PATH_DATA));
             }
             // 删除阅读记录（SharePreference）
             if (clearReadPos) {
                 //防止再次弹出性别选择框，sp要重写入保存的性别
-                String chooseSex =SettingManager.getInstance().getUserChooseSex();
+                String chooseSex = SettingManager.getInstance().getUserChooseSex();
                 SharedPreferencesUtil.getInstance().removeAll();
                 SettingManager.getInstance().saveUserChooseSex(chooseSex);
             }

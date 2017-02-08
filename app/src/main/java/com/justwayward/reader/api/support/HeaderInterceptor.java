@@ -1,3 +1,18 @@
+/**
+ * Copyright 2016 JustWayward Team
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.justwayward.reader.api.support;
 
 import com.justwayward.reader.utils.AppUtils;
@@ -10,7 +25,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * Retrofit2 Cookie拦截器。用于保存和设置Cookies
+ * Retrofit2 Header拦截器。用于保存和设置Cookies
  *
  * @author yuyh.
  * @date 16/8/6.
@@ -20,11 +35,13 @@ public final class HeaderInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request original = chain.request();
-        if (original.url().toString().contains("book/") ||
-                original.url().toString().contains("book-list/") ||
-                original.url().toString().contains("toc/") ||
-                original.url().toString().contains("post/") ||
-                original.url().toString().contains("user/")) {
+
+        String url = original.url().toString();
+        if (url.contains("book/") ||
+                url.contains("book-list/") ||
+                url.contains("toc/") ||
+                url.contains("post/") ||
+                url.contains("user/")) {
             Request request = original.newBuilder()
                     .addHeader("User-Agent", "ZhuiShuShenQi/3.40[preload=false;locale=zh_CN;clientidbase=android-nvidia]") // 不能转UTF-8
                     .addHeader("X-User-Agent", "ZhuiShuShenQi/3.40[preload=false;locale=zh_CN;clientidbase=android-nvidia]")
