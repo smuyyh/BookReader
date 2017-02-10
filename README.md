@@ -12,6 +12,8 @@ demo下载：[任阅.apk](https://github.com/JustWayward/BookReader/raw/master/�
 ## TODO
 * [ ] txt阅读优化模拟翻书效果，提高分页速度以及分页准确性
 
+* [ ] 增加无翻页效果方式
+
 * [ ] epub阅读优化
 
 ## 截图
