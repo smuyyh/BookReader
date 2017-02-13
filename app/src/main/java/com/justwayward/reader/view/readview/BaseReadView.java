@@ -23,7 +23,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Scroller;
 
-import com.justwayward.reader.bean.BookToc;
+import com.justwayward.reader.bean.BookMixAToc;
 import com.justwayward.reader.manager.SettingManager;
 import com.justwayward.reader.manager.ThemeManager;
 import com.justwayward.reader.utils.LogUtils;
@@ -55,7 +55,7 @@ public abstract class BaseReadView extends View {
 
     Scroller mScroller;
 
-    public BaseReadView(Context context, String bookId, List<BookToc.mixToc.Chapters> chaptersList,
+    public BaseReadView(Context context, String bookId, List<BookMixAToc.mixToc.Chapters> chaptersList,
                         OnReadStateChangeListener listener) {
         super(context);
         this.listener = listener;

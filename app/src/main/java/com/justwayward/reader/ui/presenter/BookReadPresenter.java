@@ -19,8 +19,7 @@ import android.content.Context;
 
 import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.base.RxPresenter;
-import com.justwayward.reader.bean.BookSource;
-import com.justwayward.reader.bean.BookToc;
+import com.justwayward.reader.bean.BookMixAToc;
 import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.ui.contract.BookReadContract;
 import com.justwayward.reader.utils.LogUtils;
@@ -55,25 +54,25 @@ public class BookReadPresenter extends RxPresenter<BookReadContract.View>
     }
 
     @Override
-    public void getBookToc(final String bookId, String viewChapters) {
+    public void getBookMixAToc(final String bookId, String viewChapters) {
         String key = StringUtils.creatAcacheKey("book-toc", bookId, viewChapters);
-        Observable<BookToc.mixToc> fromNetWork = bookApi.getBookToc(bookId, viewChapters)
-                .map(new Func1<BookToc, BookToc.mixToc>() {
+        Observable<BookMixAToc.mixToc> fromNetWork = bookApi.getBookMixAToc(bookId, viewChapters)
+                .map(new Func1<BookMixAToc, BookMixAToc.mixToc>() {
                     @Override
-                    public BookToc.mixToc call(BookToc data) {
+                    public BookMixAToc.mixToc call(BookMixAToc data) {
                         return data.mixToc;
                     }
                 })
-                .compose(RxUtil.<BookToc.mixToc>rxCacheListHelper(key));
+                .compose(RxUtil.<BookMixAToc.mixToc>rxCacheListHelper(key));
 
         //依次检查disk、network
         Subscription rxSubscription = Observable
-                .concat(RxUtil.rxCreateDiskObservable(key, BookToc.mixToc.class), fromNetWork)
+                .concat(RxUtil.rxCreateDiskObservable(key, BookMixAToc.mixToc.class), fromNetWork)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BookToc.mixToc>() {
+                .subscribe(new Observer<BookMixAToc.mixToc>() {
                     @Override
-                    public void onNext(BookToc.mixToc data) {
-                        List<BookToc.mixToc.Chapters> list = data.chapters;
+                    public void onNext(BookMixAToc.mixToc data) {
+                        List<BookMixAToc.mixToc.Chapters> list = data.chapters;
                         if (list != null && !list.isEmpty() && mView != null) {
                             mView.showBookToc(list);
                         }
@@ -114,30 +113,6 @@ public class BookReadPresenter extends RxPresenter<BookReadContract.View>
                     public void onError(Throwable e) {
                         LogUtils.e("onError: " + e);
                         mView.netError(chapter);
-                    }
-                });
-        addSubscrebe(rxSubscription);
-    }
-
-    @Override
-    public void getBookSource(String viewSummary, String book) {
-        Subscription rxSubscription = bookApi.getBookSource(viewSummary, book).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<BookSource>>() {
-                    @Override
-                    public void onNext(List<BookSource> data) {
-                        if (data != null && mView != null) {
-                            mView.showBookSource(data);
-                        }
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        LogUtils.e("onError: " + e);
                     }
                 });
         addSubscrebe(rxSubscription);

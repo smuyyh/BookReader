@@ -16,8 +16,7 @@
 package com.justwayward.reader.ui.contract;
 
 import com.justwayward.reader.base.BaseContract;
-import com.justwayward.reader.bean.BookSource;
-import com.justwayward.reader.bean.BookToc;
+import com.justwayward.reader.bean.BookMixAToc;
 import com.justwayward.reader.bean.ChapterRead;
 
 import java.util.List;
@@ -29,21 +28,17 @@ import java.util.List;
 public interface BookReadContract {
 
     interface View extends BaseContract.BaseView {
-        void showBookToc(List<BookToc.mixToc.Chapters> list);
+        void showBookToc(List<BookMixAToc.mixToc.Chapters> list);
 
         void showChapterRead(ChapterRead.Chapter data, int chapter);
-
-        void showBookSource(List<BookSource> list);
 
         void netError(int chapter);//添加网络处理异常接口
     }
 
     interface Presenter<T> extends BaseContract.BasePresenter<T> {
-        void getBookToc(String bookId, String view);
+        void getBookMixAToc(String bookId, String view);
 
         void getChapterRead(String url, int chapter);
-
-        void getBookSource(String view, String book);
     }
 
 }

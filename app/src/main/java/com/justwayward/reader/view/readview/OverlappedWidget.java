@@ -22,7 +22,7 @@ import android.graphics.Path;
 import android.graphics.Region;
 import android.graphics.drawable.GradientDrawable;
 
-import com.justwayward.reader.bean.BookToc;
+import com.justwayward.reader.bean.BookMixAToc;
 import com.justwayward.reader.manager.SettingManager;
 import com.justwayward.reader.manager.ThemeManager;
 
@@ -40,7 +40,7 @@ public class OverlappedWidget extends BaseReadView {
     GradientDrawable mBackShadowDrawableRL;
 
     public OverlappedWidget(Context context, String bookId,
-                            List<BookToc.mixToc.Chapters> chaptersList,
+                            List<BookMixAToc.mixToc.Chapters> chaptersList,
                             OnReadStateChangeListener listener) {
         super(context, bookId, chaptersList, listener);
 

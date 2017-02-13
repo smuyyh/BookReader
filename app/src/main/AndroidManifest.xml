@@ -72,6 +72,9 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.activity.BookSourceActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".ui.activity.ReadPDFActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

@@ -27,7 +27,7 @@ import com.justwayward.reader.ReaderApplication;
 import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.api.support.Logger;
 import com.justwayward.reader.api.support.LoggingInterceptor;
-import com.justwayward.reader.bean.BookToc;
+import com.justwayward.reader.bean.BookMixAToc;
 import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.bean.support.DownloadMessage;
 import com.justwayward.reader.bean.support.DownloadProgress;
@@ -133,7 +133,7 @@ public class DownloadBookService extends Service {
     public synchronized void downloadBook(final DownloadQueue downloadQueue) {
         AsyncTask<Integer, Integer, Integer> downloadTask = new AsyncTask<Integer, Integer, Integer>() {
 
-            List<BookToc.mixToc.Chapters> list = downloadQueue.list;
+            List<BookMixAToc.mixToc.Chapters> list = downloadQueue.list;
             String bookId = downloadQueue.bookId;
             int start = downloadQueue.start; // 起始章节
             int end = downloadQueue.end; // 结束章节
@@ -159,7 +159,7 @@ public class DownloadBookService extends Service {
                     if (!downloadQueue.isFinish && !downloadQueue.isCancel) {
                         // 章节文件不存在,则下载，否则跳过
                         if (CacheManager.getInstance().getChapterFile(bookId, i) == null) {
-                            BookToc.mixToc.Chapters chapters = list.get(i - 1);
+                            BookMixAToc.mixToc.Chapters chapters = list.get(i - 1);
                             String url = chapters.link;
                             int ret = download(url, bookId, chapters.title, i, list.size());
                             if (ret != 1) {

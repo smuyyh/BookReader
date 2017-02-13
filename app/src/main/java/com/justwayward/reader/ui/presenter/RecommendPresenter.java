@@ -19,7 +19,7 @@ import android.content.Context;
 
 import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.base.RxPresenter;
-import com.justwayward.reader.bean.BookToc;
+import com.justwayward.reader.bean.BookMixAToc;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.manager.SettingManager;
 import com.justwayward.reader.ui.contract.RecommendContract;
@@ -89,13 +89,13 @@ public class RecommendPresenter extends RxPresenter<RecommendContract.View>
     }
 
     public void getTocList(final String bookId) {
-        bookApi.getBookToc(bookId, "chapters").subscribeOn(Schedulers.io())
+        bookApi.getBookMixAToc(bookId, "chapters").subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BookToc>() {
+                .subscribe(new Observer<BookMixAToc>() {
                     @Override
-                    public void onNext(BookToc data) {
+                    public void onNext(BookMixAToc data) {
                         ACache.get(mContext).put(bookId + "bookToc", data);
-                        List<BookToc.mixToc.Chapters> list = data.mixToc.chapters;
+                        List<BookMixAToc.mixToc.Chapters> list = data.mixToc.chapters;
                         if (list != null && !list.isEmpty() && mView != null) {
                             mView.showBookToc(bookId, list);
                         }

@@ -27,7 +27,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.justwayward.reader.R;
-import com.justwayward.reader.bean.BookToc;
+import com.justwayward.reader.bean.BookMixAToc;
 import com.justwayward.reader.manager.SettingManager;
 import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.FileUtils;
@@ -101,14 +101,14 @@ public class PageFactory {
     private Bitmap batteryBitmap;
 
     private String bookId;
-    private List<BookToc.mixToc.Chapters> chaptersList;
+    private List<BookMixAToc.mixToc.Chapters> chaptersList;
     private int chapterSize = 0;
     private int currentPage = 1;
 
     private OnReadStateChangeListener listener;
     private String charset = "UTF-8";
 
-    public PageFactory(Context context, String bookId, List<BookToc.mixToc.Chapters> chaptersList) {
+    public PageFactory(Context context, String bookId, List<BookMixAToc.mixToc.Chapters> chaptersList) {
         this(context, ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight(),
                 //SettingManager.getInstance().getReadFontSize(bookId),
                 SettingManager.getInstance().getReadFontSize(),
@@ -116,7 +116,7 @@ public class PageFactory {
     }
 
     public PageFactory(Context context, int width, int height, int fontSize, String bookId,
-                       List<BookToc.mixToc.Chapters> chaptersList) {
+                       List<BookMixAToc.mixToc.Chapters> chaptersList) {
         mContext = context;
         mWidth = width;
         mHeight = height;

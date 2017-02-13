@@ -27,7 +27,7 @@ import android.graphics.PointF;
 import android.graphics.Region;
 import android.graphics.drawable.GradientDrawable;
 
-import com.justwayward.reader.bean.BookToc;
+import com.justwayward.reader.bean.BookMixAToc;
 import com.justwayward.reader.manager.SettingManager;
 import com.justwayward.reader.manager.ThemeManager;
 
@@ -76,7 +76,7 @@ public class PageWidget extends BaseReadView {
     Paint mPaint;
 
     public PageWidget(Context context, String bookId,
-                      List<BookToc.mixToc.Chapters> chaptersList,
+                      List<BookMixAToc.mixToc.Chapters> chaptersList,
                       OnReadStateChangeListener listener) {
         super(context, bookId, chaptersList, listener);
         mPath0 = new Path();

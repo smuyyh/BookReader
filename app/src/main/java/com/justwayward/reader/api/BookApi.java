@@ -23,10 +23,10 @@ import com.justwayward.reader.bean.BookHelpList;
 import com.justwayward.reader.bean.BookListDetail;
 import com.justwayward.reader.bean.BookListTags;
 import com.justwayward.reader.bean.BookLists;
+import com.justwayward.reader.bean.BookMixAToc;
 import com.justwayward.reader.bean.BookReview;
 import com.justwayward.reader.bean.BookReviewList;
 import com.justwayward.reader.bean.BookSource;
-import com.justwayward.reader.bean.BookToc;
 import com.justwayward.reader.bean.BooksByCats;
 import com.justwayward.reader.bean.BooksByTag;
 import com.justwayward.reader.bean.CategoryList;
@@ -118,8 +118,8 @@ public class BookApi {
         return service.getBooksByTag(tags, start, limit);
     }
 
-    public Observable<BookToc> getBookToc(String bookId, String view) {
-        return service.getBookToc(bookId, view);
+    public Observable<BookMixAToc> getBookMixAToc(String bookId, String view) {
+        return service.getBookMixAToc(bookId, view);
     }
 
     public synchronized Observable<ChapterRead> getChapterRead(String url) {
@@ -127,7 +127,7 @@ public class BookApi {
     }
 
     public synchronized Observable<List<BookSource>> getBookSource(String view, String book) {
-        return service.getBookSource(view, book);
+        return service.getABookSource(view, book);
     }
 
     public Observable<RankingList> getRanking() {

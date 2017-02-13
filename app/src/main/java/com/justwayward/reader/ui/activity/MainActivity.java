@@ -43,10 +43,10 @@ import com.google.gson.Gson;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.base.Constant;
-import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
 import com.justwayward.reader.bean.user.TencentLoginResult;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerMainComponent;
+import com.justwayward.reader.manager.EventManager;
 import com.justwayward.reader.manager.SettingManager;
 import com.justwayward.reader.service.DownloadBookService;
 import com.justwayward.reader.ui.contract.MainContract;
@@ -65,7 +65,6 @@ import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.lang.reflect.Method;
@@ -292,7 +291,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
     @Override
     public void syncBookShelfCompleted() {
         dismissDialog();
-        EventBus.getDefault().post(new RefreshCollectionListEvent());
+        EventManager.refreshCollectionList();
     }
 
     @Override

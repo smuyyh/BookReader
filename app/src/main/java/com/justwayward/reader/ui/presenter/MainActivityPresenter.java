@@ -17,7 +17,7 @@ package com.justwayward.reader.ui.presenter;
 
 import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.base.RxPresenter;
-import com.justwayward.reader.bean.BookToc;
+import com.justwayward.reader.bean.BookMixAToc;
 import com.justwayward.reader.bean.Recommend;
 import com.justwayward.reader.bean.user.Login;
 import com.justwayward.reader.manager.CollectionsManager;
@@ -78,18 +78,18 @@ public class MainActivityPresenter extends RxPresenter<MainContract.View> implem
     @Override
     public void syncBookShelf() {
         List<Recommend.RecommendBooks> list = CollectionsManager.getInstance().getCollectionList();
-        List<Observable<BookToc.mixToc>> observables = new ArrayList<>();
+        List<Observable<BookMixAToc.mixToc>> observables = new ArrayList<>();
         if (list != null && !list.isEmpty()) {
             for (Recommend.RecommendBooks bean : list) {
                 if (!bean.isFromSD) {
-                    Observable<BookToc.mixToc> fromNetWork = bookApi.getBookToc(bean._id, "chapters")
-                            .map(new Func1<BookToc, BookToc.mixToc>() {
+                    Observable<BookMixAToc.mixToc> fromNetWork = bookApi.getBookMixAToc(bean._id, "chapters")
+                            .map(new Func1<BookMixAToc, BookMixAToc.mixToc>() {
                                 @Override
-                                public BookToc.mixToc call(BookToc data) {
+                                public BookMixAToc.mixToc call(BookMixAToc data) {
                                     return data.mixToc;
                                 }
                             })
-//                    .compose(RxUtil.<BookToc.mixToc>rxCacheListHelper(
+//                    .compose(RxUtil.<BookMixAToc.mixToc>rxCacheListHelper(
 //                            StringUtils.creatAcacheKey("book-toc", bean._id, "chapters")))
                             ;
                     observables.add(fromNetWork);
@@ -104,9 +104,9 @@ public class MainActivityPresenter extends RxPresenter<MainContract.View> implem
         Subscription rxSubscription = Observable.mergeDelayError(observables)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BookToc.mixToc>() {
+                .subscribe(new Observer<BookMixAToc.mixToc>() {
                     @Override
-                    public void onNext(BookToc.mixToc data) {
+                    public void onNext(BookMixAToc.mixToc data) {
                         String lastChapter = data.chapters.get(data.chapters.size() - 1).title;
                         CollectionsManager.getInstance().setLastChapterAndLatelyUpdate(data.book, lastChapter, data.chaptersUpdated);
                     }

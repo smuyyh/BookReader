@@ -27,14 +27,12 @@ import android.widget.TextView;
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseActivity;
 import com.justwayward.reader.base.Constant;
-import com.justwayward.reader.bean.support.RefreshCollectionListEvent;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerMainComponent;
 import com.justwayward.reader.manager.CacheManager;
+import com.justwayward.reader.manager.EventManager;
 import com.justwayward.reader.manager.SettingManager;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
-
-import org.greenrobot.eventbus.EventBus;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -121,7 +119,7 @@ public class SettingActivity extends BaseActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 mTvSort.setText(getResources().getStringArray(R.array.setting_dialog_sort_choice)[which]);
                                 SharedPreferencesUtil.getInstance().putBoolean(Constant.ISBYUPDATESORT, which == 0);
-                                EventBus.getDefault().post(new RefreshCollectionListEvent());
+                                EventManager.refreshCollectionList();
                                 dialog.dismiss();
                             }
                         })
@@ -175,7 +173,7 @@ public class SettingActivity extends BaseActivity {
                                     @Override
                                     public void run() {
                                         mTvCacheSize.setText(cacheSize);
-                                        EventBus.getDefault().post(new RefreshCollectionListEvent());
+                                        EventManager.refreshCollectionList();
                                     }
                                 });
                             }
