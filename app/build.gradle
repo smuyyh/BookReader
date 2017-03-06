@@ -75,4 +75,9 @@ dependencies {
     compile 'com.commit451:PhotoView:1.2.4'
     compile 'org.ccil.cowan.tagsoup:tagsoup:1.2.1'
 
+    // leakcanary
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+
 }
