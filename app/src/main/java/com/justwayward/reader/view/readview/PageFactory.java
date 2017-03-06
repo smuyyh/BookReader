@@ -589,17 +589,17 @@ public class PageFactory {
         this.listener = listener;
     }
 
-    void onChapterChanged(int chapter) {
+    private void onChapterChanged(int chapter) {
         if (listener != null)
             listener.onChapterChanged(chapter);
     }
 
-    void onPageChanged(int chapter, int page) {
+    private void onPageChanged(int chapter, int page) {
         if (listener != null)
             listener.onPageChanged(chapter, page);
     }
 
-    void onLoadChapterFailure(int chapter) {
+    private void onLoadChapterFailure(int chapter) {
         if (listener != null)
             listener.onLoadChapterFailure(chapter);
     }
@@ -615,7 +615,11 @@ public class PageFactory {
                 View.MeasureSpec.makeMeasureSpec(ScreenUtils.dpToPxInt(14), View.MeasureSpec.EXACTLY));
         batteryView.layout(0, 0, batteryView.getMeasuredWidth(), batteryView.getMeasuredHeight());
         batteryView.buildDrawingCache();
-        batteryBitmap = batteryView.getDrawingCache();
+        //batteryBitmap = batteryView.getDrawingCache();
+        // tips: @link{https://github.com/JustWayward/BookReader/issues/109}
+        batteryBitmap = Bitmap.createBitmap(batteryView.getDrawingCache());
+        batteryView.setDrawingCacheEnabled(false);
+        batteryView.destroyDrawingCache();
     }
 
     public void setBattery(int battery) {
@@ -625,5 +629,19 @@ public class PageFactory {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public void recycle() {
+        if (mBookPageBg != null && !mBookPageBg.isRecycled()) {
+            mBookPageBg.recycle();
+            mBookPageBg = null;
+            LogUtils.d("mBookPageBg recycle");
+        }
+
+        if (batteryBitmap != null && !batteryBitmap.isRecycled()) {
+            batteryBitmap.recycle();
+            batteryBitmap = null;
+            LogUtils.d("batteryBitmap recycle");
+        }
     }
 }

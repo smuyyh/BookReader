@@ -342,4 +342,24 @@ public abstract class BaseReadView extends View {
     public String getHeadLine() {
         return pagefactory.getHeadLineStr().replaceAll("@", "");
     }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (pagefactory != null) {
+            pagefactory.recycle();
+        }
+
+        if (mCurPageBitmap != null && !mCurPageBitmap.isRecycled()) {
+            mCurPageBitmap.recycle();
+            mCurPageBitmap = null;
+            LogUtils.d("mCurPageBitmap recycle");
+        }
+
+        if (mNextPageBitmap != null && !mNextPageBitmap.isRecycled()) {
+            mNextPageBitmap.recycle();
+            mNextPageBitmap = null;
+            LogUtils.d("mNextPageBitmap recycle");
+        }
+    }
 }
