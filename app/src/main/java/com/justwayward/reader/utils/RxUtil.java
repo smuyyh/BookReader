@@ -96,7 +96,7 @@ public class RxUtil {
                                                 try {
                                                     List list = (List) field.get(data);
                                                     LogUtils.d("list==" + list);
-                                                    if (!list.isEmpty()) {
+                                                    if (list != null && !list.isEmpty()) {
                                                         ACache.get(ReaderApplication.getsInstance())
                                                                 .put(key, new Gson().toJson(data, clazz));
                                                         LogUtils.d("cache finish");
