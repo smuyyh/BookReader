@@ -45,8 +45,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * @author yuyh.
@@ -57,6 +59,7 @@ public class DownloadBookService extends Service {
     public static List<DownloadQueue> downloadQueues = new ArrayList<>();
 
     public BookApi bookApi;
+    protected CompositeSubscription mCompositeSubscription;
 
     public boolean isBusy = false; // 当前是否有下载任务在进行
 
@@ -79,13 +82,13 @@ public class DownloadBookService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        unSubscribe();
         EventBus.getDefault().unregister(this);
     }
 
@@ -93,12 +96,12 @@ public class DownloadBookService extends Service {
         EventBus.getDefault().post(downloadQueue);
     }
 
-    public static void post(DownloadProgress progress) {
+    public void post(DownloadProgress progress) {
         EventBus.getDefault().post(progress);
     }
 
-    private void post(DownloadMessage complete) {
-        EventBus.getDefault().post(complete);
+    private void post(DownloadMessage message) {
+        EventBus.getDefault().post(message);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -210,7 +213,8 @@ public class DownloadBookService extends Service {
 
         final int[] result = {-1};
 
-        bookApi.getChapterRead(url).subscribeOn(Schedulers.io())
+        Subscription subscription = bookApi.getChapterRead(url)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ChapterRead>() {
                     @Override
@@ -237,6 +241,8 @@ public class DownloadBookService extends Service {
                     }
                 });
 
+        addSubscrebe(subscription);
+
         while (result[0] == -1) {
             try {
                 Thread.sleep(350);
@@ -249,5 +255,18 @@ public class DownloadBookService extends Service {
 
     public static void cancel() {
         canceled = true;
+    }
+
+    protected void unSubscribe() {
+        if (mCompositeSubscription != null) {
+            mCompositeSubscription.unsubscribe();
+        }
+    }
+
+    protected void addSubscrebe(Subscription subscription) {
+        if (mCompositeSubscription == null) {
+            mCompositeSubscription = new CompositeSubscription();
+        }
+        mCompositeSubscription.add(subscription);
     }
 }
