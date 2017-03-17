@@ -83,7 +83,7 @@ public class PageFactory {
     /**
      * 页首页尾的位置
      */
-    private int curEndPos = 0, curBeginPos = 0, tempBeginPos;
+    private int curEndPos = 0, curBeginPos = 0, tempBeginPos, tempEndPos;
     private int currentChapter, tempChapter;
     private Vector<String> mLines = new Vector<>();
 
@@ -151,7 +151,10 @@ public class PageFactory {
 
     public File getBookFile(int chapter) {
         File file = FileUtils.getChapterFile(bookId, chapter);
-        charset = FileUtils.getCharset(file.getAbsolutePath());
+        if (file != null && file.length() > 10) {
+            // 解决空文件造成编码错误的问题
+            charset = FileUtils.getCharset(file.getAbsolutePath());
+        }
         LogUtils.i("charset=" + charset);
         return file;
     }
@@ -451,20 +454,24 @@ public class PageFactory {
         } else {
             tempChapter = currentChapter;
             tempBeginPos = curBeginPos;
+            tempEndPos = curEndPos;
             if (curEndPos >= mbBufferLen) { // 中间章节结束页
                 currentChapter++;
                 int ret = openBook(currentChapter, new int[]{0, 0}); // 打开下一章
                 if (ret == 0) {
                     onLoadChapterFailure(currentChapter);
                     currentChapter--;
+                    curBeginPos = tempBeginPos;
+                    curEndPos = tempEndPos;
                     return BookStatus.NEXT_CHAPTER_LOAD_FAILURE;
                 } else {
                     currentPage = 0;
                     onChapterChanged(currentChapter);
                 }
+            } else {
+                curBeginPos = curEndPos; // 起始指针移到结束位置
             }
             mLines.clear();
-            curBeginPos = curEndPos; // 起始指针移到结束位置
             mLines = pageDown(); // 读取一页内容
             onPageChanged(currentChapter, ++currentPage);
         }
@@ -481,6 +488,7 @@ public class PageFactory {
             // 保存当前页的值
             tempChapter = currentChapter;
             tempBeginPos = curBeginPos;
+            tempEndPos = curEndPos;
             if (curBeginPos <= 0) {
                 currentChapter--;
                 int ret = openBook(currentChapter, new int[]{0, 0});
