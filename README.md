@@ -24,7 +24,6 @@ demo下载：[任阅.apk](https://github.com/JustWayward/BookReader/raw/master/�
 ## 截图
 
 - **首页**
-
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/home_zhuishu.png?raw=true" width="280"/>
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/home_communication.png?raw=true" width="280"/>
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/home_discover.png?raw=true" width="280"/>
@@ -32,7 +31,6 @@ demo下载：[任阅.apk](https://github.com/JustWayward/BookReader/raw/master/�
 </br>
 
 - **阅读**
-
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/read_page_7.png?raw=true" width="280"/>
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/read_page_8.png?raw=true" width="280"/>
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/read_page_9.png?raw=true" width="280"/>
@@ -43,7 +41,6 @@ demo下载：[任阅.apk](https://github.com/JustWayward/BookReader/raw/master/�
 </br>
 
 - **书籍**
-
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/search.png?raw=true" width="280"/>
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/book_detail.png?raw=true" width="280"/>
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/scan_book.png?raw=true" width="280"/>
@@ -51,21 +48,18 @@ demo下载：[任阅.apk](https://github.com/JustWayward/BookReader/raw/master/�
 </br>
 
 - **社区**
-
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/discuss.png?raw=true" width="280"/>
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/discuss_detail.png?raw=true" width="280"/>
 
 </br>
 
 - **排行榜**
-
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/rank_type.png?raw=true" width="280"/>
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/rank_list.png?raw=true" width="280"/>
 
 </br>
 
 - **主题书单**
-
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/subject_list.png?raw=true" width="280"/>
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/subject_tag.png?raw=true" width="280"/>
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/subject_detail.png?raw=true" width="280"/>
@@ -73,12 +67,10 @@ demo下载：[任阅.apk](https://github.com/JustWayward/BookReader/raw/master/�
 </br>
 
 - **书籍分类**
-
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/category.png?raw=true" width="280"/>
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/category_list.png?raw=true" width="280"/>
 
 - **其他**
-
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/settings-1.png?raw=true" width="280"/>
 <img src="https://github.com/JustWayward/BookReader/blob/master/screenshot/wifi_transfer.png?raw=true" width="280"/>
 
