@@ -11,9 +11,7 @@
 demo下载：[任阅.apk](https://github.com/JustWayward/BookReader/raw/master/体验demo/任阅-20170129.apk)
 
 ## 郑重声明！
-本项目虽然是开源项目，目的是共享学习只用，代码写的不好，也不准备上线！但是，某些有心之人在不经作者的同意下，直接稍加修改，并且嵌入广告谋取利益，发布到各大应用市场，请尊重源作者的版权！例如：
-[http://www.coolapk.com/apk/com.kevin.zhengduoyan](http://www.coolapk.com/apk/com.kevin.zhengduoyan)
-[http://www.coolapk.com/apk/com.kn.book](http://www.coolapk.com/apk/com.kn.book)
+本项目虽然是开源项目，目的是共享学习只用，代码写的不好，也不准备上线！但是，近期不断发现，某些有心之人在不经作者的同意下，直接稍加修改，并且嵌入广告谋取利益，发布到各大应用市场，还请尊重源作者的版权！
 
 ## TODO
 * [ ] txt阅读优化模拟翻书效果，提高分页速度以及分页准确性
