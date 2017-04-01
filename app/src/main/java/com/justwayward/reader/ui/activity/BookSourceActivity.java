@@ -16,7 +16,9 @@
 package com.justwayward.reader.ui.activity;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseRVActivity;
@@ -78,6 +80,15 @@ public class BookSourceActivity extends BaseRVActivity<BookSource> implements Bo
     public void configViews() {
         mPresenter.attachView(this);
         mPresenter.getBookSource("summary", bookId);
+
+        new AlertDialog.Builder(this)
+                .setMessage("换源功能暂未实现，后续更新...")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
     }
 
     @Override
