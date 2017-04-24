@@ -9,6 +9,7 @@
 有任何疑问或建议可提[issue](https://github.com/JustWayward/BookReader/issues/new)或联系[smuyyh@gmail.com](mailto://smuyyh@gmail.com)。
 
 demo下载：[任阅.apk](https://github.com/JustWayward/BookReader/raw/master/体验demo/任阅-20170129.apk)
+
 RN版本：[simplereader](https://github.com/jsntjinjin/simplereader)
 
 ## TODO
