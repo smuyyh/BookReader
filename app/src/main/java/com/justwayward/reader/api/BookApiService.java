@@ -63,7 +63,11 @@ import rx.Observable;
  * @date 2016/8/3.
  */
 public interface BookApiService {
-
+    /**
+     * 推荐
+     * @param gender
+     * @return
+     */
     @GET("/book/recommend")
     Observable<Recommend> getRecomend(@Query("gender") String gender);
 
