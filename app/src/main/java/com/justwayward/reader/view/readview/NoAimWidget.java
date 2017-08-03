@@ -29,8 +29,8 @@ import com.justwayward.reader.manager.ThemeManager;
 import java.util.List;
 
 /**
- * @author yuyh.
- * @date 2016/10/18.
+ * @author zths.
+ * @date 2017/08/03.
  */
 public class NoAimWidget extends OverlappedWidget {
 
