@@ -121,7 +121,8 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
         mCommonToolbar.setLogo(R.mipmap.logo);
         setTitle("");
     }
-    public void pullSyncBookShelf(){
+
+    public void pullSyncBookShelf() {
         mPresenter.syncBookShelf();
     }
 
@@ -162,7 +163,13 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
         mIndicator.postDelayed(new Runnable() {
             @Override
             public void run() {
-                showChooseSexPopupWindow();
+                if (!SettingManager.getInstance().isUserChooseSex()
+                        && !genderPopupWindow.isShowing()) {
+                    showChooseSexPopupWindow();
+                } else {
+                    showDialog();
+                    mPresenter.syncBookShelf();
+                }
             }
         }, 500);
     }
