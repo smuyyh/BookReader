@@ -77,6 +77,7 @@ import com.justwayward.reader.utils.SharedPreferencesUtil;
 import com.justwayward.reader.utils.TTSPlayerUtils;
 import com.justwayward.reader.utils.ToastUtils;
 import com.justwayward.reader.view.readview.BaseReadView;
+import com.justwayward.reader.view.readview.NoAimWidget;
 import com.justwayward.reader.view.readview.OnReadStateChangeListener;
 import com.justwayward.reader.view.readview.OverlappedWidget;
 import com.justwayward.reader.view.readview.PageWidget;
@@ -391,11 +392,17 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     }
 
     private void initPagerWidget() {
-        if (SharedPreferencesUtil.getInstance().getInt(Constant.FLIP_STYLE, 0) == 0) {
-            mPageWidget = new PageWidget(this, bookId, mChapterList, new ReadListener());
-        } else {
-            mPageWidget = new OverlappedWidget(this, bookId, mChapterList, new ReadListener());
+        switch(SharedPreferencesUtil.getInstance().getInt(Constant.FLIP_STYLE, 0)){
+            case 0:
+                mPageWidget = new PageWidget(this, bookId, mChapterList, new ReadListener());
+                break;
+            case 1:
+                mPageWidget = new OverlappedWidget(this, bookId, mChapterList, new ReadListener());
+                break;
+            case 2:
+                mPageWidget = new NoAimWidget(this, bookId, mChapterList, new ReadListener());
         }
+
         registerReceiver(receiver, intentFilter);
         if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)) {
             mPageWidget.setTextColor(ContextCompat.getColor(this, R.color.chapter_content_night),
