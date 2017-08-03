@@ -44,6 +44,7 @@ import rx.schedulers.Schedulers;
 public class MainActivityPresenter extends RxPresenter<MainContract.View> implements MainContract.Presenter<MainContract.View> {
 
     private BookApi bookApi;
+    public static boolean isLastSyncUpdateed = false;
 
     @Inject
     public MainActivityPresenter(BookApi bookApi) {
@@ -100,7 +101,7 @@ public class MainActivityPresenter extends RxPresenter<MainContract.View> implem
             mView.syncBookShelfCompleted();
             return;
         }
-
+        isLastSyncUpdateed = false;
         Subscription rxSubscription = Observable.mergeDelayError(observables)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -114,6 +115,12 @@ public class MainActivityPresenter extends RxPresenter<MainContract.View> implem
                     @Override
                     public void onCompleted() {
                         mView.syncBookShelfCompleted();
+                        if(isLastSyncUpdateed){
+                            ToastUtils.showSingleToast("小説已更新");
+                        }else{
+                            ToastUtils.showSingleToast("你追的小説沒有更新");
+                        }
+
                     }
 
                     @Override

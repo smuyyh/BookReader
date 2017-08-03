@@ -19,6 +19,7 @@ import android.text.TextUtils;
 
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.Recommend;
+import com.justwayward.reader.ui.presenter.MainActivityPresenter;
 import com.justwayward.reader.utils.ACache;
 import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.FileUtils;
@@ -230,6 +231,9 @@ public class CollectionsManager {
         }
         for (Recommend.RecommendBooks bean : list) {
             if (TextUtils.equals(bean._id, bookId)) {
+                if (!bean.lastChapter.equals(lastChapter)) {
+                    MainActivityPresenter.isLastSyncUpdateed = true;
+                }
                 bean.lastChapter = lastChapter;
                 bean.updated = latelyUpdate;
                 list.remove(bean);
