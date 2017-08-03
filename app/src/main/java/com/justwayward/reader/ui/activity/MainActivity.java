@@ -164,7 +164,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
             @Override
             public void run() {
                 if (!SettingManager.getInstance().isUserChooseSex()
-                        && !genderPopupWindow.isShowing()) {
+                        && (genderPopupWindow == null || !genderPopupWindow.isShowing())) {
                     showChooseSexPopupWindow();
                 } else {
                     showDialog();
