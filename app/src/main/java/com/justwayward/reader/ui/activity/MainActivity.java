@@ -121,6 +121,9 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
         mCommonToolbar.setLogo(R.mipmap.logo);
         setTitle("");
     }
+    public void pullSyncBookShelf(){
+        mPresenter.syncBookShelf();
+    }
 
     @Override
     public void initDatas() {
