@@ -360,6 +360,27 @@ public class RecommendFragment extends BaseRVFragment<RecommendPresenter, Recomm
     @Override
     public void onRefresh() {
         super.onRefresh();
+        StackTraceElement stack[] = (new Throwable()).getStackTrace();
+
+
+        boolean hasRefBookShelfInCallStack = false;
+        boolean isMRefresh = false;
+        for (int i = 0; i < stack.length; i++) {
+            StackTraceElement ste = stack[i];
+            if (ste.getMethodName().equals("pullSyncBookShelf")) {
+                hasRefBookShelfInCallStack = true;
+            }
+            if (ste.getMethodName().equals("onAnimationEnd") && ste.getFileName().equals("SwipeRefreshLayout.java")) {
+                isMRefresh = true;
+            }
+        }
+
+        if (!hasRefBookShelfInCallStack && isMRefresh) {
+            ((MainActivity) activity).pullSyncBookShelf();
+            return;
+        }
+
+
         gone(llBatchManagement);
         List<Recommend.RecommendBooks> data = CollectionsManager.getInstance().getCollectionListBySort();
         mAdapter.clear();

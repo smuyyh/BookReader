@@ -122,6 +122,10 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
         setTitle("");
     }
 
+    public void pullSyncBookShelf() {
+        mPresenter.syncBookShelf();
+    }
+
     @Override
     public void initDatas() {
         startService(new Intent(this, DownloadBookService.class));
@@ -159,7 +163,13 @@ public class MainActivity extends BaseActivity implements MainContract.View, Log
         mIndicator.postDelayed(new Runnable() {
             @Override
             public void run() {
-                showChooseSexPopupWindow();
+                if (!SettingManager.getInstance().isUserChooseSex()
+                        && (genderPopupWindow == null || !genderPopupWindow.isShowing())) {
+                    showChooseSexPopupWindow();
+                } else {
+                    showDialog();
+                    mPresenter.syncBookShelf();
+                }
             }
         }, 500);
     }

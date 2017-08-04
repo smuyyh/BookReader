@@ -78,5 +78,6 @@
     <string-array name="setting_dialog_style_choice">
         <item>模拟翻书效果</item>
         <item>滑动覆盖翻页效果</item>
+        <item>无效果</item>
     </string-array>
 </resources>

@@ -20,8 +20,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.ContentObserver;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Handler;
+import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
@@ -69,6 +72,7 @@ import com.justwayward.reader.ui.adapter.TocListAdapter;
 import com.justwayward.reader.ui.contract.BookReadContract;
 import com.justwayward.reader.ui.easyadapter.ReadThemeAdapter;
 import com.justwayward.reader.ui.presenter.BookReadPresenter;
+import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.utils.FormatUtils;
 import com.justwayward.reader.utils.LogUtils;
@@ -77,6 +81,7 @@ import com.justwayward.reader.utils.SharedPreferencesUtil;
 import com.justwayward.reader.utils.TTSPlayerUtils;
 import com.justwayward.reader.utils.ToastUtils;
 import com.justwayward.reader.view.readview.BaseReadView;
+import com.justwayward.reader.view.readview.NoAimWidget;
 import com.justwayward.reader.view.readview.OnReadStateChangeListener;
 import com.justwayward.reader.view.readview.OverlappedWidget;
 import com.justwayward.reader.view.readview.PageWidget;
@@ -349,6 +354,21 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         });
     }
 
+    /**
+     * 时刻监听系统亮度改变事件
+     */
+    private ContentObserver Brightness = new ContentObserver(new Handler()) {
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            //LogUtils.d("BrightnessOnChange:" + ScreenUtils.getScreenBrightnessInt255());
+            if (!ScreenUtils.isAutoBrightness(ReadActivity.this)) {
+                seekbarLightness.setProgress(ScreenUtils.getScreenBrightness());
+            }
+        }
+    };
+
+
     private void initAASet() {
         curTheme = SettingManager.getInstance().getReadTheme();
         ThemeManager.setReaderTheme(curTheme, mRlBookReadRoot);
@@ -362,8 +382,12 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
 
         seekbarLightness.setMax(100);
         seekbarLightness.setOnSeekBarChangeListener(new SeekBarChangeListener());
-        seekbarLightness.setProgress(SettingManager.getInstance().getReadBrightness());
+        seekbarLightness.setProgress(ScreenUtils.getScreenBrightness());
         isAutoLightness = ScreenUtils.isAutoBrightness(this);
+
+
+        this.getContentResolver().registerContentObserver(Settings.System.getUriFor(Settings.System.SCREEN_BRIGHTNESS), true, Brightness);
+
         if (SettingManager.getInstance().isAutoBrightness()) {
             startAutoLightness();
         } else {
@@ -391,11 +415,17 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     }
 
     private void initPagerWidget() {
-        if (SharedPreferencesUtil.getInstance().getInt(Constant.FLIP_STYLE, 0) == 0) {
-            mPageWidget = new PageWidget(this, bookId, mChapterList, new ReadListener());
-        } else {
-            mPageWidget = new OverlappedWidget(this, bookId, mChapterList, new ReadListener());
+        switch (SharedPreferencesUtil.getInstance().getInt(Constant.FLIP_STYLE, 0)) {
+            case 0:
+                mPageWidget = new PageWidget(this, bookId, mChapterList, new ReadListener());
+                break;
+            case 1:
+                mPageWidget = new OverlappedWidget(this, bookId, mChapterList, new ReadListener());
+                break;
+            case 2:
+                mPageWidget = new NoAimWidget(this, bookId, mChapterList, new ReadListener());
         }
+
         registerReceiver(receiver, intentFilter);
         if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)) {
             mPageWidget.setTextColor(ContextCompat.getColor(this, R.color.chapter_content_night),
@@ -627,20 +657,18 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     @OnClick(R.id.ivBrightnessMinus)
     public void brightnessMinus() {
         int curBrightness = SettingManager.getInstance().getReadBrightness();
-        if (curBrightness > 2 && !SettingManager.getInstance().isAutoBrightness()) {
+        if (curBrightness > 5 && !SettingManager.getInstance().isAutoBrightness()) {
             seekbarLightness.setProgress((curBrightness = curBrightness - 2));
-            ScreenUtils.setScreenBrightness(curBrightness, ReadActivity.this);
-            SettingManager.getInstance().saveReadBrightness(curBrightness);
+            ScreenUtils.saveScreenBrightnessInt255(curBrightness, ReadActivity.this);
         }
     }
 
     @OnClick(R.id.ivBrightnessPlus)
     public void brightnessPlus() {
         int curBrightness = SettingManager.getInstance().getReadBrightness();
-        if (curBrightness < 99 && !SettingManager.getInstance().isAutoBrightness()) {
+        if (!SettingManager.getInstance().isAutoBrightness()) {
             seekbarLightness.setProgress((curBrightness = curBrightness + 2));
-            ScreenUtils.setScreenBrightness(curBrightness, ReadActivity.this);
-            SettingManager.getInstance().saveReadBrightness(curBrightness);
+            ScreenUtils.saveScreenBrightnessInt255(curBrightness, ReadActivity.this);
         }
     }
 
@@ -774,7 +802,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case 1:
-                if(resultCode == RESULT_OK) {
+                if (resultCode == RESULT_OK) {
                     BookSource bookSource = (BookSource) data.getSerializableExtra("source");
                     bookId = bookSource._id;
                 }
@@ -843,6 +871,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
         if (mTtsPlayer.getPlayerState() == TTSCommonPlayer.PLAYER_STATE_PLAYING)
             mTtsPlayer.stop();
 
@@ -918,8 +947,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                 calcFontSize(progress);
             } else if (seekBar.getId() == seekbarLightness.getId() && fromUser
                     && !SettingManager.getInstance().isAutoBrightness()) { // 非自动调节模式下 才可调整屏幕亮度
-                ScreenUtils.setScreenBrightness(progress, ReadActivity.this);
-                SettingManager.getInstance().saveReadBrightness(progress);
+                ScreenUtils.saveScreenBrightnessInt100(progress, ReadActivity.this);
+                //SettingManager.getInstance().saveReadBrightness(progress);
             }
         }
 
@@ -945,6 +974,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
                     startAutoLightness();
                 } else {
                     stopAutoLightness();
+                    ScreenUtils.saveScreenBrightnessInt255(ScreenUtils.getScreenBrightnessInt255(), AppUtils.getAppContext());
                 }
             }
         }
@@ -974,9 +1004,7 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     private void stopAutoLightness() {
         SettingManager.getInstance().saveAutoBrightness(false);
         ScreenUtils.stopAutoBrightness(ReadActivity.this);
-        int value = SettingManager.getInstance().getReadBrightness();
-        seekbarLightness.setProgress(value);
-        ScreenUtils.setScreenBrightness(value, ReadActivity.this);
+        seekbarLightness.setProgress((int) (ScreenUtils.getScreenBrightnessInt255() / 255.0F * 100));
         seekbarLightness.setEnabled(true);
     }
 
