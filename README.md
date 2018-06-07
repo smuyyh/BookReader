@@ -6,8 +6,7 @@
 ***此项目停止维护，由于当时做的比较着急，分页、翻页、性能这些都做的相当不好，在 言士创作 中，对这方面做了很多的优化，不过没有开源。 有相关问题欢迎发我邮箱交流！***
 
 ## 项目
-项目基于RxJava + Retrofit2 + Dagger2，结合MVP模式开发，代码结构清晰。项目中的API均来自追书神器，纯属共享学习之用，不得用于商业！！
-有任何疑问或建议可联系[smuyyh@gmail.com](mailto://smuyyh@gmail.com)。
+项目基于RxJava + Retrofit2 + Dagger2，项目中的API均来自追书神器，纯属共享学习之用，不得用于商业！！有任何疑问或建议可联系[smuyyh@gmail.com](mailto://smuyyh@gmail.com)。
 
 demo下载：[任阅.apk](https://github.com/JustWayward/BookReader/raw/master/体验demo/任阅-20170129.apk)
 
