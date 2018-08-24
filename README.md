@@ -10,7 +10,7 @@
 
 demo下载：[任阅.apk](https://github.com/JustWayward/BookReader/raw/master/体验demo/任阅-20170129.apk)
 
-**android 本地网络小说爬虫项目,** [](https://github.com/smuyyh/CrawlerForReader)
+**android 本地网络小说爬虫项目：** [CrawlerForReader](https://github.com/smuyyh/CrawlerForReader)
 
 RN版本：[simplereader](https://github.com/jsntjinjin/simplereader)
 
