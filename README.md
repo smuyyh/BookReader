@@ -14,6 +14,8 @@ demo下载：[任阅.apk](https://github.com/JustWayward/BookReader/raw/master/�
 
 RN版本：[simplereader](https://github.com/jsntjinjin/simplereader)
 
+任阅改进版：[NovelReader](https://github.com/newbiechen1024/NovelReader)
+
 ## 截图
 
 - **首页**
