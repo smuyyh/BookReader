@@ -18,6 +18,7 @@ package com.justwayward.reader.ui.contract;
 import com.justwayward.reader.base.BaseContract;
 import com.justwayward.reader.bean.BookMixAToc;
 import com.justwayward.reader.bean.ChapterRead;
+import com.justwayward.reader.bean.Recommend;
 
 import java.util.List;
 
@@ -39,6 +40,13 @@ public interface BookReadContract {
         void getBookMixAToc(String bookId, String view);
 
         void getChapterRead(String url, int chapter);
+
+        /**
+         * 合成所有的文件为一个整个text
+         * @param recommendBooks
+         * @param list
+         */
+        void merginAllBook(Recommend.RecommendBooks recommendBooks, List<BookMixAToc.mixToc.Chapters> list);
     }
 
 }

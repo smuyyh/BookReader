@@ -21,20 +21,27 @@ import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.base.RxPresenter;
 import com.justwayward.reader.bean.BookMixAToc;
 import com.justwayward.reader.bean.ChapterRead;
+import com.justwayward.reader.bean.Recommend;
+import com.justwayward.reader.bean.support.DownloadProgress;
 import com.justwayward.reader.ui.contract.BookReadContract;
+import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.RxUtil;
 import com.justwayward.reader.utils.StringUtils;
 
+import java.io.File;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
+import rx.internal.util.ObserverSubscriber;
+import rx.observables.SyncOnSubscribe;
 import rx.schedulers.Schedulers;
 
 /**
@@ -116,5 +123,43 @@ public class BookReadPresenter extends RxPresenter<BookReadContract.View>
                     }
                 });
         addSubscrebe(rxSubscription);
+    }
+
+    @Override
+    public void merginAllBook(Recommend.RecommendBooks recommendBooks, List<BookMixAToc.mixToc.Chapters> list) {
+
+        String fileName = recommendBooks.title;
+//        File file = FileUtils.getMerginBook(fileName + ".txt");
+//        Subscription rxSubscription = new ObserverSubscriber<Object>
+//                (){};
+
+
+        Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(String o) {
+
+                    }
+                });//);
+
+
+//        DownloadProgress progress
+
     }
 }

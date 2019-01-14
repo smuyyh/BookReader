@@ -15,6 +15,8 @@
  */
 package com.justwayward.reader.wifitransfer;
 
+import com.justwayward.reader.api.BookApi;
+
 import java.io.IOException;
 
 /**
@@ -30,9 +32,11 @@ public class ServerRunner {
 
     /**
      * 启动wifi传书服务
+     * @param mBookApi
      */
-    public static void startServer() {
+    public static SimpleFileServer  startServer( BookApi mBookApi) {
         server = SimpleFileServer.getInstance();
+        server.setBookApi(mBookApi);
         try {
             if (!serverIsRunning) {
                 server.start();
@@ -41,6 +45,7 @@ public class ServerRunner {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return server;
     }
 
     public static void stopServer() {

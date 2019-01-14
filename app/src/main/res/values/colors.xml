@@ -83,5 +83,6 @@
     <color name="gender_select_male_pressed">#B2DFEE</color>
     <color name="gender_select_female_normal">#EEA9B8</color>
     <color name="gender_select_female_pressed">#EEA2AD</color>
+    <color name="battery_progress">#bed0cf</color>
 
 </resources>

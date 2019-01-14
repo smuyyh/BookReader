@@ -17,11 +17,21 @@ package com.justwayward.reader.wifitransfer;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.justwayward.reader.ReaderApplication;
+import com.justwayward.reader.api.BookApi;
+import com.justwayward.reader.bean.BookMixAToc;
 import com.justwayward.reader.bean.Recommend;
+import com.justwayward.reader.bean.user.HtmlBook;
 import com.justwayward.reader.manager.CollectionsManager;
 import com.justwayward.reader.manager.EventManager;
+import com.justwayward.reader.utils.ACache;
 import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.utils.LogUtils;
+import com.justwayward.reader.utils.RxUtil;
+import com.justwayward.reader.utils.StringUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -30,7 +40,18 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+
+import rx.Observable;
+import rx.Observer;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 
 /**
  * Wifi传书 服务端
@@ -41,6 +62,7 @@ import java.util.Map;
 public class SimpleFileServer extends NanoHTTPD {
 
     private static SimpleFileServer server;
+    private BookApi bookApi;
 
     public static SimpleFileServer getInstance() {
         if (server == null) {
@@ -69,8 +91,27 @@ public class SimpleFileServer extends NanoHTTPD {
             if (uri.contains("index.html") || uri.equals("/")) {
                 return new Response(Response.Status.OK, "text/html", new String(FileUtils.readAssets("/index.html")));
             } else if (uri.startsWith("/files/") && uri.endsWith(".txt")) {
+                String name = parms.get("name");
+                String printName;
+                try {
+                    printName = URLDecoder.decode(parms.get("name"), "utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    printName = "tt";
+                }
                 String bookid = uri.substring(7, uri.lastIndexOf("."));
-                return new Response(Response.Status.OK, "file", new String(FileUtils.getBytesFromFile(FileUtils.getChapterFile(bookid, 1))));
+                LogUtils.d("-->uri= " + uri + ";name:" + printName);
+                //先加载章节列表
+                Response resp = new Response(Response.Status.OK, MIME_DEFAULT_BINARY, bookid, getBookMixAToc(bookid, "chapters"), bookApi);
+                resp.addHeader("content-disposition", "attachment;filename=" + printName + ".txt");//URLEncoder.encode(name + ".txt", "utf-8"));
+                return resp;
+            } else if (uri.startsWith("/files")) {
+                List<Recommend.RecommendBooks> collectionList = CollectionsManager.getInstance().getCollectionList();
+                List<HtmlBook> htmlBooks = new ArrayList<>();
+                for (Recommend.RecommendBooks recommendBooks : collectionList) {
+                    htmlBooks.add(new HtmlBook(recommendBooks.title, recommendBooks._id, recommendBooks.lastChapter));
+                }
+                return new Response(Response.Status.OK, "text/json", new Gson().toJson(htmlBooks));
             } else {
                 // 获取文件类型
                 String type = Defaults.extensions.get(uri.substring(uri.lastIndexOf(".") + 1));
@@ -146,5 +187,40 @@ public class SimpleFileServer extends NanoHTTPD {
             //ToastUtils.showSingleToast("书籍已存在");
         }
         //Looper.loop();
+    }
+
+
+    public BookMixAToc.mixToc getBookMixAToc(final String bookId, String viewChapters) {
+
+        final BookMixAToc mixToc = new BookMixAToc();
+        final String key = StringUtils.creatAcacheKey("book-toc", bookId, viewChapters);
+        String json = ACache.get(ReaderApplication.getsInstance()).getAsString(key);
+        if (json != null) {
+            return new Gson().fromJson(json, BookMixAToc.mixToc.class);
+        } else {
+            bookApi.getBookMixAToc(bookId, viewChapters).subscribe(new Observer<BookMixAToc>() {
+                @Override
+                public void onNext(BookMixAToc data) {
+                    mixToc.mixToc = data.mixToc;
+                    ACache.get(ReaderApplication.getsInstance()).put(key, data.mixToc);
+                }
+
+                @Override
+                public void onCompleted() {
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    LogUtils.e("onError: " + e);
+//                        mView.netError(0);
+                }
+            });
+        }
+
+        return mixToc.mixToc;
+    }
+
+    public void setBookApi(BookApi mBookApi) {
+        this.bookApi = mBookApi;
     }
 }
