@@ -92,6 +92,13 @@ public class SimpleFileServer extends NanoHTTPD {
                 return new Response(Response.Status.OK, "text/html", new String(FileUtils.readAssets("/index.html")));
             } else if (uri.startsWith("/files/") && uri.endsWith(".txt")) {
                 String name = parms.get("name");
+                String start = parms.get("start");
+                int startIndex = 0;
+                try {
+                    startIndex = Integer.parseInt(start);
+                } catch (NumberFormatException ex) {
+                    ex.printStackTrace();
+                }
                 String printName;
                 try {
                     printName = URLDecoder.decode(parms.get("name"), "utf-8");
@@ -100,10 +107,10 @@ public class SimpleFileServer extends NanoHTTPD {
                     printName = "tt";
                 }
                 String bookid = uri.substring(7, uri.lastIndexOf("."));
-                LogUtils.d("-->uri= " + uri + ";name:" + printName);
+                LogUtils.d("-->uri= " + uri + ";name:" + printName + ";start:" + start);
                 //先加载章节列表
-                Response resp = new Response(Response.Status.OK, MIME_DEFAULT_BINARY, bookid, getBookMixAToc(bookid, "chapters"), bookApi);
-                resp.addHeader("content-disposition", "attachment;filename=" + printName + ".txt");//URLEncoder.encode(name + ".txt", "utf-8"));
+                Response resp = new Response(Response.Status.OK, MIME_DEFAULT_BINARY, bookid, getBookMixAToc(bookid, "chapters"), bookApi, startIndex);
+                resp.addHeader("content-disposition", "attachment;filename=" + printName + "_" + startIndex + ".txt");//URLEncoder.encode(name + ".txt", "utf-8"));
                 return resp;
             } else if (uri.startsWith("/files")) {
                 List<Recommend.RecommendBooks> collectionList = CollectionsManager.getInstance().getCollectionList();

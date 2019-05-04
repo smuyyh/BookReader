@@ -278,8 +278,8 @@ public abstract class NanoHTTPD {
      * HTTP response. Return one of these from serve().
      */
     public static class Response {
-        private  String bookId;
-        private  BookMixAToc.mixToc bookMix;
+        private String bookId;
+        private BookMixAToc.mixToc bookMix;
 
         private BookApi bookApi;
         /**
@@ -308,6 +308,12 @@ public abstract class NanoHTTPD {
             this(Status.OK, MIME_HTML, msg);
         }
 
+
+        /**
+         * start Chapters index
+         */
+        public int start;
+
         /**
          * Basic constructor.
          */
@@ -330,12 +336,13 @@ public abstract class NanoHTTPD {
             }
         }
 
-        public Response(Status status, String mimeType,String bookId, BookMixAToc.mixToc bookMix, BookApi bookApi) {
+        public Response(Status status, String mimeType, String bookId, BookMixAToc.mixToc bookMix, BookApi bookApi, int start) {
             this.status = status;
             this.mimeType = mimeType;
             this.bookId = bookId;
             this.bookMix = bookMix;
             this.bookApi = bookApi;
+            this.start = start;
         }
 
         public static void error(OutputStream outputStream, Status error,
@@ -384,9 +391,9 @@ public abstract class NanoHTTPD {
                 pw.print("\r\n");
                 pw.flush();
 
-                sendInputData(outputStream,data);
+                sendInputData(outputStream, data);
 //              上传文件
-                witBook(pw,outputStream);
+                witBook(pw, outputStream);
                 outputStream.flush();
                 outputStream.close();
                 if (data != null)
@@ -397,15 +404,15 @@ public abstract class NanoHTTPD {
             }
         }
 
-        public void witBook(final PrintWriter pw, OutputStream outputStream){
-            if(this.bookMix == null){
+        public void witBook(final PrintWriter pw, OutputStream outputStream) {
+            if (this.bookMix == null) {
                 return;
             }
             final List<BookMixAToc.mixToc.Chapters> list = this.bookMix.chapters;
-            for (int i = 0; i < list.size(); i++) {
+            for (int i = start; i < list.size(); i++) {
                 final BookMixAToc.mixToc.Chapters character = list.get(i);
                 final String title = character.title;
-                File fileIndex = CacheManager.getInstance().getChapterFile(this.bookId, i);
+                File fileIndex = CacheManager.getInstance().getChapterFile(this.bookId, i + 1);
                 if (fileIndex != null) {
                     FileInputStream fis = null;
                     try {
@@ -414,14 +421,14 @@ public abstract class NanoHTTPD {
                         pw.print(title);
                         pw.print("\r\n");
                         pw.flush();
-                        sendInputData(outputStream,fis);
+                        sendInputData(outputStream, fis);
                         outputStream.flush();
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }finally {
-                        if(fis != null){
+                    } finally {
+                        if (fis != null) {
                             try {
                                 fis.close();
                             } catch (IOException e) {
@@ -459,7 +466,7 @@ public abstract class NanoHTTPD {
                             pw.print(chapterRead.chapter.body);
                             pw.flush();
 //                          保存当前的文章到本地
-                            CacheManager.getInstance().saveChapterFile(Response.this.bookId, finalI,chapterRead.chapter);
+                            CacheManager.getInstance().saveChapterFile(Response.this.bookId, finalI, chapterRead.chapter);
                         }
                     });
                 }

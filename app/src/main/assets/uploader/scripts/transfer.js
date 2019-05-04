@@ -41,12 +41,21 @@ $(function () {
     }
 
     function downloadBook(_event) {
-        var $node = $(_event.currentTarget).siblings(':first');
-        var bookid = $node.attr('bookid');
-        var fileName = encodeURI(encodeURI($node.text())) ;
-        //.text();//
-        var url = "files/" + bookid + ".txt?name=" + fileName ;
-        window.location = url;
+        //第一个参数是提示文字，第二个参数是文本框中默认的内容
+        var start = prompt("请开始章节",0);
+        console.log(start)
+        if(start){
+            //输出word的格式
+            // alert("已获得:"+word);
+
+            var $node = $(_event.currentTarget).siblings(':first');
+            var bookid = $node.attr('bookid');
+            var fileName = encodeURI(encodeURI($node.text())) ;
+            //.text();//
+            var url = "files/" + bookid + ".txt?name=" + fileName +"&start=" + start;
+            window.location = url;
+        }
+
     }
 
     function loadFileList() {
