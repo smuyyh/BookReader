@@ -3,22 +3,18 @@
 # BookReader
 #### "任阅" 网络小说阅读器，实现追书推荐收藏、书籍/标签检索、模拟翻书的翻页效果、缓存书籍、日夜间模式、本地txt/pdf/epub书籍阅读、字体/主题/亮度设置、Wifi传书等功能！
 
+**此项目停止维护，由于当时做的比较着急，分页、翻页、性能这些都做的相当不好，在 言士创作 中，对这方面做了很多的优化，不过没有开源。 有相关问题欢迎发我邮箱交流！**
 
 ## 项目
-项目基于RxJava + Retrofit2 + Dagger2，结合MVP模式开发，代码结构清晰。项目中的API均来自追书神器，纯属共享学习之用，不得用于商业！！
-有任何疑问或建议可提[issue](https://github.com/JustWayward/BookReader/issues/new)或联系[smuyyh@gmail.com](mailto://smuyyh@gmail.com)。
+项目基于RxJava + Retrofit2 + Dagger2，项目中的API均来自追书神器，纯属共享学习之用，不得用于商业！！有任何疑问或建议可联系[smuyyh@gmail.com](mailto://smuyyh@gmail.com)。
 
 demo下载：[任阅.apk](https://github.com/JustWayward/BookReader/raw/master/体验demo/任阅-20170129.apk)
 
-## 郑重声明！
-本项目虽然是开源项目，目的是共享学习只用，代码写的不好，也不准备上线！但是，近期不断发现，某些有心之人在不经作者的同意下，直接稍加修改，并且嵌入广告谋取利益，发布到各大应用市场，还请尊重源作者的版权！
+**android 本地网络小说爬虫项目：** [CrawlerForReader](https://github.com/smuyyh/CrawlerForReader)
 
-## TODO
-* [ ] txt阅读优化模拟翻书效果，提高分页速度以及分页准确性
+RN版本：[simplereader](https://github.com/jsntjinjin/simplereader)
 
-* [ ] 增加无翻页效果方式
-
-* [ ] epub阅读优化
+任阅改进版：[NovelReader](https://github.com/newbiechen1024/NovelReader)
 
 ## 截图
 

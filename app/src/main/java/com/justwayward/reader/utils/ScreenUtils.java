@@ -243,22 +243,48 @@ public class ScreenUtils {
         Settings.System.putInt(activity.getContentResolver(),
                 Settings.System.SCREEN_BRIGHTNESS_MODE,
                 Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
+
     }
 
     /**
      * 获得当前屏幕亮度值
      *
-     * @param mContext
      * @return 0~100
      */
-    public static float getScreenBrightness(Context mContext) {
+    public static int getScreenBrightness() {
+        return (int) (getScreenBrightnessInt255() / 255.0F * 100);
+    }
+
+    /**
+     * 获得当前屏幕亮度值
+     *
+     * @return 0~255
+     */
+    public static int getScreenBrightnessInt255() {
         int screenBrightness = 255;
         try {
-            screenBrightness = Settings.System.getInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+            screenBrightness = Settings.System.getInt(AppUtils.getAppContext().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return screenBrightness / 255.0F * 100;
+        return screenBrightness;
+    }
+
+    /**
+     * 设置当前屏幕亮度值
+     *
+     * @param paramInt 0~255
+     * @param mContext
+     */
+    public static void saveScreenBrightnessInt255(int paramInt, Context mContext) {
+        if (paramInt <= 5) {
+            paramInt = 5;
+        }
+        try {
+            Settings.System.putInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, paramInt);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -267,16 +293,18 @@ public class ScreenUtils {
      * @param paramInt 0~100
      * @param mContext
      */
-    public static void saveScreenBrightness(int paramInt, Context mContext) {
-        if (paramInt <= 5) {
-            paramInt = 5;
-        }
-        try {
-            float f = paramInt / 100.0F * 255;
-            Settings.System.putInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, (int) f);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public static void saveScreenBrightnessInt100(int paramInt, Context mContext) {
+        saveScreenBrightnessInt255((int) (paramInt / 100.0F * 255), mContext);
+    }
+
+    /**
+     * 设置当前屏幕亮度值
+     *
+     * @param paramFloat 0~100
+     * @param mContext
+     */
+    public static void saveScreenBrightness(float paramFloat, Context mContext) {
+        saveScreenBrightnessInt255((int) (paramFloat / 100.0F * 255), mContext);
     }
 
     /**

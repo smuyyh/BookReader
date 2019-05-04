@@ -16,6 +16,7 @@
 package com.justwayward.reader.ui.fragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -61,7 +62,6 @@ public class FindFragment extends BaseFragment implements OnRvItemClickListener<
         mList.add(new FindBean("排行榜", R.drawable.home_find_rank));
         mList.add(new FindBean("主题书单", R.drawable.home_find_topic));
         mList.add(new FindBean("分类", R.drawable.home_find_category));
-        mList.add(new FindBean("有声小说", R.drawable.home_find_listen));
     }
 
     @Override
@@ -96,8 +96,6 @@ public class FindFragment extends BaseFragment implements OnRvItemClickListener<
                 break;
             case 2:
                 startActivity(new Intent(activity, TopCategoryListActivity.class));
-                break;
-            case 3:
                 break;
             default:
                 break;

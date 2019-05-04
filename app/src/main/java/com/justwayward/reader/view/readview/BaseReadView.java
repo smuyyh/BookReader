@@ -23,11 +23,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Scroller;
 
+import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.BookMixAToc;
 import com.justwayward.reader.manager.SettingManager;
 import com.justwayward.reader.manager.ThemeManager;
 import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.ScreenUtils;
+import com.justwayward.reader.utils.SharedPreferencesUtil;
 import com.justwayward.reader.utils.ToastUtils;
 
 import java.util.List;
@@ -70,6 +72,7 @@ public abstract class BaseReadView extends View {
         mNextPageCanvas = new Canvas(mNextPageBitmap);
 
         mScroller = new Scroller(getContext());
+
 
         pagefactory = new PageFactory(getContext(), bookId, chaptersList);
         pagefactory.setOnReadStateChangeListener(listener);
@@ -175,7 +178,11 @@ public abstract class BaseReadView extends View {
 
                 if ((Math.abs(ux - dx) < 10) && (Math.abs(uy - dy) < 10)) {
                     if ((t - et < 1000)) { // 单击
-                        startAnimation();
+                        if(this instanceof NoAimWidget) {
+                            ((NoAimWidget)this).startAnimation(0);
+                        }else{
+                            startAnimation();
+                        }
                     } else { // 长按
                         pagefactory.cancelPage();
                         restoreAnimation();

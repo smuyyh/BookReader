@@ -15,11 +15,13 @@
  */
 package com.justwayward.reader.manager;
 
+import com.justwayward.reader.R;
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.bean.support.BookMark;
 import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.ScreenUtils;
 import com.justwayward.reader.utils.SharedPreferencesUtil;
+import com.justwayward.reader.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,8 +72,7 @@ public class SettingManager {
     }
 
     public int getReadBrightness() {
-        return SharedPreferencesUtil.getInstance().getInt(getLightnessKey(),
-                (int) ScreenUtils.getScreenBrightness(AppUtils.getAppContext()));
+        return ScreenUtils.getScreenBrightness();
     }
 
     /**
@@ -80,6 +81,10 @@ public class SettingManager {
      * @param percent 亮度比例 0~100
      */
     public void saveReadBrightness(int percent) {
+        if(percent > 100){
+            ToastUtils.showToast("saveReadBrightnessErr CheckRefs");
+            percent = 100;
+        }
         SharedPreferencesUtil.getInstance().putInt(getLightnessKey(), percent);
     }
 
@@ -187,6 +192,7 @@ public class SettingManager {
     public boolean isAutoBrightness() {
         return SharedPreferencesUtil.getInstance().getBoolean("autoBrightness", false);
     }
+
 
     /**
      * 保存用户选择的性别
