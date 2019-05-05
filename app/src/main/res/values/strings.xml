@@ -45,6 +45,7 @@
     <string name="book_detail_has_remove_the_book_shelf">已移除《%1$s》</string>
 
     <!--阅读页面相关-->
+    <string name="book_read_down">下载</string>
     <string name="book_read_reading">朗读</string>
     <string name="book_read_community">社区</string>
     <string name="book_read_change_source">换源</string>

@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
     var isDragOver = false;
 
     var files = [];
@@ -24,16 +24,16 @@ $(function() {
         if (!confirm(STRINGS.CONFIRM_DELETE_BOOK)) {
             return;
         }
-        var $node =  $(_event.currentTarget);
+        var $node = $(_event.currentTarget);
         var fileName = $node.siblings(':first').text();
         var deleteUrl = "delete_file";
         var fileInfoContainer = $node.parent();
-        fileInfoContainer.css({ 'color':'#fff', 'background-color': '#cb4638' });
+        fileInfoContainer.css({'color': '#fff', 'background-color': '#cb4638'});
         fileInfoContainer.find('.trash').removeClass('trash').unbind();
         fileInfoContainer.find('.download').removeClass('download').unbind();
-        $.post(deleteUrl, { '_method' : 'delete', 'file_name': fileName }, function() {
-            setTimeout(function() {
-                fileInfoContainer.slideUp('fast', function() {
+        $.post(deleteUrl, {'_method': 'delete', 'file_name': fileName}, function () {
+            setTimeout(function () {
+                fileInfoContainer.slideUp('fast', function () {
                     fileInfoContainer.remove();
                 });
             }, 300);
@@ -41,21 +41,40 @@ $(function() {
     }
 
     function downloadBook(_event) {
-        var $node =  $(_event.currentTarget);
-        var fileName = $node.siblings(':first').text();
-        var url = "files/" + fileName;
-        window.location = url;
+        //第一个参数是提示文字，第二个参数是文本框中默认的内容
+        var start = prompt("请开始章节",0);
+        console.log(start)
+        if(start){
+            //输出word的格式
+            // alert("已获得:"+word);
+
+            var $node = $(_event.currentTarget).siblings(':first');
+            var bookid = $node.attr('bookid');
+            var fileName = encodeURI(encodeURI($node.text())) ;
+            //.text();//
+            var url = "files/" + bookid + ".txt?name=" + fileName +"&start=" + start;
+            window.location = url;
+        }
+
     }
 
     function loadFileList() {
         var now = new Date();
         var url = "files?";
-        $.get(url + now.getTime(), function(data) {
-            files = data;
+        $.getJSON(url + "time=" + now.getTime(), function (json) {
+            // JSON.parse(json,function (data) {
+            //     files = data;
+            //     fillFilesContainer();
+            // });
+            files = json;
             fillFilesContainer();
-            //$(".download").click(downloadBook);
-            //$(".trash").click(deleteBook);
-        });
+        })
+        // $.get(url +"time=" + now.getTime(), function(data) {
+        //     files = data;
+        //     fillFilesContainer();
+        //     //$(".download").click(downloadBook);
+        //     //$(".trash").click(deleteBook);
+        // });
     }
 
     function fillFilesContainer() {
@@ -65,13 +84,13 @@ $(function() {
         //filesContainer.height(height);
         var rowsCount = Math.floor(height / 40);
 
-        for (var i = 0; i < files.length;i ++) {
+        for (var i = 0; i < files.length; i++) {
             var row = $('<div class="file"></div>');
             var fileInfo = files[i];
-            row.append('<div class="column filename" filename="' + escape(fileInfo.name) + '">' + fileInfo.name +'</div>');
+            row.append('<div class="column filename" filename="' + escape(fileInfo.name) + '" bookid="' + fileInfo.bookid + '">' + fileInfo.name + '</div>');
             row.append('<div class="column size">' + fileInfo.size + '</div>');
-            row.append('<div class="column download" title="'+STRINGS.DOWNLOAD_FILE+'"></div>');
-            row.append('<div class="column trash" title="'+STRINGS.DELETE_FILE+'"></div>');
+            row.append('<div class="column download" title="' + STRINGS.DOWNLOAD_FILE + '" download="' + fileInfo.name + '"></div>');
+            row.append('<div class="column trash" title="' + STRINGS.DELETE_FILE + '"></div>');
             filesContainer.append(row);
         }
 
@@ -81,9 +100,9 @@ $(function() {
     function getUploadProgress() {
         var time = new Date().getTime();
         var url = 'progress/' + encodeURI(currentFileName) + '?' + time;
-        $.getJSON(url, function(data) {
+        $.getJSON(url, function (data) {
             if (!data) {
-                getProgressReties ++
+                getProgressReties++
                 if (getProgressReties < 5) {
                     setTimeout(getUploadProgress, 500);
                     return;
@@ -99,7 +118,7 @@ $(function() {
             var elePrecent = eleSize.next()
             elePrecent.text(Math.round(data.progress * 100) + "%");
             var eleProgress = ele.prev();
-            eleProgress.animate({ width:Math.round(483 * data.progress) }, 280);
+            eleProgress.animate({width: Math.round(483 * data.progress)}, 280);
 
             if (data.progress < 1) {
                 setTimeout(getUploadProgress, 300);
@@ -121,25 +140,25 @@ $(function() {
         var arr = fileName.split("\\");
         fileName = arr[arr.length - 1];
 
-        currentQueueIndex ++;
+        currentQueueIndex++;
 
         var row = $("#right .file [filename='" + escape(fileName) + "']").parent();
 
         alert(fileName)
-        $.post( "/send_file_name", {"filename": fileName}, function() {
+        $.post("/send_file_name", {"filename": fileName}, function () {
             $.ajaxFileUpload({
-                url:'files',
-                secureuri:false,
-                fileElementId:eleFileId,
+                url: 'files',
+                secureuri: false,
+                fileElementId: eleFileId,
                 dataType: 'text',
                 success: function (data, status) {
                     row.removeClass('progress_wrapper');
                     row.find('.progress').remove();
                     row.find('.precent').text('').remove();
-                    $('<div class="column download" title="'+STRINGS.DOWNLOAD_FILE+'"></div>')
+                    $('<div class="column download" title="' + STRINGS.DOWNLOAD_FILE + '"></div>')
                     //.click(downloadBook)
                         .appendTo(row);
-                    $('<div class="column trash" title="'+STRINGS.DELETE_FILE+'"></div>')
+                    $('<div class="column trash" title="' + STRINGS.DELETE_FILE + '"></div>')
                     //.click(deleteBook)
                         .appendTo(row);
                     isUploading = false;
@@ -199,7 +218,7 @@ $(function() {
         for (var i = 0; i < files.length; ++i) {
             if (!checkFileName(files[i].name || files[i].fileName)) {
                 uploader.add(files[i]);
-                actualFiles ++;
+                actualFiles++;
             }
         }
         if (totalFiles != actualFiles) {
@@ -210,7 +229,7 @@ $(function() {
 
     function bindAjaxUpload(fileSelector) {
         $(fileSelector).unbind();
-        $(fileSelector).change(function() {
+        $(fileSelector).change(function () {
             if (this.files) {
                 uploadFiles(this.files)
                 //优先使用HTML5上传方式
@@ -230,23 +249,31 @@ $(function() {
 
             var row = $('<div class="file progress_wrapper"></div>');
             row.append('<div class="progress"></div>');
-            row.append('<div class="column filename" filename="' + escape(fileName) + '">' + fileName +'</div>');
+            row.append('<div class="column filename" filename="' + escape(fileName) + '">' + fileName + '</div>');
             row.append('<div class="column size"> - </div>');
             row.append('<div class="column precent">0%</div>');
             $("#right .files").prepend(row);
 
             uploadQueue.push(fileSelector);
-            $(fileSelector).css({ top: '-9999px', left: '-9999px' });
+            $(fileSelector).css({top: '-9999px', left: '-9999px'});
             $('.file_upload_warper').append('<input type="file" name="newfile" value="" id="newfile_' + uploadQueue.length + '" class="file_upload" />');
             bindAjaxUpload('#newfile_' + uploadQueue.length);
             startAjaxUpload();
         });
 
         $(fileSelector)
-            .mouseover(function() { $('#upload_button').removeClass('normal').addClass('pressed'); })
-            .mouseout(function() { $('#upload_button').removeClass('pressed').addClass('normal'); })
-            .mousedown(function() { $('#upload_button').removeClass('normal').addClass('pressed'); })
-            .mouseup(function() { $('#upload_button').removeClass('pressed').addClass('normal'); });
+            .mouseover(function () {
+                $('#upload_button').removeClass('normal').addClass('pressed');
+            })
+            .mouseout(function () {
+                $('#upload_button').removeClass('pressed').addClass('normal');
+            })
+            .mousedown(function () {
+                $('#upload_button').removeClass('normal').addClass('pressed');
+            })
+            .mouseup(function () {
+                $('#upload_button').removeClass('pressed').addClass('normal');
+            });
         // if (typeof(Worker) !== "undefined") {
         //     $(fileSelector)
         //         .mouseover(function() { $('#upload_button').removeClass('normal').addClass('pressed'); })
@@ -264,7 +291,7 @@ $(function() {
 
     function formatFileSize(value) {
         var multiplyFactor = 0;
-        var tokens = ["bytes","KB","MB","GB","TB"];
+        var tokens = ["bytes", "KB", "MB", "GB", "TB"];
 
         while (value > 1024) {
             value /= 1024;
@@ -297,10 +324,10 @@ $(function() {
                     var size = item.getSize();
                     var row = $('<div class="file progress_wrapper"></div>');
                     row.append('<div class="progress"></div>');
-                    row.append('<div class="column filename" filename="' + escape(fileName) + '">' + fileName +'</div>');
-                    row.append('<div class="column size">' + formatFileSize(size) +'</div>');
+                    row.append('<div class="column filename" filename="' + escape(fileName) + '">' + fileName + '</div>');
+                    row.append('<div class="column size">' + formatFileSize(size) + '</div>');
                     row.append('<div class="column precent">0%</div>');
-                    $('<div class="column trash_white" title="'+STRINGS.CANCEL+'"></div>')
+                    $('<div class="column trash_white" title="' + STRINGS.CANCEL + '"></div>')
                         .click(cancelUpload)
                         .appendTo(row);
                     $("#right .files").prepend(row);
@@ -323,10 +350,10 @@ $(function() {
                     row.find('.progress').remove();
                     row.find('.precent').text('').remove();
                     row.find('.trash_white').remove();
-                    $('<div class="column download" title="'+STRINGS.DOWNLOAD_FILE+'"></div>')
+                    $('<div class="column download" title="' + STRINGS.DOWNLOAD_FILE + '"></div>')
                     //.click(downloadBook)
                         .appendTo(row);
-                    $('<div class="column trash" title="'+STRINGS.DELETE_FILE+'"></div>')
+                    $('<div class="column trash" title="' + STRINGS.DELETE_FILE + '"></div>')
                     //.click(deleteBook)
                         .appendTo(row);
                 },
@@ -407,7 +434,7 @@ $(function() {
         // $('<div class="button_lable">' + STRINGS.SELECT_BUTTON_LABLE + '</div>').prependTo("#upload_button")
     }
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         // events delegate
         $('.files').on('click', '.trash', deleteBook);
         $('.files').on('click', '.download', downloadBook);
@@ -415,7 +442,7 @@ $(function() {
         initPageStrings();
         fillFilesContainer();
         loadFileList();
-        $(window).resize(function() {
+        $(window).resize(function () {
             fillFilesContainer();
         });
         bindAjaxUpload('#newfile_0');
@@ -426,7 +453,7 @@ $(function() {
             showHtml4View();
         }
 
-        $(document).ajaxError(function(event, request, settings){
+        $(document).ajaxError(function (event, request, settings) {
             alert(STRINGS.CANNOT_CONNECT_SERVER);
         });
     });

@@ -444,7 +444,6 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
     public void showBookToc(List<BookMixAToc.mixToc.Chapters> list) {
         mChapterList.clear();
         mChapterList.addAll(list);
-
         readCurrentChapter();
     }
 
@@ -458,6 +457,15 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
             mPresenter.getChapterRead(mChapterList.get(currentChapter - 1).link, currentChapter);
         }
     }
+
+
+    public void merginAllChapterToFile(){
+        mPresenter.merginAllBook(recommendBooks,mChapterList);
+    }
+
+
+
+
 
     @Override
     public synchronized void showChapterRead(ChapterRead.Chapter data, int chapter) { // 加载章节内容
@@ -531,6 +539,8 @@ public class ReadActivity extends BaseActivity implements BookReadContract.View 
         gone(rlReadAaSet, rlReadMark);
         ToastUtils.showToast("正在拼命开发中...");
     }
+
+
 
     @OnClick(R.id.tvBookReadCommunity)
     public void onClickCommunity() {

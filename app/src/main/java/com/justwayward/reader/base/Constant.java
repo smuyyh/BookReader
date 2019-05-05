@@ -49,6 +49,8 @@ public class Constant {
 
     public static String PATH_CHM = PATH_DATA + "/chm";
 
+
+
     public static String BASE_PATH = AppUtils.getAppContext().getCacheDir().getPath();
 
     public static final String ISNIGHT = "isNight";

@@ -17,10 +17,17 @@ package com.justwayward.reader.wifitransfer;
 
 import android.util.Log;
 
+import com.justwayward.reader.api.BookApi;
+import com.justwayward.reader.bean.BookMixAToc;
+import com.justwayward.reader.bean.ChapterRead;
+import com.justwayward.reader.manager.CacheManager;
+import com.justwayward.reader.utils.FileUtils;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,6 +50,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
+
+import nl.siegmann.epublib.domain.Book;
+import rx.Observer;
 
 public abstract class NanoHTTPD {
     /*
@@ -268,6 +278,10 @@ public abstract class NanoHTTPD {
      * HTTP response. Return one of these from serve().
      */
     public static class Response {
+        private String bookId;
+        private BookMixAToc.mixToc bookMix;
+
+        private BookApi bookApi;
         /**
          * HTTP status code after processing, e.g. "200 OK", HTTP_OK
          */
@@ -280,6 +294,7 @@ public abstract class NanoHTTPD {
          * Data of the response, may be null.
          */
         public InputStream data;
+
         /**
          * Headers for the HTTP response. Use addHeader() to add lines.
          */
@@ -292,6 +307,12 @@ public abstract class NanoHTTPD {
         public Response(String msg) {
             this(Status.OK, MIME_HTML, msg);
         }
+
+
+        /**
+         * start Chapters index
+         */
+        public int start;
 
         /**
          * Basic constructor.
@@ -313,6 +334,15 @@ public abstract class NanoHTTPD {
             } catch (UnsupportedEncodingException uee) {
                 uee.printStackTrace();
             }
+        }
+
+        public Response(Status status, String mimeType, String bookId, BookMixAToc.mixToc bookMix, BookApi bookApi, int start) {
+            this.status = status;
+            this.mimeType = mimeType;
+            this.bookId = bookId;
+            this.bookMix = bookMix;
+            this.bookApi = bookApi;
+            this.start = start;
         }
 
         public static void error(OutputStream outputStream, Status error,
@@ -361,29 +391,115 @@ public abstract class NanoHTTPD {
                 pw.print("\r\n");
                 pw.flush();
 
-                if (data != null) {
-                    int pending = data.available(); // This is to support
-                    // partial sends, see
-                    // serveFile()
-                    int BUFFER_SIZE = 16 * 1024;
-                    byte[] buff = new byte[BUFFER_SIZE];
-                    while (pending > 0) {
-                        int read = data.read(buff, 0,
-                                ((pending > BUFFER_SIZE) ? BUFFER_SIZE
-                                        : pending));
-                        if (read <= 0) {
-                            break;
-                        }
-                        outputStream.write(buff, 0, read);
-                        pending -= read;
-                    }
-                }
+                sendInputData(outputStream, data);
+//              上传文件
+                witBook(pw, outputStream);
                 outputStream.flush();
                 outputStream.close();
                 if (data != null)
                     data.close();
             } catch (IOException ioe) {
                 // Couldn't write? No can do.
+                ioe.printStackTrace();
+            }
+        }
+
+        public void witBook(final PrintWriter pw, OutputStream outputStream) {
+            if (this.bookMix == null) {
+                return;
+            }
+            final List<BookMixAToc.mixToc.Chapters> list = this.bookMix.chapters;
+            for (int i = start; i < list.size(); i++) {
+                final BookMixAToc.mixToc.Chapters character = list.get(i);
+                final String title = character.title;
+                File fileIndex = CacheManager.getInstance().getChapterFile(this.bookId, i + 1);
+                if (fileIndex != null) {
+                    FileInputStream fis = null;
+                    try {
+                        fis = new FileInputStream(fileIndex);
+                        pw.print("\r\n");
+                        pw.print(title);
+                        pw.print("\r\n");
+                        pw.flush();
+                        sendInputData(outputStream, fis);
+                        outputStream.flush();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (fis != null) {
+                            try {
+                                fis.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                } else {
+//                      网络请求前先暂停350ms
+                    try {
+                        Thread.sleep(350);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Log.i("tag_", "onload: " + character.link);
+//                  开始加载网页数据
+                    final int finalI = i;
+                    bookApi.getChapterRead(character.link).subscribe(new Observer<ChapterRead>() {
+                        @Override
+                        public void onCompleted() {
+//                                call(integer, observer);
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(ChapterRead chapterRead) {
+                            Log.i("tag_", "onload end: chapterRead -> " + title);
+                            pw.print("\r\n");
+                            pw.print(title);
+                            pw.print("\r\n");
+                            pw.print(chapterRead.chapter.body);
+                            pw.flush();
+//                          保存当前的文章到本地
+                            CacheManager.getInstance().saveChapterFile(Response.this.bookId, finalI, chapterRead.chapter);
+                        }
+                    });
+                }
+            }
+        }
+
+
+//        public String getTitle(File file ,int i ,BookMixAToc.mixToc mixToc){
+//            if(mixToc != null && mixToc.chapters != null && i < mixToc.chapters.size() ){
+//                return mixToc.chapters.get(i).title;
+//            }else{
+//                return "第" + FileUtils.getFileNameNotType(file) + "章";
+//            }
+//
+//        }
+
+        private void sendInputData(OutputStream outputStream, InputStream data) throws IOException {
+            if (data != null) {
+                int pending = data.available(); // This is to support
+                // partial sends, see
+                // serveFile()
+                int BUFFER_SIZE = 16 * 1024;
+                byte[] buff = new byte[BUFFER_SIZE];
+                while (pending > 0) {
+                    int read = data.read(buff, 0,
+                            ((pending > BUFFER_SIZE) ? BUFFER_SIZE
+                                    : pending));
+                    if (read <= 0) {
+                        break;
+                    }
+                    outputStream.write(buff, 0, read);
+                    pending -= read;
+                }
             }
         }
 
@@ -619,9 +735,11 @@ public abstract class NanoHTTPD {
                                     + ioe.getMessage());
                     throw new InterruptedException();
                 } catch (Throwable ignored) {
+                    ignored.printStackTrace();
                 }
             } catch (InterruptedException ie) {
                 // Thrown by sendError, ignore and exit the thread.
+                ie.printStackTrace();
             } finally {
                 tempFileManager.clear();
             }

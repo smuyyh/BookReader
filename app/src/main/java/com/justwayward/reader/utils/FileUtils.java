@@ -36,6 +36,8 @@ import java.io.OutputStreamWriter;
 import java.nio.channels.FileChannel;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -63,6 +65,10 @@ public class FileUtils {
         return new File(Constant.PATH_TXT + bookId);
     }
 
+    public static String getMerginBook(String bookName) {
+        return Constant.PATH_TXT + bookName;
+    }
+
     public static File createWifiTempFile() {
         String src = Constant.PATH_DATA + "/" + System.currentTimeMillis();
         File file = new File(src);
@@ -70,6 +76,35 @@ public class FileUtils {
             createFile(file);
         return file;
     }
+
+    public static File[] getBookDirFiles(String bookId) {
+        File dir = getBookDir(bookId);
+        if (dir.exists()) {
+            File[] files = dir.listFiles();
+            try {
+                Arrays.sort(files, new Comparator<File>() {
+                    @Override
+                    public int compare(File lhs, File rhs) {
+                        Integer lPage = Integer.parseInt(getFileNameNotType(lhs));
+                        int rPage = Integer.parseInt(getFileNameNotType(rhs));
+                        return Integer.compare(lPage, rPage);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return files;
+        }
+        return null;
+    }
+
+    public static String getFileNameNotType(File file) {
+        String path = file.getPath();
+        int separatorIndex = path.lastIndexOf(File.separator);
+        int lastTypeIndex = path.lastIndexOf(".");
+        return (separatorIndex < 0) ? path.substring(0,  lastTypeIndex) : path.substring(separatorIndex + 1, lastTypeIndex);
+    }
+
 
     /**
      * 获取Wifi传书保存文件

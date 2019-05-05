@@ -24,12 +24,21 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.justwayward.reader.R;
+import com.justwayward.reader.api.BookApi;
 import com.justwayward.reader.base.BaseActivity;
+import com.justwayward.reader.bean.BookMixAToc;
+import com.justwayward.reader.bean.ChapterRead;
 import com.justwayward.reader.component.AppComponent;
 import com.justwayward.reader.component.DaggerMainComponent;
+import com.justwayward.reader.ui.contract.BookReadContract;
+import com.justwayward.reader.ui.presenter.BookReadPresenter;
 import com.justwayward.reader.utils.NetworkUtils;
 import com.justwayward.reader.wifitransfer.Defaults;
 import com.justwayward.reader.wifitransfer.ServerRunner;
+
+import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -50,6 +59,9 @@ public class WifiBookActivity extends BaseActivity {
 
     @Bind(R.id.tvRetry)
     TextView tvRetry;
+
+    @Inject
+    BookApi mBookApi;
 
     @Override
     public int getLayoutId() {
@@ -84,12 +96,13 @@ public class WifiBookActivity extends BaseActivity {
             tvRetry.setVisibility(View.GONE);
             mTvWifiIp.setText("http://" + NetworkUtils.getConnectWifiIp(mContext) + ":" + Defaults.getPort());
             // 启动wifi传书服务器
-            ServerRunner.startServer();
+            ServerRunner.startServer(mBookApi);
         } else {
             mTvWifiIp.setText("请开启Wifi并重试");
             tvRetry.setVisibility(View.VISIBLE);
         }
     }
+
 
     @Override
     public void configViews() {
@@ -129,4 +142,6 @@ public class WifiBookActivity extends BaseActivity {
         super.onDestroy();
         ServerRunner.stopServer();
     }
+
+
 }
