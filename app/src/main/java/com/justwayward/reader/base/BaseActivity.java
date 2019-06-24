@@ -39,7 +39,7 @@ import butterknife.ButterKnife;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    public Toolbar mCommonToolbar;
+    private Toolbar mCommonToolbar;
 
     protected Context mContext;
     protected int statusBarColor = 0;
