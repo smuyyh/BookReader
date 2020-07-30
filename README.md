@@ -1,4 +1,5 @@
 BookReader is being sponsored by the following tool; please help to support us by taking a look and signing up to a free trial
+
 <a href="https://tracking.gitads.io/?repo=BookReader"> <img src="https://images.gitads.io/BookReader" alt="GitAds"/></a>
 
 项目地址：[https://github.com/JustWayward/BookReader](https://github.com/JustWayward/BookReader)
