@@ -14,6 +14,7 @@
   ~ limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.justwayward.reader">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -30,10 +31,15 @@
     <application
         android:name=".ReaderApplication"
         android:allowBackup="true"
+        android:appComponentFactory="111"
         android:icon="@mipmap/icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar">
+        android:theme="@style/AppTheme.NoActionBar"
+        tools:replace="android:appComponentFactory">
+
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+
         <activity
             android:name=".ui.activity.SplashActivity"
             android:screenOrientation="portrait"

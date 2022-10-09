@@ -16,8 +16,8 @@
 package com.justwayward.reader.base;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.justwayward.reader.R;

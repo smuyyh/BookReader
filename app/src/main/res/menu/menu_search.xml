@@ -23,6 +23,6 @@
         android:imeOptions="actionSearch"
         android:inputType="textCapWords"
         android:title="搜索"
-        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView" />
 </menu>

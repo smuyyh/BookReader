@@ -17,7 +17,7 @@ package com.justwayward.reader;
 
 import android.app.Application;
 import android.content.Context;
-import android.support.v7.app.AppCompatDelegate;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.justwayward.reader.base.Constant;
 import com.justwayward.reader.base.CrashHandler;

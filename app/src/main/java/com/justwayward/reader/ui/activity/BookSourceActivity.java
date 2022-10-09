@@ -18,7 +18,7 @@ package com.justwayward.reader.ui.activity;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.base.BaseRVActivity;

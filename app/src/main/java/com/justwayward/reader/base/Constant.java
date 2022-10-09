@@ -16,7 +16,7 @@
 package com.justwayward.reader.base;
 
 import android.graphics.Color;
-import android.support.annotation.StringDef;
+import androidx.annotation.StringDef;
 
 import com.justwayward.reader.utils.AppUtils;
 import com.justwayward.reader.utils.FileUtils;

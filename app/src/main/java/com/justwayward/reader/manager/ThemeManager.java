@@ -17,7 +17,7 @@ package com.justwayward.reader.manager;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.view.View;
 
 import com.justwayward.reader.R;

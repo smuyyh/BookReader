@@ -126,7 +126,7 @@
                     android:text="省流量模式（无头像）"
                     android:textColor="@color/common_h1" />
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/noneCoverCompat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

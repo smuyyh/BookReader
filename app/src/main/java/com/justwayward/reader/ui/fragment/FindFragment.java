@@ -16,9 +16,9 @@
 package com.justwayward.reader.ui.fragment;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import com.justwayward.reader.R;

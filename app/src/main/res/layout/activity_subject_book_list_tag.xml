@@ -45,7 +45,7 @@
                 rvp:text_color_hightlight="@color/white"
                 rvp:text_color_normal="@color/light_gray" />
 
-            <android.support.v4.view.ViewPager
+            <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewpagerSubject"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -59,7 +59,7 @@
             android:background="@color/common_gray_bg"
             android:visibility="gone">
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvTags"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

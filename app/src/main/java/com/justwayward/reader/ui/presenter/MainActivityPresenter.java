@@ -97,7 +97,6 @@ public class MainActivityPresenter extends RxPresenter<MainContract.View> implem
                 }
             }
         } else {
-            ToastUtils.showSingleToast("书架空空如也...");
             mView.syncBookShelfCompleted();
             return;
         }

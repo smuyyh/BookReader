@@ -54,7 +54,6 @@
     </style>
 
     <style name="ActionButton.Overflow.Menu" parent="android:style/Widget.Holo.Light.ActionButton.Overflow">
-        <item name="android:src">@drawable/abc_ic_menu_moreoverflow_mtrl_alpha</item>
     </style>
 
     <!--把该属性改为false即可使menu位置位于toolbar之下-->

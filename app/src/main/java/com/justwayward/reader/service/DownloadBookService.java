@@ -19,10 +19,9 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.IBinder;
-import android.support.annotation.MainThread;
-import android.support.annotation.Nullable;
+import androidx.annotation.MainThread;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.justwayward.reader.R;
 import com.justwayward.reader.ReaderApplication;
@@ -36,7 +35,6 @@ import com.justwayward.reader.bean.support.DownloadProgress;
 import com.justwayward.reader.bean.support.DownloadQueue;
 import com.justwayward.reader.manager.CacheManager;
 import com.justwayward.reader.utils.AppUtils;
-import com.justwayward.reader.utils.FileUtils;
 import com.justwayward.reader.utils.LogUtils;
 import com.justwayward.reader.utils.NetworkUtils;
 
@@ -44,22 +42,12 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Observable;
 import rx.Observer;
-import rx.Single;
-import rx.SingleSubscriber;
-import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Action2;
-import rx.functions.Func0;
-import rx.internal.util.ObserverSubscriber;
-import rx.observables.SyncOnSubscribe;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
